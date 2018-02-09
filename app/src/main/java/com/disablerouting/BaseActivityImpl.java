@@ -8,7 +8,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
-import com.disablerouting.Network.NetworkChangeReceiver;
+import com.disablerouting.network.NetworkChangeReceiver;
 
 @SuppressLint("Registered")
 public class BaseActivityImpl extends AppCompatActivity implements NetworkChangeReceiver.ConnectionChangeListener {

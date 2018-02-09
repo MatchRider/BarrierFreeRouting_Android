@@ -1,4 +1,4 @@
-package com.disablerouting.Application;
+package com.disablerouting.application;
 
 import android.app.Application;
 import android.content.Context;
