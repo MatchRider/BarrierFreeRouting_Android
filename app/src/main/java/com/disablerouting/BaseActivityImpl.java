@@ -8,11 +8,12 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
+import com.disablerouting.Network.NetworkChangeReceiver;
 
 @SuppressLint("Registered")
 public class BaseActivityImpl extends AppCompatActivity implements NetworkChangeReceiver.ConnectionChangeListener {
 
-    private NetworkChangeReceiver networkStateReceiver = new NetworkChangeReceiver();
+    private NetworkChangeReceiver mNetworkChangeReceiver = new NetworkChangeReceiver();
 
     private BroadcastReceiver mNetworkReceiver;
 
@@ -47,16 +48,16 @@ public class BaseActivityImpl extends AppCompatActivity implements NetworkChange
     @Override
     public void onStart() {
         super.onStart();
-        networkStateReceiver.setConnectionListener(this);
+        mNetworkChangeReceiver.setConnectionListener(this);
         IntentFilter intentFilter= new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-        registerReceiver(networkStateReceiver,intentFilter);
+        registerReceiver(mNetworkChangeReceiver,intentFilter);
     }
 
 
     @Override
     public void onStop() {
         super.onStop();
-        unregisterReceiver(networkStateReceiver);
+        unregisterReceiver(mNetworkChangeReceiver);
     }
 }
