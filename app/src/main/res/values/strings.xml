@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Disable Routing</string>
 
-    <!--Util-->
+    <!--Expected Error Codes-->
     <string name="no_internet">Internet is not available</string>
+    <string name="INTERNAL_SERVER_ERROR">Unable to process request at this time, please try again in sometime.</string>
+    <string name="REQUEST_TIME_OUT">Looks like the server is taking too long to respond, please try again in sometime</string>
+    <string name="text_skip">skip</string>
+
 </resources>
