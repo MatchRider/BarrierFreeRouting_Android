@@ -13,8 +13,9 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity android:name=".tutorial.TutorialActivity"
                   android:screenOrientation="portrait"
+                  android:theme="@style/Theme.AppCompat.NoActionBar"
                   android:windowSoftInputMode="stateHidden|adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -22,12 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-       <!-- <activity android:name=".tutorial.TutorialActivity"
+        <activity android:name=".MainActivity"
                   android:screenOrientation="portrait"
-                  android:theme="@style/Theme.AppCompat.NoActionBar"
                   android:windowSoftInputMode="stateHidden|adjustNothing">
 
-        </activity>-->
+        </activity>
         <receiver android:name=".network.NetworkChangeReceiver"
                 android:label="NetworkChangeReceiver">
         </receiver>
