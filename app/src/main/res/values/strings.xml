@@ -1,10 +1,24 @@
 <resources>
     <string name="app_name">Disable Routing</string>
 
+
+    <!-- Font file name for Blue theme -->
+    <string name="ft_bold_font">FTB.ttf</string>
+    <string name="ft_light_condensed_font">FTLC.ttf</string>
+    <string name="ft_ultra_black_font">FTUBL.ttf</string>
+
     <!--Expected Error Codes-->
     <string name="no_internet">Internet is not available</string>
     <string name="INTERNAL_SERVER_ERROR">Unable to process request at this time, please try again in sometime.</string>
     <string name="REQUEST_TIME_OUT">Looks like the server is taking too long to respond, please try again in sometime</string>
+
+
     <string name="text_skip">skip</string>
+    <string name="ITEM_ONE">Item one</string>
+    <string name="ITEM_TWO">Item two</string>
+    <string name="close_drawer">Close</string>
+    <string name="user_name">User Name</string>
+    <string name="user_detail">User Detail</string>
+
 
 </resources>

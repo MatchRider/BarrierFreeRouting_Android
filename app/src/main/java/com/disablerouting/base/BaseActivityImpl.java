@@ -10,21 +10,27 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 import com.disablerouting.R;
 import com.disablerouting.network.NetworkChangeReceiver;
+import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
+import com.disablerouting.sidemenu.view.SideMenuFragment;
 import com.disablerouting.widget.DRLoader;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.enums.SnackbarType;
 
 @SuppressLint("Registered")
-public class BaseActivityImpl extends AppCompatActivity implements UIBase, NetworkChangeReceiver.ConnectionChangeListener {
+public class BaseActivityImpl extends AppCompatActivity implements UIBase, NetworkChangeReceiver.ConnectionChangeListener ,
+        ISideMenuFragmentCallback {
 
     private NetworkChangeReceiver mNetworkChangeReceiver = new NetworkChangeReceiver();
     private BroadcastReceiver mNetworkReceiver;
     private DRLoader mLoader;
+    protected SideMenuFragment mSideMenuFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,5 +133,25 @@ public class BaseActivityImpl extends AppCompatActivity implements UIBase, Netwo
     public void onStop() {
         super.onStop();
         unregisterReceiver(mNetworkChangeReceiver);
+    }
+
+    /**
+     * Add side menu to your activity
+     * @param frameLayout take layout of frame
+     */
+    protected void addNavigationMenu(FrameLayout frameLayout, ISideMenuFragmentCallback listener) {
+        mSideMenuFragment = SideMenuFragment.newInstance();
+        mSideMenuFragment.setClickListener(listener);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(frameLayout.getId(), mSideMenuFragment);
+        transaction.commit();
+    }
+
+    @Override
+    public void onClick(int close) {
+        switch (close) {
+            case R.string.close_drawer:
+                break;
+        }
     }
 }

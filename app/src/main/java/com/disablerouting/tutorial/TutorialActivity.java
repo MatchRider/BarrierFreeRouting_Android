@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.disablerouting.MainActivity;
+import com.disablerouting.sidemenu.MainActivity;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
 
