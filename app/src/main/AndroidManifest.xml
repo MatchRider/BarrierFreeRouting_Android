@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".sidemenu.MainActivity"
+        <activity android:name=".sidemenu.HomeActivity"
                   android:screenOrientation="portrait"
                   android:windowSoftInputMode="stateHidden|adjustNothing">
 

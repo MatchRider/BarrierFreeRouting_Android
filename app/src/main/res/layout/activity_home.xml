@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <!-- Toolbar layout -->
+    <RelativeLayout
+            android:id="@+id/rly_logo_menu_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible">
+
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/back_btn_view"
+                android:background="@color/colorAccent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"/>
+
+        <LinearLayout
+                android:id="@+id/ll_top"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+            <ImageButton
+                    android:id="@+id/navigation_btn"
+                    android:layout_width="50dp"
+                    android:layout_height="56dp"
+                    android:background="#00000000"
+                    android:tint="@color/colorWhite"
+                    android:src="@mipmap/ic_side_menu"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/app_name"/>
+
+            <!--<TextView
+                    android:text="@string/app_name"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:layout_width="match_parent"
+                    android:textSize="@dimen/text_xlarge"
+                    android:fontFamily="@string/ft_bold_font"
+                    android:layout_height="wrap_content"/>-->
+
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerInParent="true"
+                android:layout_height="wrap_content">
+            <Button
+                    android:id="@+id/btn_route_planner"
+                    android:background="@drawable/btn_ripple"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_xlarge"
+                    android:layout_margin="@dimen/margin_normal"
+                    android:padding="@dimen/margin_normal"
+                    android:visibility="visible"
+                    android:gravity="start"
+                    android:text="@string/route_planner"
+                    android:textAllCaps="false"
+
+                    android:fontFamily="@string/ft_bold_font"/>
+            <Button
+                    android:id="@+id/btn_suggestion"
+                    android:background="@drawable/btn_ripple"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_xlarge"
+                    android:visibility="visible"
+                    android:gravity="start"
+                    android:text="@string/suggestions"
+                    android:textAllCaps="false"
+                    android:layout_margin="@dimen/margin_normal"
+                    android:padding="@dimen/margin_normal"
+                    android:fontFamily="@string/ft_bold_font"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <FrameLayout
+            android:id="@+id/frame_drawer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"/>
+</android.support.v4.widget.DrawerLayout>

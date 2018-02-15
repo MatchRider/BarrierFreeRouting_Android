@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.disablerouting.sidemenu.MainActivity;
+import com.disablerouting.sidemenu.HomeActivity;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
 
@@ -124,7 +124,7 @@ public class TutorialActivity extends BaseActivityImpl implements ViewPager.OnPa
      */
     private void launchHomeScreen() {
         mTutorialPrefManager.setFirstTimeLaunch(false);
-        launchActivity(this, MainActivity.class);
+        launchActivity(this, HomeActivity.class);
         finish();
     }
 

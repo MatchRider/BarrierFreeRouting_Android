@@ -19,6 +19,8 @@
     <string name="close_drawer">Close</string>
     <string name="user_name">User Name</string>
     <string name="user_detail">User Detail</string>
+    <string name="route_planner">Route Planner</string>
+    <string name="suggestions">Suggestions</string>
 
 
 </resources>

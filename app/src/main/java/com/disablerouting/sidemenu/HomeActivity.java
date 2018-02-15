@@ -14,7 +14,7 @@ import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
 
-public class MainActivity extends BaseActivityImpl  implements ISideMenuFragmentCallback {
+public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragmentCallback{
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -30,7 +30,7 @@ public class MainActivity extends BaseActivityImpl  implements ISideMenuFragment
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
 
         addNavigationMenu(navigationDrawerLayout, this);
@@ -71,5 +71,16 @@ public class MainActivity extends BaseActivityImpl  implements ISideMenuFragment
             return;
         }
         super.onBackPressed();
+    }
+
+    @OnClick(R.id.btn_route_planner)
+    void redirectRoutePlanner(){
+        showSnackBar("Route Planner", this);
+        //TODO
+    }
+    @OnClick(R.id.btn_suggestion)
+    void redirectSuggestions(){
+        showSnackBar("Suggestions", this);
+        //TODO
     }
 }
