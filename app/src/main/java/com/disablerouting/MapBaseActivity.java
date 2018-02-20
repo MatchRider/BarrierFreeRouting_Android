@@ -1,0 +1,209 @@
+package com.disablerouting;
+
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
+import com.disablerouting.base.BaseActivityImpl;
+import com.disablerouting.common.AppConstant;
+import com.disablerouting.location.GPSTracker;
+import com.disablerouting.utils.PermissionUtils;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapController;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ScaleBarOverlay;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTracker.onUpdateLocation{
+
+    private MapView mMapView = null;
+    private MyLocationNewOverlay mLocationOverlay;
+    private static final int MULTIPLE_PERMISSION_REQUEST_CODE = 4;
+    final String[] locationPermissions = new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.ACCESS_NETWORK_STATE};
+    private LocationManager  mLocationManager;
+    private GPSTracker mGPSTracker;
+
+    private double mLatitude=0;
+    private double mLongitude=0;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(getView());
+
+        mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        mGPSTracker = new GPSTracker(this, this);
+
+        if(mGPSTracker.canGetLocation()){
+            mLatitude = mGPSTracker.getLatitude();
+            mLongitude = mGPSTracker.getLongitude();
+            checkLocationStatus();
+        }
+        else {
+            openSettingDialog();
+        }
+    }
+
+
+    /**
+     * Result when user give permission or not
+     *
+     * @param requestCode  Request code
+     * @param permissions  Type of permission
+     * @param grantResults Results of permission
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MULTIPLE_PERMISSION_REQUEST_CODE: {
+                if (grantResults.length > 0) {
+                    boolean somePermissionWasDenied = false;
+                    for (int result : grantResults) {
+                        if (result == PackageManager.PERMISSION_DENIED) {
+                            somePermissionWasDenied = true;
+                        }
+                    }
+                    if (somePermissionWasDenied) {
+                        Toast.makeText(this, R.string.error_load_maps, Toast.LENGTH_SHORT).show();
+                    } else {
+                        if(mLocationManager!=null && !mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || !mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                            openSettingDialog();
+                        }else {
+                            initializeMap();
+
+                        }
+                    }
+                } else {
+                    Toast.makeText(this, R.string.error_load_maps, Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
+    }
+    protected void openSettingDialog() {
+        assert mLocationManager != null;
+        if(!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || !mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            //Build the alert dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.gps_setting);
+            builder.setMessage(R.string.message_gps);
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startSettingActivity();
+                }
+            });
+            Dialog alertDialog = builder.create();
+            alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.show();
+        }else {
+            initializeMap();
+        }
+
+    }
+
+    /**
+     * Open setting activity
+     */
+    protected void startSettingActivity() {
+        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivityForResult(intent, AppConstant.SETTING_REQUEST_CODE);
+    }
+
+
+    /*
+    * * Check location services status
+     */
+    protected void checkLocationStatus() {
+        if (!PermissionUtils.isPermissionAllowed(this, android.Manifest.permission_group.LOCATION)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                ActivityCompat.requestPermissions(this, locationPermissions, MULTIPLE_PERMISSION_REQUEST_CODE);
+            }
+        }else {
+            if(!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || !mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                openSettingDialog();
+            }else {
+                initializeMap();
+            }
+        }
+    }
+
+    private void initializeMap() {
+        mMapView = findViewById(R.id.map_view);
+
+        mMapView.setTileSource(TileSourceFactory.MAPNIK);
+        mMapView.setBuiltInZoomControls(true);
+        mMapView.setMultiTouchControls(true);
+        mMapView.getController().setZoom(15); //set initial zoom-level, depends on your need
+
+
+        MapController myMapController = (MapController) mMapView.getController();
+        myMapController.setZoom(9);
+
+        GeoPoint startPoint = new GeoPoint(mLatitude,mLongitude);
+        myMapController.setCenter(startPoint);
+
+
+        this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getApplicationContext()), mMapView);
+        this.mLocationOverlay.enableMyLocation();
+        mMapView.getOverlays().add(this.mLocationOverlay);
+
+        //Add Scale Bar
+        ScaleBarOverlay myScaleBarOverlay = new ScaleBarOverlay(mMapView);
+        mMapView.getOverlays().add(myScaleBarOverlay);
+        setProvider();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppConstant.SETTING_REQUEST_CODE) {
+            if(mGPSTracker.canGetLocation()) {
+                mLatitude = mGPSTracker.getLatitude();
+                mLongitude = mGPSTracker.getLongitude();
+            }
+            initializeMap();
+        }else {
+            checkLocationStatus();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mGPSTracker.stopUsingGPS();
+    }
+
+    private void setProvider() {
+        GpsMyLocationProvider gpsMyLocationProvider = new GpsMyLocationProvider(getApplicationContext());
+        gpsMyLocationProvider.addLocationSource(LocationManager.GPS_PROVIDER);
+        gpsMyLocationProvider.addLocationSource(LocationManager.NETWORK_PROVIDER);
+
+        mLocationOverlay = new MyLocationNewOverlay(gpsMyLocationProvider, mMapView);
+        mLocationOverlay.enableMyLocation();
+        mMapView.getOverlays().add(mLocationOverlay);
+    }
+
+    protected abstract int getView();
+
+}

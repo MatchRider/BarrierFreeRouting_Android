@@ -12,7 +12,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
+import com.disablerouting.route_planner.RoutePlannerActivity;
 import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
+import com.disablerouting.suggestions.SuggestionsActivity;
 
 public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragmentCallback{
 
@@ -75,11 +77,14 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
 
     @OnClick(R.id.btn_route_planner)
     void redirectRoutePlanner(){
-        showSnackBar("Route Planner", this);
+        launchActivity(this, RoutePlannerActivity.class);
+        //showSnackBar("Route Planner", this);
         //TODO
     }
     @OnClick(R.id.btn_suggestion)
     void redirectSuggestions(){
+        launchActivity(this, SuggestionsActivity.class);
+
         showSnackBar("Suggestions", this);
         //TODO
     }

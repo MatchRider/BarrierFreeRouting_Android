@@ -7,10 +7,21 @@
     <string name="ft_light_condensed_font">FTLC.ttf</string>
     <string name="ft_ultra_black_font">FTUBL.ttf</string>
 
+    <!-- Custom dialog -->
+    <string name="setting">Setting</string>
+    <string name="no">No</string>
+    <string name="txt_dialog_title_enable_location">Enable Location</string>
+    <string name="txt_dialog_message_enable_location">Please enable location for access all feature of this application</string>
+    <string name="settings">Settings</string>
+
     <!--Expected Error Codes-->
     <string name="no_internet">Internet is not available</string>
-    <string name="INTERNAL_SERVER_ERROR">Unable to process request at this time, please try again in sometime.</string>
-    <string name="REQUEST_TIME_OUT">Looks like the server is taking too long to respond, please try again in sometime</string>
+    <string name="INTERNAL_SERVER_ERROR">Unable to process request at this time, please try again in
+        sometime.
+    </string>
+    <string name="REQUEST_TIME_OUT">Looks like the server is taking too long to respond, please try
+        again in sometime
+    </string>
 
 
     <string name="text_skip">skip</string>
@@ -21,6 +32,11 @@
     <string name="user_detail">User Detail</string>
     <string name="route_planner">Route Planner</string>
     <string name="suggestions">Suggestions</string>
+    <string name="title_activity_route_planner">RoutePlannerActivity</string>
+    <string name="error_load_maps">Can not load maps without all the permissions granted</string>
+    <string name="gps_setting">GPS is settings</string>
+    <string name="message_gps">GPS is not enabled. Do you want to go to location setting?</string>
+    <string name="ok">OK</string>
 
 
 </resources>
