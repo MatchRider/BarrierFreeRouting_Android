@@ -10,6 +10,7 @@ public class RoutePlannerActivity extends MapBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -22,4 +23,6 @@ public class RoutePlannerActivity extends MapBaseActivity {
     public void onSendLocation(Location location) {
 
     }
+
+
 }

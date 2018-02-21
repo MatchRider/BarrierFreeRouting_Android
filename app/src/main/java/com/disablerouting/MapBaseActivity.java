@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,15 +15,20 @@ import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.common.PolylineDecoder;
 import com.disablerouting.location.GPSTracker;
 import com.disablerouting.utils.PermissionUtils;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+import java.util.List;
 
 public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTracker.onUpdateLocation{
 
@@ -148,23 +154,27 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
         mMapView.setTileSource(TileSourceFactory.MAPNIK);
         mMapView.setBuiltInZoomControls(true);
         mMapView.setMultiTouchControls(true);
-        mMapView.getController().setZoom(15); //set initial zoom-level, depends on your need
+
+        List<GeoPoint> geoPointArrayList ;
+        geoPointArrayList = PolylineDecoder.decodePoly("mtkeHuv|q@~@VLHz@\\\\PR|@hBt@j@^n@L\\\\NjALv@Jh@NXi@zBm@jCKTy@z@qAhBa@\\\\[Ne@DgCc@i@?[Ty@hAi@zASRi@R}@H_@N[b@kAdCy@`Au@d@eA|@q@h@WRe@PYHYBqADgAAcAL_A^w@~@q@`@w@Zw@Cm@K[PeA|Aa@p@g@fAiAhBuAv@]VU^k@xAUXe@TqATy@V}@f@_@VO\\\\Mb@[fBe@|@Mp@WbCgClKSdAq@Rm@?g@WYg@G[[}Bk@qBy@wDUm@w@}@q@}A]o@k@y@kAjC_AjC_ApCe@z@i@j@q@f@[NsAp@u@T}A\\\\wATU?WCeBm@q@MwAGUCg@SMaAi@mDQm@K}@Mq@u@mAc@i@c@Ys@[WW_@q@e@a@cA_@w@E{BHmBXqBkBsA}@{Ao@iAB{@QYSi@qCUy@Ee@@SDWbA_BLKLAVNb@r@J@HEHK?]k@iDe@w@COAWBUh@qBDc@?c@Q{BGa@MQKCOBgA\\\\{@AKEs@Wq@i@q@{@s@gAk@kA]g@g@_@I]??k@i@yBkEa@}@W}@WkCUqC?_@Hg@ZqABg@Gm@YoAEgAMq@@jAB|CC`@{@rACH");
+        addPolyLine(geoPointArrayList);
+        GeoPoint geoPointStart = null, geoPointEnd =null;
+        if(geoPointArrayList!=null && geoPointArrayList.size()!=0){
+            geoPointStart = geoPointArrayList.get(0);
+            geoPointEnd = geoPointArrayList.get(geoPointArrayList.size()-1);
+            addMarkers(geoPointStart,geoPointEnd);
+        }
 
 
-        MapController myMapController = (MapController) mMapView.getController();
-        myMapController.setZoom(9);
-
-        GeoPoint startPoint = new GeoPoint(mLatitude,mLongitude);
-        myMapController.setCenter(startPoint);
-
-
-        this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getApplicationContext()), mMapView);
-        this.mLocationOverlay.enableMyLocation();
+        mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getApplicationContext()), mMapView);
+        mLocationOverlay.enableMyLocation();
         mMapView.getOverlays().add(this.mLocationOverlay);
 
         //Add Scale Bar
         ScaleBarOverlay myScaleBarOverlay = new ScaleBarOverlay(mMapView);
         mMapView.getOverlays().add(myScaleBarOverlay);
+
+
         setProvider();
 
     }
@@ -202,6 +212,57 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
         mLocationOverlay = new MyLocationNewOverlay(gpsMyLocationProvider, mMapView);
         mLocationOverlay.enableMyLocation();
         mMapView.getOverlays().add(mLocationOverlay);
+    }
+
+    public void addPolyLine(List<GeoPoint> geoPointList){
+        //add your points here
+        Polyline line = new Polyline();   //see note below!
+        line.setPoints(geoPointList);
+        line.setColor(Color.RED);
+        line.setOnClickListener(new Polyline.OnClickListener() {
+            @Override
+            public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
+                Toast.makeText(mapView.getContext(), "polyline with " + polyline.getPoints().size() + "pts was tapped", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
+        mMapView.getOverlayManager().add(line);
+
+    }
+
+    private void addMarkers(GeoPoint start , GeoPoint end){
+
+        MapController myMapController = (MapController) mMapView.getController();
+        myMapController.setZoom(15);
+        myMapController.setCenter(start);
+
+
+        GeoPoint startPoint = new GeoPoint(start.getLatitude(),start.getLongitude());
+        Marker startMarker = new Marker(mMapView);
+        startMarker.setPosition(startPoint);
+        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        mMapView.getOverlays().add(startMarker);
+        startMarker.setIcon(getResources().getDrawable(R.drawable.ic_menu_compass));
+        startMarker.setTitle("Start point");
+
+
+        GeoPoint endPoint = new GeoPoint(end.getLatitude(),end.getLongitude());
+        Marker endMarker = new Marker(mMapView);
+        endMarker.setPosition(endPoint);
+        endMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        mMapView.getOverlays().add(endMarker);
+        endMarker.setIcon(getResources().getDrawable(R.drawable.ic_media_pause_dark));
+        endMarker.setTitle("End point");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     protected abstract int getView();
