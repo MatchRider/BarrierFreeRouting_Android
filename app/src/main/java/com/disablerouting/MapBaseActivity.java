@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -218,7 +217,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
         //add your points here
         Polyline line = new Polyline();   //see note below!
         line.setPoints(geoPointList);
-        line.setColor(Color.RED);
+        line.setColor(getResources().getColor(R.color.colorPrimary));
         line.setOnClickListener(new Polyline.OnClickListener() {
             @Override
             public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
@@ -242,7 +241,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
         startMarker.setPosition(startPoint);
         startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         mMapView.getOverlays().add(startMarker);
-        startMarker.setIcon(getResources().getDrawable(R.drawable.ic_menu_compass));
+        startMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
         startMarker.setTitle("Start point");
 
 
@@ -251,7 +250,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
         endMarker.setPosition(endPoint);
         endMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         mMapView.getOverlays().add(endMarker);
-        endMarker.setIcon(getResources().getDrawable(R.drawable.ic_media_pause_dark));
+        endMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
         endMarker.setTitle("End point");
     }
 

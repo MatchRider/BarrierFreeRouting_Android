@@ -29,7 +29,7 @@
                     android:layout_height="56dp"
                     android:background="#00000000"
                     android:tint="@color/colorWhite"
-                    android:src="@mipmap/ic_side_menu"
+                    android:src="@drawable/ic_menu_ham"
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/app_name"/>
 

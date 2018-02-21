@@ -37,6 +37,10 @@
     <string name="gps_setting">GPS is settings</string>
     <string name="message_gps">GPS is not enabled. Do you want to go to location setting?</string>
     <string name="ok">OK</string>
+    <string name="a">A</string>
+    <string name="enter_source">Enter Source</string>
+    <string name="b">B</string>
+    <string name="enter_destination">Enter Destination</string>
 
 
 </resources>
