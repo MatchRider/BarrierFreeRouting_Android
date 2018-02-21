@@ -14,7 +14,19 @@ class ApiErrorHandler {
     private static Map<Integer, Integer> createErrorMap() {
         @SuppressLint("UseSparseArrays")
         Map<Integer, Integer> errorConstantMap = new HashMap<>();
-        errorConstantMap.put(401, R.string.INTERNAL_SERVER_ERROR);
+        errorConstantMap.put(401, R.string.AUTHORISE_FIELD_MISSING);
+        errorConstantMap.put(405, R.string.HTTP_METHOD_NOT_SUPPORTED);
+        errorConstantMap.put(413, R.string.REQUEST_IS_LARGER);
+        errorConstantMap.put(500, R.string.INCORRECT_CANT_PROCESS);
+        errorConstantMap.put(501, R.string.SERVER_DOESNT_SUPPORT);
+        errorConstantMap.put(503, R.string.SERVER_NOT_UAVAILABLE);
+
+        errorConstantMap.put(200, R.string.UNABLE_TO_PARSE);
+        errorConstantMap.put(201, R.string.PARAMETER_MISSING);
+        errorConstantMap.put(202, R.string.INVALID_PARAMETER_FORMAT);
+        errorConstantMap.put(203, R.string.INVALID_PARAMETER_VALUE);
+        errorConstantMap.put(204, R.string.PARAMETER_EXCEEDS_LIMIT);
+        errorConstantMap.put(299, R.string.UNKNOWN_INTERNAL_ERROR);
         return errorConstantMap;
     }
 

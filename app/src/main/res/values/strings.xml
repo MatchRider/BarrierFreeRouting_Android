@@ -16,12 +16,32 @@
 
     <!--Expected Error Codes-->
     <string name="no_internet">Internet is not available</string>
-    <string name="INTERNAL_SERVER_ERROR">Unable to process request at this time, please try again in
-        sometime.
-    </string>
+    <string name="INTERNAL_SERVER_ERROR">The request is incorrect and therefore can not be processed.</string>
     <string name="REQUEST_TIME_OUT">Looks like the server is taking too long to respond, please try
         again in sometime
     </string>
+    <string name="AUTHORISE_FIELD_MISSING">Authorization field missing.</string>
+    <string name="HTTP_METHOD_NOT_SUPPORTED">The specified HTTP method is not supported. For more
+        details, refer to the EndPoint documentation.
+    </string>
+    <string name="REQUEST_IS_LARGER">The request is larger than the server is able to process, the
+        data provided in the request exceeds the capacity limit.
+    </string>
+    <string name="INCORRECT_CANT_PROCESS">The request is incorrect and therefore can not be
+        processed.
+    </string>
+    <string name="SERVER_DOESNT_SUPPORT">Indicates that the server does not support the
+        functionality needed to fulfill the request.
+    </string>
+    <string name="SERVER_NOT_UAVAILABLE">The server is currently unavailable due to overload or
+        maintenance.
+    </string>
+    <string name="UNABLE_TO_PARSE">Unable to parse JSON request</string>
+    <string name="PARAMETER_MISSING">Required parameter is missing.</string>
+    <string name="INVALID_PARAMETER_FORMAT">Invalid parameter format.</string>
+    <string name="INVALID_PARAMETER_VALUE">Invalid parameter value.</string>
+    <string name="PARAMETER_EXCEEDS_LIMIT">Parameter value exceeds the maximum allowed limit.</string>
+    <string name="UNKNOWN_INTERNAL_ERROR">Unknown internal error.</string>
 
 
     <string name="text_skip">skip</string>
@@ -41,6 +61,7 @@
     <string name="enter_source">Enter Source</string>
     <string name="b">B</string>
     <string name="enter_destination">Enter Destination</string>
+    <string name="go">Go</string>
 
 
 </resources>

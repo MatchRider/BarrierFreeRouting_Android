@@ -1,5 +1,6 @@
 package com.disablerouting.api;
 
+import com.disablerouting.route_planner.model.DirectionsResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -14,8 +15,8 @@ public interface ApiService {
      * @param profile Specifies the route profile. Default: driving-car
      * @return Route between two or more profile selected locations
      */
-    @GET("directions/")
-    Call<Object> getDirections(@Query("api_key") String api_key, @Query("coordinates") String coordinates,
-                               @Query("profile") String profile);
+    @GET("directions")
+    Call<DirectionsResponse> getDirections(@Query("api_key") String api_key, @Query("coordinates") String coordinates,
+                                           @Query("profile") String profile);
 
 }

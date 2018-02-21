@@ -29,7 +29,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.List;
 
-public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTracker.onUpdateLocation{
+public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTracker.onUpdateLocation {
 
     private MapView mMapView = null;
     private MyLocationNewOverlay mLocationOverlay;
@@ -37,11 +37,11 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
     final String[] locationPermissions = new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
             android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
             android.Manifest.permission.ACCESS_NETWORK_STATE};
-    private LocationManager  mLocationManager;
+    private LocationManager mLocationManager;
     private GPSTracker mGPSTracker;
 
-    private double mLatitude=0;
-    private double mLongitude=0;
+    private double mLatitude = 0;
+    private double mLongitude = 0;
 
 
     @Override
@@ -51,13 +51,15 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
 
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         mGPSTracker = new GPSTracker(this, this);
+        initializeData();
+    }
 
-        if(mGPSTracker.canGetLocation()){
+    public void initializeData() {
+        if (mGPSTracker.canGetLocation()) {
             mLatitude = mGPSTracker.getLatitude();
             mLongitude = mGPSTracker.getLongitude();
             checkLocationStatus();
-        }
-        else {
+        } else {
             openSettingDialog();
         }
     }
@@ -85,9 +87,9 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
                     if (somePermissionWasDenied) {
                         Toast.makeText(this, R.string.error_load_maps, Toast.LENGTH_SHORT).show();
                     } else {
-                        if(mLocationManager!=null && !mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || !mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                        if (mLocationManager != null && !mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || !mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                             openSettingDialog();
-                        }else {
+                        } else {
                             initializeMap();
 
                         }
@@ -99,9 +101,10 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
             }
         }
     }
+
     protected void openSettingDialog() {
         assert mLocationManager != null;
-        if(!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || !mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+        if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || !mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             //Build the alert dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.gps_setting);
@@ -115,7 +118,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
             Dialog alertDialog = builder.create();
             alertDialog.setCanceledOnTouchOutside(false);
             alertDialog.show();
-        }else {
+        } else {
             initializeMap();
         }
 
@@ -138,10 +141,10 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 ActivityCompat.requestPermissions(this, locationPermissions, MULTIPLE_PERMISSION_REQUEST_CODE);
             }
-        }else {
-            if(!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || !mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+        } else {
+            if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || !mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                 openSettingDialog();
-            }else {
+            } else {
                 initializeMap();
             }
         }
@@ -149,21 +152,11 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
 
     private void initializeMap() {
         mMapView = findViewById(R.id.map_view);
-
         mMapView.setTileSource(TileSourceFactory.MAPNIK);
         mMapView.setBuiltInZoomControls(true);
         mMapView.setMultiTouchControls(true);
 
-        List<GeoPoint> geoPointArrayList ;
-        geoPointArrayList = PolylineDecoder.decodePoly("mtkeHuv|q@~@VLHz@\\\\PR|@hBt@j@^n@L\\\\NjALv@Jh@NXi@zBm@jCKTy@z@qAhBa@\\\\[Ne@DgCc@i@?[Ty@hAi@zASRi@R}@H_@N[b@kAdCy@`Au@d@eA|@q@h@WRe@PYHYBqADgAAcAL_A^w@~@q@`@w@Zw@Cm@K[PeA|Aa@p@g@fAiAhBuAv@]VU^k@xAUXe@TqATy@V}@f@_@VO\\\\Mb@[fBe@|@Mp@WbCgClKSdAq@Rm@?g@WYg@G[[}Bk@qBy@wDUm@w@}@q@}A]o@k@y@kAjC_AjC_ApCe@z@i@j@q@f@[NsAp@u@T}A\\\\wATU?WCeBm@q@MwAGUCg@SMaAi@mDQm@K}@Mq@u@mAc@i@c@Ys@[WW_@q@e@a@cA_@w@E{BHmBXqBkBsA}@{Ao@iAB{@QYSi@qCUy@Ee@@SDWbA_BLKLAVNb@r@J@HEHK?]k@iDe@w@COAWBUh@qBDc@?c@Q{BGa@MQKCOBgA\\\\{@AKEs@Wq@i@q@{@s@gAk@kA]g@g@_@I]??k@i@yBkEa@}@W}@WkCUqC?_@Hg@ZqABg@Gm@YoAEgAMq@@jAB|CC`@{@rACH");
-        addPolyLine(geoPointArrayList);
-        GeoPoint geoPointStart = null, geoPointEnd =null;
-        if(geoPointArrayList!=null && geoPointArrayList.size()!=0){
-            geoPointStart = geoPointArrayList.get(0);
-            geoPointEnd = geoPointArrayList.get(geoPointArrayList.size()-1);
-            addMarkers(geoPointStart,geoPointEnd);
-        }
-
+        plotDataOfSourceDestination(null);
 
         mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getApplicationContext()), mMapView);
         mLocationOverlay.enableMyLocation();
@@ -173,7 +166,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
         ScaleBarOverlay myScaleBarOverlay = new ScaleBarOverlay(mMapView);
         mMapView.getOverlays().add(myScaleBarOverlay);
 
-
         setProvider();
 
     }
@@ -182,12 +174,12 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConstant.SETTING_REQUEST_CODE) {
-            if(mGPSTracker.canGetLocation()) {
+            if (mGPSTracker.canGetLocation()) {
                 mLatitude = mGPSTracker.getLatitude();
                 mLongitude = mGPSTracker.getLongitude();
             }
             initializeMap();
-        }else {
+        } else {
             checkLocationStatus();
         }
     }
@@ -204,16 +196,23 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
     }
 
     private void setProvider() {
-        GpsMyLocationProvider gpsMyLocationProvider = new GpsMyLocationProvider(getApplicationContext());
-        gpsMyLocationProvider.addLocationSource(LocationManager.GPS_PROVIDER);
-        gpsMyLocationProvider.addLocationSource(LocationManager.NETWORK_PROVIDER);
+        if(mMapView!=null) {
+            GpsMyLocationProvider gpsMyLocationProvider = new GpsMyLocationProvider(getApplicationContext());
+            gpsMyLocationProvider.addLocationSource(LocationManager.GPS_PROVIDER);
+            gpsMyLocationProvider.addLocationSource(LocationManager.NETWORK_PROVIDER);
 
-        mLocationOverlay = new MyLocationNewOverlay(gpsMyLocationProvider, mMapView);
-        mLocationOverlay.enableMyLocation();
-        mMapView.getOverlays().add(mLocationOverlay);
+            mLocationOverlay = new MyLocationNewOverlay(gpsMyLocationProvider, mMapView);
+            mLocationOverlay.enableMyLocation();
+            mMapView.getOverlays().add(mLocationOverlay);
+        }
     }
 
-    public void addPolyLine(List<GeoPoint> geoPointList){
+    /**
+     * Add geo points to map
+     *
+     * @param geoPointList list of geo points
+     */
+    private void addPolyLine(List<GeoPoint> geoPointList) {
         //add your points here
         Polyline line = new Polyline();   //see note below!
         line.setPoints(geoPointList);
@@ -225,33 +224,67 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
                 return false;
             }
         });
-        mMapView.getOverlayManager().add(line);
+        if(mMapView!=null) {
+            mMapView.getOverlayManager().add(line);
+        }
 
     }
 
-    private void addMarkers(GeoPoint start , GeoPoint end){
+    public void plotDataOfSourceDestination(String encodedGeoPoints) {
+        if (encodedGeoPoints != null) {
+            List<GeoPoint> geoPointArrayList = PolylineDecoder.decodePoly(encodedGeoPoints);
+            addPolyLine(geoPointArrayList);
+            GeoPoint geoPointStart = null, geoPointEnd = null;
+            if (geoPointArrayList != null && geoPointArrayList.size() != 0) {
+                geoPointStart = geoPointArrayList.get(0);
+                geoPointEnd = geoPointArrayList.get(geoPointArrayList.size() - 1);
+                addMarkers(geoPointStart, geoPointEnd);
+            }
+        }else {
+            addCurrentLocation();
+        }
+    }
 
-        MapController myMapController = (MapController) mMapView.getController();
-        myMapController.setZoom(15);
-        myMapController.setCenter(start);
+    private void addCurrentLocation(){
+        if(mMapView!=null) {
+            GeoPoint currentGeoPoints = new GeoPoint(mLatitude, mLongitude);
+            Marker currentMarker = new Marker(mMapView);
+            currentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+            currentMarker.setPosition(currentGeoPoints);
+            currentMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+            currentMarker.setTitle("Current");
 
+            MapController myMapController = (MapController) mMapView.getController();
+            myMapController.setZoom(15);
+            myMapController.setCenter(currentGeoPoints);
+        }
 
-        GeoPoint startPoint = new GeoPoint(start.getLatitude(),start.getLongitude());
-        Marker startMarker = new Marker(mMapView);
-        startMarker.setPosition(startPoint);
-        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        mMapView.getOverlays().add(startMarker);
-        startMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
-        startMarker.setTitle("Start point");
+    }
+    private void addMarkers(GeoPoint start, GeoPoint end) {
+        if(mMapView!=null) {
+            MapController myMapController = (MapController) mMapView.getController();
+            myMapController.setZoom(15);
+            myMapController.setCenter(start);
 
-
-        GeoPoint endPoint = new GeoPoint(end.getLatitude(),end.getLongitude());
-        Marker endMarker = new Marker(mMapView);
-        endMarker.setPosition(endPoint);
-        endMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        mMapView.getOverlays().add(endMarker);
-        endMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
-        endMarker.setTitle("End point");
+            if (start != null) {
+                GeoPoint startPoint = new GeoPoint(start.getLatitude(), start.getLongitude());
+                Marker startMarker = new Marker(mMapView);
+                startMarker.setPosition(startPoint);
+                startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                mMapView.getOverlays().add(startMarker);
+                startMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                startMarker.setTitle("Start point");
+            }
+            if (end != null) {
+                GeoPoint endPoint = new GeoPoint(end.getLatitude(), end.getLongitude());
+                Marker endMarker = new Marker(mMapView);
+                endMarker.setPosition(endPoint);
+                endMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                mMapView.getOverlays().add(endMarker);
+                endMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                endMarker.setTitle("End point");
+            }
+        }
     }
 
     @Override

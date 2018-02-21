@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-       android:shape="oval" android:useLevel="true"
-       android:dither="true">
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+        android:fromDegrees="0"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:duration="1"
+        android:toDegrees="360" >
 
-    <size android:height="12dip" android:width="12dip"/>
+    <shape
+            android:innerRadiusRatio="3"
+            android:shape="ring"
+            android:thicknessRatio="50"
+            android:useLevel="false" >
+        <size
+                android:height="100dip"
+                android:width="100dip" />
 
-    <solid android:color="@color/colorPrimary"/>
-</shape>
+        <gradient
+                android:centerColor="@color/colorWhite"
+                android:centerY="0.50"
+                android:endColor="@color/colorWhite"
+                android:startColor="@color/colorPrimary"
+                android:type="sweep"
+                android:useLevel="false" />
+    </shape>
+
+</rotate>

@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
     <ImageView android:layout_width="match_parent"
-               android:src="@drawable/two"
+               android:src="@drawable/six"
                android:scaleType="fitXY"
                android:layout_height="match_parent"/>
 </RelativeLayout>

@@ -1,6 +1,5 @@
 package com.disablerouting.api;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import com.disablerouting.R;
 import org.json.JSONException;
@@ -27,7 +26,7 @@ public class ResponseWrapper<T> implements Callback<T> {
      * in case of all errors we would get the default response.
      * @param responseCallback implementation of the response callback.
      */
-    public ResponseWrapper(ResponseCallback<T> responseCallback, Context mContext) {
+    public ResponseWrapper(ResponseCallback<T> responseCallback) {
         mResponseCallback = responseCallback;
     }
 
@@ -46,11 +45,11 @@ public class ResponseWrapper<T> implements Callback<T> {
                 if (errorBodyPayload != null) {
                     mResponseCallback.onFailure(parseError(errorBodyPayload));
                 } else {
-                    mResponseCallback.onFailure(new ErrorResponse(500, R.string.INTERNAL_SERVER_ERROR));
+                    mResponseCallback.onFailure(new ErrorResponse(500, R.string.INCORRECT_CANT_PROCESS));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                mResponseCallback.onFailure(new ErrorResponse(500, R.string.INTERNAL_SERVER_ERROR));
+                mResponseCallback.onFailure(new ErrorResponse(500, R.string.INCORRECT_CANT_PROCESS));
             }
         }
     }
@@ -61,10 +60,10 @@ public class ResponseWrapper<T> implements Callback<T> {
         ErrorResponse errorResponse;
         if (throwable instanceof ConnectException
                 || throwable instanceof UnknownHostException) {
-            errorResponse = new ErrorResponse(500, R.string.REQUEST_TIME_OUT);
+            errorResponse = new ErrorResponse(503, R.string.SERVER_DOESNT_SUPPORT);
         } else {
             // some more complex error occurred like conversion etc.
-            errorResponse = new ErrorResponse(500, R.string.REQUEST_TIME_OUT);
+            errorResponse = new ErrorResponse(503, R.string.SERVER_DOESNT_SUPPORT);
         }
         mResponseCallback.onFailure(errorResponse);
     }

@@ -11,9 +11,9 @@ import android.widget.LinearLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.disablerouting.sidemenu.HomeActivity;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
+import com.disablerouting.sidemenu.HomeActivity;
 
 public class TutorialActivity extends BaseActivityImpl implements ViewPager.OnPageChangeListener {
 
@@ -63,7 +63,10 @@ public class TutorialActivity extends BaseActivityImpl implements ViewPager.OnPa
         mLayouts = new int[]{
                 R.layout.tutorial_page1,
                 R.layout.tutorial_page2,
-                R.layout.tutorial_page3};
+                R.layout.tutorial_page3,
+                R.layout.tutorial_page4,
+                R.layout.tutorial_page5,
+                R.layout.tutorial_page6};
     }
 
 
