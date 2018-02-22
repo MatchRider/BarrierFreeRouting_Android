@@ -178,4 +178,6 @@ public class BaseActivityImpl extends AppCompatActivity implements UIBase, Netwo
                 .addToBackStack(backStackStateName)
                 .commit();
     }
+
+
 }

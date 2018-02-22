@@ -25,9 +25,6 @@ public class SideMenuFragment extends Fragment implements ISideMenuView,
     @BindView(R.id.list_view)
     ListView mListView;
 
-//    @BindView(R.id.img_profile)
-//    ImageView mProfileImage;
-
     private SideMenuAdapter mSideMenuAdapter;
     private ISideMenuFragmentCallback mSideMenuFragmentCallback;
     private SideMenuPresenter mSideMenuPresenter;

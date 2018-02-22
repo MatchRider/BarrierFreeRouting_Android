@@ -20,7 +20,6 @@ public class BaseFragmentImpl extends Fragment implements IFragmentBase {
 
     }
 
-
     @Override
     public void showProgress() {
         if (mLoader == null) {

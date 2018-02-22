@@ -1,4 +1,4 @@
-package com.disablerouting.route_planner;
+package com.disablerouting.route_planner.view;
 
 
 import org.osmdroid.util.GeoPoint;
@@ -10,4 +10,11 @@ public interface OnSourceDestinationListener {
     void plotDataOnMap(String encodedString);
 
     void onBackPress();
+
+    void onSourceCompleted(String addressModel);
+
+    void onDestinationCompleted(String addressModel);
+
+    void onGoSwapView(GeoPoint geoPointSource, GeoPoint geoPointDestination);
+
 }

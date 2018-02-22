@@ -41,7 +41,7 @@
         </receiver>
 
         <activity
-                android:name=".route_planner.RoutePlannerActivity"
+                android:name=".route_planner.view.RoutePlannerActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme">
         </activity>

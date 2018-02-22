@@ -93,6 +93,7 @@
                     android:textColor="@color/colorPrimary"/>
 
             <ImageView
+                    android:id="@+id/img_swap"
                     android:layout_width="wrap_content"
                     android:src="@drawable/ic_swap"
                     android:layout_gravity="end|center_vertical"

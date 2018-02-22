@@ -12,7 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
-import com.disablerouting.route_planner.RoutePlannerActivity;
+import com.disablerouting.route_planner.view.RoutePlannerActivity;
 import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
 import com.disablerouting.suggestions.SuggestionsActivity;
 
@@ -39,6 +39,10 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         addListener();
 
     }
+
+    /**
+     * Add Listener for drawer
+     */
     private void addListener() {
         mDrawerLayout.addDrawerListener(new ActionBarDrawerToggle(this, mDrawerLayout, R.string.app_name, R.string.app_name) {
             @Override
@@ -78,14 +82,9 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
     @OnClick(R.id.btn_route_planner)
     void redirectRoutePlanner(){
         launchActivity(this, RoutePlannerActivity.class);
-        //showSnackBar("Route Planner", this);
-        //TODO
     }
     @OnClick(R.id.btn_suggestion)
     void redirectSuggestions(){
         launchActivity(this, SuggestionsActivity.class);
-
-        showSnackBar("Suggestions", this);
-        //TODO
     }
 }

@@ -39,7 +39,8 @@ public class CustomAutoCompleteTextView extends android.support.v7.widget.AppCom
     public boolean onKeyPreIme(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && isPopupShowing()) {
             InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            
+
+            assert inputManager != null;
             if(inputManager.hideSoftInputFromWindow(findFocus().getWindowToken(),
                     InputMethodManager.HIDE_NOT_ALWAYS)){
                 return true;

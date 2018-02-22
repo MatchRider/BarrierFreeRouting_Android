@@ -184,7 +184,7 @@ public abstract class NewMapBaseActivity extends BaseActivityImpl {
     private void addMarkers(GeoPoint start, GeoPoint end) {
         if (mMapView != null) {
             MapController myMapController = (MapController) mMapView.getController();
-            myMapController.setZoom(15);
+            myMapController.setZoom(14);
             myMapController.setCenter(start);
 
             if (start != null) {
