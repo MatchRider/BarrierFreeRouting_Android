@@ -1,4 +1,4 @@
-package com.disablerouting;
+package com.disablerouting.map_base;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
+import com.disablerouting.R;
 import com.disablerouting.application.AppData;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
@@ -41,7 +42,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.List;
 
-public abstract class NewMapBaseActivity extends BaseActivityImpl {
+public abstract class MapBaseActivity extends BaseActivityImpl {
 
     private MapView mMapView = null;
     private MyLocationNewOverlay mLocationOverlay;
@@ -86,7 +87,7 @@ public abstract class NewMapBaseActivity extends BaseActivityImpl {
     }
 
     private void initializeMap() {
-        mMapView = findViewById(R.id.map_view);
+        mMapView = findViewById(com.disablerouting.R.id.map_view);
         mMapView.setTileSource(TileSourceFactory.MAPNIK);
         mMapView.setBuiltInZoomControls(true);
         mMapView.setMultiTouchControls(true);
@@ -273,7 +274,7 @@ public abstract class NewMapBaseActivity extends BaseActivityImpl {
                             // Show the dialog by calling startResolutionForResult(),
                             // and check the result in onActivityResult().
                             ResolvableApiException resolvable = (ResolvableApiException) e;
-                            resolvable.startResolutionForResult(NewMapBaseActivity.this, REQUEST_CHECK_SETTINGS);
+                            resolvable.startResolutionForResult(MapBaseActivity.this, REQUEST_CHECK_SETTINGS);
                         } catch (IntentSender.SendIntentException sendEx) {
                             // Ignore the error.
                         }
