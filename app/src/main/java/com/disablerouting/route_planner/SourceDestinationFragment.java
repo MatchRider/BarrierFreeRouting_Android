@@ -7,8 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,9 +34,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements IDire
     private String mCoordinates = null;
     private String mProfileType = null;
     private static OnSourceDestinationListener mOnSourceDestinationListener;
-    private static int ANIMATION_DURATION = 200;
-    TranslateAnimation mTranslateAnimationSource;
-    TranslateAnimation mTranslateAnimationDestination;
 
     public static SourceDestinationFragment newInstance(OnSourceDestinationListener onSourceDestinationListener) {
         mOnSourceDestinationListener = onSourceDestinationListener;
@@ -58,7 +53,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements IDire
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_source_destination, container, false);
     }
 
@@ -67,11 +61,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements IDire
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         initView();
-
-        mCoordinates = "8.34234,48.23424|8.34423,48.26424";
-        mProfileType = "driving-car";
-        mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates, mProfileType);
-
     }
 
     private void initView() {
@@ -80,9 +69,11 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements IDire
 
     @OnClick(R.id.txv_go)
     public void onGoClick() {
-        //TODO pass source destination points
         GeoPoint geoPointStart = null, geoPointEnd = null;
         mOnSourceDestinationListener.onGoClick(geoPointStart, geoPointEnd);
+        mCoordinates = "8.34234,48.23424|8.34423,48.26424";
+        mProfileType = "driving-car";
+        mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates, mProfileType);
     }
 
     @OnClick(R.id.img_back)
@@ -146,42 +137,17 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements IDire
 
     @OnClick(R.id.img_swap)
     public void swapDataOfViews() {
-        toggle();
+        changeAddress();
         GeoPoint geoPointStart = null, geoPointEnd = null;
         mOnSourceDestinationListener.onGoSwapView(geoPointStart, geoPointEnd);
 
     }
 
-    public void toggle() {
-        mTranslateAnimationSource = Utility.translate(0, 0, 0, mEditTextSource.getHeight(), ANIMATION_DURATION);
-        mTranslateAnimationDestination = Utility.translate(0, 0, 0, -mEditTextDestination.getHeight(), ANIMATION_DURATION);
-        mTranslateAnimationSource.setAnimationListener(new Animation.AnimationListener() {
+    public void changeAddress(){
+        String sourceData = mEditTextSource.getText().toString();
+        mEditTextSource.setText((mEditTextDestination.getText().toString()));
+        mEditTextDestination.setText(sourceData);
 
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                // Grab the text that is held by viewToMove's EditText
-                String temp = mEditTextSource.getText().toString();
-                // Set viewToMove's EditText to show contents of viewToReplace's EditText
-                mEditTextSource.setText((mEditTextDestination.getText().toString()));
-                mEditTextDestination.setText(temp);
-
-                mEditTextSource.setAnimation(null);
-                mEditTextDestination.setAnimation(null);
-
-            }
-        });
-        // Start animations
-        mEditTextSource.startAnimation(mTranslateAnimationSource);
-        mEditTextDestination.startAnimation(mTranslateAnimationDestination);
     }
-
 
 }

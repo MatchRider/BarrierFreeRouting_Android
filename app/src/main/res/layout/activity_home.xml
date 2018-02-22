@@ -33,6 +33,15 @@
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/app_name"/>
 
+            <!--<TextView
+                    android:text="@string/app_name"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:layout_width="match_parent"
+                    android:textSize="@dimen/text_xlarge"
+                    android:fontFamily="@string/ft_bold_font"
+                    android:layout_height="wrap_content"/>-->
+
         </LinearLayout>
         <LinearLayout
                 android:layout_width="wrap_content"
@@ -47,12 +56,14 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/text_xlarge"
                     android:layout_margin="@dimen/margin_normal"
-                    android:padding="@dimen/margin_normal"
+                    android:paddingTop="@dimen/padding_normal"
+                    android:paddingBottom="@dimen/padding_normal"
+                    android:paddingStart="@dimen/padding_xxx_large"
+                    android:paddingEnd="@dimen/padding_xxx_large"
                     android:visibility="visible"
                     android:gravity="start"
                     android:text="@string/route_planner"
                     android:textAllCaps="false"
-
                     android:fontFamily="@string/ft_bold_font"/>
             <Button
                     android:id="@+id/btn_suggestion"
@@ -66,7 +77,10 @@
                     android:text="@string/suggestions"
                     android:textAllCaps="false"
                     android:layout_margin="@dimen/margin_normal"
-                    android:padding="@dimen/margin_normal"
+                    android:paddingTop="@dimen/padding_normal"
+                    android:paddingBottom="@dimen/padding_normal"
+                    android:paddingStart="@dimen/padding_xxx_large"
+                    android:paddingEnd="@dimen/padding_xxx_large"
                     android:fontFamily="@string/ft_bold_font"/>
         </LinearLayout>
 

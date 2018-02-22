@@ -15,4 +15,15 @@
             android:layout_width="match_parent"
             android:layout_below="@+id/contentContainer"
             android:layout_height="match_parent"/>
+
+    <ImageView
+            android:id="@+id/img_re_center"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_recenter"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:padding="@dimen/padding_xxx_large"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/app_name"/>
+
 </RelativeLayout>

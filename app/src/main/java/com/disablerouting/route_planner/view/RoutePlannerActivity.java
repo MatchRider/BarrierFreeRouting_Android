@@ -3,8 +3,9 @@ package com.disablerouting.route_planner.view;
 import android.location.Location;
 import android.os.Bundle;
 import butterknife.ButterKnife;
-import com.disablerouting.map_base.MapBaseActivity;
+import butterknife.OnClick;
 import com.disablerouting.R;
+import com.disablerouting.map_base.MapBaseActivity;
 import com.disablerouting.route_planner.SourceDestinationFragment;
 import com.google.android.gms.maps.model.LatLng;
 import org.osmdroid.util.GeoPoint;
@@ -60,5 +61,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onGoSwapView(GeoPoint geoPointSource, GeoPoint geoPointDestination) {
         plotDataOfSourceDestination(null);
 
+    }
+
+    @OnClick(R.id.img_re_center)
+    public void reCenter(){
+        plotDataOfSourceDestination(null);
     }
 }

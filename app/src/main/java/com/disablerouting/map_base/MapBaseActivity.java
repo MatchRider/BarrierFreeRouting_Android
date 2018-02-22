@@ -88,7 +88,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
 
     private void initializeMap() {
         mMapView = findViewById(com.disablerouting.R.id.map_view);
-        mMapView.setTileSource(TileSourceFactory.MAPNIK);
+        mMapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
         mMapView.setBuiltInZoomControls(true);
         mMapView.setMultiTouchControls(true);
 
@@ -123,7 +123,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
         if (encodedGeoPoints != null) {
             List<GeoPoint> geoPointArrayList = PolylineDecoder.decodePoly(encodedGeoPoints);
             addPolyLine(geoPointArrayList);
-            GeoPoint geoPointStart = null, geoPointEnd = null;
+            GeoPoint geoPointStart, geoPointEnd;
             if (geoPointArrayList != null && geoPointArrayList.size() != 0) {
                 geoPointStart = geoPointArrayList.get(0);
                 geoPointEnd = geoPointArrayList.get(geoPointArrayList.size() - 1);
@@ -141,7 +141,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
      */
     private void addPolyLine(List<GeoPoint> geoPointList) {
         //add your points here
-        Polyline line = new Polyline();   //see note below!
+        Polyline line = new Polyline();
         line.setPoints(geoPointList);
         line.setColor(getResources().getColor(R.color.colorPrimary));
         line.setOnClickListener(new Polyline.OnClickListener() {
@@ -158,7 +158,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
     }
 
     /**
-     * Add cureent location
+     * Add current location
      */
     private void addCurrentLocation() {
         if (mMapView != null) {
@@ -170,7 +170,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
             currentMarker.setTitle("Current");
 
             MapController myMapController = (MapController) mMapView.getController();
-            myMapController.setZoom(15);
+            myMapController.setZoom(14);
             myMapController.setCenter(currentGeoPoints);
         }
 
@@ -354,7 +354,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
     }
 
     protected void openSettingDialog() {
-        //Build the alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.txt_dialog_message_enable_location);
         builder.setMessage(R.string.message_gps);

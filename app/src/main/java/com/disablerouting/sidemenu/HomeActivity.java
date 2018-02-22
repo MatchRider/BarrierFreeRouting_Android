@@ -27,6 +27,7 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
     @BindView(R.id.navigation_btn)
     ImageButton mImageButtonNavigationMenu;
 
+
     private boolean slideState = false;
 
     @Override

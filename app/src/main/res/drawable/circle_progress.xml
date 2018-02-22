@@ -4,16 +4,16 @@
         android:pivotX="50%"
         android:pivotY="50%"
         android:duration="1"
-        android:toDegrees="360" >
+        android:toDegrees="360">
 
     <shape
             android:innerRadiusRatio="3"
             android:shape="ring"
             android:thicknessRatio="50"
-            android:useLevel="false" >
+            android:useLevel="false">
         <size
                 android:height="100dip"
-                android:width="100dip" />
+                android:width="100dip"/>
 
         <gradient
                 android:centerColor="@color/colorWhite"
@@ -21,7 +21,7 @@
                 android:endColor="@color/colorWhite"
                 android:startColor="@color/colorPrimary"
                 android:type="sweep"
-                android:useLevel="false" />
+                android:useLevel="false"/>
     </shape>
 
 </rotate>
