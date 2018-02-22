@@ -209,7 +209,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
 
     /**
      * Add geo points to map
-     *
      * @param geoPointList list of geo points
      */
     private void addPolyLine(List<GeoPoint> geoPointList) {
@@ -230,6 +229,10 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
 
     }
 
+    /**
+     * Add path between two points
+     * @param encodedGeoPoints plot encoded points
+     */
     public void plotDataOfSourceDestination(String encodedGeoPoints) {
         if (encodedGeoPoints != null) {
             List<GeoPoint> geoPointArrayList = PolylineDecoder.decodePoly(encodedGeoPoints);
@@ -245,6 +248,9 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
         }
     }
 
+    /**
+     * Add cureent location
+     */
     private void addCurrentLocation(){
         if(mMapView!=null) {
             GeoPoint currentGeoPoints = new GeoPoint(mLatitude, mLongitude);
@@ -260,6 +266,12 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements GPSTra
         }
 
     }
+
+    /**
+     * Add Markers between source to destination
+     * @param start start geo point
+     * @param end end geo point
+     */
     private void addMarkers(GeoPoint start, GeoPoint end) {
         if(mMapView!=null) {
             MapController myMapController = (MapController) mMapView.getController();

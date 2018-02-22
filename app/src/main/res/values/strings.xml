@@ -14,6 +14,13 @@
     <string name="txt_dialog_message_enable_location">Please enable location for access all feature of this application</string>
     <string name="settings">Settings</string>
 
+    <!-- MENU ITEMS -->
+    <string name="ACKNOWLEDGEMENTS">Acknowledgements</string>
+    <string name="FEEDBACK">Feedback</string>
+    <string name="CONTACT">Contact</string>
+    <string name="DISCLAIMER">Disclaimer</string>
+    <string name="LEGAL">LEGAL</string>
+
     <!--Expected Error Codes-->
     <string name="no_internet">Internet is not available</string>
     <string name="INTERNAL_SERVER_ERROR">The request is incorrect and therefore can not be processed.</string>
@@ -45,8 +52,7 @@
 
 
     <string name="text_skip">skip</string>
-    <string name="ITEM_ONE">Item one</string>
-    <string name="ITEM_TWO">Item two</string>
+
     <string name="close_drawer">Close</string>
     <string name="user_name">User Name</string>
     <string name="user_detail">User Detail</string>

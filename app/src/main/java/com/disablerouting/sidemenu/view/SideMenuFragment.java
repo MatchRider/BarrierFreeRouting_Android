@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,8 +25,8 @@ public class SideMenuFragment extends Fragment implements ISideMenuView,
     @BindView(R.id.list_view)
     ListView mListView;
 
-    @BindView(R.id.img_profile)
-    ImageView mProfileImage;
+//    @BindView(R.id.img_profile)
+//    ImageView mProfileImage;
 
     private SideMenuAdapter mSideMenuAdapter;
     private ISideMenuFragmentCallback mSideMenuFragmentCallback;
@@ -93,15 +92,16 @@ public class SideMenuFragment extends Fragment implements ISideMenuView,
         mSideMenuFragmentCallback.onClick(R.string.close_drawer);
 
         switch (message) {
-            case R.string.ITEM_ONE:
-                //mSideMenuFragmentCallback.onClick(R.string.payments);
-                return;
-
-            case R.string.ITEM_TWO:
-                /*newActivityIntent = new Intent(getActivity(), YouTripsActivity.class);
-                startActivity(newActivityIntent);
-*/                break;
-
+            case R.string.ACKNOWLEDGEMENTS:
+                break;
+            case R.string.FEEDBACK:
+                break;
+            case R.string.CONTACT:
+                break;
+            case R.string.DISCLAIMER:
+                break;
+            case R.string.LEGAL:
+                break;
 
         }
     }

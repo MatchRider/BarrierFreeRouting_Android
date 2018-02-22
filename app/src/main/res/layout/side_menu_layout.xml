@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorWhite"
+        android:background="@color/colorPrimary"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -13,22 +13,21 @@
                 android:paddingBottom="@dimen/padding_22dp"
                 android:paddingTop="@dimen/padding_22dp">
 
-            <ImageView
+           <!-- <ImageView
                     android:id="@+id/img_profile"
                     android:layout_width="96dp"
                     android:layout_height="96dp"
                     android:layout_marginStart="@dimen/margin_small"
                     android:src="@drawable/ic_face_black_48dp"
                     android:contentDescription="@string/app_name"/>
-
+-->
             <LinearLayout
                     android:id="@+id/info_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/margin_normal"
-                    android:layout_marginStart="@dimen/margin_small"
-                    android:layout_toEndOf="@+id/img_profile"
+                    android:layout_marginStart="@dimen/margin_normal"
                     android:orientation="vertical">
 
                 <TextView
@@ -37,11 +36,11 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="2"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/colorWhite"
                         android:textSize="@dimen/text_xlarge"
                         android:fontFamily="@string/ft_bold_font"
-                        android:text="@string/user_name"/>
-                <TextView
+                        android:text="@string/app_name"/>
+              <!--  <TextView
                         android:id="@+id/txv_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -50,7 +49,7 @@
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_xlarge"
                         android:text="@string/user_detail"/>
-
+-->
             </LinearLayout>
         </RelativeLayout>
 
@@ -58,7 +57,7 @@
                 android:id="@+id/separator_view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/background_dark"/>
+                android:background="@color/colorWhite"/>
 
         <ListView
                 android:id="@+id/list_view"

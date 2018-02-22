@@ -5,8 +5,11 @@ import com.disablerouting.R;
 
 public enum SideMenuData {
 
-    ITEM_ONE(R.string.ITEM_ONE, R.mipmap.ic_launcher),
-    ITEM_TWO(R.string.ITEM_TWO, R.mipmap.ic_launcher);
+    ACKNOWLEDGEMENTS(R.string.ACKNOWLEDGEMENTS, R.mipmap.ic_launcher),
+    FEEDBACK(R.string.FEEDBACK, R.mipmap.ic_launcher),
+    CONTACT(R.string.CONTACT, R.mipmap.ic_launcher),
+    DISCLAIMER(R.string.DISCLAIMER, R.mipmap.ic_launcher),
+    LEGAL(R.string.LEGAL, R.mipmap.ic_launcher);
 
     private int iconId;
     private int titleID;
