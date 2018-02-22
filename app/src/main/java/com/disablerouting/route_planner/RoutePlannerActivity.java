@@ -3,11 +3,12 @@ package com.disablerouting.route_planner;
 import android.location.Location;
 import android.os.Bundle;
 import butterknife.ButterKnife;
-import com.disablerouting.MapBaseActivity;
+import com.disablerouting.NewMapBaseActivity;
 import com.disablerouting.R;
+import com.google.android.gms.maps.model.LatLng;
 import org.osmdroid.util.GeoPoint;
 
-public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDestinationListener {
+public class RoutePlannerActivity extends NewMapBaseActivity implements OnSourceDestinationListener {
 
 
     @Override
@@ -23,18 +24,14 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         return R.layout.activity_route_planner;
     }
 
-
     @Override
-    public void onSendLocation(Location location) {
-
+    protected void onUpdateLocation(Location location) {
+        mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
     }
-
 
     @Override
     public void onGoClick(GeoPoint geoPointSource, GeoPoint geoPointDestination) {
         showSnackBar("Ready to go", this);
-        //TODO api call when clicked
-        initializeData();
     }
 
     @Override

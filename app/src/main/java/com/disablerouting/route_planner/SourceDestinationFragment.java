@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -14,22 +13,21 @@ import com.disablerouting.R;
 import com.disablerouting.base.BaseFragmentImpl;
 import com.disablerouting.route_planner.manager.DirectionsManager;
 import com.disablerouting.route_planner.model.DirectionsResponse;
-import com.disablerouting.route_planner.presenter.DirectionsPresenter;
-import com.disablerouting.route_planner.presenter.IDirectionsScreenPresenter;
+import com.disablerouting.route_planner.presenter.ISourceDestinationScreenPresenter;
+import com.disablerouting.route_planner.presenter.SourceDestinationScreenPresenter;
 import com.disablerouting.route_planner.view.IDirectionsViewFragment;
+import com.disablerouting.widget.CustomAutoCompleteTextView;
 import org.osmdroid.util.GeoPoint;
 
 public class SourceDestinationFragment extends BaseFragmentImpl implements IDirectionsViewFragment {
 
     @BindView(R.id.edt_source_add)
-    EditText mEditTextSource;
+    CustomAutoCompleteTextView mEditTextSource;
 
     @BindView(R.id.edt_dest_add)
-    EditText mEditTextDestination;
+    CustomAutoCompleteTextView mEditTextDestination;
 
-    private GeoPoint mGeoPointSource=null;
-    private GeoPoint mGeoPointDestination=null;
-    private IDirectionsScreenPresenter mIDirectionsScreenPresenter;
+    private ISourceDestinationScreenPresenter mISourceDestinationScreenPresenter;
     private String mCoordinates=null;
     private String mProfileType=null;
     private static OnSourceDestinationListener mOnSourceDestinationListener;
@@ -46,7 +44,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements IDire
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mIDirectionsScreenPresenter = new DirectionsPresenter(this, new DirectionsManager());
+        mISourceDestinationScreenPresenter = new SourceDestinationScreenPresenter(this, new DirectionsManager());
 
     }
 
@@ -65,7 +63,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements IDire
 
         mCoordinates = "8.34234,48.23424|8.34423,48.26424";
         mProfileType = "driving-car";
-        mIDirectionsScreenPresenter.getDestinationsData(mCoordinates,mProfileType);
+        mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates,mProfileType);
 
     }
 
@@ -112,6 +110,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements IDire
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mIDirectionsScreenPresenter.disconnect();
+        mISourceDestinationScreenPresenter.disconnect();
     }
 }

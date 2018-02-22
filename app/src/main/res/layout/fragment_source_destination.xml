@@ -35,22 +35,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/a"
-                    android:textSize="@dimen/text_large"
+                    android:textSize="@dimen/text_xlarge"
                     android:textColor="@color/colorWhite"/>
 
-            <EditText
+            <com.disablerouting.widget.CustomAutoCompleteTextView
                     android:id="@+id/edt_source_add"
                     android:layout_marginStart="@dimen/margin_small"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:hint="@string/enter_source"
-                    android:padding="@dimen/padding_small"
+                    android:padding="@dimen/padding_normal"
                     android:background="@color/colorWhite"
-                    android:maxLines="1"
+                    android:singleLine="true"
                     android:ellipsize="end"
                     android:textSize="@dimen/text_large"
                     android:layout_marginEnd="@dimen/margin_normal"
+                    android:textColorHint="@color/colorBlackHint"
                     android:textColor="@color/colorPrimary"/>
 
             <TextView
@@ -72,22 +73,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/b"
-                    android:textSize="@dimen/text_large"
+                    android:textSize="@dimen/text_xlarge"
                     android:textColor="@color/colorWhite"/>
 
-            <EditText
+            <com.disablerouting.widget.CustomAutoCompleteTextView
                     android:id="@+id/edt_dest_add"
                     android:layout_marginStart="@dimen/margin_small"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:hint="@string/enter_destination"
-                    android:padding="@dimen/padding_small"
+                    android:padding="@dimen/padding_normal"
                     android:background="@color/colorWhite"
                     android:textSize="@dimen/text_large"
-                    android:maxLines="1"
+                    android:singleLine="true"
                     android:ellipsize="end"
                     android:layout_marginEnd="@dimen/margin_normal"
+                    android:textColorHint="@color/colorBlackHint"
                     android:textColor="@color/colorPrimary"/>
 
             <ImageView
