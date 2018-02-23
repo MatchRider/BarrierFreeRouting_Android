@@ -34,7 +34,6 @@ public class TutorialActivity extends BaseActivityImpl implements ViewPager.OnPa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mTutorialPrefManager = new TutorialPrefManager(this);
-
         if (!mTutorialPrefManager.isFirstTimeLaunch()) {
             launchHomeScreen();
             finish();
