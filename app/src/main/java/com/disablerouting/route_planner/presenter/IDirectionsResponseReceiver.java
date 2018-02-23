@@ -10,11 +10,11 @@ public interface IDirectionsResponseReceiver {
      * Call when api get success
      * @param data
      */
-    void onSuccess(DirectionsResponse data);
+    void onSuccessDirection(DirectionsResponse data);
 
     /**
      * Call when api get failure
      * @param errorResponse Server error response
      */
-    void onFailure(@NonNull ErrorResponse errorResponse);
+    void onFailureDirection(@NonNull ErrorResponse errorResponse);
 }

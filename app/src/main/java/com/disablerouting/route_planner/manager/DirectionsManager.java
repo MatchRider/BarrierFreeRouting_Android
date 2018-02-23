@@ -30,14 +30,14 @@ public class DirectionsManager implements ResponseCallback<DirectionsResponse>{
     @Override
     public void onSuccess(@NonNull DirectionsResponse data) {
         if(mIDirectionsResponseReceiver!=null){
-            mIDirectionsResponseReceiver.onSuccess(data);
+            mIDirectionsResponseReceiver.onSuccessDirection(data);
         }
     }
 
     @Override
     public void onFailure(@NonNull ErrorResponse errorResponse) {
         if(mIDirectionsResponseReceiver!=null){
-            mIDirectionsResponseReceiver.onFailure(errorResponse);
+            mIDirectionsResponseReceiver.onFailureDirection(errorResponse);
         }
     }
 }

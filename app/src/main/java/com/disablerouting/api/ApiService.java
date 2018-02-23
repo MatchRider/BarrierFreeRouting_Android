@@ -1,5 +1,6 @@
 package com.disablerouting.api;
 
+import com.disablerouting.geo_coding.model.GeoCodingResponse;
 import com.disablerouting.route_planner.model.DirectionsResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -18,5 +19,15 @@ public interface ApiService {
     @GET("directions")
     Call<DirectionsResponse> getDirections(@Query("api_key") String api_key, @Query("coordinates") String coordinates,
                                            @Query("profile") String profile);
+
+
+    /**
+     * Api call for getting places
+     * @param api_key Insert your API Key here.
+     * @param query String to search
+     * @return return address of places
+     */
+    @GET("geocoding")
+    Call<GeoCodingResponse> getGeoCoding(@Query("api_key") String api_key, @Query("query") String query);
 
 }

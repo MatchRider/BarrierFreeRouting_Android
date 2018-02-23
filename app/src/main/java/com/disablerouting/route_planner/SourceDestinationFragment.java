@@ -12,17 +12,19 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseFragmentImpl;
+import com.disablerouting.geo_coding.manager.GeoCodingManager;
+import com.disablerouting.geo_coding.model.GeoCodingResponse;
 import com.disablerouting.route_planner.manager.DirectionsManager;
 import com.disablerouting.route_planner.model.DirectionsResponse;
 import com.disablerouting.route_planner.presenter.ISourceDestinationScreenPresenter;
 import com.disablerouting.route_planner.presenter.SourceDestinationScreenPresenter;
-import com.disablerouting.route_planner.view.IDirectionsViewFragment;
+import com.disablerouting.route_planner.view.ISourceDestinationViewFragment;
 import com.disablerouting.route_planner.view.OnSourceDestinationListener;
 import com.disablerouting.utils.Utility;
 import com.disablerouting.widget.CustomAutoCompleteTextView;
 import org.osmdroid.util.GeoPoint;
 
-public class SourceDestinationFragment extends BaseFragmentImpl implements IDirectionsViewFragment {
+public class SourceDestinationFragment extends BaseFragmentImpl implements ISourceDestinationViewFragment {
 
     @BindView(R.id.edt_source_add)
     CustomAutoCompleteTextView mEditTextSource;
@@ -46,7 +48,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements IDire
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mISourceDestinationScreenPresenter = new SourceDestinationScreenPresenter(this, new DirectionsManager());
+        mISourceDestinationScreenPresenter = new SourceDestinationScreenPresenter(this, new DirectionsManager(), new GeoCodingManager());
 
     }
 
@@ -108,7 +110,17 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements IDire
     }
 
     @Override
-    public void onFailure(int error) {
+    public void onFailureDirection(int error) {
+        showSnackBar(error);
+    }
+
+    @Override
+    public void onGeoDataDataReceived(GeoCodingResponse data) {
+
+    }
+
+    @Override
+    public void onFailureGeoCoding(int error) {
         showSnackBar(error);
     }
 
@@ -137,12 +149,16 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements IDire
 
     @OnClick(R.id.img_swap)
     public void swapDataOfViews() {
-        changeAddress();
+        /*changeAddress();
         GeoPoint geoPointStart = null, geoPointEnd = null;
         mOnSourceDestinationListener.onGoSwapView(geoPointStart, geoPointEnd);
-
+*/
+        mISourceDestinationScreenPresenter.getCoordinatesData("berlin");
     }
 
+    /**
+     * Swap address when toggle
+     */
     public void changeAddress(){
         String sourceData = mEditTextSource.getText().toString();
         mEditTextSource.setText((mEditTextDestination.getText().toString()));
