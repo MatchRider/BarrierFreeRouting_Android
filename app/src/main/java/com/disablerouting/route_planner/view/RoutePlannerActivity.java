@@ -7,11 +7,11 @@ import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.map_base.MapBaseActivity;
 import com.disablerouting.route_planner.SourceDestinationFragment;
+import com.disablerouting.route_planner.adapter.CustomListAdapter;
 import com.google.android.gms.maps.model.LatLng;
 import org.osmdroid.util.GeoPoint;
 
 public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDestinationListener {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +20,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         SourceDestinationFragment sourceDestinationFragment = SourceDestinationFragment.newInstance(this);
         addFragment(R.id.contentContainer,sourceDestinationFragment,"");
     }
+    private CustomListAdapter mAddressListAdapter;
 
     @Override
     protected int getView() {
@@ -30,6 +31,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     protected void onUpdateLocation(Location location) {
         mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
     }
+
 
     @Override
     public void onGoClick(GeoPoint geoPointSource, GeoPoint geoPointDestination) {
@@ -63,8 +65,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     }
 
+
     @OnClick(R.id.img_re_center)
     public void reCenter(){
         plotDataOfSourceDestination(null);
     }
+
+
 }

@@ -30,4 +30,6 @@ public interface ISourceDestinationViewFragment extends ILoader {
      * @param error Error message
      */
     void onFailureGeoCoding(@StringRes int error);
+
+
 }

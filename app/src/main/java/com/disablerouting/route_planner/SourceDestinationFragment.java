@@ -1,12 +1,23 @@
 package com.disablerouting.route_planner;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ListPopupWindow;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -14,6 +25,7 @@ import com.disablerouting.R;
 import com.disablerouting.base.BaseFragmentImpl;
 import com.disablerouting.geo_coding.manager.GeoCodingManager;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
+import com.disablerouting.route_planner.adapter.CustomListAdapter;
 import com.disablerouting.route_planner.manager.DirectionsManager;
 import com.disablerouting.route_planner.model.DirectionsResponse;
 import com.disablerouting.route_planner.presenter.ISourceDestinationScreenPresenter;
@@ -24,7 +36,7 @@ import com.disablerouting.utils.Utility;
 import com.disablerouting.widget.CustomAutoCompleteTextView;
 import org.osmdroid.util.GeoPoint;
 
-public class SourceDestinationFragment extends BaseFragmentImpl implements ISourceDestinationViewFragment {
+public class SourceDestinationFragment extends BaseFragmentImpl implements ISourceDestinationViewFragment, TextView.OnEditorActionListener {
 
     @BindView(R.id.edt_source_add)
     CustomAutoCompleteTextView mEditTextSource;
@@ -32,10 +44,28 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @BindView(R.id.edt_dest_add)
     CustomAutoCompleteTextView mEditTextDestination;
 
+    @BindView(R.id.rel_source_destination)
+    RelativeLayout mRelativeLayoutSourceDestination;
+
+    private static final int SEARCH_TEXT_CHANGED = 1000;
+
     private ISourceDestinationScreenPresenter mISourceDestinationScreenPresenter;
     private String mCoordinates = null;
     private String mProfileType = null;
     private static OnSourceDestinationListener mOnSourceDestinationListener;
+
+    private CustomListAdapter mAddressListAdapter;
+
+    @SuppressLint("HandlerLeak")
+    final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextSource.getText().toString());
+            Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
+
+        }
+    };
 
     public static SourceDestinationFragment newInstance(OnSourceDestinationListener onSourceDestinationListener) {
         mOnSourceDestinationListener = onSourceDestinationListener;
@@ -50,8 +80,12 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         super.onCreate(savedInstanceState);
         mISourceDestinationScreenPresenter = new SourceDestinationScreenPresenter(this, new DirectionsManager(), new GeoCodingManager());
 
+        initialiseData();
     }
 
+    public void initialiseData(){
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,11 +96,17 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        initView();
+        addListener();
     }
 
-    private void initView() {
+    @OnClick(R.id.edt_source_add)
+    public void onSourceTap() {
+        addListener();
+    }
 
+    @OnClick(R.id.edt_dest_add)
+    public void onDestinationTap() {
+        addListener();
     }
 
     @OnClick(R.id.txv_go)
@@ -78,22 +118,86 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates, mProfileType);
     }
 
+    /**
+     * Set Text change listener for edit text
+     */
+    private void addListener() {
+        mEditTextSource.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable str) {
+                /*if (str.length() != 0) {
+                    mDestinationAddressClear.setVisibility(View.VISIBLE);
+                } else {
+                    mDestinationAddressClear.setVisibility(View.GONE);
+                }*/
+                if (str.toString().length() > 2) {
+                    handler.removeMessages(SEARCH_TEXT_CHANGED);
+                    handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, str.toString()), 500);
+                } else {
+                    handler.removeMessages(SEARCH_TEXT_CHANGED);
+                    handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, ""), 500);
+                }
+            }
+        });
+
+        mEditTextDestination.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable str) {
+                /*if (str.length() != 0) {
+                    mSourceAddressClear.setVisibility(View.VISIBLE);
+                } else {
+                    mSourceAddressClear.setVisibility(View.GONE);
+                }*/
+                if (str.toString().length() > 3) {
+                    handler.removeMessages(SEARCH_TEXT_CHANGED);
+                    handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, str.toString()), 500);
+                } else {
+                    handler.removeMessages(SEARCH_TEXT_CHANGED);
+                    handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, ""), 500);
+                }
+            }
+        });
+    }
+
+
     @OnClick(R.id.img_back)
     public void onBackClick() {
+        hideLoader();
         mOnSourceDestinationListener.onBackPress();
-        Utility.hideSoftKeyboard((AppCompatActivity) getActivity(), mEditTextSource);
-        Utility.hideSoftKeyboard((AppCompatActivity) getActivity(), mEditTextDestination);
+        Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
+        Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         mOnSourceDestinationListener.onSourceCompleted(null);
         mOnSourceDestinationListener.onDestinationCompleted(null);
         clearSourceComplete();
         clearDestinationComplete();
-
     }
 
 
     @Override
     public void showLoader() {
-        showProgress();
+        if(getActivity()!=null && !getActivity().isFinishing()) {
+            showProgress();
+        }
     }
 
     @Override
@@ -116,7 +220,9 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @Override
     public void onGeoDataDataReceived(GeoCodingResponse data) {
-
+        mAddressListAdapter = new CustomListAdapter(getContext(),R.layout.address_item_view, data.getFeatures());
+        Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
+        setListPopUp(mRelativeLayoutSourceDestination);
     }
 
     @Override
@@ -127,16 +233,14 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Utility.hideSoftKeyboard((AppCompatActivity) getActivity(), mEditTextSource);
-        Utility.hideSoftKeyboard((AppCompatActivity) getActivity(), mEditTextDestination);
+        Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         mISourceDestinationScreenPresenter.disconnect();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Utility.hideSoftKeyboard((AppCompatActivity) getActivity(), mEditTextSource);
-        Utility.hideSoftKeyboard((AppCompatActivity) getActivity(), mEditTextDestination);
+        Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
     }
 
     public void clearSourceComplete() {
@@ -149,21 +253,51 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @OnClick(R.id.img_swap)
     public void swapDataOfViews() {
-        /*changeAddress();
+        changeAddress();
         GeoPoint geoPointStart = null, geoPointEnd = null;
         mOnSourceDestinationListener.onGoSwapView(geoPointStart, geoPointEnd);
-*/
-        mISourceDestinationScreenPresenter.getCoordinatesData("berlin");
+
     }
 
     /**
      * Swap address when toggle
      */
-    public void changeAddress(){
+    public void changeAddress() {
         String sourceData = mEditTextSource.getText().toString();
         mEditTextSource.setText((mEditTextDestination.getText().toString()));
         mEditTextDestination.setText(sourceData);
 
     }
 
+
+    @Override
+    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        if (i == EditorInfo.IME_ACTION_DONE) {
+            Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
+        }
+        return false;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mOnSourceDestinationListener = null;
+    }
+
+    private void setListPopUp(View anchor){
+        final ListPopupWindow popupWindow = new ListPopupWindow(getContext());
+        popupWindow.setAnchorView(anchor);
+        popupWindow.setAnimationStyle(R.style.popup_window_animation);
+        int height = Utility.calculatePopUpHeight(getContext());
+        popupWindow.setHeight(height/2);
+        popupWindow.setWidth(ListPopupWindow.MATCH_PARENT);
+        popupWindow.setAdapter(mAddressListAdapter);
+        popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                popupWindow.dismiss();
+            }
+        });
+        popupWindow.show();
+    }
 }

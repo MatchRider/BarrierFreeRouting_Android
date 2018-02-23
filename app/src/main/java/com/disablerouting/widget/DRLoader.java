@@ -14,7 +14,6 @@ public class DRLoader extends AlertDialog {
     @Override
     public void show() {
         super.show();
-
         setContentView(R.layout.fragment_loader);
     }
 }

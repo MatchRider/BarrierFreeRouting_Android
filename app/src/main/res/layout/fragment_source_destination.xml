@@ -1,105 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
-              android:background="@color/colorPrimary"
               android:orientation="horizontal"
-              android:paddingStart="@dimen/padding_normal"
-              android:paddingEnd="@dimen/padding_normal"
-              android:paddingTop="@dimen/padding_normal"
-              android:paddingBottom="@dimen/padding_xxx_large"
+                android:id="@+id/rel_source_destination"
               android:layout_height="wrap_content"
               android:baselineAligned="false">
-
-    <LinearLayout android:layout_width="wrap_content"
-                  android:gravity="start"
-                  android:layout_height="wrap_content">
-
-        <ImageView
-                   android:id="@+id/img_back"
-                   android:layout_width="wrap_content"
-                   android:src="@drawable/ic_navigate_back"
-                   android:layout_height="wrap_content"
-                   android:contentDescription="@string/app_name"/>
-    </LinearLayout>
     <LinearLayout android:layout_width="match_parent"
-                  android:orientation="vertical"
-                  android:layout_marginStart="@dimen/margin_normal"
-                  android:layout_marginEnd="@dimen/margin_normal"
+                  android:orientation="horizontal"
+                  android:id="@+id/ll"
+                  android:paddingStart="@dimen/padding_normal"
+                  android:paddingEnd="@dimen/padding_normal"
+                  android:paddingTop="@dimen/padding_normal"
+                  android:paddingBottom="@dimen/padding_xxx_large"
+                  android:background="@color/colorPrimary"
                   android:layout_height="wrap_content">
-
-        <LinearLayout android:layout_width="match_parent"
-                      android:orientation="horizontal"
+        <LinearLayout android:layout_width="wrap_content"
+                      android:gravity="start"
                       android:layout_height="wrap_content">
-            <TextView
-                    android:id="@+id/txv_source_a"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/a"
-                    android:textSize="@dimen/text_xlarge"
-                    android:textColor="@color/colorWhite"/>
-
-            <com.disablerouting.widget.CustomAutoCompleteTextView
-                    android:id="@+id/edt_source_add"
-                    android:layout_marginStart="@dimen/margin_small"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:hint="@string/enter_source"
-                    android:padding="@dimen/padding_normal"
-                    android:background="@color/colorWhite"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:textSize="@dimen/text_large"
-                    android:layout_marginEnd="@dimen/margin_normal"
-                    android:textColorHint="@color/colorBlackHint"
-                    android:textColor="@color/colorPrimary"/>
-
-            <TextView
-                    android:id="@+id/txv_go"
-                    android:layout_width="wrap_content"
-                    android:textColor="@color/colorWhite"
-                    android:gravity="end"
-                    android:textSize="@dimen/text_xxxlarge"
-                    android:text="@string/go"
-                    android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-                android:layout_marginTop="@dimen/margin_small"
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
-            <TextView
-                    android:id="@+id/txv_source_b"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/b"
-                    android:textSize="@dimen/text_xlarge"
-                    android:textColor="@color/colorWhite"/>
-
-            <com.disablerouting.widget.CustomAutoCompleteTextView
-                    android:id="@+id/edt_dest_add"
-                    android:layout_marginStart="@dimen/margin_small"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:hint="@string/enter_destination"
-                    android:padding="@dimen/padding_normal"
-                    android:background="@color/colorWhite"
-                    android:textSize="@dimen/text_large"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:layout_marginEnd="@dimen/margin_normal"
-                    android:textColorHint="@color/colorBlackHint"
-                    android:textColor="@color/colorPrimary"/>
 
             <ImageView
-                    android:id="@+id/img_swap"
+                    android:id="@+id/img_back"
                     android:layout_width="wrap_content"
-                    android:src="@drawable/ic_swap"
-                    android:layout_gravity="end|center_vertical"
+                    android:src="@drawable/ic_navigate_back"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/app_name"/>
         </LinearLayout>
-    </LinearLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:orientation="vertical"
+                      android:layout_marginStart="@dimen/margin_normal"
+                      android:layout_marginEnd="@dimen/margin_normal"
+                      android:layout_height="wrap_content">
 
-</LinearLayout>
+            <LinearLayout android:layout_width="match_parent"
+                          android:orientation="horizontal"
+                          android:layout_height="wrap_content">
+                <TextView
+                        android:id="@+id/txv_source_a"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/a"
+                        android:textSize="@dimen/text_xlarge"
+                        android:textColor="@color/colorWhite"/>
+
+                <com.disablerouting.widget.CustomAutoCompleteTextView
+                        android:id="@+id/edt_source_add"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:hint="@string/enter_source"
+                        android:padding="@dimen/padding_normal"
+                        android:background="@color/colorWhite"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:textSize="@dimen/text_large"
+                        android:layout_marginEnd="@dimen/margin_normal"
+                        android:textColorHint="@color/colorBlackHint"
+                        android:textColor="@color/colorPrimary"/>
+
+                <TextView
+                        android:id="@+id/txv_go"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/colorWhite"
+                        android:gravity="end"
+                        android:textSize="@dimen/text_xxxlarge"
+                        android:text="@string/go"
+                        android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:id="@+id/txv_source_b"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/b"
+                        android:textSize="@dimen/text_xlarge"
+                        android:textColor="@color/colorWhite"/>
+
+                <com.disablerouting.widget.CustomAutoCompleteTextView
+                        android:id="@+id/edt_dest_add"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:hint="@string/enter_destination"
+                        android:padding="@dimen/padding_normal"
+                        android:background="@color/colorWhite"
+                        android:textSize="@dimen/text_large"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:layout_marginEnd="@dimen/margin_normal"
+                        android:textColorHint="@color/colorBlackHint"
+                        android:textColor="@color/colorPrimary"/>
+
+                <ImageView
+                        android:id="@+id/img_swap"
+                        android:layout_width="wrap_content"
+                        android:src="@drawable/ic_swap"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/app_name"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</RelativeLayout>

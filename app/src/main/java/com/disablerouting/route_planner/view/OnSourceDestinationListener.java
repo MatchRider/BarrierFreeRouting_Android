@@ -17,4 +17,5 @@ public interface OnSourceDestinationListener {
 
     void onGoSwapView(GeoPoint geoPointSource, GeoPoint geoPointDestination);
 
+
 }
