@@ -61,7 +61,9 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextSource.getText().toString());
+            if(mEditTextSource!=null && !mEditTextSource.getText().toString().equalsIgnoreCase("")){
+                mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextSource.getText().toString());
+            }
             Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
 
         }
@@ -78,14 +80,14 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mISourceDestinationScreenPresenter = new SourceDestinationScreenPresenter(this, new DirectionsManager(), new GeoCodingManager());
-
         initialiseData();
     }
 
     public void initialiseData(){
+        mISourceDestinationScreenPresenter = new SourceDestinationScreenPresenter(this, new DirectionsManager(), new GeoCodingManager());
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -220,9 +222,11 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @Override
     public void onGeoDataDataReceived(GeoCodingResponse data) {
-        mAddressListAdapter = new CustomListAdapter(getContext(),R.layout.address_item_view, data.getFeatures());
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
-        setListPopUp(mRelativeLayoutSourceDestination);
+        if(data!=null && data.getFeatures()!=null && data.getFeatures().size()!=0) {
+            mAddressListAdapter = new CustomListAdapter(getContext(), R.layout.address_item_view, data.getFeatures());
+            setListPopUp(mRelativeLayoutSourceDestination);
+        }
     }
 
     @Override
