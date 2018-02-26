@@ -11,14 +11,15 @@ public class Geometry {
     @JsonProperty("type")
     private String mType;
 
-    @JsonProperty("geometry")
-    private List<Double> coordinates = null;
+    @JsonProperty("coordinates")
+    private List<Double> mCoordinates = null;
 
     public String getType() {
         return mType;
     }
 
     public List<Double> getCoordinates() {
-        return coordinates;
+        return mCoordinates;
     }
+
 }

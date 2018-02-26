@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
@@ -60,6 +61,10 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
     private LocationCallback mLocationCallback;
     public LatLng mCurrentLocation;
 
+    private Marker mStartMarker =null;
+    private Marker mEndMarker =null;
+    private Marker mCurrentMarker =null;
+    private Polyline mPolyline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,11 +100,17 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
         mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getApplicationContext()), mMapView);
         mLocationOverlay.enableMyLocation();
         mMapView.getOverlays().add(this.mLocationOverlay);
-
         //Add Scale Bar
         ScaleBarOverlay myScaleBarOverlay = new ScaleBarOverlay(mMapView);
+        myScaleBarOverlay.setCentred(true);
         mMapView.getOverlays().add(myScaleBarOverlay);
         setProvider();
+
+        mStartMarker = new Marker(mMapView);
+        mEndMarker = new Marker(mMapView);
+        mCurrentMarker = new Marker(mMapView);
+
+
     }
 
     private void setProvider() {
@@ -120,18 +131,31 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
      * @param encodedGeoPoints plot encoded points
      */
     public void plotDataOfSourceDestination(String encodedGeoPoints) {
+
+        mMapView.getOverlays().remove(mCurrentMarker);
+        mMapView.getOverlays().remove(mStartMarker);
+        mMapView.getOverlays().remove(mEndMarker);
+        mMapView.invalidate();
+
+        GeoPoint geoPointStart = null, geoPointEnd=null;
         if (encodedGeoPoints != null) {
             List<GeoPoint> geoPointArrayList = PolylineDecoder.decodePoly(encodedGeoPoints);
             addPolyLine(geoPointArrayList);
-            GeoPoint geoPointStart, geoPointEnd;
             if (geoPointArrayList != null && geoPointArrayList.size() != 0) {
                 geoPointStart = geoPointArrayList.get(0);
                 geoPointEnd = geoPointArrayList.get(geoPointArrayList.size() - 1);
                 addMarkers(geoPointStart, geoPointEnd);
+
             }
+            BoundingBox boundingBox = new BoundingBox(geoPointStart.getLatitude(), geoPointStart.getLongitude(),
+                    geoPointEnd.getLatitude(),geoPointEnd.getLongitude());
+            mMapView.getController().setCenter(boundingBox.getCenter());
+            //mMapView.getController().setZoom(10);
+            mMapView.zoomToBoundingBox(boundingBox,false);
         } else {
             addCurrentLocation();
         }
+
     }
 
     /**
@@ -140,11 +164,13 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
      * @param geoPointList list of geo points
      */
     private void addPolyLine(List<GeoPoint> geoPointList) {
+        mMapView.getOverlayManager().remove(mPolyline);
+        mMapView.invalidate();
         //add your points here
-        Polyline line = new Polyline();
-        line.setPoints(geoPointList);
-        line.setColor(getResources().getColor(R.color.colorPrimary));
-        line.setOnClickListener(new Polyline.OnClickListener() {
+        mPolyline = new Polyline();
+        mPolyline.setPoints(geoPointList);
+        mPolyline.setColor(getResources().getColor(R.color.colorPrimary));
+        mPolyline.setOnClickListener(new Polyline.OnClickListener() {
             @Override
             public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
                 Toast.makeText(mapView.getContext(), "polyline with " + polyline.getPoints().size() + "pts was tapped", Toast.LENGTH_LONG).show();
@@ -152,7 +178,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
             }
         });
         if (mMapView != null) {
-            mMapView.getOverlayManager().add(line);
+            mMapView.getOverlayManager().add(mPolyline);
         }
 
     }
@@ -163,14 +189,13 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
     private void addCurrentLocation() {
         if (mMapView != null) {
             GeoPoint currentGeoPoints = new GeoPoint(mLatitude, mLongitude);
-            Marker currentMarker = new Marker(mMapView);
-            currentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-            currentMarker.setPosition(currentGeoPoints);
-            currentMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
-            currentMarker.setTitle("Current");
-
+            mCurrentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+            mCurrentMarker.setPosition(currentGeoPoints);
+            mMapView.getOverlays().add(mCurrentMarker);
+            mCurrentMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+            mCurrentMarker.setTitle("Current");
             MapController myMapController = (MapController) mMapView.getController();
-            myMapController.setZoom(14);
+            myMapController.setZoom(10);
             myMapController.setCenter(currentGeoPoints);
         }
 
@@ -183,28 +208,27 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
      * @param end   end geo point
      */
     private void addMarkers(GeoPoint start, GeoPoint end) {
+
         if (mMapView != null) {
             MapController myMapController = (MapController) mMapView.getController();
-            myMapController.setZoom(14);
+            myMapController.setZoom(10);
             myMapController.setCenter(start);
 
             if (start != null) {
                 GeoPoint startPoint = new GeoPoint(start.getLatitude(), start.getLongitude());
-                Marker startMarker = new Marker(mMapView);
-                startMarker.setPosition(startPoint);
-                startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                mMapView.getOverlays().add(startMarker);
-                startMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
-                startMarker.setTitle("Start point");
+                mStartMarker.setPosition(startPoint);
+                mStartMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                mMapView.getOverlays().add(mStartMarker);
+                mStartMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                mStartMarker.setTitle("Start point");
             }
             if (end != null) {
                 GeoPoint endPoint = new GeoPoint(end.getLatitude(), end.getLongitude());
-                Marker endMarker = new Marker(mMapView);
-                endMarker.setPosition(endPoint);
-                endMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                mMapView.getOverlays().add(endMarker);
-                endMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
-                endMarker.setTitle("End point");
+                mEndMarker.setPosition(endPoint);
+                mEndMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                mMapView.getOverlays().add(mEndMarker);
+                mEndMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+                mEndMarker.setTitle("End point");
             }
         }
     }
@@ -243,8 +267,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
      */
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(3000);
-        mLocationRequest.setFastestInterval(2000);
+        mLocationRequest.setInterval(60000);
+        mLocationRequest.setFastestInterval(60000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
@@ -300,7 +324,9 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
                     if (mMapView != null) {
                         mLatitude = location.getLatitude();
                         mLongitude = location.getLongitude();
-                        plotDataOfSourceDestination(null);
+                        mMapView.getOverlays().clear();
+
+                        mMapView.invalidate();
                         onUpdateLocation(location);
                         AppData.getNewInstance().setCurrentLoc(new LatLng(location.getLatitude(), location.getLongitude()));
                     }
@@ -376,6 +402,5 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
             checkLocationStatus();
         }
     }
-
 
 }

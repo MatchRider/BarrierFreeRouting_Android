@@ -5,22 +5,24 @@ import android.os.Bundle;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
+import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.map_base.MapBaseActivity;
 import com.disablerouting.route_planner.SourceDestinationFragment;
-import com.disablerouting.route_planner.adapter.CustomListAdapter;
 import com.google.android.gms.maps.model.LatLng;
 import org.osmdroid.util.GeoPoint;
 
 public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDestinationListener {
 
+    private SourceDestinationFragment mSourceDestinationFragment;
+    private Features mFeaturesDestinationAddress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        SourceDestinationFragment sourceDestinationFragment = SourceDestinationFragment.newInstance(this);
-        addFragment(R.id.contentContainer,sourceDestinationFragment,"");
+        mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
+        addFragment(R.id.contentContainer,mSourceDestinationFragment,"");
     }
-    private CustomListAdapter mAddressListAdapter;
 
     @Override
     protected int getView() {
@@ -30,8 +32,16 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     protected void onUpdateLocation(Location location) {
         mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        GeoPoint geoPoint= new GeoPoint(mCurrentLocation.longitude,mCurrentLocation.latitude);
+        GeoPoint geoPointDestination=null;
+        if(mFeaturesDestinationAddress!=null) {
+            geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
+                    mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
+            mSourceDestinationFragment.callForDestination(geoPoint, geoPointDestination);
+        }else {
+            plotDataOfSourceDestination(null);
+        }
     }
-
 
     @Override
     public void onGoClick(GeoPoint geoPointSource, GeoPoint geoPointDestination) {
@@ -40,7 +50,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void plotDataOnMap(String encodedString) {
-        //initializeData();
         plotDataOfSourceDestination(encodedString);
     }
 
@@ -50,21 +59,17 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
     @Override
-    public void onSourceCompleted(String addressModel) {
-
-    }
-
-    @Override
-    public void onDestinationCompleted(String addressModel) {
-
-    }
-
-    @Override
     public void onGoSwapView(GeoPoint geoPointSource, GeoPoint geoPointDestination) {
         plotDataOfSourceDestination(null);
 
     }
 
+    @Override
+    public void onSourceDestinationSelected(Features featuresSource, Features featuresDestination) {
+       if(featuresDestination!=null){
+           mFeaturesDestinationAddress= featuresDestination;
+       }
+    }
 
     @OnClick(R.id.img_re_center)
     public void reCenter(){

@@ -6,6 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
+import org.osmdroid.api.IGeoPoint;
+import org.osmdroid.util.BoundingBoxE6;
+import org.osmdroid.views.overlay.OverlayItem;
+
+import java.util.ArrayList;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -31,6 +36,28 @@ public class Utility {
     public static int calculatePopUpHeight(Context context){
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         return displayMetrics.heightPixels;
+    }
+
+    public static BoundingBoxE6 boundToMap(double minLatitude , double maxLatitude ,
+                                    double minLongitude, double maxLongitude){
+        double minLat = minLatitude;
+        double maxLat = maxLatitude;
+        double minLong = minLongitude;
+        double maxLong = maxLongitude;
+        ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
+        for (OverlayItem item : items) {
+            IGeoPoint point = item.getPoint();
+            if (point.getLatitudeE6() < minLat)
+                minLat = point.getLatitudeE6();
+            if (point.getLatitudeE6() > maxLat)
+                maxLat = point.getLatitudeE6();
+            if (point.getLongitudeE6() < minLong)
+                minLong = point.getLongitudeE6();
+            if (point.getLongitudeE6() > maxLong)
+                maxLong = point.getLongitudeE6();
+        }
+
+        return new BoundingBoxE6(maxLat, maxLong, minLat, minLong);
     }
 
 }

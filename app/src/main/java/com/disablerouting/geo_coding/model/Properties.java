@@ -30,6 +30,38 @@ public class Properties {
     @JsonProperty("place_type")
     private String mPlaceType="";
 
+    public void setCountry(String country) {
+        mCountry = country;
+    }
+
+    public void setCountry_code(String country_code) {
+        mCountry_code = country_code;
+    }
+
+    public void setRegion(String region) {
+        mRegion = region;
+    }
+
+    public void setLocality(String locality) {
+        mLocality = locality;
+    }
+
+    public void setStreet(String street) {
+        mStreet = street;
+    }
+
+    public void setName(String name) {
+        mName = name;
+    }
+
+    public void setHouseNumber(String houseNumber) {
+        mHouseNumber = houseNumber;
+    }
+
+    public void setPlaceType(String placeType) {
+        mPlaceType = placeType;
+    }
+
     @Override
     public String toString() {
         return mName + mHouseNumber + mStreet + mLocality + mRegion + mCountry ;

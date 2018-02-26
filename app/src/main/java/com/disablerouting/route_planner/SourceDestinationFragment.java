@@ -18,12 +18,14 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseFragmentImpl;
 import com.disablerouting.geo_coding.manager.GeoCodingManager;
+import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
 import com.disablerouting.route_planner.adapter.CustomListAdapter;
 import com.disablerouting.route_planner.manager.DirectionsManager;
@@ -36,7 +38,10 @@ import com.disablerouting.utils.Utility;
 import com.disablerouting.widget.CustomAutoCompleteTextView;
 import org.osmdroid.util.GeoPoint;
 
-public class SourceDestinationFragment extends BaseFragmentImpl implements ISourceDestinationViewFragment, TextView.OnEditorActionListener {
+import java.util.List;
+
+public class SourceDestinationFragment extends BaseFragmentImpl implements ISourceDestinationViewFragment,
+        TextView.OnEditorActionListener , AdapterView.OnItemClickListener{
 
     @BindView(R.id.edt_source_add)
     CustomAutoCompleteTextView mEditTextSource;
@@ -51,23 +56,32 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     private ISourceDestinationScreenPresenter mISourceDestinationScreenPresenter;
     private String mCoordinates = null;
-    private String mProfileType = null;
+    private String mProfileType = "driving-car";
+    private GeoPoint mGeoPointSource;
+    private GeoPoint mGeoPointDestination;
     private static OnSourceDestinationListener mOnSourceDestinationListener;
 
     private CustomListAdapter mAddressListAdapter;
+    private List<Features> mFeaturesResultSearch;
+    private ListPopupWindow mListPopupWindow;
+    private Features mFeaturesSource;
+    private Features mFeaturesDestination;
 
     @SuppressLint("HandlerLeak")
     final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(mEditTextSource!=null && !mEditTextSource.getText().toString().equalsIgnoreCase("")){
+            if(mEditTextSource.hasFocus() && mEditTextSource!=null && !mEditTextSource.getText().toString().equalsIgnoreCase("")){
                 mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextSource.getText().toString());
             }
+            if(mEditTextDestination.hasFocus() && mEditTextDestination!=null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")){
+                mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextDestination.getText().toString());
+            }
             Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
-
         }
     };
+
 
     public static SourceDestinationFragment newInstance(OnSourceDestinationListener onSourceDestinationListener) {
         mOnSourceDestinationListener = onSourceDestinationListener;
@@ -80,12 +94,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initialiseData();
-    }
-
-    public void initialiseData(){
         mISourceDestinationScreenPresenter = new SourceDestinationScreenPresenter(this, new DirectionsManager(), new GeoCodingManager());
-
     }
 
     @Override
@@ -111,13 +120,22 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         addListener();
     }
 
+    public void callForDestination(GeoPoint geoPointSource, GeoPoint geoPointDestination){
+        mGeoPointSource = geoPointSource;
+        mGeoPointDestination= geoPointDestination;
+        if(mEditTextSource!=null && !mEditTextSource.getText().toString().equalsIgnoreCase("") &&
+                mEditTextDestination!=null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")){
+
+            mCoordinates = mGeoPointSource+"|"+mGeoPointDestination;
+            mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates,mProfileType);
+        }
+        handler.removeMessages(SEARCH_TEXT_CHANGED);
+    }
+
     @OnClick(R.id.txv_go)
     public void onGoClick() {
-        GeoPoint geoPointStart = null, geoPointEnd = null;
-        mOnSourceDestinationListener.onGoClick(geoPointStart, geoPointEnd);
-        mCoordinates = "8.34234,48.23424|8.34423,48.26424";
-        mProfileType = "driving-car";
-        mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates, mProfileType);
+        mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource,mFeaturesDestination);
+        callForDestination(mGeoPointSource,mGeoPointDestination);
     }
 
     /**
@@ -188,8 +206,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mOnSourceDestinationListener.onBackPress();
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
-        mOnSourceDestinationListener.onSourceCompleted(null);
-        mOnSourceDestinationListener.onDestinationCompleted(null);
         clearSourceComplete();
         clearDestinationComplete();
     }
@@ -212,6 +228,11 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         if (data != null && data.getRoutesList() != null && data.getRoutesList().size() != 0
                 && data.getRoutesList().get(0).getGeometry() != null) {
             mOnSourceDestinationListener.plotDataOnMap(data.getRoutesList().get(0).getGeometry());
+       /*     mEditTextSource.setFocusableInTouchMode(true);
+            mEditTextSource.requestFocus();
+            mEditTextDestination.setFocusableInTouchMode(true);
+            mEditTextDestination.requestFocus();
+*/
         }
     }
 
@@ -224,6 +245,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     public void onGeoDataDataReceived(GeoCodingResponse data) {
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         if(data!=null && data.getFeatures()!=null && data.getFeatures().size()!=0) {
+            mFeaturesResultSearch= data.getFeatures();
             mAddressListAdapter = new CustomListAdapter(getContext(), R.layout.address_item_view, data.getFeatures());
             setListPopUp(mRelativeLayoutSourceDestination);
         }
@@ -257,10 +279,13 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @OnClick(R.id.img_swap)
     public void swapDataOfViews() {
-        changeAddress();
-        GeoPoint geoPointStart = null, geoPointEnd = null;
-        mOnSourceDestinationListener.onGoSwapView(geoPointStart, geoPointEnd);
+        handler.removeMessages(SEARCH_TEXT_CHANGED);
+        /*mEditTextSource.clearFocus();
+        mEditTextDestination.clearFocus();
 
+        mEditTextSource.setFocusableInTouchMode(false);
+        mEditTextDestination.setFocusableInTouchMode(false);*/
+        changeAddress();
     }
 
     /**
@@ -271,6 +296,12 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mEditTextSource.setText((mEditTextDestination.getText().toString()));
         mEditTextDestination.setText(sourceData);
 
+        if(mEditTextSource!=null && !mEditTextSource.getText().toString().equalsIgnoreCase("") &&
+                mEditTextDestination!=null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")){
+
+            mCoordinates = mGeoPointDestination+"|"+mGeoPointSource;
+            mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates,mProfileType);
+        }
     }
 
 
@@ -288,20 +319,40 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mOnSourceDestinationListener = null;
     }
 
+    /**
+     * Show data of search result in pop up
+     * @param anchor view below which placed  result
+     */
     private void setListPopUp(View anchor){
-        final ListPopupWindow popupWindow = new ListPopupWindow(getContext());
-        popupWindow.setAnchorView(anchor);
-        popupWindow.setAnimationStyle(R.style.popup_window_animation);
+        mListPopupWindow = new ListPopupWindow(getContext());
+        mListPopupWindow.setAnchorView(anchor);
+        mListPopupWindow.setAnimationStyle(R.style.popup_window_animation);
         int height = Utility.calculatePopUpHeight(getContext());
-        popupWindow.setHeight(height/2);
-        popupWindow.setWidth(ListPopupWindow.MATCH_PARENT);
-        popupWindow.setAdapter(mAddressListAdapter);
-        popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                popupWindow.dismiss();
-            }
-        });
-        popupWindow.show();
+        mListPopupWindow.setHeight(height/2);
+        mListPopupWindow.setWidth(ListPopupWindow.MATCH_PARENT);
+        mListPopupWindow.setAdapter(mAddressListAdapter);
+        mListPopupWindow.setOnItemClickListener(this);
+        mListPopupWindow.show();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        mListPopupWindow.dismiss();
+        if(mEditTextSource.hasFocus()) {
+            mEditTextSource.setText(mFeaturesResultSearch.get(i).getProperties().toString());
+            Toast.makeText(getContext(), mFeaturesResultSearch.get(i).getProperties().toString(), Toast.LENGTH_SHORT).show();
+            mGeoPointSource = new GeoPoint(mFeaturesResultSearch.get(i).getGeometry().getCoordinates().get(0),
+                    mFeaturesResultSearch.get(i).getGeometry().getCoordinates().get(1));
+            mFeaturesSource = mFeaturesResultSearch.get(0);
+
+        }else if(mEditTextDestination.hasFocus()){
+            mEditTextDestination.setText(mFeaturesResultSearch.get(i).getProperties().toString());
+            mGeoPointDestination = new GeoPoint(mFeaturesResultSearch.get(i).getGeometry().getCoordinates().get(0),
+                    mFeaturesResultSearch.get(i).getGeometry().getCoordinates().get(1));
+            mFeaturesDestination = mFeaturesResultSearch.get(0);
+
+        }
+
+        handler.removeMessages(SEARCH_TEXT_CHANGED);
     }
 }

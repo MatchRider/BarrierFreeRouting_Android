@@ -15,6 +15,18 @@ public class Features {
     @JsonProperty("properties")
     private Properties mProperties;
 
+    public void setType(String type) {
+        mType = type;
+    }
+
+    public void setGeometry(Geometry geometry) {
+        mGeometry = geometry;
+    }
+
+    public void setProperties(Properties properties) {
+        mProperties = properties;
+    }
+
     public String getType() {
         return mType;
     }
