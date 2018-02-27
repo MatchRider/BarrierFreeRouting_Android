@@ -15,6 +15,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.disablerouting.R;
 import com.disablerouting.application.AppData;
@@ -166,20 +170,19 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
     private void addPolyLine(List<GeoPoint> geoPointList) {
         mMapView.getOverlayManager().remove(mPolyline);
         mMapView.invalidate();
-        //add your points here
         mPolyline = new Polyline();
         mPolyline.setPoints(geoPointList);
         mPolyline.setColor(getResources().getColor(R.color.colorPrimary));
-        mPolyline.setOnClickListener(new Polyline.OnClickListener() {
-            @Override
-            public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                Toast.makeText(mapView.getContext(), "polyline with " + polyline.getPoints().size() + "pts was tapped", Toast.LENGTH_LONG).show();
-                return false;
-            }
-        });
         if (mMapView != null) {
             mMapView.getOverlayManager().add(mPolyline);
         }
+        mPolyline.setOnClickListener(new Polyline.OnClickListener() {
+            @Override
+            public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
+                showFeedbackDialog(String.valueOf((eventPos.getLongitude()+" "+eventPos.getLatitude())));
+                return false;
+            }
+        });
 
     }
 
@@ -401,6 +404,39 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
         if (requestCode == AppConstant.SETTING_REQUEST_CODE) {
             checkLocationStatus();
         }
+    }
+
+    /**
+     * SHow feedback dialog
+     * @param description description
+     */
+    private void showFeedbackDialog(String description) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View customView = layoutInflater.inflate(R.layout.feedback_pop_up, null);
+        TextView textViewDescription = (TextView) customView.findViewById(R.id.txv_description);
+        Button btnFeedback = (Button) customView.findViewById(R.id.btn_feedback);
+        Button btnCancel = (Button) customView.findViewById(R.id.btn_cancel);
+        textViewDescription.setText(description);
+        builder.setView(customView);
+
+        final Dialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+        btnFeedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),getResources().getString(R.string.coming_soon),Toast.LENGTH_SHORT).show();
+                alertDialog.dismiss();
+
+            }
+        });
     }
 
 }

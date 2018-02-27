@@ -28,6 +28,6 @@ public interface ApiService {
      * @return return address of places
      */
     @GET("geocoding")
-    Call<GeoCodingResponse> getGeoCoding(@Query("api_key") String api_key, @Query("query") String query);
+    Call<GeoCodingResponse> getGeoCoding(@Query("api_key") String api_key, @Query("query") String query, @Query("limit") int limit);
 
 }

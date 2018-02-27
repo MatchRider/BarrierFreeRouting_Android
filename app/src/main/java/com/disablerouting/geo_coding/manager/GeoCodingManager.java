@@ -14,7 +14,7 @@ public class GeoCodingManager implements ResponseCallback<GeoCodingResponse> {
 
     public void getGeoCoding(IGeoCodingResponseReceiver receiver, String queryString) {
         this.mIGeoCodingResponseReceiver = receiver;
-        mGeoCodingResponseCall = RetrofitClient.getApiService().getGeoCoding(ApiEndPoint.API_KEY,queryString);
+        mGeoCodingResponseCall = RetrofitClient.getApiService().getGeoCoding(ApiEndPoint.API_KEY,queryString,10);
         mGeoCodingResponseCall.enqueue(new ResponseWrapper<GeoCodingResponse>(this));
     }
 

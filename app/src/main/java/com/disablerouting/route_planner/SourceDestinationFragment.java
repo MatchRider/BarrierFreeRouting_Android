@@ -368,4 +368,5 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
         handler.removeMessages(SEARCH_TEXT_CHANGED);
     }
+
 }
