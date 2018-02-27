@@ -134,8 +134,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
      *
      * @param encodedGeoPoints plot encoded points
      */
-    public void plotDataOfSourceDestination(String encodedGeoPoints) {
-
+    public void plotDataOfSourceDestination(String encodedGeoPoints,  String startAdd, String endAdd) {
         mMapView.getOverlays().remove(mCurrentMarker);
         mMapView.getOverlays().remove(mStartMarker);
         mMapView.getOverlays().remove(mEndMarker);
@@ -148,8 +147,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
             if (geoPointArrayList != null && geoPointArrayList.size() != 0) {
                 geoPointStart = geoPointArrayList.get(0);
                 geoPointEnd = geoPointArrayList.get(geoPointArrayList.size() - 1);
-                addMarkers(geoPointStart, geoPointEnd);
-
+                addMarkers(geoPointStart,startAdd, geoPointEnd, endAdd);
             }
             BoundingBox boundingBox = new BoundingBox(geoPointStart.getLatitude(), geoPointStart.getLongitude(),
                     geoPointEnd.getLatitude(),geoPointEnd.getLongitude());
@@ -205,12 +203,13 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
     }
 
     /**
-     * Add Markers between source to destination
-     *
-     * @param start start geo point
-     * @param end   end geo point
+     * Add markers to map
+     * @param start start geo points
+     * @param startAdd start add
+     * @param end end geo points
+     * @param endAdd end address
      */
-    private void addMarkers(GeoPoint start, GeoPoint end) {
+    private void addMarkers(GeoPoint start, String startAdd, GeoPoint end , String endAdd) {
 
         if (mMapView != null) {
             MapController myMapController = (MapController) mMapView.getController();
@@ -222,16 +221,16 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
                 mStartMarker.setPosition(startPoint);
                 mStartMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mMapView.getOverlays().add(mStartMarker);
-                mStartMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
-                mStartMarker.setTitle("Start point");
+                mStartMarker.setIcon(getResources().getDrawable(R.drawable.ic_location_source));
+                mStartMarker.setTitle(startAdd);
             }
             if (end != null) {
                 GeoPoint endPoint = new GeoPoint(end.getLatitude(), end.getLongitude());
                 mEndMarker.setPosition(endPoint);
                 mEndMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mMapView.getOverlays().add(mEndMarker);
-                mEndMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
-                mEndMarker.setTitle("End point");
+                mEndMarker.setIcon(getResources().getDrawable(R.drawable.ic_location_destination));
+                mEndMarker.setTitle(endAdd);
             }
         }
     }

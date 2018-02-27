@@ -126,7 +126,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         addListener();
     }
 
-    public void callForDestination(GeoPoint geoPointSource, GeoPoint geoPointDestination){
+    public void callForDestination(GeoPoint geoPointCurrent,GeoPoint geoPointSource, GeoPoint geoPointDestination){
         mGeoPointSource = geoPointSource;
         mGeoPointDestination= geoPointDestination;
         if(mEditTextSource!=null && !mEditTextSource.getText().toString().equalsIgnoreCase("") &&
@@ -138,11 +138,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         handler.removeMessages(SEARCH_TEXT_CHANGED);
     }
 
-    @OnClick(R.id.txv_go)
-    public void onGoClick() {
-        mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource,mFeaturesDestination);
-        callForDestination(mGeoPointSource,mGeoPointDestination);
-    }
+
 
     /**
      * Set Text change listener for edit text
@@ -205,6 +201,11 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         });
     }
 
+    @OnClick(R.id.txv_go)
+    public void onGoClick() {
+        mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource,mFeaturesDestination);
+        callForDestination(null,mGeoPointSource,mGeoPointDestination);
+    }
 
     @OnClick(R.id.img_back)
     public void onBackClick() {
@@ -242,11 +243,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         if (data != null && data.getRoutesList() != null && data.getRoutesList().size() != 0
                 && data.getRoutesList().get(0).getGeometry() != null) {
             mOnSourceDestinationListener.plotDataOnMap(data.getRoutesList().get(0).getGeometry());
-       /*     mEditTextSource.setFocusableInTouchMode(true);
-            mEditTextSource.requestFocus();
-            mEditTextDestination.setFocusableInTouchMode(true);
-            mEditTextDestination.requestFocus();
-*/
         }
     }
 
@@ -293,7 +289,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @OnClick(R.id.img_swap)
     public void swapDataOfViews() {
-        handler.removeMessages(SEARCH_TEXT_CHANGED);
         /*mEditTextSource.clearFocus();
         mEditTextDestination.clearFocus();
 
@@ -306,16 +301,23 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
      * Swap address when toggle
      */
     public void changeAddress() {
+        //Change string data on edit text
         String sourceData = mEditTextSource.getText().toString();
         mEditTextSource.setText((mEditTextDestination.getText().toString()));
         mEditTextDestination.setText(sourceData);
 
-        if(mEditTextSource!=null && !mEditTextSource.getText().toString().equalsIgnoreCase("") &&
-                mEditTextDestination!=null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")){
+        //Change model data on edit text
+        Features featuresSource= mFeaturesSource;
+        mFeaturesSource = mFeaturesDestination;
+        mFeaturesDestination= featuresSource;
 
-            mCoordinates = mGeoPointDestination+"|"+mGeoPointSource;
-            mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates,mProfileType);
-        }
+        //Change geo points
+        GeoPoint geoPoint= mGeoPointSource;
+        mGeoPointSource = mGeoPointDestination;
+        mGeoPointDestination= geoPoint;
+
+        mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource,mFeaturesDestination);
+        callForDestination(null,mGeoPointSource,mGeoPointDestination);
     }
 
 
@@ -365,7 +367,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             mFeaturesDestination = mFeaturesResultSearch.get(0);
 
         }
-
         handler.removeMessages(SEARCH_TEXT_CHANGED);
     }
 

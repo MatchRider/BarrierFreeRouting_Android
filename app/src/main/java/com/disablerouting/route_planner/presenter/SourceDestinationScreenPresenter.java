@@ -25,7 +25,7 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
     }
 
     @Override
-    public void getDestinationsData(String coordinates, String profile) {
+    public void getDestinationsData(String coordinates, String profile ) {
         if (mISourceDestinationViewFragment != null) {
             mISourceDestinationViewFragment.showLoader();
             mDirectionsManager.getDestination(this, coordinates, profile);

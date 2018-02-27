@@ -14,14 +14,18 @@ import org.osmdroid.util.GeoPoint;
 public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDestinationListener {
 
     private SourceDestinationFragment mSourceDestinationFragment;
+    private Features mFeaturesSourceAddress;
     private Features mFeaturesDestinationAddress;
+    private String mSourceAddress;
+    private String mDestinationAddress;
+    private String mEncodedPolyline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
-        addFragment(R.id.contentContainer,mSourceDestinationFragment,"");
+        addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
     }
 
     @Override
@@ -32,25 +36,28 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     protected void onUpdateLocation(Location location) {
         mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        GeoPoint geoPoint= new GeoPoint(mCurrentLocation.longitude,mCurrentLocation.latitude);
-        GeoPoint geoPointDestination=null;
-        if(mFeaturesDestinationAddress!=null) {
+        GeoPoint geoPoint = new GeoPoint(mCurrentLocation.longitude, mCurrentLocation.latitude);
+        GeoPoint geoPointSource = null;
+        GeoPoint geoPointDestination = null;
+        if (mFeaturesSourceAddress!=null && mFeaturesDestinationAddress != null) {
+            geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
+                    mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
+
             geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
                     mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
-            mSourceDestinationFragment.callForDestination(geoPoint, geoPointDestination);
-        }else {
-            plotDataOfSourceDestination(null);
+            mSourceDestinationFragment.callForDestination(geoPoint,geoPointSource, geoPointDestination);
+        } else {
+            plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress);
         }
     }
 
-    @Override
-    public void onGoClick(GeoPoint geoPointSource, GeoPoint geoPointDestination) {
-        showSnackBar("Ready to go", this);
-    }
 
     @Override
     public void plotDataOnMap(String encodedString) {
-        plotDataOfSourceDestination(encodedString);
+        if(encodedString!=null) {
+            mEncodedPolyline = encodedString;
+            plotDataOfSourceDestination(mEncodedPolyline, mSourceAddress, mDestinationAddress);
+        }
     }
 
     @Override
@@ -59,22 +66,33 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
     @Override
-    public void onGoSwapView(GeoPoint geoPointSource, GeoPoint geoPointDestination) {
-        plotDataOfSourceDestination(null);
-
-    }
-
-    @Override
     public void onSourceDestinationSelected(Features featuresSource, Features featuresDestination) {
-       if(featuresDestination!=null){
-           mFeaturesDestinationAddress= featuresDestination;
-       }
+        if (featuresSource!=null && featuresDestination != null && featuresSource.getProperties()!=null
+                && featuresDestination.getProperties()!=null) {
+            mFeaturesSourceAddress = featuresSource;
+            mSourceAddress = featuresSource.getProperties().toString();
+            mFeaturesDestinationAddress = featuresDestination;
+            mDestinationAddress = featuresDestination.getProperties().toString();
+        }
     }
 
     @OnClick(R.id.img_re_center)
-    public void reCenter(){
-        plotDataOfSourceDestination(null);
+    public void reCenter() {
+        if (mCurrentLocation != null && mSourceAddress != null && mDestinationAddress != null) {
+            GeoPoint geoPoint = new GeoPoint(mCurrentLocation.longitude, mCurrentLocation.latitude);
+            GeoPoint geoPointSource = null;
+            GeoPoint geoPointDestination = null;
+            if (mFeaturesSourceAddress != null && mFeaturesDestinationAddress != null) {
+                geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
+                        mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
+
+                geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
+                        mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
+                mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination);
+            }
+        }
+        else {
+            plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress);
+        }
     }
-
-
 }

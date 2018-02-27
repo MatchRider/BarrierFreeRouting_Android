@@ -6,6 +6,8 @@
 
     <color name="colorWhite">@android:color/white</color>
     <color name="colorBlackHint">#979797</color>
+    <color name="colorRed">#b20000</color>
+    <color name="colorGreen">#339900</color>
 
 
 </resources>
