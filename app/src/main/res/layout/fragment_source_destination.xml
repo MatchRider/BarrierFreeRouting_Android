@@ -74,7 +74,7 @@
                             android:layout_marginEnd="@dimen/padding_normal"
                             android:clickable="true"
                             android:focusable="true"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             android:background="@android:color/black"
                             app:srcCompat="@drawable/ic_dialog_close_dark"
                             android:contentDescription="@string/app_name"/>
@@ -85,6 +85,7 @@
                         android:layout_width="wrap_content"
                         android:textColor="@color/colorWhite"
                         android:gravity="end"
+                        android:layout_marginStart="5dp"
                         android:textSize="@dimen/text_xx_xlarge"
                         android:text="@string/go"
                         android:layout_height="wrap_content"/>
@@ -132,7 +133,7 @@
                             android:layout_marginEnd="@dimen/padding_normal"
                             android:clickable="true"
                             android:focusable="true"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             android:background="@android:color/black"
                             app:srcCompat="@drawable/ic_dialog_close_dark"
                             android:contentDescription="@string/app_name"/>

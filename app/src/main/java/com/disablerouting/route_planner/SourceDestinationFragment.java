@@ -16,9 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -48,6 +48,12 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @BindView(R.id.edt_dest_add)
     CustomAutoCompleteTextView mEditTextDestination;
+
+    @BindView(R.id.clear_source_address)
+    ImageView mSourceAddressClear;
+
+    @BindView(R.id.clear_destination_address)
+    ImageView mDestinationAddressClear;
 
     @BindView(R.id.rel_source_destination)
     RelativeLayout mRelativeLayoutSourceDestination;
@@ -155,12 +161,12 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
             @Override
             public void afterTextChanged(Editable str) {
-                /*if (str.length() != 0) {
-                    mDestinationAddressClear.setVisibility(View.VISIBLE);
+                if (str.length() != 0) {
+                    mSourceAddressClear.setVisibility(View.VISIBLE);
                 } else {
-                    mDestinationAddressClear.setVisibility(View.GONE);
-                }*/
-                if (str.toString().length() > 2) {
+                    mSourceAddressClear.setVisibility(View.GONE);
+                }
+                if (str.toString().length() > 3) {
                     handler.removeMessages(SEARCH_TEXT_CHANGED);
                     handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, str.toString()), 500);
                 } else {
@@ -183,11 +189,11 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
             @Override
             public void afterTextChanged(Editable str) {
-                /*if (str.length() != 0) {
-                    mSourceAddressClear.setVisibility(View.VISIBLE);
+                if (str.length() != 0) {
+                    mDestinationAddressClear.setVisibility(View.VISIBLE);
                 } else {
-                    mSourceAddressClear.setVisibility(View.GONE);
-                }*/
+                    mDestinationAddressClear.setVisibility(View.GONE);
+                }
                 if (str.toString().length() > 3) {
                     handler.removeMessages(SEARCH_TEXT_CHANGED);
                     handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, str.toString()), 500);
@@ -210,7 +216,15 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         clearDestinationComplete();
     }
 
+    @OnClick(R.id.clear_source_address)
+    public void clearSource(){
+        clearSourceComplete();
+    }
 
+    @OnClick(R.id.clear_destination_address)
+    public void clearDestination(){
+        clearDestinationComplete();
+    }
     @Override
     public void showLoader() {
         if(getActivity()!=null && !getActivity().isFinishing()) {
@@ -340,7 +354,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mListPopupWindow.dismiss();
         if(mEditTextSource.hasFocus()) {
             mEditTextSource.setText(mFeaturesResultSearch.get(i).getProperties().toString());
-            Toast.makeText(getContext(), mFeaturesResultSearch.get(i).getProperties().toString(), Toast.LENGTH_SHORT).show();
             mGeoPointSource = new GeoPoint(mFeaturesResultSearch.get(i).getGeometry().getCoordinates().get(0),
                     mFeaturesResultSearch.get(i).getGeometry().getCoordinates().get(1));
             mFeaturesSource = mFeaturesResultSearch.get(0);
