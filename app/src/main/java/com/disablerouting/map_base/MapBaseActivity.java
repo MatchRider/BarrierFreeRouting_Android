@@ -195,7 +195,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
             mCurrentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
             mCurrentMarker.setPosition(currentGeoPoints);
             mMapView.getOverlays().add(mCurrentMarker);
-            mCurrentMarker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
+            mCurrentMarker.setIcon(getResources().getDrawable(R.drawable.ic_current_loc));
             mCurrentMarker.setTitle("Current");
             MapController myMapController = (MapController) mMapView.getController();
             myMapController.setZoom(10);
