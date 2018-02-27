@@ -11,6 +11,6 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="popup_window_animation">
-        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowEnterAnimation">@anim/pump</item>
     </style>
 </resources>

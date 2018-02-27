@@ -15,10 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -57,6 +54,21 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @BindView(R.id.rel_source_destination)
     RelativeLayout mRelativeLayoutSourceDestination;
+
+    @BindView(R.id.ll_time_distance)
+    LinearLayout mLinearLayoutTimeDistance;
+
+    @BindView(R.id.txv_time)
+    TextView mTextViewTime;
+
+    @BindView(R.id.txv_km)
+    TextView mTextViewKM;
+
+    @BindView(R.id.txv_accent)
+    TextView mTextViewAccent;
+
+    @BindView(R.id.txv_decent)
+    TextView mTextViewDecent;
 
     private static final int SEARCH_TEXT_CHANGED = 1000;
 
@@ -243,7 +255,20 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         if (data != null && data.getRoutesList() != null && data.getRoutesList().size() != 0
                 && data.getRoutesList().get(0).getGeometry() != null) {
             mOnSourceDestinationListener.plotDataOnMap(data.getRoutesList().get(0).getGeometry());
+            mLinearLayoutTimeDistance.setVisibility(View.VISIBLE);
+            if(data.getRoutesList().get(0).getSummary()!=null) {
+                String time = String.valueOf(data.getRoutesList().get(0).getSummary().getDuration());
+                mTextViewTime.setText(time);
+                String distance = String.valueOf(data.getRoutesList().get(0).getSummary().getDistance());
+                mTextViewKM.setText(String.format("%skm", distance));
+                mTextViewAccent.setText("NULL");
+                mTextViewDecent.setText("NULL");
+            }
+        }else {
+            mLinearLayoutTimeDistance.setVisibility(View.GONE);
+
         }
+
     }
 
     @Override

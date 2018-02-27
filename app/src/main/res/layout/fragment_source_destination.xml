@@ -14,7 +14,7 @@
                   android:paddingTop="@dimen/padding_normal"
                   android:paddingBottom="@dimen/padding_xxx_large"
                   android:background="@color/colorPrimary"
-                  android:layout_height="wrap_content">
+                  android:layout_height="wrap_content" tools:ignore="UselessParent">
         <LinearLayout android:layout_width="wrap_content"
                       android:gravity="start"
                       android:layout_height="wrap_content">
@@ -74,7 +74,7 @@
                             android:layout_marginEnd="@dimen/padding_normal"
                             android:clickable="true"
                             android:focusable="true"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             android:background="@android:color/black"
                             app:srcCompat="@drawable/ic_dialog_close_dark"
                             android:contentDescription="@string/app_name"/>
@@ -133,7 +133,7 @@
                             android:layout_marginEnd="@dimen/padding_normal"
                             android:clickable="true"
                             android:focusable="true"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             android:background="@android:color/black"
                             app:srcCompat="@drawable/ic_dialog_close_dark"
                             android:contentDescription="@string/app_name"/>
@@ -149,5 +149,62 @@
         </LinearLayout>
 
 
+    </LinearLayout>
+    <LinearLayout
+            android:id="@+id/ll_time_distance"
+            android:layout_below="@id/ll"
+            android:layout_width="match_parent"
+            android:background="@color/colorWhite"
+            android:gravity="center"
+            android:visibility="gone"
+            android:padding="@dimen/padding_minor"
+            android:layout_height="wrap_content">
+        <TextView
+                  android:id="@+id/txv_time"
+                  android:layout_width="wrap_content"
+                  android:drawableStart="@drawable/ic_access_time"
+                  android:drawablePadding="@dimen/padding_minor"
+                  tools:text="0.15"
+                  android:textSize="@dimen/text_xlarge"
+                  android:fontFamily="@string/ft_bold_font"
+                  android:gravity="center_vertical"
+                  android:textColor="@android:color/black"
+                  android:layout_height="wrap_content"/>
+        <TextView
+                android:id="@+id/txv_km"
+                android:layout_width="wrap_content"
+                android:drawableStart="@drawable/ic_compare_arrows"
+                android:drawablePadding="@dimen/padding_minor"
+                tools:text="0.15"
+                android:textSize="@dimen/text_xlarge"
+                android:fontFamily="@string/ft_bold_font"
+                android:gravity="center_vertical"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_height="wrap_content"/>
+        <TextView
+                android:id="@+id/txv_accent"
+                android:layout_width="wrap_content"
+                android:drawableStart="@drawable/ic_arrow_upwward"
+                android:drawablePadding="@dimen/padding_minor"
+                tools:text="0.15"
+                android:textSize="@dimen/text_xlarge"
+                android:fontFamily="@string/ft_bold_font"
+                android:gravity="center_vertical"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_height="wrap_content"/>
+        <TextView
+                android:id="@+id/txv_decent"
+                android:layout_width="wrap_content"
+                android:drawableStart="@drawable/ic_arrow_downward"
+                android:drawablePadding="@dimen/padding_minor"
+                tools:text="0.15"
+                android:textSize="@dimen/text_xlarge"
+                android:layout_marginStart="@dimen/margin_small"
+                android:fontFamily="@string/ft_bold_font"
+                android:gravity="center_vertical"
+                android:textColor="@android:color/black"
+                android:layout_height="wrap_content"/>
     </LinearLayout>
 </RelativeLayout>
