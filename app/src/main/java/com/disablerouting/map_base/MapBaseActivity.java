@@ -81,7 +81,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
         createLocationRequest();
         addLocationCallback();
         initializeMap();
-
     }
 
     /**
@@ -114,7 +113,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
         mEndMarker = new Marker(mMapView);
         mCurrentMarker = new Marker(mMapView);
 
-
+        plotDataOfSourceDestination(null,"","");
     }
 
     private void setProvider() {
@@ -149,11 +148,12 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
                 geoPointEnd = geoPointArrayList.get(geoPointArrayList.size() - 1);
                 addMarkers(geoPointStart,startAdd, geoPointEnd, endAdd);
             }
-            BoundingBox boundingBox = new BoundingBox(geoPointStart.getLatitude(), geoPointStart.getLongitude(),
-                    geoPointEnd.getLatitude(),geoPointEnd.getLongitude());
-            mMapView.getController().setCenter(boundingBox.getCenter());
-            //mMapView.getController().setZoom(10);
-            mMapView.zoomToBoundingBox(boundingBox,false);
+            if(geoPointStart!=null && geoPointEnd!=null) {
+                BoundingBox boundingBox = new BoundingBox(geoPointStart.getLatitude(), geoPointStart.getLongitude(),
+                        geoPointEnd.getLatitude(), geoPointEnd.getLongitude());
+                mMapView.getController().setCenter(boundingBox.getCenter());
+                mMapView.zoomToBoundingBox(boundingBox,false);
+            }
         } else {
             addCurrentLocation();
         }
@@ -196,7 +196,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
             mCurrentMarker.setIcon(getResources().getDrawable(R.drawable.ic_current_loc));
             mCurrentMarker.setTitle("Your Current location");
             MapController myMapController = (MapController) mMapView.getController();
-            myMapController.setZoom(10);
+            myMapController.setZoom(12);
             myMapController.setCenter(currentGeoPoints);
         }
 
@@ -327,7 +327,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
                         mLatitude = location.getLatitude();
                         mLongitude = location.getLongitude();
                         mMapView.getOverlays().clear();
-
                         mMapView.invalidate();
                         onUpdateLocation(location);
                         AppData.getNewInstance().setCurrentLoc(new LatLng(location.getLatitude(), location.getLongitude()));
@@ -371,6 +370,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
                     } else {
                         if (ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
                             Log.e("allowed", permission);
+                            initializeMap();
                         } else {
                             openSettingDialog();
                             break;

@@ -393,6 +393,23 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @OnClick(R.id.img_swap)
     public void swapDataOfViews() {
         performToogleAddress();
+        if(mEditTextSource.getText().toString().equalsIgnoreCase("")){
+            mSourceAddressClear.setVisibility(View.GONE);
+            mSourceAddressFetch.setVisibility(View.VISIBLE);
+        }else {
+            mSourceAddressClear.setVisibility(View.VISIBLE);
+            mSourceAddressFetch.setVisibility(View.GONE);
+
+        }
+        if(mEditTextDestination.getText().toString().equalsIgnoreCase("")){
+            mDestinationAddressClear.setVisibility(View.GONE);
+            mDestinationAddressFetch.setVisibility(View.VISIBLE);
+        }else {
+            mDestinationAddressClear.setVisibility(View.VISIBLE);
+            mDestinationAddressFetch.setVisibility(View.GONE);
+
+        }
+
     }
 
     /**
