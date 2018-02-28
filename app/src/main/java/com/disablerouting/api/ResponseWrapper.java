@@ -77,7 +77,10 @@ public class ResponseWrapper<T> implements Callback<T> {
         try {
             JSONObject jsonObject = new JSONObject(errorBodyPayload);
             JSONObject error = jsonObject.optJSONObject("error");
-            int errorCode = error.optInt("code");
+            int errorCode=0;
+            if(error.has("code")) {
+                errorCode = error.optInt("code");
+            }
             int errorMessage;
             if (errorCode != 0) {
                 errorMessage = ApiErrorHandler.resolve(errorCode);

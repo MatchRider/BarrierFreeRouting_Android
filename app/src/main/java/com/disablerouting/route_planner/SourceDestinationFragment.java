@@ -96,7 +96,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             if(mEditTextDestination.hasFocus() && mEditTextDestination!=null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")){
                 mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextDestination.getText().toString());
             }
-            Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
+            //Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         }
     };
 
@@ -224,7 +224,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         hideLoader();
         mOnSourceDestinationListener.onBackPress();
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
-        Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         clearSourceComplete();
         clearDestinationComplete();
     }
@@ -278,7 +277,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @Override
     public void onGeoDataDataReceived(GeoCodingResponse data) {
-        Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
+       // Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         if(data!=null && data.getFeatures()!=null && data.getFeatures().size()!=0) {
             mFeaturesResultSearch= data.getFeatures();
             mAddressListAdapter = new CustomListAdapter(getContext(), R.layout.address_item_view, data.getFeatures());
@@ -301,7 +300,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @Override
     public void onPause() {
         super.onPause();
-        Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
+       Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
     }
 
     public void clearSourceComplete() {

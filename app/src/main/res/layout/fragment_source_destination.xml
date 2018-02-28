@@ -28,8 +28,8 @@
         </LinearLayout>
         <LinearLayout android:layout_width="match_parent"
                       android:orientation="vertical"
-                      android:layout_marginStart="@dimen/margin_normal"
-                      android:layout_marginEnd="@dimen/margin_normal"
+                      android:layout_marginStart="@dimen/margin_small"
+                      android:layout_marginEnd="@dimen/margin_small"
                       android:layout_height="wrap_content">
 
             <LinearLayout android:layout_width="match_parent"
@@ -57,7 +57,10 @@
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_source"
-                            android:padding="@dimen/padding_normal"
+                            android:paddingTop="@dimen/padding_normal"
+                            android:paddingBottom="@dimen/padding_normal"
+                            android:paddingStart="@dimen/padding_minor"
+                            android:paddingEnd="@dimen/padding_minor"
                             android:background="@color/colorWhite"
                             android:singleLine="true"
                             android:ellipsize="end"
@@ -67,15 +70,15 @@
                             tools:ignore="NestedWeights"/>
                     <ImageView
                             android:id="@+id/clear_source_address"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="@dimen/padding_normal"
                             android:layout_marginEnd="@dimen/padding_normal"
                             android:clickable="true"
                             android:focusable="true"
-                            android:visibility="visible"
-                            android:background="@android:color/black"
+                            android:visibility="gone"
+                            android:background="@color/colorPrimary"
                             app:srcCompat="@drawable/ic_dialog_close_dark"
                             android:contentDescription="@string/app_name"/>
                 </LinearLayout>
@@ -116,7 +119,10 @@
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_destination"
-                            android:padding="@dimen/padding_normal"
+                            android:paddingTop="@dimen/padding_normal"
+                            android:paddingBottom="@dimen/padding_normal"
+                            android:paddingStart="@dimen/padding_minor"
+                            android:paddingEnd="@dimen/padding_minor"
                             android:background="@color/colorWhite"
                             android:textSize="@dimen/text_large"
                             android:singleLine="true"
@@ -126,15 +132,15 @@
                             tools:ignore="NestedWeights"/>
                     <ImageView
                             android:id="@+id/clear_destination_address"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="@dimen/padding_normal"
                             android:layout_marginEnd="@dimen/padding_normal"
                             android:clickable="true"
                             android:focusable="true"
-                            android:visibility="visible"
-                            android:background="@android:color/black"
+                            android:visibility="gone"
+                            android:background="@color/colorPrimary"
                             app:srcCompat="@drawable/ic_dialog_close_dark"
                             android:contentDescription="@string/app_name"/>
                 </LinearLayout>
