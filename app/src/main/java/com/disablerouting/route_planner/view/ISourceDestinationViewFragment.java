@@ -1,6 +1,5 @@
 package com.disablerouting.route_planner.view;
 
-import android.support.annotation.StringRes;
 import com.disablerouting.common.ILoader;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
 import com.disablerouting.route_planner.model.DirectionsResponse;
@@ -17,7 +16,7 @@ public interface ISourceDestinationViewFragment extends ILoader {
      * To show relevant error to user
      * @param error Error message
      */
-    void onFailureDirection(@StringRes int error);
+    void onFailureDirection(String error);
 
     /**
      * To show places
@@ -29,7 +28,7 @@ public interface ISourceDestinationViewFragment extends ILoader {
      * To show relevant error to user
      * @param error Error message
      */
-    void onFailureGeoCoding(@StringRes int error);
+    void onFailureGeoCoding(String error);
 
 
 }

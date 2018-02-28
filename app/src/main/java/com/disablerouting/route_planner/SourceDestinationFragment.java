@@ -272,7 +272,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     }
 
     @Override
-    public void onFailureDirection(int error) {
+    public void onFailureDirection(String error) {
+        Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         showSnackBar(error);
     }
 
@@ -287,7 +288,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     }
 
     @Override
-    public void onFailureGeoCoding(int error) {
+    public void onFailureGeoCoding(String error) {
+        Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         showSnackBar(error);
     }
 

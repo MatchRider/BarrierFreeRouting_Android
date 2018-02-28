@@ -35,7 +35,7 @@ public class DirectionsManager implements ResponseCallback<DirectionsResponse>{
     }
 
     @Override
-    public void onFailure(@NonNull ErrorResponse errorResponse) {
+    public void onFailure(@NonNull ErrorResponseNew errorResponse) {
         if(mIDirectionsResponseReceiver!=null){
             mIDirectionsResponseReceiver.onFailureDirection(errorResponse);
         }
