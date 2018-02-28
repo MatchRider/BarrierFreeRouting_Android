@@ -139,6 +139,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     }
 
     public void callForDestination(GeoPoint geoPointCurrent,GeoPoint geoPointSource, GeoPoint geoPointDestination){
+        Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         mGeoPointSource = geoPointSource;
         mGeoPointDestination= geoPointDestination;
         if(mEditTextSource!=null && !mEditTextSource.getText().toString().equalsIgnoreCase("") &&
@@ -377,6 +378,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         mListPopupWindow.dismiss();
         if(mEditTextSource.hasFocus()) {
             mEditTextSource.setText(mFeaturesResultSearch.get(i).getProperties().toString());

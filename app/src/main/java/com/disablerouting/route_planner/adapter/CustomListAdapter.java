@@ -7,12 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Filter;
 import android.widget.TextView;
 import com.disablerouting.R;
 import com.disablerouting.geo_coding.model.Features;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CustomListAdapter extends ArrayAdapter {
@@ -20,11 +18,6 @@ public class CustomListAdapter extends ArrayAdapter {
     private List<Features> dataList;
     private Context mContext;
     private int itemLayout;
-
-    private ListFilter listFilter = new ListFilter();
-    private List<Features> dataListAllItems;
-
-
 
     public CustomListAdapter(Context context, int resource, List<Features> storeDataLst) {
         super(context, resource, storeDataLst);
@@ -62,59 +55,4 @@ public class CustomListAdapter extends ArrayAdapter {
         return view;
     }
 
-    @NonNull
-    @Override
-    public Filter getFilter() {
-        return listFilter;
-    }
-
-    public class ListFilter extends Filter {
-        private Object lock = new Object();
-
-        @Override
-        protected FilterResults performFiltering(CharSequence prefix) {
-            FilterResults results = new FilterResults();
-            if (dataListAllItems == null) {
-                synchronized (lock) {
-                    dataListAllItems = new ArrayList<Features>(dataList);
-                }
-            }
-
-            if (prefix == null || prefix.length() == 0) {
-                synchronized (lock) {
-                    results.values = dataListAllItems;
-                    results.count = dataListAllItems.size();
-                }
-            } else {
-                final String searchStrLowerCase = prefix.toString().toLowerCase();
-                ArrayList<String> matchValues = new ArrayList<String>();
-
-                for (Features dataItem : dataListAllItems) {
-                    if (dataItem.getProperties().toString().startsWith(searchStrLowerCase)) {
-                        matchValues.add(dataItem.getProperties().toString());
-                    }
-                }
-
-                results.values = matchValues;
-                results.count = matchValues.size();
-            }
-
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            if (results.values != null) {
-                dataList = (ArrayList<Features>)results.values;
-            } else {
-                dataList = null;
-            }
-            if (results.count > 0) {
-                notifyDataSetChanged();
-            } else {
-                notifyDataSetInvalidated();
-            }
-        }
-
-    }
 } 
