@@ -5,7 +5,7 @@ public interface ISourceDestinationScreenPresenter {
 
     void getDestinationsData(String coordinates,String profile);
 
-    void getCoordinatesData(String query);
+    void getCoordinatesData(String query, String location, int limit);
 
 
     /**

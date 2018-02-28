@@ -52,6 +52,13 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @BindView(R.id.clear_destination_address)
     ImageView mDestinationAddressClear;
 
+
+    @BindView(R.id.fetch_current_source_address)
+    ImageView mSourceAddressFetch;
+
+    @BindView(R.id.fetch_current_destination_address)
+    ImageView mDestinationAddressFetch;
+
     @BindView(R.id.rel_source_destination)
     RelativeLayout mRelativeLayoutSourceDestination;
 
@@ -71,6 +78,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     TextView mTextViewDecent;
 
     private static final int SEARCH_TEXT_CHANGED = 1000;
+    private String mCurrentLocation=null;
 
     private ISourceDestinationScreenPresenter mISourceDestinationScreenPresenter;
     private String mCoordinates = null;
@@ -84,19 +92,22 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     private ListPopupWindow mListPopupWindow;
     private Features mFeaturesSource;
     private Features mFeaturesDestination;
+    private boolean mIsTextInputManually= false;
 
     @SuppressLint("HandlerLeak")
     final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(mEditTextSource.hasFocus() && mEditTextSource!=null && !mEditTextSource.getText().toString().equalsIgnoreCase("")){
-                mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextSource.getText().toString());
-            }
-            if(mEditTextDestination.hasFocus() && mEditTextDestination!=null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")){
-                mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextDestination.getText().toString());
-            }
-            //Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
+                if(!msg.obj.equals("")) {
+                    if (mEditTextSource.hasFocus() && mEditTextSource != null && !mEditTextSource.getText().toString().equalsIgnoreCase("")) {
+                        mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextSource.getText().toString(), "", 10);
+                    }
+                    if (mEditTextDestination.hasFocus() && mEditTextDestination != null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
+                        mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextDestination.getText().toString(), "", 10);
+                    }
+                }
+
         }
     };
 
@@ -109,6 +120,22 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         return fragment;
     }
 
+    @OnClick(R.id.fetch_current_source_address)
+    public void fetchCurrentSourceAdd(){
+        mIsTextInputManually= false;
+        if(mEditTextSource.hasFocus() && mEditTextSource!=null && mEditTextSource.getText().toString().equalsIgnoreCase("")){
+            mISourceDestinationScreenPresenter.getCoordinatesData("",mCurrentLocation,0);
+        }
+
+    }
+    @OnClick(R.id.fetch_current_destination_address)
+    public void fetchCurrentDestinationAdd(){
+        mIsTextInputManually=false;
+        handler.removeMessages(SEARCH_TEXT_CHANGED);
+        if(mEditTextDestination.hasFocus() && mEditTextDestination!=null && mEditTextDestination.getText().toString().equalsIgnoreCase("")){
+            mISourceDestinationScreenPresenter.getCoordinatesData("",mCurrentLocation,0);
+        }
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,19 +152,34 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        addFocusChangeListener();
         addListener();
     }
 
-    @OnClick(R.id.edt_source_add)
-    public void onSourceTap() {
-        addListener();
-    }
+    public void addFocusChangeListener(){
+        mEditTextSource.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(view.hasFocus()){
+                    mSourceAddressFetch.setVisibility(View.VISIBLE);
+                }else {
+                    mSourceAddressFetch.setVisibility(View.GONE);
+                }
+            }
+        });
+        mEditTextDestination.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(view.hasFocus()){
+                    mDestinationAddressFetch.setVisibility(View.VISIBLE);
 
-    @OnClick(R.id.edt_dest_add)
-    public void onDestinationTap() {
-        addListener();
-    }
+                }else {
+                    mDestinationAddressFetch.setVisibility(View.GONE);
 
+                }
+            }
+        });
+    }
     public void callForDestination(GeoPoint geoPointCurrent,GeoPoint geoPointSource, GeoPoint geoPointDestination){
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         mGeoPointSource = geoPointSource;
@@ -170,15 +212,22 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
             @Override
             public void afterTextChanged(Editable str) {
-                if (str.length() != 0) {
+                if(str.length()==0){
+                    mSourceAddressFetch.setVisibility(View.VISIBLE);
+                }
+                else if (str.length() >= 1) {
+                    mSourceAddressFetch.setVisibility(View.GONE);
                     mSourceAddressClear.setVisibility(View.VISIBLE);
                 } else {
+                    mSourceAddressFetch.setVisibility(View.GONE);
                     mSourceAddressClear.setVisibility(View.GONE);
                 }
-                if (str.toString().length() > 3) {
+                if (str.toString().length() > 3 && mIsTextInputManually) {
+
                     handler.removeMessages(SEARCH_TEXT_CHANGED);
                     handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, str.toString()), 500);
                 } else {
+                    mIsTextInputManually=true;
                     handler.removeMessages(SEARCH_TEXT_CHANGED);
                     handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, ""), 500);
                 }
@@ -198,15 +247,21 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
             @Override
             public void afterTextChanged(Editable str) {
-                if (str.length() != 0) {
+                if(str.length()==0){
+                    mDestinationAddressFetch.setVisibility(View.VISIBLE);
+                }
+                else if (str.length() >= 1) {
+                    mDestinationAddressFetch.setVisibility(View.GONE);
                     mDestinationAddressClear.setVisibility(View.VISIBLE);
                 } else {
+                    mDestinationAddressFetch.setVisibility(View.GONE);
                     mDestinationAddressClear.setVisibility(View.GONE);
                 }
-                if (str.toString().length() > 3) {
+                if (str.toString().length() > 3 && mIsTextInputManually) {
                     handler.removeMessages(SEARCH_TEXT_CHANGED);
                     handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, str.toString()), 500);
                 } else {
+                    mIsTextInputManually=true;
                     handler.removeMessages(SEARCH_TEXT_CHANGED);
                     handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, ""), 500);
                 }
@@ -231,11 +286,15 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @OnClick(R.id.clear_source_address)
     public void clearSource(){
+        mSourceAddressClear.setVisibility(View.GONE);
+        mSourceAddressFetch.setVisibility(View.GONE);
         clearSourceComplete();
     }
 
     @OnClick(R.id.clear_destination_address)
     public void clearDestination(){
+        mDestinationAddressClear.setVisibility(View.GONE);
+        mDestinationAddressFetch.setVisibility(View.GONE);
         clearDestinationComplete();
     }
     @Override
@@ -261,8 +320,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 mTextViewTime.setText(time);
                 String distance = String.valueOf(data.getRoutesList().get(0).getSummary().getDistance());
                 mTextViewKM.setText(String.format("%skm", distance));
-                mTextViewAccent.setText("NULL");
-                mTextViewDecent.setText("NULL");
+                mTextViewAccent.setText("--");
+                mTextViewDecent.setText("--");
             }
         }else {
             mLinearLayoutTimeDistance.setVisibility(View.GONE);
@@ -279,11 +338,28 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @Override
     public void onGeoDataDataReceived(GeoCodingResponse data) {
-       // Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
-        if(data!=null && data.getFeatures()!=null && data.getFeatures().size()!=0) {
+        handler.removeMessages(SEARCH_TEXT_CHANGED);
+
+        if(data!=null && data.getFeatures()!=null && data.getFeatures().size()!=0 && data.getFeatures().size()>1) {
             mFeaturesResultSearch= data.getFeatures();
             mAddressListAdapter = new CustomListAdapter(getContext(), R.layout.address_item_view, data.getFeatures());
             setListPopUp(mRelativeLayoutSourceDestination);
+        }else if(data!=null && data.getFeatures()!=null && data.getFeatures().size()!=0){
+
+            Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
+            mFeaturesResultSearch= data.getFeatures();
+            if(mEditTextSource.hasFocus()) {
+                mEditTextSource.setText(mFeaturesResultSearch.get(0).getProperties().toString());
+                mGeoPointSource = new GeoPoint(mFeaturesResultSearch.get(0).getGeometry().getCoordinates().get(0),
+                        mFeaturesResultSearch.get(0).getGeometry().getCoordinates().get(1));
+                mFeaturesSource = mFeaturesResultSearch.get(0);
+            }else if (mEditTextDestination.hasFocus()){
+                mEditTextDestination.setText(mFeaturesResultSearch.get(0).getProperties().toString());
+                mGeoPointDestination = new GeoPoint(mFeaturesResultSearch.get(0).getGeometry().getCoordinates().get(0),
+                        mFeaturesResultSearch.get(0).getGeometry().getCoordinates().get(1));
+                mFeaturesDestination = mFeaturesResultSearch.get(0);
+
+            }
         }
     }
 
@@ -316,18 +392,13 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @OnClick(R.id.img_swap)
     public void swapDataOfViews() {
-        /*mEditTextSource.clearFocus();
-        mEditTextDestination.clearFocus();
-
-        mEditTextSource.setFocusableInTouchMode(false);
-        mEditTextDestination.setFocusableInTouchMode(false);*/
-        changeAddress();
+        performToogleAddress();
     }
 
     /**
      * Swap address when toggle
      */
-    public void changeAddress() {
+    public void performToogleAddress() {
         //Change string data on edit text
         String sourceData = mEditTextSource.getText().toString();
         mEditTextSource.setText((mEditTextDestination.getText().toString()));
@@ -398,4 +469,15 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         handler.removeMessages(SEARCH_TEXT_CHANGED);
     }
 
+    /**
+     * Get current location
+     * @param geoPointCurrent current location geo points
+     */
+    public void onUpdateLocation(GeoPoint geoPointCurrent){
+        if(geoPointCurrent!=null){
+            mCurrentLocation= geoPointCurrent.getLatitude()+","+geoPointCurrent.getLongitude();
+        }else {
+            mCurrentLocation = null;
+        }
+    }
 }

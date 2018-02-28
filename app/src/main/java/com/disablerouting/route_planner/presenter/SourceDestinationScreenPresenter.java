@@ -33,10 +33,10 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
     }
 
     @Override
-    public void getCoordinatesData(String query) {
+    public void getCoordinatesData(String query, String location,int limit) {
         if (mISourceDestinationViewFragment != null) {
             mISourceDestinationViewFragment.showLoader();
-            mGeoCodingManager.getGeoCoding(this, query);
+            mGeoCodingManager.getGeoCoding(this, query, location,limit);
         }
     }
 

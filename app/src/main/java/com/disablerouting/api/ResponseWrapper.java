@@ -105,9 +105,12 @@ public class ResponseWrapper<T> implements Callback<T> {
     private ErrorResponseNew parseErrorNew(String errorBodyPayload) {
         try {
             JSONObject jsonObject = new JSONObject(errorBodyPayload);
-            JSONObject error = jsonObject.optJSONObject("error");
+            JSONObject error=null;
+            if(jsonObject.has("error")) {
+                error = jsonObject.optJSONObject("error");
+            }
             String errorMessage= null;
-            if(error.has("message")) {
+            if(error!=null && error.has("message")) {
                 errorMessage = error.optString("message");
             }
             if (errorMessage != null) {

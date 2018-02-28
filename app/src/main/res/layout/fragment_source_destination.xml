@@ -5,6 +5,7 @@
                 android:orientation="horizontal"
                 android:id="@+id/rel_source_destination"
                 android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
                 android:baselineAligned="false">
     <LinearLayout android:layout_width="match_parent"
                   android:orientation="horizontal"
@@ -68,19 +69,35 @@
                             android:textColorHint="@color/colorBlackHint"
                             android:textColor="@color/colorTextGray"
                             tools:ignore="NestedWeights"/>
-                    <ImageView
-                            android:id="@+id/clear_source_address"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/padding_normal"
-                            android:layout_marginEnd="@dimen/padding_normal"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:visibility="gone"
-                            android:background="@color/colorPrimary"
-                            app:srcCompat="@drawable/ic_dialog_close_dark"
-                            android:contentDescription="@string/app_name"/>
+                    <FrameLayout android:layout_width="wrap_content"
+                                 android:layout_height="match_parent">
+                        <ImageView
+                                android:id="@+id/fetch_current_source_address"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/padding_normal"
+                                android:layout_marginEnd="@dimen/padding_normal"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:visibility="gone"
+                                android:src="@drawable/ic_recenter_edit_field"
+                                android:contentDescription="@string/app_name"/>
+
+                        <ImageView
+                                android:id="@+id/clear_source_address"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="@dimen/padding_normal"
+                                android:layout_marginEnd="@dimen/padding_normal"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:visibility="gone"
+                                android:background="@color/colorPrimary"
+                                app:srcCompat="@drawable/ic_dialog_close_dark"
+                                android:contentDescription="@string/app_name"/>
+                    </FrameLayout>
                 </LinearLayout>
 
                 <TextView
@@ -130,19 +147,34 @@
                             android:textColorHint="@color/colorBlackHint"
                             android:textColor="@color/colorTextGray"
                             tools:ignore="NestedWeights"/>
-                    <ImageView
-                            android:id="@+id/clear_destination_address"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/padding_normal"
-                            android:layout_marginEnd="@dimen/padding_normal"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:visibility="gone"
-                            android:background="@color/colorPrimary"
-                            app:srcCompat="@drawable/ic_dialog_close_dark"
-                            android:contentDescription="@string/app_name"/>
+                    <FrameLayout android:layout_width="wrap_content"
+                                 android:layout_height="match_parent">
+                        <ImageView
+                                android:id="@+id/fetch_current_destination_address"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/padding_normal"
+                                android:layout_marginEnd="@dimen/padding_normal"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:visibility="gone"
+                                android:src="@drawable/ic_recenter_edit_field"
+                                android:contentDescription="@string/app_name"/>
+                        <ImageView
+                                android:id="@+id/clear_destination_address"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="@dimen/padding_normal"
+                                android:layout_marginEnd="@dimen/padding_normal"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:visibility="gone"
+                                android:background="@color/colorPrimary"
+                                app:srcCompat="@drawable/ic_dialog_close_dark"
+                                android:contentDescription="@string/app_name"/>
+                    </FrameLayout>
                 </LinearLayout>
                 <ImageView
                         android:id="@+id/img_swap"
@@ -166,16 +198,16 @@
             android:padding="@dimen/padding_minor"
             android:layout_height="wrap_content">
         <TextView
-                  android:id="@+id/txv_time"
-                  android:layout_width="wrap_content"
-                  android:drawableStart="@drawable/ic_access_time"
-                  android:drawablePadding="@dimen/padding_minor"
-                  tools:text="0.15"
-                  android:textSize="@dimen/text_normal"
-                  android:fontFamily="@string/ft_bold_font"
-                  android:gravity="center_vertical"
-                  android:textColor="@color/colorTextGray"
-                  android:layout_height="wrap_content"/>
+                android:id="@+id/txv_time"
+                android:layout_width="wrap_content"
+                android:drawableStart="@drawable/ic_access_time"
+                android:drawablePadding="@dimen/padding_minor"
+                tools:text="0.15"
+                android:textSize="@dimen/text_normal"
+                android:fontFamily="@string/ft_bold_font"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorTextGray"
+                android:layout_height="wrap_content"/>
         <TextView
                 android:id="@+id/txv_km"
                 android:layout_width="wrap_content"

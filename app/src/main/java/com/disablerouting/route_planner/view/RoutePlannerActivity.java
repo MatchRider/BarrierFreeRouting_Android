@@ -37,6 +37,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     protected void onUpdateLocation(Location location) {
         mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
         GeoPoint geoPoint = new GeoPoint(mCurrentLocation.longitude, mCurrentLocation.latitude);
+        mSourceDestinationFragment.onUpdateLocation(geoPoint);
         GeoPoint geoPointSource = null;
         GeoPoint geoPointDestination = null;
         if (mFeaturesSourceAddress!=null && mFeaturesDestinationAddress != null) {

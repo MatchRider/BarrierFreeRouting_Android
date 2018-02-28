@@ -25,9 +25,12 @@ public interface ApiService {
      * Api call for getting places
      * @param api_key Insert your API Key here.
      * @param query String to search
+     * @param limit max no of data items
+     * @param location String of Default: 8.68353,49.412623 long,lat
      * @return return address of places
      */
     @GET("geocoding")
-    Call<GeoCodingResponse> getGeoCoding(@Query("api_key") String api_key, @Query("query") String query, @Query("limit") int limit);
+    Call<GeoCodingResponse> getGeoCoding(@Query("api_key") String api_key, @Query("query") String query,
+             @Query("location") String location,@Query("limit") int limit);
 
 }
