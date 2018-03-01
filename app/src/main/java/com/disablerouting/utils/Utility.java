@@ -10,6 +10,8 @@ import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.views.overlay.OverlayItem;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -60,4 +62,8 @@ public class Utility {
         return new BoundingBoxE6(maxLat, maxLong, minLat, minLong);
     }
 
+    public static String trimTWoDecimalPlaces(double value){
+        NumberFormat formatter = new DecimalFormat("#0.00");
+        return formatter.format(value);
+    }
 }

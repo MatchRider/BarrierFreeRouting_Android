@@ -38,7 +38,7 @@ import org.osmdroid.util.GeoPoint;
 import java.util.List;
 
 public class SourceDestinationFragment extends BaseFragmentImpl implements ISourceDestinationViewFragment,
-        TextView.OnEditorActionListener , AdapterView.OnItemClickListener{
+        TextView.OnEditorActionListener, AdapterView.OnItemClickListener {
 
     @BindView(R.id.edt_source_add)
     CustomAutoCompleteTextView mEditTextSource;
@@ -78,7 +78,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     TextView mTextViewDecent;
 
     private static final int SEARCH_TEXT_CHANGED = 1000;
-    private String mCurrentLocation=null;
+    private String mCurrentLocation = null;
 
     private ISourceDestinationScreenPresenter mISourceDestinationScreenPresenter;
     private String mCoordinates = null;
@@ -92,21 +92,21 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     private ListPopupWindow mListPopupWindow;
     private Features mFeaturesSource;
     private Features mFeaturesDestination;
-    private boolean mIsTextInputManually= false;
+    private boolean mIsTextInputManually = false;
 
     @SuppressLint("HandlerLeak")
     final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-                if(!msg.obj.equals("")) {
-                    if (mEditTextSource.hasFocus() && mEditTextSource != null && !mEditTextSource.getText().toString().equalsIgnoreCase("")) {
-                        mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextSource.getText().toString(), "", 10);
-                    }
-                    if (mEditTextDestination.hasFocus() && mEditTextDestination != null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
-                        mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextDestination.getText().toString(), "", 10);
-                    }
+            if (!msg.obj.equals("")) {
+                if (mEditTextSource.hasFocus() && mEditTextSource != null && !mEditTextSource.getText().toString().equalsIgnoreCase("")) {
+                    mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextSource.getText().toString(), "", 10);
                 }
+                if (mEditTextDestination.hasFocus() && mEditTextDestination != null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
+                    mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextDestination.getText().toString(), "", 10);
+                }
+            }
 
         }
     };
@@ -121,21 +121,23 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     }
 
     @OnClick(R.id.fetch_current_source_address)
-    public void fetchCurrentSourceAdd(){
-        mIsTextInputManually= false;
-        if(mEditTextSource.hasFocus() && mEditTextSource!=null && mEditTextSource.getText().toString().equalsIgnoreCase("")){
-            mISourceDestinationScreenPresenter.getCoordinatesData("",mCurrentLocation,0);
+    public void fetchCurrentSourceAdd() {
+        mIsTextInputManually = false;
+        if (mEditTextSource.hasFocus() && mEditTextSource != null && mEditTextSource.getText().toString().equalsIgnoreCase("")) {
+            mISourceDestinationScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
         }
 
     }
+
     @OnClick(R.id.fetch_current_destination_address)
-    public void fetchCurrentDestinationAdd(){
-        mIsTextInputManually=false;
+    public void fetchCurrentDestinationAdd() {
+        mIsTextInputManually = false;
         handler.removeMessages(SEARCH_TEXT_CHANGED);
-        if(mEditTextDestination.hasFocus() && mEditTextDestination!=null && mEditTextDestination.getText().toString().equalsIgnoreCase("")){
-            mISourceDestinationScreenPresenter.getCoordinatesData("",mCurrentLocation,0);
+        if (mEditTextDestination.hasFocus() && mEditTextDestination != null && mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
+            mISourceDestinationScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
         }
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,13 +158,13 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         addListener();
     }
 
-    public void addFocusChangeListener(){
+    public void addFocusChangeListener() {
         mEditTextSource.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(view.hasFocus()){
+                if (view.hasFocus()) {
                     mSourceAddressFetch.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     mSourceAddressFetch.setVisibility(View.GONE);
                 }
             }
@@ -170,29 +172,29 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mEditTextDestination.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(view.hasFocus()){
+                if (view.hasFocus()) {
                     mDestinationAddressFetch.setVisibility(View.VISIBLE);
 
-                }else {
+                } else {
                     mDestinationAddressFetch.setVisibility(View.GONE);
 
                 }
             }
         });
     }
-    public void callForDestination(GeoPoint geoPointCurrent,GeoPoint geoPointSource, GeoPoint geoPointDestination){
+
+    public void callForDestination(GeoPoint geoPointCurrent, GeoPoint geoPointSource, GeoPoint geoPointDestination) {
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         mGeoPointSource = geoPointSource;
-        mGeoPointDestination= geoPointDestination;
-        if(mEditTextSource!=null && !mEditTextSource.getText().toString().equalsIgnoreCase("") &&
-                mEditTextDestination!=null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")){
+        mGeoPointDestination = geoPointDestination;
+        if (mEditTextSource != null && !mEditTextSource.getText().toString().equalsIgnoreCase("") &&
+                mEditTextDestination != null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
 
-            mCoordinates = mGeoPointSource+"|"+mGeoPointDestination;
-            mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates,mProfileType);
+            mCoordinates = mGeoPointSource + "|" + mGeoPointDestination;
+            mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates, mProfileType);
         }
         handler.removeMessages(SEARCH_TEXT_CHANGED);
     }
-
 
 
     /**
@@ -212,10 +214,9 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
             @Override
             public void afterTextChanged(Editable str) {
-                if(str.length()==0){
+                if (str.length() == 0) {
                     mSourceAddressFetch.setVisibility(View.VISIBLE);
-                }
-                else if (str.length() >= 1) {
+                } else if (str.length() >= 1) {
                     mSourceAddressFetch.setVisibility(View.GONE);
                     mSourceAddressClear.setVisibility(View.VISIBLE);
                 } else {
@@ -227,7 +228,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                     handler.removeMessages(SEARCH_TEXT_CHANGED);
                     handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, str.toString()), 500);
                 } else {
-                    mIsTextInputManually=true;
+                    mIsTextInputManually = true;
                     handler.removeMessages(SEARCH_TEXT_CHANGED);
                     handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, ""), 500);
                 }
@@ -247,10 +248,9 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
             @Override
             public void afterTextChanged(Editable str) {
-                if(str.length()==0){
+                if (str.length() == 0) {
                     mDestinationAddressFetch.setVisibility(View.VISIBLE);
-                }
-                else if (str.length() >= 1) {
+                } else if (str.length() >= 1) {
                     mDestinationAddressFetch.setVisibility(View.GONE);
                     mDestinationAddressClear.setVisibility(View.VISIBLE);
                 } else {
@@ -261,7 +261,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                     handler.removeMessages(SEARCH_TEXT_CHANGED);
                     handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, str.toString()), 500);
                 } else {
-                    mIsTextInputManually=true;
+                    mIsTextInputManually = true;
                     handler.removeMessages(SEARCH_TEXT_CHANGED);
                     handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, ""), 500);
                 }
@@ -271,8 +271,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @OnClick(R.id.txv_go)
     public void onGoClick() {
-        mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource,mFeaturesDestination);
-        callForDestination(null,mGeoPointSource,mGeoPointDestination);
+        mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource, mFeaturesDestination);
+        callForDestination(null, mGeoPointSource, mGeoPointDestination);
     }
 
     @OnClick(R.id.img_back)
@@ -285,21 +285,22 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     }
 
     @OnClick(R.id.clear_source_address)
-    public void clearSource(){
+    public void clearSource() {
         mSourceAddressClear.setVisibility(View.GONE);
         mSourceAddressFetch.setVisibility(View.GONE);
         clearSourceComplete();
     }
 
     @OnClick(R.id.clear_destination_address)
-    public void clearDestination(){
+    public void clearDestination() {
         mDestinationAddressClear.setVisibility(View.GONE);
         mDestinationAddressFetch.setVisibility(View.GONE);
         clearDestinationComplete();
     }
+
     @Override
     public void showLoader() {
-        if(getActivity()!=null && !getActivity().isFinishing()) {
+        if (getActivity() != null && !getActivity().isFinishing()) {
             showProgress();
         }
     }
@@ -315,15 +316,23 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 && data.getRoutesList().get(0).getGeometry() != null) {
             mOnSourceDestinationListener.plotDataOnMap(data.getRoutesList().get(0).getGeometry());
             mLinearLayoutTimeDistance.setVisibility(View.VISIBLE);
-            if(data.getRoutesList().get(0).getSummary()!=null) {
-                String time = String.valueOf(data.getRoutesList().get(0).getSummary().getDuration());
-                mTextViewTime.setText(time);
-                String distance = String.valueOf(data.getRoutesList().get(0).getSummary().getDistance());
-                mTextViewKM.setText(String.format("%skm", distance));
+            if (data.getRoutesList().get(0).getSummary() != null) {
+                if (data.getRoutesList().get(0).getSummary().getDuration() != 0) {
+                    String time = String.valueOf(data.getRoutesList().get(0).getSummary().getDuration() / 60);
+                    mTextViewTime.setText(String.format("%s%s", time, getContext().getResources().getString(R.string.min)));
+                } else {
+                    mTextViewTime.setText(String.format("%s%s", "--", getContext().getResources().getString(R.string.min)));
+                }
+                if (data.getRoutesList().get(0).getSummary().getDistance() != 0) {
+                    String distance = String.valueOf(Utility.trimTWoDecimalPlaces(data.getRoutesList().get(0).getSummary().getDistance() / 1000));
+                    mTextViewKM.setText(String.format("%s%s", distance, getContext().getResources().getString(R.string.km)));
+                } else {
+                    mTextViewKM.setText(String.format("%s%s", "--", getContext().getResources().getString(R.string.km)));
+                }
                 mTextViewAccent.setText("--");
                 mTextViewDecent.setText("--");
             }
-        }else {
+        } else {
             mLinearLayoutTimeDistance.setVisibility(View.GONE);
 
         }
@@ -340,20 +349,20 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     public void onGeoDataDataReceived(GeoCodingResponse data) {
         handler.removeMessages(SEARCH_TEXT_CHANGED);
 
-        if(data!=null && data.getFeatures()!=null && data.getFeatures().size()!=0 && data.getFeatures().size()>1) {
-            mFeaturesResultSearch= data.getFeatures();
+        if (data != null && data.getFeatures() != null && data.getFeatures().size() != 0 && data.getFeatures().size() > 1) {
+            mFeaturesResultSearch = data.getFeatures();
             mAddressListAdapter = new CustomListAdapter(getContext(), R.layout.address_item_view, data.getFeatures());
             setListPopUp(mRelativeLayoutSourceDestination);
-        }else if(data!=null && data.getFeatures()!=null && data.getFeatures().size()!=0){
+        } else if (data != null && data.getFeatures() != null && data.getFeatures().size() != 0) {
 
             Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
-            mFeaturesResultSearch= data.getFeatures();
-            if(mEditTextSource.hasFocus()) {
+            mFeaturesResultSearch = data.getFeatures();
+            if (mEditTextSource.hasFocus()) {
                 mEditTextSource.setText(mFeaturesResultSearch.get(0).getProperties().toString());
                 mGeoPointSource = new GeoPoint(mFeaturesResultSearch.get(0).getGeometry().getCoordinates().get(0),
                         mFeaturesResultSearch.get(0).getGeometry().getCoordinates().get(1));
                 mFeaturesSource = mFeaturesResultSearch.get(0);
-            }else if (mEditTextDestination.hasFocus()){
+            } else if (mEditTextDestination.hasFocus()) {
                 mEditTextDestination.setText(mFeaturesResultSearch.get(0).getProperties().toString());
                 mGeoPointDestination = new GeoPoint(mFeaturesResultSearch.get(0).getGeometry().getCoordinates().get(0),
                         mFeaturesResultSearch.get(0).getGeometry().getCoordinates().get(1));
@@ -379,32 +388,34 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @Override
     public void onPause() {
         super.onPause();
-       Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
+        Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
     }
 
     public void clearSourceComplete() {
         mEditTextSource.setText("");
+        mSourceAddressFetch.setVisibility(View.GONE);
     }
 
     public void clearDestinationComplete() {
         mEditTextDestination.setText("");
+        mDestinationAddressFetch.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.img_swap)
     public void swapDataOfViews() {
         performToogleAddress();
-        if(mEditTextSource.getText().toString().equalsIgnoreCase("")){
+        if (mEditTextSource.getText().toString().equalsIgnoreCase("")) {
             mSourceAddressClear.setVisibility(View.GONE);
             mSourceAddressFetch.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             mSourceAddressClear.setVisibility(View.VISIBLE);
             mSourceAddressFetch.setVisibility(View.GONE);
 
         }
-        if(mEditTextDestination.getText().toString().equalsIgnoreCase("")){
+        if (mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
             mDestinationAddressClear.setVisibility(View.GONE);
             mDestinationAddressFetch.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             mDestinationAddressClear.setVisibility(View.VISIBLE);
             mDestinationAddressFetch.setVisibility(View.GONE);
 
@@ -422,17 +433,17 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mEditTextDestination.setText(sourceData);
 
         //Change model data on edit text
-        Features featuresSource= mFeaturesSource;
+        Features featuresSource = mFeaturesSource;
         mFeaturesSource = mFeaturesDestination;
-        mFeaturesDestination= featuresSource;
+        mFeaturesDestination = featuresSource;
 
         //Change geo points
-        GeoPoint geoPoint= mGeoPointSource;
+        GeoPoint geoPoint = mGeoPointSource;
         mGeoPointSource = mGeoPointDestination;
-        mGeoPointDestination= geoPoint;
+        mGeoPointDestination = geoPoint;
 
-        mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource,mFeaturesDestination);
-        callForDestination(null,mGeoPointSource,mGeoPointDestination);
+        mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource, mFeaturesDestination);
+        callForDestination(null, mGeoPointSource, mGeoPointDestination);
     }
 
 
@@ -452,14 +463,15 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     /**
      * Show data of search result in pop up
+     *
      * @param anchor view below which placed  result
      */
-    private void setListPopUp(View anchor){
+    private void setListPopUp(View anchor) {
         mListPopupWindow = new ListPopupWindow(getContext());
         mListPopupWindow.setAnchorView(anchor);
         mListPopupWindow.setAnimationStyle(R.style.popup_window_animation);
         int height = Utility.calculatePopUpHeight(getContext());
-        mListPopupWindow.setHeight(height/2);
+        mListPopupWindow.setHeight(height / 2);
         mListPopupWindow.setWidth(ListPopupWindow.MATCH_PARENT);
         mListPopupWindow.setAdapter(mAddressListAdapter);
         mListPopupWindow.setOnItemClickListener(this);
@@ -470,13 +482,13 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         mListPopupWindow.dismiss();
-        if(mEditTextSource.hasFocus()) {
+        if (mEditTextSource.hasFocus()) {
             mEditTextSource.setText(mFeaturesResultSearch.get(i).getProperties().toString());
             mGeoPointSource = new GeoPoint(mFeaturesResultSearch.get(i).getGeometry().getCoordinates().get(0),
                     mFeaturesResultSearch.get(i).getGeometry().getCoordinates().get(1));
             mFeaturesSource = mFeaturesResultSearch.get(0);
 
-        }else if(mEditTextDestination.hasFocus()){
+        } else if (mEditTextDestination.hasFocus()) {
             mEditTextDestination.setText(mFeaturesResultSearch.get(i).getProperties().toString());
             mGeoPointDestination = new GeoPoint(mFeaturesResultSearch.get(i).getGeometry().getCoordinates().get(0),
                     mFeaturesResultSearch.get(i).getGeometry().getCoordinates().get(1));
@@ -488,12 +500,13 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     /**
      * Get current location
+     *
      * @param geoPointCurrent current location geo points
      */
-    public void onUpdateLocation(GeoPoint geoPointCurrent){
-        if(geoPointCurrent!=null){
-            mCurrentLocation= geoPointCurrent.getLatitude()+","+geoPointCurrent.getLongitude();
-        }else {
+    public void onUpdateLocation(GeoPoint geoPointCurrent) {
+        if (geoPointCurrent != null) {
+            mCurrentLocation = geoPointCurrent.getLatitude() + "," + geoPointCurrent.getLongitude();
+        } else {
             mCurrentLocation = null;
         }
     }

@@ -78,8 +78,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         checkLocationStatus();
-        createLocationRequest();
         addLocationCallback();
+        createLocationRequest();
         initializeMap();
     }
 
@@ -94,7 +94,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
         }
     }
 
-    private void initializeMap() {
+    protected void initializeMap() {
         mMapView = findViewById(com.disablerouting.R.id.map_view);
         mMapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
         mMapView.setBuiltInZoomControls(true);
@@ -112,8 +112,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
         mStartMarker = new Marker(mMapView);
         mEndMarker = new Marker(mMapView);
         mCurrentMarker = new Marker(mMapView);
-
-        plotDataOfSourceDestination(null,"","");
     }
 
     private void setProvider() {
@@ -239,6 +237,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
     @Override
     protected void onResume() {
         super.onResume();
+
         startLocationUpdates();
     }
 
@@ -249,10 +248,10 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
     }
 
     protected void startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(this,
+        if ((ActivityCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
             return;
         }
         mFusedLocationClient.requestLocationUpdates(mLocationRequest,
@@ -326,6 +325,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
                     if (mMapView != null) {
                         mLatitude = location.getLatitude();
                         mLongitude = location.getLongitude();
+                        Log.e("latlngfromupdate", String.valueOf(mLatitude+mLongitude));
                         mMapView.getOverlays().clear();
                         mMapView.invalidate();
                         onUpdateLocation(location);
@@ -370,7 +370,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
                     } else {
                         if (ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
                             Log.e("allowed", permission);
-                            initializeMap();
                         } else {
                             openSettingDialog();
                             break;
@@ -402,6 +401,9 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConstant.SETTING_REQUEST_CODE) {
             checkLocationStatus();
+            addLocationCallback();
+            createLocationRequest();
+            initializeMap();
         }
     }
 
@@ -437,5 +439,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
             }
         });
     }
+
 
 }

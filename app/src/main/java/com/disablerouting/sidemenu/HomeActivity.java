@@ -1,6 +1,10 @@
 package com.disablerouting.sidemenu;
 
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
@@ -12,9 +16,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
+import com.disablerouting.common.AppConstant;
 import com.disablerouting.route_planner.view.RoutePlannerActivity;
 import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
 import com.disablerouting.suggestions.SuggestionsActivity;
+import com.disablerouting.utils.PermissionUtils;
 
 public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragmentCallback{
 
@@ -30,6 +36,10 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
 
     private boolean slideState = false;
 
+    final String[] locationPermissions = new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.ACCESS_NETWORK_STATE};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +48,19 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
 
         addNavigationMenu(navigationDrawerLayout, this);
         addListener();
+        checkLocationStatus();
 
     }
-
+    /**
+     * Check location services status
+     */
+    protected void checkLocationStatus() {
+        if (!PermissionUtils.isPermissionAllowed(this, android.Manifest.permission_group.LOCATION)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                ActivityCompat.requestPermissions(this, locationPermissions, AppConstant.REQUEST_CODE);
+            }
+        }
+    }
     /**
      * Add Listener for drawer
      */
@@ -87,5 +107,33 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
     @OnClick(R.id.btn_suggestion)
     void redirectSuggestions(){
         launchActivity(this, SuggestionsActivity.class);
+    }
+    /**
+     * Result when user give permission or not
+     *
+     * @param requestCode  Request code
+     * @param permissions  Type of permission
+     * @param grantResults Results of permission
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case AppConstant.REQUEST_CODE: {
+                for (String permission : permissions) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                        finish();
+                        break;
+                    } else {
+                        if (ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
+
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

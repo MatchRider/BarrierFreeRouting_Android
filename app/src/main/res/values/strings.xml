@@ -58,6 +58,8 @@
     <string name="coming_soon">Coming soon</string>
     <string name="please_provide_feedback_for">Please provide feedback for</string>
     <string name="cancel">CANCEL</string>
+    <string name="min">min</string>
+    <string name="km">km</string>
 
 
 </resources>
