@@ -166,6 +166,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                     mSourceAddressFetch.setVisibility(View.VISIBLE);
                 } else {
                     mSourceAddressFetch.setVisibility(View.GONE);
+                    mDestinationAddressFetch.setVisibility(View.GONE);
                 }
             }
         });
@@ -177,6 +178,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
                 } else {
                     mDestinationAddressFetch.setVisibility(View.GONE);
+                    mSourceAddressFetch.setVisibility(View.GONE);
 
                 }
             }
@@ -215,6 +217,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             @Override
             public void afterTextChanged(Editable str) {
                 if (str.length() == 0) {
+                    mSourceAddressClear.setVisibility(View.GONE);
                     mSourceAddressFetch.setVisibility(View.VISIBLE);
                 } else if (str.length() >= 1) {
                     mSourceAddressFetch.setVisibility(View.GONE);
@@ -249,6 +252,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             @Override
             public void afterTextChanged(Editable str) {
                 if (str.length() == 0) {
+                    mDestinationAddressClear.setVisibility(View.GONE);
                     mDestinationAddressFetch.setVisibility(View.VISIBLE);
                 } else if (str.length() >= 1) {
                     mDestinationAddressFetch.setVisibility(View.GONE);
@@ -452,6 +456,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         if (i == EditorInfo.IME_ACTION_DONE) {
             Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         }
+
         return false;
     }
 
