@@ -11,6 +11,7 @@ import android.widget.ListView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.disablerouting.R;
+import com.disablerouting.feedback.FeedbackActivity;
 import com.disablerouting.sidemenu.adapter.SideMenuAdapter;
 import com.disablerouting.sidemenu.model.SideMenuData;
 import com.disablerouting.sidemenu.presenter.ISideMenuViewListener;
@@ -90,6 +91,8 @@ public class SideMenuFragment extends Fragment implements ISideMenuView,
 
         switch (message) {
             case R.string.ACKNOWLEDGEMENTS:
+                newActivityIntent= new Intent(getContext(), FeedbackActivity.class);
+                startActivity(newActivityIntent);
                 break;
             case R.string.FEEDBACK:
                 break;

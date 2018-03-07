@@ -61,6 +61,9 @@
     <string name="OPS_SOMETHING_WENT_WRONG">Ops Something went wrong. Please try again after some
         time.
     </string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="send">Send</string>
 
 
 </resources>
