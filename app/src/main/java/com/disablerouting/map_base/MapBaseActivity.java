@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -73,6 +74,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
     private Polyline mPolyline;
     private String mStartAddress;
     private String mEndAddress;
+    private boolean mIsPolylineClicked=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,10 +179,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
     private void addPolyLine(final List<GeoPoint> geoPointList, final List<Steps> stepsList) {
         mMapView.getOverlayManager().remove(mPolyline);
         mMapView.invalidate();
-
-        ArrayList<Polyline> polylineArrayList= new ArrayList<>();
-        int index =0;
-
+        final ArrayList<Polyline> polylineArrayList = new ArrayList<>();
         if (stepsList != null) {
             for (int i = 0; i < stepsList.size(); i++) {
                 int indexFirst = stepsList.get(i).getDoublesWayPoints().get(0);
@@ -189,50 +188,55 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
                 List<GeoPoint> geoPointsToSet = new ArrayList<>(geoPointList.subList(indexFirst, indexLast+1));
                 mPolyline = new Polyline();
                 mPolyline.setPoints(geoPointsToSet);
+                mPolyline.setWidth(20);
+                polylineArrayList.add(mPolyline);
 
                 mPolyline.setColor(getResources().getColor(R.color.colorPrimary));
-                if (mMapView != null) {
-                    mMapView.getOverlayManager().add(mPolyline);
-                }
 
                 mPolyline.setOnClickListener(new Polyline.OnClickListener() {
                     @Override
-                    public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                        polyline.setColor(getResources().getColor(R.color.colorGreen));
+                    public boolean onClick(final Polyline polyline, MapView mapView, GeoPoint eventPos) {
+                       /* polyline.setColor(getResources().getColor(R.color.colorGreen));
+                        polyline.setWidth(30);
+*/
+                        /*runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                polyline.setColor(getResources().getColor(R.color.colorGreen));
+                                polyline.setWidth(30);
+                            }
+                        });*/
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                polyline.setColor(getResources().getColor(R.color.colorGreen));
+                                polyline.setWidth(30);
+                            }
+                        },0);
+
+                        for (int i=0;i<polylineArrayList.size();i++){
+                           final Polyline poly = polylineArrayList.get(i);
+                           if (!poly.equals(polyline)){
+                               runOnUiThread(new Runnable() {
+                                   @Override
+                                   public void run() {
+                                       poly.setColor(getResources().getColor(R.color.colorPrimary));
+                                       poly.setWidth(20);
+                                   }
+                               });
+                           }
+                       }
                         showFeedbackDialog(String.valueOf((eventPos.getLongitude() + " " + eventPos.getLatitude())));
                         return false;
                     }
                 });
 
             }
-
-
-
-            /*GeoPoint geoPointStart= new GeoPoint(geoPointList.get(stepsList.get(0).getDoublesWayPoints().get(0)).getLatitude(),
-                    geoPointList.get(stepsList.get(0).getDoublesWayPoints().get(1)).getLongitude());
-            GeoPoint geoPointEnd= new GeoPoint(geoPointList.get((stepsList.get(stepsList.size()-1).getDoublesWayPoints().get(0))).getLatitude(),
-                    geoPointList.get((stepsList.get(stepsList.size()-1).getDoublesWayPoints().get(1))).getLongitude());
-
-            addMarkers(geoPointStart, mStartAddress, geoPointEnd, mEndAddress);
-*/
-
-        }
-        /*mMapView.getOverlayManager().remove(mPolyline);
-        mMapView.invalidate();
-        mPolyline = new Polyline();
-        mPolyline.setPoints(geoPointList);
-        mPolyline.setColor(getResources().getColor(R.color.colorPrimary));
-        if (mMapView != null) {
-            mMapView.getOverlayManager().add(mPolyline);
-        }
-        mPolyline.setOnClickListener(new Polyline.OnClickListener() {
-            @Override
-            public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                showFeedbackDialog(String.valueOf((eventPos.getLongitude()+" "+eventPos.getLatitude())));
-                return false;
+            if (mMapView != null) {
+                mMapView.getOverlayManager().addAll(polylineArrayList);
             }
-        });
-*/
+
+        }
     }
 
     /**

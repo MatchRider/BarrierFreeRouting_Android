@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ListPopupWindow;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,7 +100,10 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (!msg.obj.equals("")) {
-                if (mEditTextSource.hasFocus() && mEditTextSource != null && !mEditTextSource.getText().toString().equalsIgnoreCase("")) {
+                if(mListPopupWindow!=null && mListPopupWindow.isShowing()) {
+                    mListPopupWindow.dismiss();
+                }
+                    if (mEditTextSource.hasFocus() && mEditTextSource != null && !mEditTextSource.getText().toString().equalsIgnoreCase("")) {
                     mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextSource.getText().toString(), "", 10);
                 }
                 if (mEditTextDestination.hasFocus() && mEditTextDestination != null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
@@ -194,8 +196,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 mEditTextDestination != null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
 
             mCoordinates = mGeoPointSource + "|" + mGeoPointDestination;
-            Log.e("CallDestination ", mCoordinates);
-
             mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates, mProfileType);
         }
         handler.removeMessages(SEARCH_TEXT_CHANGED);
@@ -302,6 +302,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 mFeaturesSource = mFeaturesResultSearch.get(0);
                 mEditTextSource.addTextChangedListener(mSourceWatcher);
                 updateEditControls(mEditTextSource,mSourceAddressFetch, mSourceAddressClear);
+
             } else if (mEditTextDestination.hasFocus()) {
                 mEditTextDestination.removeTextChangedListener(mDestWatcher);
                 mEditTextDestination.setText(mFeaturesResultSearch.get(0).getProperties().toString());
@@ -310,7 +311,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 mFeaturesDestination = mFeaturesResultSearch.get(0);
                 mEditTextDestination.addTextChangedListener(mDestWatcher);
                 updateEditControls(mEditTextDestination,mDestinationAddressFetch, mDestinationAddressClear);
-
             }
 
         } else if (data != null && data.getFeatures() != null && !data.getFeatures().isEmpty()) {
@@ -416,15 +416,17 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
      * @param anchor view below which placed  result
      */
     private void setListPopUp(View anchor) {
-        mListPopupWindow = new ListPopupWindow(getContext());
-        mListPopupWindow.setAnchorView(anchor);
-        mListPopupWindow.setAnimationStyle(R.style.popup_window_animation);
-        int height = Utility.calculatePopUpHeight(getContext());
-        mListPopupWindow.setHeight(height / 2);
-        mListPopupWindow.setWidth(ListPopupWindow.MATCH_PARENT);
-        mListPopupWindow.setAdapter(mAddressListAdapter);
-        mListPopupWindow.setOnItemClickListener(this);
-        mListPopupWindow.show();
+            mListPopupWindow = new ListPopupWindow(getContext());
+            mListPopupWindow.setAnchorView(anchor);
+            mListPopupWindow.setAnimationStyle(R.style.popup_window_animation);
+            int height = Utility.calculatePopUpHeight(getContext());
+            mListPopupWindow.setHeight(height / 2);
+            mListPopupWindow.setWidth(ListPopupWindow.MATCH_PARENT);
+            mListPopupWindow.setAdapter(mAddressListAdapter);
+            mListPopupWindow.setOnItemClickListener(this);
+            mListPopupWindow.show();
+
+
     }
 
     @Override
@@ -475,7 +477,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         public void afterTextChanged(Editable str) {
             updateEditControls(mEditTextSource,mSourceAddressFetch,mSourceAddressClear);
             if (str.toString().length() > 3 && mIsTextInputManually) {
-
                 handler.removeMessages(SEARCH_TEXT_CHANGED);
                 handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, str.toString()), 500);
             } else {
@@ -513,7 +514,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     /**
      * Update Controls of edit text
-     * @param mTV Textview
+     * @param mTV TextView
      * @param loc location fetch image
      * @param clear clear text image
      */
