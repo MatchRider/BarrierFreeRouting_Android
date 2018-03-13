@@ -162,7 +162,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mEditTextSource.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if (view.hasFocus()) {
+                if (b && mEditTextSource.getText().toString().trim().length() == 0) {
                     mSourceAddressFetch.setVisibility(View.VISIBLE);
                 } else {
                     mSourceAddressFetch.setVisibility(View.GONE);
@@ -173,7 +173,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mEditTextDestination.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if (view.hasFocus()) {
+                if (b && mEditTextDestination.getText().toString().trim().length() == 0) {
                     mDestinationAddressFetch.setVisibility(View.VISIBLE);
 
                 } else {
@@ -203,74 +203,9 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
      * Set Text change listener for edit text
      */
     private void addListener() {
-        mEditTextSource.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        mEditTextSource.addTextChangedListener(mSourceWatcher);
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable str) {
-                if (str.length() == 0) {
-                    mSourceAddressClear.setVisibility(View.GONE);
-                    mSourceAddressFetch.setVisibility(View.VISIBLE);
-                } else if (str.length() >= 1) {
-                    mSourceAddressFetch.setVisibility(View.GONE);
-                    mSourceAddressClear.setVisibility(View.VISIBLE);
-                } else {
-                    mSourceAddressFetch.setVisibility(View.GONE);
-                    mSourceAddressClear.setVisibility(View.GONE);
-                }
-                if (str.toString().length() > 3 && mIsTextInputManually) {
-
-                    handler.removeMessages(SEARCH_TEXT_CHANGED);
-                    handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, str.toString()), 500);
-                } else {
-                    mIsTextInputManually = true;
-                    handler.removeMessages(SEARCH_TEXT_CHANGED);
-                    handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, ""), 500);
-                }
-            }
-        });
-
-        mEditTextDestination.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable str) {
-                if (str.length() == 0) {
-                    mDestinationAddressClear.setVisibility(View.GONE);
-                    mDestinationAddressFetch.setVisibility(View.VISIBLE);
-                } else if (str.length() >= 1) {
-                    mDestinationAddressFetch.setVisibility(View.GONE);
-                    mDestinationAddressClear.setVisibility(View.VISIBLE);
-                } else {
-                    mDestinationAddressFetch.setVisibility(View.GONE);
-                    mDestinationAddressClear.setVisibility(View.GONE);
-                }
-                if (str.toString().length() > 3 && mIsTextInputManually) {
-                    handler.removeMessages(SEARCH_TEXT_CHANGED);
-                    handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, str.toString()), 500);
-                } else {
-                    mIsTextInputManually = true;
-                    handler.removeMessages(SEARCH_TEXT_CHANGED);
-                    handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, ""), 500);
-                }
-            }
-        });
+        mEditTextDestination.addTextChangedListener(mDestWatcher);
     }
 
     @OnClick(R.id.txv_go)
@@ -317,8 +252,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @Override
     public void onDirectionDataReceived(DirectionsResponse data) {
         if (data != null && data.getRoutesList() != null && data.getRoutesList().size() != 0
-                && data.getRoutesList().get(0).getGeometry() != null) {
-            mOnSourceDestinationListener.plotDataOnMap(data.getRoutesList().get(0).getGeometry());
+                && data.getRoutesList().get(0).getGeometry() != null && data.getRoutesList().get(0).getSegmentList().get(0).getStepsList() != null) {
+            mOnSourceDestinationListener.plotDataOnMap(data.getRoutesList().get(0).getGeometry(), data.getRoutesList().get(0).getSegmentList().get(0).getStepsList());
             mLinearLayoutTimeDistance.setVisibility(View.VISIBLE);
             if (data.getRoutesList().get(0).getSummary() != null) {
                 if (data.getRoutesList().get(0).getSummary().getDuration() != 0) {
@@ -350,29 +285,34 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     }
 
     @Override
-    public void onGeoDataDataReceived(GeoCodingResponse data) {
+    public void onGeoDataDataReceived(GeoCodingResponse data, boolean isForCurrentLoc) {
         handler.removeMessages(SEARCH_TEXT_CHANGED);
-
-        if (data != null && data.getFeatures() != null && data.getFeatures().size() != 0 && data.getFeatures().size() > 1) {
-            mFeaturesResultSearch = data.getFeatures();
-            mAddressListAdapter = new CustomListAdapter(getContext(), R.layout.address_item_view, data.getFeatures());
-            setListPopUp(mRelativeLayoutSourceDestination);
-        } else if (data != null && data.getFeatures() != null && data.getFeatures().size() != 0) {
-
+        if (isForCurrentLoc && data != null && data.getFeatures() != null && data.getFeatures().size() == 1) {
             Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
             mFeaturesResultSearch = data.getFeatures();
             if (mEditTextSource.hasFocus()) {
+                mEditTextSource.removeTextChangedListener(mSourceWatcher);
                 mEditTextSource.setText(mFeaturesResultSearch.get(0).getProperties().toString());
                 mGeoPointSource = new GeoPoint(mFeaturesResultSearch.get(0).getGeometry().getCoordinates().get(0),
                         mFeaturesResultSearch.get(0).getGeometry().getCoordinates().get(1));
                 mFeaturesSource = mFeaturesResultSearch.get(0);
+                mEditTextSource.addTextChangedListener(mSourceWatcher);
+                updateEditControls(mEditTextSource,mSourceAddressFetch, mSourceAddressClear);
             } else if (mEditTextDestination.hasFocus()) {
+                mEditTextDestination.removeTextChangedListener(mDestWatcher);
                 mEditTextDestination.setText(mFeaturesResultSearch.get(0).getProperties().toString());
                 mGeoPointDestination = new GeoPoint(mFeaturesResultSearch.get(0).getGeometry().getCoordinates().get(0),
                         mFeaturesResultSearch.get(0).getGeometry().getCoordinates().get(1));
                 mFeaturesDestination = mFeaturesResultSearch.get(0);
+                mEditTextDestination.addTextChangedListener(mDestWatcher);
+                updateEditControls(mEditTextDestination,mDestinationAddressFetch, mDestinationAddressClear);
 
             }
+
+        } else if (data != null && data.getFeatures() != null && !data.getFeatures().isEmpty()) {
+            mFeaturesResultSearch = data.getFeatures();
+            mAddressListAdapter = new CustomListAdapter(getContext(), R.layout.address_item_view, data.getFeatures());
+            setListPopUp(mRelativeLayoutSourceDestination);
         }
     }
 
@@ -408,7 +348,9 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @OnClick(R.id.img_swap)
     public void swapDataOfViews() {
         performToogleAddress();
-        if (mEditTextSource.getText().toString().equalsIgnoreCase("")) {
+        //updateEditControls(mEditTextSource, mSourceAddressFetch, mSourceAddressClear);
+        //updateEditControls(mEditTextDestination, mDestinationAddressFetch, mDestinationAddressClear);
+       if (mEditTextSource.getText().toString().equalsIgnoreCase("")) {
             mSourceAddressClear.setVisibility(View.GONE);
             mSourceAddressFetch.setVisibility(View.VISIBLE);
         } else {
@@ -513,6 +455,76 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             mCurrentLocation = geoPointCurrent.getLatitude() + "," + geoPointCurrent.getLongitude();
         } else {
             mCurrentLocation = null;
+        }
+    }
+
+    private TextWatcher mSourceWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable str) {
+            updateEditControls(mEditTextSource,mSourceAddressFetch,mSourceAddressClear);
+            if (str.toString().length() > 3 && mIsTextInputManually) {
+
+                handler.removeMessages(SEARCH_TEXT_CHANGED);
+                handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, str.toString()), 500);
+            } else {
+                mIsTextInputManually = true;
+                handler.removeMessages(SEARCH_TEXT_CHANGED);
+                handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, ""), 500);
+            }
+        }
+    };
+
+    private TextWatcher mDestWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable str) {
+            updateEditControls(mEditTextDestination,mDestinationAddressFetch,mDestinationAddressClear);
+            if (str.toString().length() > 3 && mIsTextInputManually) {
+                handler.removeMessages(SEARCH_TEXT_CHANGED);
+                handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, str.toString()), 500);
+            } else {
+                mIsTextInputManually = true;
+                handler.removeMessages(SEARCH_TEXT_CHANGED);
+                handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, ""), 500);
+            }
+        }
+    };
+
+    /**
+     * Update Controls of edit text
+     * @param mTV Textview
+     * @param loc location fetch image
+     * @param clear clear text image
+     */
+    private void updateEditControls(CustomAutoCompleteTextView mTV, View loc, View clear) {
+        if (mTV.hasFocus() && mTV.getText().toString().isEmpty()) {
+            clear.setVisibility(View.GONE);
+            loc.setVisibility(View.VISIBLE);
+        } else if (mTV.hasFocus() && mTV.getText().toString().trim().length() >= 1) {
+            loc.setVisibility(View.GONE);
+            clear.setVisibility(View.VISIBLE);
+        } else {
+            loc.setVisibility(View.GONE);
+            clear.setVisibility(View.GONE);
         }
     }
 }

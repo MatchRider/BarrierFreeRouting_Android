@@ -25,6 +25,7 @@ import com.disablerouting.application.AppData;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.common.PolylineDecoder;
+import com.disablerouting.route_planner.model.Steps;
 import com.disablerouting.utils.PermissionUtils;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -45,6 +46,7 @@ import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class MapBaseActivity extends BaseActivityImpl {
@@ -65,10 +67,12 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
     private LocationCallback mLocationCallback;
     public LatLng mCurrentLocation;
 
-    private Marker mStartMarker =null;
-    private Marker mEndMarker =null;
-    private Marker mCurrentMarker =null;
+    private Marker mStartMarker = null;
+    private Marker mEndMarker = null;
+    private Marker mCurrentMarker = null;
     private Polyline mPolyline;
+    private String mStartAddress;
+    private String mEndAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,27 +134,33 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
      * Add path between two points
      *
      * @param encodedGeoPoints plot encoded points
+     * @param stepsList
      */
-    public void plotDataOfSourceDestination(String encodedGeoPoints,  String startAdd, String endAdd) {
+    public void plotDataOfSourceDestination(String encodedGeoPoints, String startAdd, String endAdd, List<Steps> stepsList) {
         mMapView.getOverlays().remove(mCurrentMarker);
         mMapView.getOverlays().remove(mStartMarker);
         mMapView.getOverlays().remove(mEndMarker);
         mMapView.invalidate();
 
-        GeoPoint geoPointStart = null, geoPointEnd=null;
+        mStartAddress = startAdd;
+        mEndAddress = endAdd;
+
+        GeoPoint geoPointStart = null, geoPointEnd = null;
         if (encodedGeoPoints != null) {
             List<GeoPoint> geoPointArrayList = PolylineDecoder.decodePoly(encodedGeoPoints);
-            addPolyLine(geoPointArrayList);
+            addPolyLine(geoPointArrayList, stepsList);
             if (geoPointArrayList != null && geoPointArrayList.size() != 0) {
                 geoPointStart = geoPointArrayList.get(0);
                 geoPointEnd = geoPointArrayList.get(geoPointArrayList.size() - 1);
-                addMarkers(geoPointStart,startAdd, geoPointEnd, endAdd);
+                mStartAddress = startAdd;
+                mEndAddress = endAdd;
+                addMarkers(geoPointStart, startAdd, geoPointEnd, endAdd);
             }
-            if(geoPointStart!=null && geoPointEnd!=null) {
+            if (geoPointStart != null && geoPointEnd != null) {
                 BoundingBox boundingBox = new BoundingBox(geoPointStart.getLatitude(), geoPointStart.getLongitude(),
                         geoPointEnd.getLatitude(), geoPointEnd.getLongitude());
                 mMapView.getController().setCenter(boundingBox.getCenter());
-                mMapView.zoomToBoundingBox(boundingBox,false);
+                mMapView.zoomToBoundingBox(boundingBox, false);
             }
         } else {
             addCurrentLocation();
@@ -162,9 +172,52 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
      * Add geo points to map
      *
      * @param geoPointList list of geo points
+     * @param stepsList way points index
      */
-    private void addPolyLine(List<GeoPoint> geoPointList) {
+    private void addPolyLine(final List<GeoPoint> geoPointList, final List<Steps> stepsList) {
         mMapView.getOverlayManager().remove(mPolyline);
+        mMapView.invalidate();
+
+        ArrayList<Polyline> polylineArrayList= new ArrayList<>();
+        int index =0;
+
+        if (stepsList != null) {
+            for (int i = 0; i < stepsList.size(); i++) {
+                int indexFirst = stepsList.get(i).getDoublesWayPoints().get(0);
+                int indexLast = stepsList.get(i).getDoublesWayPoints().get(1);
+
+                List<GeoPoint> geoPointsToSet = new ArrayList<>(geoPointList.subList(indexFirst, indexLast+1));
+                mPolyline = new Polyline();
+                mPolyline.setPoints(geoPointsToSet);
+
+                mPolyline.setColor(getResources().getColor(R.color.colorPrimary));
+                if (mMapView != null) {
+                    mMapView.getOverlayManager().add(mPolyline);
+                }
+
+                mPolyline.setOnClickListener(new Polyline.OnClickListener() {
+                    @Override
+                    public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
+                        polyline.setColor(getResources().getColor(R.color.colorGreen));
+                        showFeedbackDialog(String.valueOf((eventPos.getLongitude() + " " + eventPos.getLatitude())));
+                        return false;
+                    }
+                });
+
+            }
+
+
+
+            /*GeoPoint geoPointStart= new GeoPoint(geoPointList.get(stepsList.get(0).getDoublesWayPoints().get(0)).getLatitude(),
+                    geoPointList.get(stepsList.get(0).getDoublesWayPoints().get(1)).getLongitude());
+            GeoPoint geoPointEnd= new GeoPoint(geoPointList.get((stepsList.get(stepsList.size()-1).getDoublesWayPoints().get(0))).getLatitude(),
+                    geoPointList.get((stepsList.get(stepsList.size()-1).getDoublesWayPoints().get(1))).getLongitude());
+
+            addMarkers(geoPointStart, mStartAddress, geoPointEnd, mEndAddress);
+*/
+
+        }
+        /*mMapView.getOverlayManager().remove(mPolyline);
         mMapView.invalidate();
         mPolyline = new Polyline();
         mPolyline.setPoints(geoPointList);
@@ -179,7 +232,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
                 return false;
             }
         });
-
+*/
     }
 
     /**
@@ -202,12 +255,13 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
 
     /**
      * Add markers to map
-     * @param start start geo points
+     *
+     * @param start    start geo points
      * @param startAdd start add
-     * @param end end geo points
-     * @param endAdd end address
+     * @param end      end geo points
+     * @param endAdd   end address
      */
-    private void addMarkers(GeoPoint start, String startAdd, GeoPoint end , String endAdd) {
+    private void addMarkers(GeoPoint start, String startAdd, GeoPoint end, String endAdd) {
 
         if (mMapView != null) {
             MapController myMapController = (MapController) mMapView.getController();
@@ -325,7 +379,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
                     if (mMapView != null) {
                         mLatitude = location.getLatitude();
                         mLongitude = location.getLongitude();
-                        Log.e("latlngfromupdate", String.valueOf(mLatitude+mLongitude));
+                        Log.e("latlngfromupdate", String.valueOf(mLatitude + mLongitude));
                         mMapView.getOverlays().clear();
                         mMapView.invalidate();
                         onUpdateLocation(location);
@@ -409,6 +463,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
 
     /**
      * SHow feedback dialog
+     *
      * @param description description
      */
     private void showFeedbackDialog(String description) {
@@ -433,11 +488,21 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
         btnFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),getResources().getString(R.string.coming_soon),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
                 alertDialog.dismiss();
 
             }
         });
+    }
+
+
+    public void clearPolyLineAndMarkers(){
+        mMapView.getOverlays().clear();
+        mMapView.getOverlayManager().remove(mPolyline);
+        mMapView.invalidate();
+        mMapView.getOverlays().remove(mStartMarker);
+        mMapView.getOverlays().remove(mEndMarker);
+        mMapView.invalidate();
     }
 
 

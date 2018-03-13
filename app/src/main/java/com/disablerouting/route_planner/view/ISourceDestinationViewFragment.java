@@ -22,7 +22,7 @@ public interface ISourceDestinationViewFragment extends ILoader {
      * To show places
      * @param data
      */
-    void onGeoDataDataReceived(GeoCodingResponse data);
+    void onGeoDataDataReceived(GeoCodingResponse data, boolean isForCurrentLoc);
 
     /**
      * To show relevant error to user

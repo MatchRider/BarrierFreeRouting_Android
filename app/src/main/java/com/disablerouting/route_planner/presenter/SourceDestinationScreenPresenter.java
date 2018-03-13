@@ -2,6 +2,7 @@ package com.disablerouting.route_planner.presenter;
 
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import com.disablerouting.api.ErrorResponseNew;
 import com.disablerouting.geo_coding.manager.GeoCodingManager;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
@@ -16,6 +17,7 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
     private ISourceDestinationViewFragment mISourceDestinationViewFragment;
     private DirectionsManager mDirectionsManager;
     private GeoCodingManager mGeoCodingManager;
+    private boolean isForCurrentLoc;
 
     public SourceDestinationScreenPresenter(ISourceDestinationViewFragment directionsViewFragment,
                                             DirectionsManager directionsManager , GeoCodingManager geoCodingManager) {
@@ -34,6 +36,7 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
 
     @Override
     public void getCoordinatesData(String query, String location,int limit) {
+        isForCurrentLoc=!TextUtils.isEmpty(location);
         if (mISourceDestinationViewFragment != null) {
             mISourceDestinationViewFragment.showLoader();
             mGeoCodingManager.getGeoCoding(this, query, location,limit);
@@ -60,7 +63,7 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
     public void onSuccessGeoCoding(GeoCodingResponse data) {
         if (mISourceDestinationViewFragment != null) {
             mISourceDestinationViewFragment.hideLoader();
-            mISourceDestinationViewFragment.onGeoDataDataReceived(data);
+            mISourceDestinationViewFragment.onGeoDataDataReceived(data,isForCurrentLoc);
         }
     }
 

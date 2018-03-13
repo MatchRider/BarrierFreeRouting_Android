@@ -8,8 +8,11 @@ import com.disablerouting.R;
 import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.map_base.MapBaseActivity;
 import com.disablerouting.route_planner.SourceDestinationFragment;
+import com.disablerouting.route_planner.model.Steps;
 import com.google.android.gms.maps.model.LatLng;
 import org.osmdroid.util.GeoPoint;
+
+import java.util.List;
 
 public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDestinationListener {
 
@@ -19,6 +22,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private String mSourceAddress;
     private String mDestinationAddress;
     private String mEncodedPolyline;
+    private List<Steps> mStepsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
         GeoPoint geoPoint = new GeoPoint(mCurrentLocation.longitude, mCurrentLocation.latitude);
         mSourceDestinationFragment.onUpdateLocation(geoPoint);
+
         GeoPoint geoPointSource = null;
         GeoPoint geoPointDestination = null;
         if (mFeaturesSourceAddress!=null && mFeaturesDestinationAddress != null) {
@@ -48,16 +53,17 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
             mSourceDestinationFragment.callForDestination(geoPoint,geoPointSource, geoPointDestination);
         } else {
-            plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress);
+            plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null);
         }
     }
 
 
     @Override
-    public void plotDataOnMap(String encodedString) {
-        if(encodedString!=null) {
+    public void plotDataOnMap(String encodedString, List<Steps> stepsList) {
+        if(encodedString!=null && stepsList!=null) {
             mEncodedPolyline = encodedString;
-            plotDataOfSourceDestination(mEncodedPolyline, mSourceAddress, mDestinationAddress);
+            mStepsList = stepsList;
+            plotDataOfSourceDestination(mEncodedPolyline, mSourceAddress, mDestinationAddress, mStepsList);
         }
     }
 
@@ -68,6 +74,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onSourceDestinationSelected(Features featuresSource, Features featuresDestination) {
+        clearPolyLineAndMarkers();
         if (featuresSource!=null && featuresDestination != null && featuresSource.getProperties()!=null
                 && featuresDestination.getProperties()!=null) {
             mFeaturesSourceAddress = featuresSource;
@@ -93,7 +100,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             }
         }
         else {
-            plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress);
+            plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null);
         }
     }
 }
