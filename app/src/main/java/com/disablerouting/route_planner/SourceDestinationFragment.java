@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ListPopupWindow;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -193,6 +194,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 mEditTextDestination != null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
 
             mCoordinates = mGeoPointSource + "|" + mGeoPointDestination;
+            Log.e("CallDestination ", mCoordinates);
+
             mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates, mProfileType);
         }
         handler.removeMessages(SEARCH_TEXT_CHANGED);

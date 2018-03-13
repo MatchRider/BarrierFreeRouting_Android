@@ -45,13 +45,13 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
         GeoPoint geoPointSource = null;
         GeoPoint geoPointDestination = null;
-        if (mFeaturesSourceAddress!=null && mFeaturesDestinationAddress != null) {
+        if (mFeaturesSourceAddress != null && mFeaturesDestinationAddress != null) {
             geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
-                    mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
+                    mFeaturesSourceAddress.getGeometry().getCoordinates().get(1));
 
             geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
                     mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
-            mSourceDestinationFragment.callForDestination(geoPoint,geoPointSource, geoPointDestination);
+            mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination);
         } else {
             plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null);
         }
@@ -60,7 +60,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void plotDataOnMap(String encodedString, List<Steps> stepsList) {
-        if(encodedString!=null && stepsList!=null) {
+        if (encodedString != null && stepsList != null) {
             mEncodedPolyline = encodedString;
             mStepsList = stepsList;
             plotDataOfSourceDestination(mEncodedPolyline, mSourceAddress, mDestinationAddress, mStepsList);
@@ -75,8 +75,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void onSourceDestinationSelected(Features featuresSource, Features featuresDestination) {
         clearPolyLineAndMarkers();
-        if (featuresSource!=null && featuresDestination != null && featuresSource.getProperties()!=null
-                && featuresDestination.getProperties()!=null) {
+        if (featuresSource != null && featuresDestination != null && featuresSource.getProperties() != null
+                && featuresDestination.getProperties() != null) {
             mFeaturesSourceAddress = featuresSource;
             mSourceAddress = featuresSource.getProperties().toString();
             mFeaturesDestinationAddress = featuresDestination;
@@ -86,20 +86,20 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @OnClick(R.id.img_re_center)
     public void reCenter() {
+        clearPolyLineAndMarkers();
         if (mCurrentLocation != null && mSourceAddress != null && mDestinationAddress != null) {
             GeoPoint geoPoint = new GeoPoint(mCurrentLocation.longitude, mCurrentLocation.latitude);
             GeoPoint geoPointSource = null;
             GeoPoint geoPointDestination = null;
             if (mFeaturesSourceAddress != null && mFeaturesDestinationAddress != null) {
                 geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
-                        mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
+                        mFeaturesSourceAddress.getGeometry().getCoordinates().get(1));
 
                 geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
                         mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
                 mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination);
             }
-        }
-        else {
+        } else {
             plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null);
         }
     }
