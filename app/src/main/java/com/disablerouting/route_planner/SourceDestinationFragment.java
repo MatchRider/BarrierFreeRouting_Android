@@ -253,6 +253,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     public void onDirectionDataReceived(DirectionsResponse data) {
         if (data != null && data.getRoutesList() != null && data.getRoutesList().size() != 0
                 && data.getRoutesList().get(0).getGeometry() != null && data.getRoutesList().get(0).getSegmentList().get(0).getStepsList() != null) {
+
             mOnSourceDestinationListener.plotDataOnMap(data.getRoutesList().get(0).getGeometry(), data.getRoutesList().get(0).getSegmentList().get(0).getStepsList());
             mLinearLayoutTimeDistance.setVisibility(View.VISIBLE);
             if (data.getRoutesList().get(0).getSummary() != null) {
@@ -348,8 +349,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @OnClick(R.id.img_swap)
     public void swapDataOfViews() {
         performToogleAddress();
-        //updateEditControls(mEditTextSource, mSourceAddressFetch, mSourceAddressClear);
-        //updateEditControls(mEditTextDestination, mDestinationAddressFetch, mDestinationAddressClear);
        if (mEditTextSource.getText().toString().equalsIgnoreCase("")) {
             mSourceAddressClear.setVisibility(View.GONE);
             mSourceAddressFetch.setVisibility(View.VISIBLE);
