@@ -189,7 +189,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
                 mPolyline.setPoints(geoPointsToSet);
                 mPolyline.setWidth(20);
                 polylineArrayList.add(mPolyline);
-
                 mPolyline.setColor(getResources().getColor(R.color.colorPrimary));
 
                 mPolyline.setOnClickListener(new Polyline.OnClickListener() {
@@ -498,6 +497,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
         mMapView.getOverlays().remove(mStartMarker);
         mMapView.getOverlays().remove(mEndMarker);
         mMapView.invalidate();
+
     }
 
 

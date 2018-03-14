@@ -30,6 +30,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         ButterKnife.bind(this);
         mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
         addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
+
     }
 
     @Override
