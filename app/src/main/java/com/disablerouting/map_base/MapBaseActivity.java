@@ -10,7 +10,6 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -74,7 +73,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
     private Polyline mPolyline;
     private String mStartAddress;
     private String mEndAddress;
-    private boolean mIsPolylineClicked=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +112,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
         myScaleBarOverlay.setCentred(true);
         mMapView.getOverlays().add(myScaleBarOverlay);
         setProvider();
+        mMapView.getOverlays().clear();
 
         mStartMarker = new Marker(mMapView);
         mEndMarker = new Marker(mMapView);
@@ -196,24 +195,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
                 mPolyline.setOnClickListener(new Polyline.OnClickListener() {
                     @Override
                     public boolean onClick(final Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                       /* polyline.setColor(getResources().getColor(R.color.colorGreen));
-                        polyline.setWidth(30);
-*/
-                        /*runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                polyline.setColor(getResources().getColor(R.color.colorGreen));
-                                polyline.setWidth(30);
-                            }
-                        });*/
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                polyline.setColor(getResources().getColor(R.color.colorGreen));
-                                polyline.setWidth(30);
-                            }
-                        },0);
-
                         for (int i=0;i<polylineArrayList.size();i++){
                            final Polyline poly = polylineArrayList.get(i);
                            if (!poly.equals(polyline)){
@@ -224,8 +205,18 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
                                        poly.setWidth(20);
                                    }
                                });
+                           }else {
+                               runOnUiThread(new Runnable() {
+                                   @Override
+                                   public void run() {
+                                       poly.setColor(getResources().getColor(R.color.colorGreen));
+                                       poly.setWidth(30);
+
+                                   }
+                               });
                            }
                        }
+
                         showFeedbackDialog(String.valueOf((eventPos.getLongitude() + " " + eventPos.getLatitude())));
                         return false;
                     }
@@ -384,8 +375,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
                         mLatitude = location.getLatitude();
                         mLongitude = location.getLongitude();
                         Log.e("latlngfromupdate", String.valueOf(mLatitude + mLongitude));
-                        mMapView.getOverlays().clear();
-                        mMapView.invalidate();
+                        //mMapView.getOverlays().clear();
+                        //mMapView.invalidate();
                         onUpdateLocation(location);
                         AppData.getNewInstance().setCurrentLoc(new LatLng(location.getLatitude(), location.getLongitude()));
                     }

@@ -51,7 +51,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
             geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
                     mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
-            mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination);
+            //mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination);
         } else {
             plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null);
         }
@@ -103,4 +103,5 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null);
         }
     }
+
 }
