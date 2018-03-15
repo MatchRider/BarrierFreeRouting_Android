@@ -17,9 +17,9 @@ import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.feedback.FeedbackActivity;
 import com.disablerouting.route_planner.view.RoutePlannerActivity;
 import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
-import com.disablerouting.suggestions.SuggestionsActivity;
 import com.disablerouting.utils.PermissionUtils;
 
 public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragmentCallback{
@@ -104,9 +104,10 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
     void redirectRoutePlanner(){
         launchActivity(this, RoutePlannerActivity.class);
     }
+
     @OnClick(R.id.btn_suggestion)
     void redirectSuggestions(){
-        launchActivity(this, SuggestionsActivity.class);
+        launchActivity(this, FeedbackActivity.class);
     }
     /**
      * Result when user give permission or not
@@ -127,8 +128,8 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
                         break;
                     } else {
                         if (ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
-
                         } else {
+                            finish();
                             break;
                         }
                     }

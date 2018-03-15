@@ -1,10 +1,11 @@
 package com.disablerouting.api;
 
+import com.disablerouting.feedback.model.RequestCreateChangeSet;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
 import com.disablerouting.route_planner.model.DirectionsResponse;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Query;
+import retrofit2.http.*;
 
 public interface ApiService {
 
@@ -32,5 +33,10 @@ public interface ApiService {
     @GET("geocoding")
     Call<GeoCodingResponse> getGeoCoding(@Query("api_key") String api_key, @Query("query") String query,
              @Query("location") String location,@Query("limit") int limit);
+
+
+  //  @Headers({"Content-Type: application/xml; charset=utf-8"})
+    @PUT("api/0.6/changeset/create")
+    Call<ResponseBody> createChangeSet(@Body RequestCreateChangeSet requestCreateChangeSet);
 
 }
