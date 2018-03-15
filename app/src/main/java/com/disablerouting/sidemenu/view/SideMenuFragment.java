@@ -11,7 +11,7 @@ import android.widget.ListView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.disablerouting.R;
-import com.disablerouting.feedback.FeedbackActivity;
+import com.disablerouting.feedback.view.FeedbackActivity;
 import com.disablerouting.sidemenu.adapter.SideMenuAdapter;
 import com.disablerouting.sidemenu.model.SideMenuData;
 import com.disablerouting.sidemenu.presenter.ISideMenuViewListener;

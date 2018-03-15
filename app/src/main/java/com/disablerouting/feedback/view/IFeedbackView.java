@@ -1,4 +1,4 @@
-package com.disablerouting.feedback;
+package com.disablerouting.feedback.view;
 
 import com.disablerouting.common.ILoader;
 import okhttp3.ResponseBody;

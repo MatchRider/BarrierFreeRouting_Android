@@ -3,8 +3,7 @@ package com.disablerouting.feedback.presenter;
 
 import android.support.annotation.NonNull;
 import com.disablerouting.api.ErrorResponseNew;
-import com.disablerouting.feedback.IChangeSetResponseReceiver;
-import com.disablerouting.feedback.IFeedbackView;
+import com.disablerouting.feedback.view.IFeedbackView;
 import com.disablerouting.feedback.manager.CreateChangeSetManager;
 import com.disablerouting.feedback.model.RequestCreateChangeSet;
 import okhttp3.ResponseBody;

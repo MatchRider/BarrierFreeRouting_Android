@@ -19,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.disablerouting.R;
 import com.disablerouting.application.AppData;
 import com.disablerouting.base.BaseActivityImpl;
@@ -49,7 +48,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class MapBaseActivity extends BaseActivityImpl {
+public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeedBackListener{
 
     private MapView mMapView = null;
     private MyLocationNewOverlay mLocationOverlay;
@@ -73,6 +72,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
     private Polyline mPolyline;
     private String mStartAddress;
     private String mEndAddress;
+    private static OnFeedBackListener mFeedBackListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +80,16 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
         setContentView(getView());
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
+        setOnFeedBackListener(this);
         checkLocationStatus();
         addLocationCallback();
         createLocationRequest();
         initializeMap();
+
+    }
+
+    public void setOnFeedBackListener(OnFeedBackListener feedBackListener){
+        mFeedBackListener= feedBackListener;
     }
 
     /**
@@ -482,9 +487,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl {
         btnFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
+                mFeedBackListener.onFeedBackClick();
                 alertDialog.dismiss();
-
             }
         });
     }

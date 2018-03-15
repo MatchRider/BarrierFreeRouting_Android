@@ -2,6 +2,7 @@ package com.disablerouting.route_planner;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,9 +22,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseFragmentImpl;
+import com.disablerouting.feedback.view.FeedbackActivity;
 import com.disablerouting.geo_coding.manager.GeoCodingManager;
 import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
+import com.disablerouting.map_base.OnFeedBackListener;
 import com.disablerouting.route_planner.adapter.CustomListAdapter;
 import com.disablerouting.route_planner.manager.DirectionsManager;
 import com.disablerouting.route_planner.model.DirectionsResponse;
@@ -38,7 +41,7 @@ import org.osmdroid.util.GeoPoint;
 import java.util.List;
 
 public class SourceDestinationFragment extends BaseFragmentImpl implements ISourceDestinationViewFragment,
-        TextView.OnEditorActionListener, AdapterView.OnItemClickListener {
+        TextView.OnEditorActionListener, AdapterView.OnItemClickListener, OnFeedBackListener {
 
     @BindView(R.id.edt_source_add)
     CustomAutoCompleteTextView mEditTextSource;
@@ -529,5 +532,12 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             loc.setVisibility(View.GONE);
             clear.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onFeedBackClick() {
+        Intent intentFeedback= new Intent(getContext(), FeedbackActivity.class);
+        startActivity(intentFeedback);
+        //Toast.makeText(getContext(), getResources().getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
     }
 }

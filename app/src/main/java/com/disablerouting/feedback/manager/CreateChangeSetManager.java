@@ -6,7 +6,7 @@ import com.disablerouting.api.ErrorResponseNew;
 import com.disablerouting.api.ResponseCallback;
 import com.disablerouting.api.ResponseWrapperOsm;
 import com.disablerouting.api.RetrofitClient;
-import com.disablerouting.feedback.IChangeSetResponseReceiver;
+import com.disablerouting.feedback.presenter.IChangeSetResponseReceiver;
 import com.disablerouting.feedback.model.RequestCreateChangeSet;
 import okhttp3.ResponseBody;
 import retrofit2.Call;

@@ -54,7 +54,7 @@
                 android:theme="@style/AppTheme">
         </activity>
         <activity
-                android:name=".feedback.FeedbackActivity"
+                android:name=".feedback.view.FeedbackActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme">
         </activity>

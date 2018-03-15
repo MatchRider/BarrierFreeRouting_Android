@@ -105,4 +105,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
     }
 
+    @Override
+    public void onFeedBackClick() {
+        if(mSourceDestinationFragment!=null) {
+            mSourceDestinationFragment.onFeedBackClick();
+        }
+    }
 }
