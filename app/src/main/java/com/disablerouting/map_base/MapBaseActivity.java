@@ -48,7 +48,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeedBackListener{
+public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeedBackListener {
 
     private MapView mMapView = null;
     private MyLocationNewOverlay mLocationOverlay;
@@ -69,10 +69,11 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private Marker mStartMarker = null;
     private Marker mEndMarker = null;
     private Marker mCurrentMarker = null;
-    private Polyline mPolyline;
     private String mStartAddress;
     private String mEndAddress;
     private static OnFeedBackListener mFeedBackListener;
+
+    private Polyline mPreviousPolyline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +89,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     }
 
-    public void setOnFeedBackListener(OnFeedBackListener feedBackListener){
-        mFeedBackListener= feedBackListener;
+    public void setOnFeedBackListener(OnFeedBackListener feedBackListener) {
+        mFeedBackListener = feedBackListener;
     }
 
     /**
@@ -143,14 +144,12 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      * @param stepsList
      */
     public void plotDataOfSourceDestination(String encodedGeoPoints, String startAdd, String endAdd, List<Steps> stepsList) {
-        mMapView.getOverlays().remove(mCurrentMarker);
+        /*mMapView.getOverlays().remove(mCurrentMarker);
         mMapView.getOverlays().remove(mStartMarker);
         mMapView.getOverlays().remove(mEndMarker);
         mMapView.invalidate();
-
-        mStartAddress = startAdd;
-        mEndAddress = endAdd;
-
+*/
+        clearItemsFromMap();
         GeoPoint geoPointStart = null, geoPointEnd = null;
         if (encodedGeoPoints != null) {
             List<GeoPoint> geoPointArrayList = PolylineDecoder.decodePoly(encodedGeoPoints);
@@ -178,19 +177,18 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      * Add geo points to map
      *
      * @param geoPointList list of geo points
-     * @param stepsList way points index
+     * @param stepsList    way points index
      */
     private void addPolyLine(final List<GeoPoint> geoPointList, final List<Steps> stepsList) {
-        mMapView.getOverlayManager().remove(mPolyline);
-        mMapView.invalidate();
+        clearItemsFromMap();
         final ArrayList<Polyline> polylineArrayList = new ArrayList<>();
         if (stepsList != null) {
             for (int i = 0; i < stepsList.size(); i++) {
                 int indexFirst = stepsList.get(i).getDoublesWayPoints().get(0);
                 int indexLast = stepsList.get(i).getDoublesWayPoints().get(1);
 
-                List<GeoPoint> geoPointsToSet = new ArrayList<>(geoPointList.subList(indexFirst, indexLast+1));
-                mPolyline = new Polyline();
+                List<GeoPoint> geoPointsToSet = new ArrayList<>(geoPointList.subList(indexFirst, indexLast + 1));
+                final Polyline mPolyline = new Polyline();
                 mPolyline.setPoints(geoPointsToSet);
                 mPolyline.setWidth(20);
                 polylineArrayList.add(mPolyline);
@@ -199,28 +197,14 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mPolyline.setOnClickListener(new Polyline.OnClickListener() {
                     @Override
                     public boolean onClick(final Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                        for (int i=0;i<polylineArrayList.size();i++){
-                           final Polyline poly = polylineArrayList.get(i);
-                           if (!poly.equals(polyline)){
-                               runOnUiThread(new Runnable() {
-                                   @Override
-                                   public void run() {
-                                       poly.setColor(getResources().getColor(R.color.colorPrimary));
-                                       poly.setWidth(20);
-                                   }
-                               });
-                           }else {
-                               runOnUiThread(new Runnable() {
-                                   @Override
-                                   public void run() {
-                                       poly.setColor(getResources().getColor(R.color.colorGreen));
-                                       poly.setWidth(30);
-
-                                   }
-                               });
-                           }
-                       }
-
+                        if (mPreviousPolyline != null) {
+                            mPreviousPolyline.setColor(getResources().getColor(R.color.colorPrimary));
+                            mPreviousPolyline.setWidth(20);
+                        }
+                        polyline.setColor(getResources().getColor(R.color.colorGreen));
+                        polyline.setWidth(30);
+                        mPreviousPolyline = polyline;
+                        mMapView.invalidate();
                         showFeedbackDialog(String.valueOf((eventPos.getLongitude() + " " + eventPos.getLatitude())));
                         return false;
                     }
@@ -290,7 +274,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     @Override
     protected void onResume() {
         super.onResume();
-
         startLocationUpdates();
     }
 
@@ -493,15 +476,12 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         });
     }
 
-
-    public void clearPolyLineAndMarkers(){
+    /**
+     * Clear Items from map
+     */
+    public void clearItemsFromMap() {
         mMapView.getOverlays().clear();
-        mMapView.getOverlayManager().remove(mPolyline);
         mMapView.invalidate();
-        mMapView.getOverlays().remove(mStartMarker);
-        mMapView.getOverlays().remove(mEndMarker);
-        mMapView.invalidate();
-
     }
 
 

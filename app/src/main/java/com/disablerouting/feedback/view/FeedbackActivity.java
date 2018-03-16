@@ -21,7 +21,7 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feedback);
+        setContentView(R.layout.activity_feed_back);
 
         mFeedBackScreenPresenter= new FeedBackScreenPresenter(this, new CreateChangeSetManager());
         callToGetChangeSet();

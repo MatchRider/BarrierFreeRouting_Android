@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:orientation="vertical"
+              android:background="@color/colorPrimary"
+              android:layout_height="match_parent">
+
+    <TextView android:layout_width="match_parent"
+              android:textColor="@android:color/white"
+              android:layout_marginTop="@dimen/margin_xxxx_large"
+              android:layout_marginBottom="@dimen/margin_xxxx_large"
+              android:textSize="@dimen/text_xxlarge"
+              android:layout_marginStart="@dimen/margin_normal"
+              android:background="@color/colorPrimary"
+              android:text="@string/need_to_improve_routing"
+              android:layout_height="wrap_content"
+    />
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:orientation="vertical"
+                  android:padding="@dimen/margin_normal"
+                  android:background="@color/colorWhiteLight"
+                  android:layout_height="match_parent">
+
+
+        <TextView android:layout_width="match_parent"
+                  android:textColor="@android:color/black"
+                  android:textSize="@dimen/text_xxlarge"
+                  android:drawablePadding="@dimen/padding_normal"
+                  android:drawableStart="@android:drawable/arrow_down_float"
+                  android:layout_marginTop="@dimen/margin_normal"
+                  android:text="@string/what_do_you_want_to_capture"
+                  android:layout_height="wrap_content"
+        />
+
+        <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/crd_view_way_point_or_distance"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:background="@color/colorWhite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                card_view:cardCornerRadius="4dp">
+
+            <TextView
+                    android:id="@+id/txv_way_point_or_distance"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_xxlarge"
+                    android:gravity="start"
+                    android:fontFamily="@string/ft_ultra_black_font"
+                    android:text="@string/information_about_a_waypoint_distance"
+                    android:padding="@dimen/padding_large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/crd_view_temporary"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:background="@color/colorWhite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                card_view:cardCornerRadius="4dp">
+
+            <TextView
+                    android:id="@+id/txv_temporary"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_xxlarge"
+                    android:gravity="start"
+                    android:fontFamily="@string/ft_ultra_black_font"
+                    android:text="@string/information_about_a_temporary_obstacles"
+                    android:padding="@dimen/padding_large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+</LinearLayout>

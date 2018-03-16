@@ -4,11 +4,11 @@
     <color name="colorPrimaryDark">#a50050</color>
     <color name="colorAccent">#a50050</color>
 
+    <color name="colorWhiteLight">#f2f2f2</color>
     <color name="colorWhite">@android:color/white</color>
     <color name="colorBlackHint">#979797</color>
     <color name="colorRed">#b20000</color>
     <color name="colorGreen">#339900</color>
     <color name="colorTextGray">#75787c</color>
-
 
 </resources>

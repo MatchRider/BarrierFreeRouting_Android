@@ -63,6 +63,13 @@
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="send">Send</string>
+    <string name="what_do_you_want_to_capture">What do you want to capture ?</string>
+    <string name="information_about_a_waypoint_distance">Information about a waypoint/distance ?
+    </string>
+    <string name="information_about_a_temporary_obstacles">Information about a temporary
+        obstacles?
+    </string>
+    <string name="need_to_improve_routing">Need to improve routing ?</string>
 
 
 </resources>

@@ -75,7 +75,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onSourceDestinationSelected(Features featuresSource, Features featuresDestination) {
-        clearPolyLineAndMarkers();
+        clearItemsFromMap();
         if (featuresSource != null && featuresDestination != null && featuresSource.getProperties() != null
                 && featuresDestination.getProperties() != null) {
             mFeaturesSourceAddress = featuresSource;
@@ -87,7 +87,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @OnClick(R.id.img_re_center)
     public void reCenter() {
-        clearPolyLineAndMarkers();
+        clearItemsFromMap();
         if (mCurrentLocation != null && mSourceAddress != null && mDestinationAddress != null) {
             GeoPoint geoPoint = new GeoPoint(mCurrentLocation.longitude, mCurrentLocation.latitude);
             GeoPoint geoPointSource = null;
