@@ -1,10 +1,15 @@
 package com.disablerouting.feedback.view;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
+import com.disablerouting.capture_option.CaptureActivity;
+import com.disablerouting.common.AppConstant;
 import com.disablerouting.feedback.manager.CreateChangeSetManager;
 import com.disablerouting.feedback.model.RequestCreateChangeSet;
 import com.disablerouting.feedback.model.RequestTag;
@@ -18,10 +23,12 @@ import java.util.List;
 public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView {
 
     private FeedBackScreenPresenter mFeedBackScreenPresenter;
+    private String mChangeSetID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_back);
+        ButterKnife.bind(this);
 
         mFeedBackScreenPresenter= new FeedBackScreenPresenter(this, new CreateChangeSetManager());
         callToGetChangeSet();
@@ -55,6 +62,7 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView 
         hideLoader();
         if(responseBody!=null) {
             try {
+                mChangeSetID = responseBody.string();
                 Toast.makeText(this, responseBody.string(), Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -66,4 +74,19 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView 
     public void onFailureCreateChangeSet(String error) {
         hideLoader();
     }
+
+    @OnClick(R.id.txv_way_point_or_distance)
+    public void redirectToCaptureScreen(){
+        Intent intentCaptureActivity= new Intent(this, CaptureActivity.class);
+        intentCaptureActivity.putExtra(AppConstant.CHANGE_SET_ID,mChangeSetID);
+        startActivity(intentCaptureActivity);
+    }
+
+    @OnClick(R.id.img_back)
+    public void onBackClick() {
+        finish();
+    }
+
+
+
 }

@@ -4,17 +4,28 @@
               android:orientation="vertical"
               android:background="@color/colorPrimary"
               android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent"
+                  android:gravity="start"
+                  android:id="@+id/ll_back"
+                  android:background="@color/colorPrimary"
+                  android:layout_height="wrap_content">
+        <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="wrap_content"
+                android:src="@drawable/ic_navigate_back"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"/>
+    </LinearLayout>
 
     <TextView android:layout_width="match_parent"
               android:textColor="@android:color/white"
-              android:layout_marginTop="@dimen/margin_xxxx_large"
               android:layout_marginBottom="@dimen/margin_xxxx_large"
               android:textSize="@dimen/text_xxlarge"
+              android:gravity="center"
               android:layout_marginStart="@dimen/margin_large"
               android:background="@color/colorPrimary"
               android:text="@string/need_to_improve_routing"
-              android:layout_height="wrap_content"
-    />
+              android:layout_height="wrap_content"/>
 
     <LinearLayout android:layout_width="match_parent"
                   android:orientation="vertical"
