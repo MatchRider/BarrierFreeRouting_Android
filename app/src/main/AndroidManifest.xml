@@ -58,5 +58,10 @@
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme">
         </activity>
+        <activity
+                android:name=".capture_option.CaptureActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme">
+        </activity>
     </application>
 </manifest>
