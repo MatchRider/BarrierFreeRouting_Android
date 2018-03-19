@@ -30,26 +30,23 @@ public class CaptureActivity extends BaseActivityImpl {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture_screen);
         ButterKnife.bind(this);
+        prepareListData();
         initializeView();
     }
 
     private void initializeView() {
-        prepareListData();
         mExpandableListAdapter = new ExpandableListAdapter(this, mListDataHeader, mListDataChild);
         mExpandableListView.setAdapter(mExpandableListAdapter);
-
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 
             @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id) {
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 mParentView = v;
                 return false;
             }
         });
 
         mExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
             @Override
             public void onGroupExpand(int groupPosition) {
                 if (mLastExpandedPosition != -1 && groupPosition != mLastExpandedPosition) {
@@ -61,7 +58,6 @@ public class CaptureActivity extends BaseActivityImpl {
         });
 
         mExpandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
             @Override
             public void onGroupCollapse(int groupPosition) {
 
@@ -69,7 +65,6 @@ public class CaptureActivity extends BaseActivityImpl {
         });
 
         mExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
@@ -90,6 +85,9 @@ public class CaptureActivity extends BaseActivityImpl {
         mListDataHeader.add("Surface Type");
         mListDataHeader.add("Track Type");
         mListDataHeader.add("Smoothness Grade");
+        mListDataHeader.add("Maximum Sloped Curb(cm)");
+        mListDataHeader.add("Maximum Incline(%)");
+        mListDataHeader.add("Pavement width(cm)");
 
         List<String> surfaceTypeData = new ArrayList<String>();
         surfaceTypeData.add("Paved(Paved)");
@@ -111,9 +109,43 @@ public class CaptureActivity extends BaseActivityImpl {
         smoothnessGradeData.add("Intermediate(Medium)");
         smoothnessGradeData.add("Bad(Bad)");
 
+        List<String> maxSlopedCurvedData = new ArrayList<String>();
+        maxSlopedCurvedData.add("0 cm");
+        maxSlopedCurvedData.add("3 cm");
+        maxSlopedCurvedData.add("6 cm");
+        maxSlopedCurvedData.add(">6 cm");
+
+        List<String> maxInclineData = new ArrayList<String>();
+        maxInclineData.add("5");
+        maxInclineData.add("4");
+        maxInclineData.add("3");
+        maxInclineData.add("2");
+        maxInclineData.add("1");
+        maxInclineData.add("0");
+        maxInclineData.add("-1");
+        maxInclineData.add("-2");
+        maxInclineData.add("-3");
+        maxInclineData.add("-4");
+        maxInclineData.add("-5");
+
+        List<String> pavementWidthData = new ArrayList<String>();
+        pavementWidthData.add("<30");
+        pavementWidthData.add("30-45");
+        pavementWidthData.add("46-75");
+        pavementWidthData.add("76-100");
+        pavementWidthData.add("101-125");
+        pavementWidthData.add("126-150");
+        pavementWidthData.add("1505175");
+        pavementWidthData.add(">176");
+
+
         mListDataChild.put(mListDataHeader.get(0), surfaceTypeData);
         mListDataChild.put(mListDataHeader.get(1), trackTypeData);
         mListDataChild.put(mListDataHeader.get(2), smoothnessGradeData);
+        mListDataChild.put(mListDataHeader.get(3), maxSlopedCurvedData);
+        mListDataChild.put(mListDataHeader.get(4), maxInclineData);
+        mListDataChild.put(mListDataHeader.get(5), pavementWidthData);
+
 
     }
 
