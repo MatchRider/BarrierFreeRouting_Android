@@ -138,7 +138,7 @@ public class CaptureActivity extends BaseActivityImpl {
         pavementWidthData.add("76-100");
         pavementWidthData.add("101-125");
         pavementWidthData.add("126-150");
-        pavementWidthData.add("1505175");
+        pavementWidthData.add("150-175");
         pavementWidthData.add(">176");
 
 
