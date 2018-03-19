@@ -61,7 +61,7 @@
                     android:paddingStart="@dimen/padding_xxx_large"
                     android:paddingEnd="@dimen/padding_xxx_large"
                     android:visibility="visible"
-                    android:gravity="start"
+                    android:gravity="center"
                     android:text="@string/route_planner"
                     android:textAllCaps="false"
                     android:fontFamily="@string/ft_bold_font"/>
@@ -73,7 +73,7 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/text_xlarge"
                     android:visibility="visible"
-                    android:gravity="start"
+                    android:gravity="center"
                     android:text="@string/suggestions"
                     android:textAllCaps="false"
                     android:layout_margin="@dimen/margin_normal"

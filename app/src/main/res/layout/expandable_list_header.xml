@@ -1,32 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:id="@+id/ll_item"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
-              android:padding="@dimen/padding_normal"
-              android:background="@color/colorBlackHint">
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
 
+    <View android:layout_width="match_parent"
+          android:background="@android:color/transparent"
+          android:layout_height="@dimen/margin_large"/>
 
-    <TextView
-            android:id="@+id/txv_list_header"
-            android:layout_width="fill_parent"
+    <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
-            android:paddingEnd="?android:attr/expandableListPreferredItemPaddingLeft"
-            android:textSize="@dimen/text_normal"
-            android:textColor="@color/colorWhiteLight"
-            android:fontFamily="@string/ft_ultra_black_font"/>
+            card_view:cardCornerRadius="10dp"
+            app:cardBackgroundColor="@color/colorBlackHint">
 
-    <TextView
-            android:id="@+id/txv_list_sub_title"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
-            android:paddingEnd="?android:attr/expandableListPreferredItemPaddingLeft"
-            android:textSize="@dimen/text_normal"
-            android:visibility="gone"
-            android:textColor="@color/colorWhiteLight"
-            android:fontFamily="@string/ft_ultra_black_font"/>
+        <RelativeLayout android:layout_width="match_parent"
+                      android:orientation="vertical"
+                      android:padding="@dimen/padding_large"
+                      android:layout_height="wrap_content">
+
+            <ImageView android:id="@+id/img_arrow"
+                    android:layout_width="wrap_content"
+                       android:layout_centerVertical="true"
+                       android:layout_height="wrap_content"
+                       android:contentDescription="@string/app_name"/>
+            <TextView
+                    android:id="@+id/txv_list_header"
+                    android:layout_toEndOf="@+id/img_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/margin_small"
+                    android:paddingEnd="@dimen/margin_small"
+                    android:textSize="@dimen/text_normal"
+                    android:textColor="@color/colorWhiteLight"/>
+
+            <TextView
+                    android:id="@+id/txv_list_sub_title"
+                    android:layout_toEndOf="@id/img_arrow"
+                    android:layout_below="@id/txv_list_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/margin_small"
+                    android:paddingEnd="@dimen/margin_small"
+                    android:textSize="@dimen/text_normal"
+                    android:visibility="gone"
+                    android:textColor="@color/colorWhiteLight"
+            />
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

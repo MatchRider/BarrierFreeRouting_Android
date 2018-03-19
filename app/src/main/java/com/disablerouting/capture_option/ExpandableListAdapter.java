@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.disablerouting.R;
 
@@ -82,25 +83,32 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
+
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             assert layoutInflater != null;
             convertView = layoutInflater.inflate(R.layout.expandable_list_header, null);
-        }
+        }   ImageView imageViewArrow = (ImageView) convertView.findViewById(R.id.img_arrow);
+            if (isExpanded) {
+                imageViewArrow.setImageResource(R.drawable.ic_arrow_up);
+            } else {
+                imageViewArrow.setImageResource(R.drawable.ic_arrow_down);
+            }
+            TextView lblListHeader = (TextView) convertView.findViewById(R.id.txv_list_header);
+            lblListHeader.setTypeface(null, Typeface.BOLD);
+            lblListHeader.setText(headerTitle);
 
-        TextView lblListHeader = (TextView) convertView.findViewById(R.id.txv_list_header);
-        lblListHeader.setTypeface(null, Typeface.BOLD);
-        lblListHeader.setText(headerTitle);
-        TextView txtSubTitle = (TextView) convertView.findViewById(R.id.txv_list_sub_title);
-        txtSubTitle.setVisibility(View.GONE);
-        txtSubTitle.setTypeface(null, Typeface.ITALIC);
+            TextView txtSubTitle = (TextView) convertView.findViewById(R.id.txv_list_sub_title);
+            txtSubTitle.setVisibility(View.GONE);
+            txtSubTitle.setTypeface(null, Typeface.ITALIC);
 
-        if (mSelectionMap.containsKey(groupPosition) && mSelectionMap.get(groupPosition) != -1) {
-            String subTitle = (String) getChild(groupPosition, mSelectionMap.get(groupPosition));
-            txtSubTitle.setText(subTitle);
-            txtSubTitle.setVisibility(View.VISIBLE);
-        }
+            if (mSelectionMap.containsKey(groupPosition) && mSelectionMap.get(groupPosition) != -1) {
+                String subTitle = (String) getChild(groupPosition, mSelectionMap.get(groupPosition));
+                txtSubTitle.setText(subTitle);
+                txtSubTitle.setVisibility(View.VISIBLE);
+            }
+
         return convertView;
     }
 

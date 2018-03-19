@@ -3,11 +3,13 @@
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical"
-              android:padding="@dimen/padding_normal"
+              android:layout_margin="@dimen/margin_xxxx_large"
               android:background="@color/colorWhite">
 
     <TextView
             android:id="@+id/txv_list_item"
+            android:paddingTop="@dimen/padding_normal"
+            android:paddingBottom="@dimen/padding_normal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingStart="?android:attr/expandableListPreferredChildPaddingLeft"
@@ -15,5 +17,9 @@
             android:textSize="@dimen/text_normal"
             android:textColor="@android:color/black"
             android:fontFamily="@string/ft_ultra_black_font"/>
+
+    <View android:layout_width="match_parent"
+          android:background="@color/colorWhiteLight"
+          android:layout_height="1dp"/>
 
 </LinearLayout>

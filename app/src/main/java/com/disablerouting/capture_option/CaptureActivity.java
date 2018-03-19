@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
 
@@ -35,6 +36,7 @@ public class CaptureActivity extends BaseActivityImpl {
     }
 
     private void initializeView() {
+
         mExpandableListAdapter = new ExpandableListAdapter(this, mListDataHeader, mListDataChild);
         mExpandableListView.setAdapter(mExpandableListAdapter);
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -88,6 +90,7 @@ public class CaptureActivity extends BaseActivityImpl {
         mListDataHeader.add("Maximum Sloped Curb(cm)");
         mListDataHeader.add("Maximum Incline(%)");
         mListDataHeader.add("Pavement width(cm)");
+        mListDataHeader.add("Persistent Obstacle");
 
         List<String> surfaceTypeData = new ArrayList<String>();
         surfaceTypeData.add("Paved(Paved)");
@@ -139,14 +142,24 @@ public class CaptureActivity extends BaseActivityImpl {
         pavementWidthData.add(">176");
 
 
+        List<String> persistentObstacleData = new ArrayList<String>();
+        persistentObstacleData.add("Yes");
+        persistentObstacleData.add("No");
+
         mListDataChild.put(mListDataHeader.get(0), surfaceTypeData);
         mListDataChild.put(mListDataHeader.get(1), trackTypeData);
         mListDataChild.put(mListDataHeader.get(2), smoothnessGradeData);
         mListDataChild.put(mListDataHeader.get(3), maxSlopedCurvedData);
         mListDataChild.put(mListDataHeader.get(4), maxInclineData);
         mListDataChild.put(mListDataHeader.get(5), pavementWidthData);
+        mListDataChild.put(mListDataHeader.get(6), persistentObstacleData);
 
 
+    }
+
+    @OnClick(R.id.img_back)
+    public void onBackClick() {
+        finish();
     }
 
 }
