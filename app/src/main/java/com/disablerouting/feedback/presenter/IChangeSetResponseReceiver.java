@@ -2,7 +2,6 @@ package com.disablerouting.feedback.presenter;
 
 import android.support.annotation.NonNull;
 import com.disablerouting.api.ErrorResponseNew;
-import okhttp3.ResponseBody;
 
 public interface IChangeSetResponseReceiver {
 
@@ -10,7 +9,7 @@ public interface IChangeSetResponseReceiver {
      * Call when api get success
      * @param data
      */
-    void onSuccessChangeSet(ResponseBody data);
+    void onSuccessChangeSet(String data);
 
     /**
      * Call when api get failure

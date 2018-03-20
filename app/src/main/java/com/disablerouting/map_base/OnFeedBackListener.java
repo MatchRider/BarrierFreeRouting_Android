@@ -3,5 +3,5 @@ package com.disablerouting.map_base;
 
 public interface OnFeedBackListener {
 
-    void onFeedBackClick();
+    void onFeedBackClick(double longitude, double latitude);
 }

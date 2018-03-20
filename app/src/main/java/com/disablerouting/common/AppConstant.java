@@ -6,6 +6,7 @@ public interface AppConstant {
     int REQUEST_CODE = 200;
     String ERROR_LOCATION_NOT_FOUND = "Location not found";
     String CHANGE_SET_ID = "ChangeSetId";
+    String FEED_BACK_MODEL = "feedBackModel";
 
 
 

@@ -3,10 +3,9 @@ package com.disablerouting.feedback.presenter;
 
 import android.support.annotation.NonNull;
 import com.disablerouting.api.ErrorResponseNew;
-import com.disablerouting.feedback.view.IFeedbackView;
 import com.disablerouting.feedback.manager.CreateChangeSetManager;
 import com.disablerouting.feedback.model.RequestCreateChangeSet;
-import okhttp3.ResponseBody;
+import com.disablerouting.feedback.view.IFeedbackView;
 
 public class FeedBackScreenPresenter implements IFeedbackScreenPresenter,
         IChangeSetResponseReceiver {
@@ -37,7 +36,7 @@ public class FeedBackScreenPresenter implements IFeedbackScreenPresenter,
     }
 
     @Override
-    public void onSuccessChangeSet(ResponseBody data) {
+    public void onSuccessChangeSet(String data) {
         if (mIFeedbackView != null) {
             mIFeedbackView.hideLoader();
             mIFeedbackView.onChangeSetId(data);

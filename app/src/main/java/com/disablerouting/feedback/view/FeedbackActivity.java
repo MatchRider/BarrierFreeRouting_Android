@@ -3,7 +3,6 @@ package com.disablerouting.feedback.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
@@ -14,9 +13,8 @@ import com.disablerouting.feedback.manager.CreateChangeSetManager;
 import com.disablerouting.feedback.model.RequestCreateChangeSet;
 import com.disablerouting.feedback.model.RequestTag;
 import com.disablerouting.feedback.presenter.FeedBackScreenPresenter;
-import okhttp3.ResponseBody;
+import com.disablerouting.route_planner.model.FeedBackModel;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,12 +22,15 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView 
 
     private FeedBackScreenPresenter mFeedBackScreenPresenter;
     private String mChangeSetID;
+    private FeedBackModel mFeedBackModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_back);
         ButterKnife.bind(this);
 
+        mFeedBackModel = getIntent().getParcelableExtra(AppConstant.FEED_BACK_MODEL);
         mFeedBackScreenPresenter= new FeedBackScreenPresenter(this, new CreateChangeSetManager());
         callToGetChangeSet();
     }
@@ -58,15 +59,10 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView 
     }
 
     @Override
-    public void onChangeSetId(ResponseBody responseBody) {
+    public void onChangeSetId(String stringId) {
         hideLoader();
-        if(responseBody!=null) {
-            try {
-                mChangeSetID = responseBody.string();
-                Toast.makeText(this, responseBody.string(), Toast.LENGTH_SHORT).show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if(stringId!=null) {
+            mChangeSetID = stringId;
         }
     }
 
@@ -78,7 +74,8 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView 
     @OnClick(R.id.txv_way_point_or_distance)
     public void redirectToCaptureScreen(){
         Intent intentCaptureActivity= new Intent(this, CaptureActivity.class);
-        intentCaptureActivity.putExtra(AppConstant.CHANGE_SET_ID,mChangeSetID);
+        mFeedBackModel.setChangeSetID(mChangeSetID);
+        intentCaptureActivity.putExtra(AppConstant.FEED_BACK_MODEL,mFeedBackModel);
         startActivity(intentCaptureActivity);
     }
 
@@ -86,7 +83,5 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView 
     public void onBackClick() {
         finish();
     }
-
-
 
 }

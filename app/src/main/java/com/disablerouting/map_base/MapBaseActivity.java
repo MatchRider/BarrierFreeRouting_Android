@@ -205,7 +205,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                         polyline.setWidth(30);
                         mPreviousPolyline = polyline;
                         mMapView.invalidate();
-                        showFeedbackDialog(String.valueOf((eventPos.getLongitude() + " " + eventPos.getLatitude())));
+                        showFeedbackDialog(eventPos.getLongitude() ,eventPos.getLatitude());
                         return false;
                     }
                 });
@@ -444,11 +444,12 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     }
 
     /**
-     * SHow feedback dialog
-     *
-     * @param description description
+     * Sho feed back dialog
+     * @param longitude double longitude
+     * @param latitude double latitude
      */
-    private void showFeedbackDialog(String description) {
+    private void showFeedbackDialog(final double longitude, final double latitude) {
+        String description = String.valueOf((longitude + " " + latitude));
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater layoutInflater = getLayoutInflater();
         View customView = layoutInflater.inflate(R.layout.feedback_pop_up, null);
@@ -470,7 +471,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         btnFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mFeedBackListener.onFeedBackClick();
+                mFeedBackListener.onFeedBackClick(longitude,latitude);
                 alertDialog.dismiss();
             }
         });

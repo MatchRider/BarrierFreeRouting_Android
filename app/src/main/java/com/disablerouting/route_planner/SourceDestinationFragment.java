@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseFragmentImpl;
+import com.disablerouting.common.AppConstant;
 import com.disablerouting.feedback.view.FeedbackActivity;
 import com.disablerouting.geo_coding.manager.GeoCodingManager;
 import com.disablerouting.geo_coding.model.Features;
@@ -30,6 +31,7 @@ import com.disablerouting.map_base.OnFeedBackListener;
 import com.disablerouting.route_planner.adapter.CustomListAdapter;
 import com.disablerouting.route_planner.manager.DirectionsManager;
 import com.disablerouting.route_planner.model.DirectionsResponse;
+import com.disablerouting.route_planner.model.FeedBackModel;
 import com.disablerouting.route_planner.presenter.ISourceDestinationScreenPresenter;
 import com.disablerouting.route_planner.presenter.SourceDestinationScreenPresenter;
 import com.disablerouting.route_planner.view.ISourceDestinationViewFragment;
@@ -535,9 +537,10 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     }
 
     @Override
-    public void onFeedBackClick() {
+    public void onFeedBackClick(double longitude, double latitude) {
+        FeedBackModel feedBackModel= new FeedBackModel(latitude,longitude);
         Intent intentFeedback= new Intent(getContext(), FeedbackActivity.class);
+        intentFeedback.putExtra(AppConstant.FEED_BACK_MODEL,feedBackModel);
         startActivity(intentFeedback);
-        //Toast.makeText(getContext(), getResources().getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
     }
 }

@@ -9,6 +9,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
+import com.disablerouting.common.AppConstant;
+import com.disablerouting.route_planner.model.FeedBackModel;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -26,6 +28,8 @@ public class CaptureActivity extends BaseActivityImpl {
     private int mLastExpandedPosition = -1;
     private View mParentView;
 
+    private FeedBackModel mFeedBackModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +40,7 @@ public class CaptureActivity extends BaseActivityImpl {
     }
 
     private void initializeView() {
+        mFeedBackModel = getIntent().getParcelableExtra(AppConstant.FEED_BACK_MODEL);
 
         mExpandableListAdapter = new ExpandableListAdapter(this, mListDataHeader, mListDataChild);
         mExpandableListView.setAdapter(mExpandableListAdapter);
@@ -160,6 +165,11 @@ public class CaptureActivity extends BaseActivityImpl {
     @OnClick(R.id.img_back)
     public void onBackClick() {
         finish();
+    }
+
+    @OnClick(R.id.btn_finish)
+    public void onFinishClick(){
+
     }
 
 }

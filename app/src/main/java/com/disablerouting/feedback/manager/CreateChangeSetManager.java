@@ -11,6 +11,8 @@ import com.disablerouting.feedback.model.RequestCreateChangeSet;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 
+import java.io.IOException;
+
 public class CreateChangeSetManager implements ResponseCallback<ResponseBody>{
 
     private Call<ResponseBody> mCreateChangeSet;
@@ -42,7 +44,11 @@ public class CreateChangeSetManager implements ResponseCallback<ResponseBody>{
     @Override
     public void onSuccess(@NonNull ResponseBody data) {
         if(mIChangeSetResponseReceiver!=null){
-            mIChangeSetResponseReceiver.onSuccessChangeSet(data);
+            try {
+                mIChangeSetResponseReceiver.onSuccessChangeSet(data.string());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -9,7 +9,9 @@ import java.util.concurrent.TimeUnit;
 
 public class RetrofitClient {
     private static Retrofit sRetrofit;
+    private static Retrofit sRetrofitOSM;
     private static ApiService sApiService;
+    private static ApiService sApiServiceOSM;
 
 
     /**
@@ -44,7 +46,7 @@ public class RetrofitClient {
      * @return Instance if retrofit
      */
     private static Retrofit getRetrofitForOsm() {
-        if (sRetrofit == null) {
+        if (sRetrofitOSM == null) {
 
             final String baseUrl = ApiEndPoint.SANDBOX_BASE_URL_OSM;
 
@@ -56,14 +58,14 @@ public class RetrofitClient {
                     .addInterceptor(new ApiInterceptorOsm())
                     .build();
 
-            sRetrofit = new Retrofit.Builder()
+            sRetrofitOSM = new Retrofit.Builder()
                     .client(client)
                     .baseUrl(baseUrl)
                     .addConverterFactory(SimpleXmlConverterFactory.create())
                     .build();
         }
 
-        return sRetrofit;
+        return sRetrofitOSM;
     }
 
     private static Retrofit getRetrofitBaseUrl(String url){
@@ -95,10 +97,10 @@ public class RetrofitClient {
      * @return Instance of api service
      */
     public static ApiService getApiServiceOsm() {
-        if (sApiService == null) {
-            sApiService = getRetrofitForOsm().create(ApiService.class);
+        if (sApiServiceOSM == null) {
+            sApiServiceOSM = getRetrofitForOsm().create(ApiService.class);
         }
-        return sApiService;
+        return sApiServiceOSM;
     }
 
 }
