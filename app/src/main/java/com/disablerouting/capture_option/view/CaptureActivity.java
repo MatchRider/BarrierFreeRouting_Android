@@ -18,9 +18,7 @@ import com.disablerouting.common.AppConstant;
 import com.disablerouting.feedback.model.RequestTag;
 import com.disablerouting.route_planner.model.FeedBackModel;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
 
@@ -36,6 +34,8 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
     private View mParentView;
 
     private FeedBackModel mFeedBackModel;
+    List<RequestTag> mRequestTagList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +51,16 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
 
     }
 
-    private void callToSetChangeSet(){
+    private void callToSetChangeSet(List<RequestTag> requestTagList){
         if(mFeedBackModel!=null) {
             RequestCreateNode requestCreateNode = new RequestCreateNode();
             String latitude = String.valueOf(mFeedBackModel.getLatitude());
             String longitude = String.valueOf(mFeedBackModel.getLongitude());
             Node node = new Node(mFeedBackModel.getChangeSetID(), latitude, longitude);
 
-            List<RequestTag> list = new ArrayList<>();
             RequestTag requestTag = new RequestTag("note", "Just a node");
-            list.add(requestTag);
-            node.setRequestTagList(list);
+            mRequestTagList.add(requestTag);
+            node.setRequestTagList(mRequestTagList);
             requestCreateNode.setNode(node);
 
             mCaptureScreenPresenter.setChangeSet(requestCreateNode);
@@ -101,8 +100,10 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
+                RequestTag requestTag = new RequestTag(mListDataHeader.get(groupPosition),
+                        mListDataChild.get(mListDataHeader.get(groupPosition)).get(childPosition));
+                mRequestTagList.add(requestTag);
                 mExpandableListAdapter.addSubTitleWhenChildClicked(groupPosition, childPosition, mParentView);
-
                 return false;
             }
         });
@@ -195,7 +196,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
 
     @OnClick(R.id.btn_finish)
     public void onFinishClick(){
-        callToSetChangeSet();
+        callToSetChangeSet(mRequestTagList);
     }
 
     @Override

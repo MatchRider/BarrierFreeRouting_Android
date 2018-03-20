@@ -134,12 +134,4 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         notifyDataSetChanged();
     }
 
-    /**
-     * For getting items;
-     *
-     * @return hash map of items;
-     */
-    public HashMap<Integer, Integer> mSelectedItems() {
-        return mSelectionMap;
-    }
 }
