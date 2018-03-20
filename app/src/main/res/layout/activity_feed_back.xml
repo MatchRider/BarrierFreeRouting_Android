@@ -37,9 +37,8 @@
         <TextView android:layout_width="match_parent"
                   android:textColor="@android:color/black"
                   android:textSize="@dimen/text_xxlarge"
-                  android:drawablePadding="@dimen/padding_normal"
-                  android:drawableStart="@android:drawable/arrow_down_float"
                   android:layout_marginTop="@dimen/margin_normal"
+                  android:gravity="center"
                   android:text="@string/what_do_you_want_to_capture"
                   android:layout_height="wrap_content"
         />

@@ -59,7 +59,7 @@
                 android:theme="@style/AppTheme">
         </activity>
         <activity
-                android:name=".capture_option.CaptureActivity"
+                android:name=".capture_option.view.CaptureActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme">
         </activity>

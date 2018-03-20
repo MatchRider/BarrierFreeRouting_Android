@@ -1,24 +1,31 @@
-package com.disablerouting.capture_option;
+package com.disablerouting.capture_option.view;
 
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
+import com.disablerouting.capture_option.manager.SetChangeSetManager;
+import com.disablerouting.capture_option.model.Node;
+import com.disablerouting.capture_option.model.RequestCreateNode;
+import com.disablerouting.capture_option.presenter.CaptureScreenPresenter;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.feedback.model.RequestTag;
 import com.disablerouting.route_planner.model.FeedBackModel;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class CaptureActivity extends BaseActivityImpl {
+public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
 
     private ExpandableListAdapter mExpandableListAdapter;
+    private CaptureScreenPresenter mCaptureScreenPresenter;
 
     @BindView(R.id.exp_list_view)
     ExpandableListView mExpandableListView;
@@ -35,13 +42,32 @@ public class CaptureActivity extends BaseActivityImpl {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture_screen);
         ButterKnife.bind(this);
+
+        mFeedBackModel = getIntent().getParcelableExtra(AppConstant.FEED_BACK_MODEL);
+        mCaptureScreenPresenter= new CaptureScreenPresenter(this, new SetChangeSetManager());
+
         prepareListData();
-        initializeView();
+        onExpandListeners();
+
     }
 
-    private void initializeView() {
-        mFeedBackModel = getIntent().getParcelableExtra(AppConstant.FEED_BACK_MODEL);
+    private void callToSetChangeSet(){
+        if(mFeedBackModel!=null) {
+            RequestCreateNode requestCreateNode = new RequestCreateNode();
+            String latitude = String.valueOf(mFeedBackModel.getLatitude());
+            String longitude = String.valueOf(mFeedBackModel.getLongitude());
+            Node node = new Node(mFeedBackModel.getChangeSetID(), latitude, longitude);
 
+            List<RequestTag> list = new ArrayList<>();
+            RequestTag requestTag = new RequestTag("note", "Just a node");
+            list.add(requestTag);
+            node.setRequestTagList(list);
+            requestCreateNode.setNode(node);
+
+            mCaptureScreenPresenter.setChangeSet(requestCreateNode);
+        }
+    }
+    private void onExpandListeners() {
         mExpandableListAdapter = new ExpandableListAdapter(this, mListDataHeader, mListDataChild);
         mExpandableListView.setAdapter(mExpandableListAdapter);
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -169,7 +195,29 @@ public class CaptureActivity extends BaseActivityImpl {
 
     @OnClick(R.id.btn_finish)
     public void onFinishClick(){
-
+        callToSetChangeSet();
     }
 
+    @Override
+    public void showLoader() {
+        showProgress();
+    }
+
+    @Override
+    public void hideLoader() {
+        hideProgress();
+    }
+
+    @Override
+    public void onChangeSetId(String id) {
+        hideLoader();
+        if(id!=null){
+            Toast.makeText(this,id,Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onFailureSetChangeSet(String error) {
+        hideLoader();
+    }
 }

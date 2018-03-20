@@ -1,4 +1,4 @@
-package com.disablerouting.capture_option;
+package com.disablerouting.capture_option.view;
 
 import android.content.Context;
 import android.graphics.Typeface;

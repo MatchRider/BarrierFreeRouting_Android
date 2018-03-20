@@ -18,19 +18,4 @@ public class RequestTag {
         mV = v;
     }
 
-    public String getK() {
-        return mK;
-    }
-
-    public void setK(String k) {
-        mK = k;
-    }
-
-    public String getV() {
-        return mV;
-    }
-
-    public void setV(String v) {
-        mV = v;
-    }
 }

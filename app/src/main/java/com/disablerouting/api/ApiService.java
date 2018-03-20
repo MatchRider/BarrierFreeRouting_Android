@@ -1,5 +1,6 @@
 package com.disablerouting.api;
 
+import com.disablerouting.capture_option.model.RequestCreateNode;
 import com.disablerouting.feedback.model.RequestCreateChangeSet;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
 import com.disablerouting.route_planner.model.DirectionsResponse;
@@ -35,8 +36,24 @@ public interface ApiService {
              @Query("location") String location,@Query("limit") int limit);
 
 
+    /**
+     * APi call for get changeset id
+     * @param requestCreateChangeSet Request model for rrequesting change set id
+     * @return return change set id
+     */
     //@Headers({"Content-Type: application/xml; charset=utf-8"})
-    @PUT("api/0.6/changeset/create")
+    @PUT("changeset/create")
     Call<ResponseBody> createChangeSet(@Body RequestCreateChangeSet requestCreateChangeSet);
+
+
+    /**
+     * Api call for creating node
+     * @param type can be of three type (Nodes, Ways and Relations)
+     * @param requestCreateNode Request model for create node
+     * @return return change set id if successful
+     */
+    @PUT("{type}/create")
+    Call<ResponseBody> setChangeSet(@Path("type") String type,@Body RequestCreateNode requestCreateNode);
+
 
 }

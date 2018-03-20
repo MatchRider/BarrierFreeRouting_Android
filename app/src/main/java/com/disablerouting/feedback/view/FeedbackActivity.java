@@ -7,7 +7,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
-import com.disablerouting.capture_option.CaptureActivity;
+import com.disablerouting.capture_option.view.CaptureActivity;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.feedback.manager.CreateChangeSetManager;
 import com.disablerouting.feedback.model.RequestCreateChangeSet;
