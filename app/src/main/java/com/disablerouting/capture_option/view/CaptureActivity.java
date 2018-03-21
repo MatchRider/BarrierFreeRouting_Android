@@ -17,6 +17,7 @@ import com.disablerouting.capture_option.presenter.CaptureScreenPresenter;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.feedback.model.RequestTag;
 import com.disablerouting.route_planner.model.FeedBackModel;
+import com.disablerouting.success_screen.SuccessActivity;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -299,6 +300,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         hideLoader();
         if(id!=null){
             Toast.makeText(this,getString(R.string.posted_sucuess)+id,Toast.LENGTH_LONG).show();
+            launchActivity(this, SuccessActivity.class);
         }
     }
 
