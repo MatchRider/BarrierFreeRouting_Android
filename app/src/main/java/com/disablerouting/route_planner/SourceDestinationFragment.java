@@ -197,8 +197,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         mGeoPointSource = geoPointSource;
         mGeoPointDestination = geoPointDestination;
-        if (mEditTextSource != null && !mEditTextSource.getText().toString().equalsIgnoreCase("") &&
-                mEditTextDestination != null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
+        if (mEditTextSource != null && !mEditTextSource.getText().toString().isEmpty() &&
+                mEditTextDestination != null && !mEditTextDestination.getText().toString().isEmpty()) {
 
             mCoordinates = mGeoPointSource + "|" + mGeoPointDestination;
             mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates, mProfileType);
@@ -360,22 +360,24 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @OnClick(R.id.img_swap)
     public void swapDataOfViews() {
-        performToogleAddress();
-       if (mEditTextSource.getText().toString().equalsIgnoreCase("")) {
-            mSourceAddressClear.setVisibility(View.GONE);
-            mSourceAddressFetch.setVisibility(View.VISIBLE);
-        } else {
-            mSourceAddressClear.setVisibility(View.VISIBLE);
-            mSourceAddressFetch.setVisibility(View.GONE);
+        if(!mEditTextSource.getText().toString().isEmpty() || !mEditTextDestination.getText().toString().isEmpty()) {
+            performToogleAddress();
+            if (mEditTextSource.getText().toString().equalsIgnoreCase("")) {
+                mSourceAddressClear.setVisibility(View.GONE);
+                mSourceAddressFetch.setVisibility(View.VISIBLE);
+            } else {
+                mSourceAddressClear.setVisibility(View.VISIBLE);
+                mSourceAddressFetch.setVisibility(View.GONE);
 
-        }
-        if (mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
-            mDestinationAddressClear.setVisibility(View.GONE);
-            mDestinationAddressFetch.setVisibility(View.VISIBLE);
-        } else {
-            mDestinationAddressClear.setVisibility(View.VISIBLE);
-            mDestinationAddressFetch.setVisibility(View.GONE);
+            }
+            if (mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
+                mDestinationAddressClear.setVisibility(View.GONE);
+                mDestinationAddressFetch.setVisibility(View.VISIBLE);
+            } else {
+                mDestinationAddressClear.setVisibility(View.VISIBLE);
+                mDestinationAddressFetch.setVisibility(View.GONE);
 
+            }
         }
 
     }
