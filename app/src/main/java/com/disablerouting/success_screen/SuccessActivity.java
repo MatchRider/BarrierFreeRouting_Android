@@ -19,7 +19,7 @@ public class SuccessActivity extends BaseActivityImpl {
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.img_back)
+    @OnClick(R.id.btn_home)
     public void onBackPress() {
         redirectToHome();
     }

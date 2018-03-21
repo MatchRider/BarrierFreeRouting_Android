@@ -80,6 +80,8 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 mParentView = v;
+                mExpandableListView.setSelection(groupPosition);
+
                 return false;
             }
         });

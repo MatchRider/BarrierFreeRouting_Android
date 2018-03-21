@@ -5,18 +5,6 @@
               android:background="@color/colorWhite"
               android:layout_height="match_parent">
 
-    <LinearLayout android:layout_width="match_parent"
-                  android:gravity="start"
-                  android:id="@+id/ll_back"
-                  android:background="@color/colorPrimary"
-                  android:layout_height="wrap_content">
-        <ImageView
-                android:id="@+id/img_back"
-                android:layout_width="wrap_content"
-                android:src="@drawable/ic_navigate_back"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/app_name"/>
-    </LinearLayout>
 
     <LinearLayout
             android:id="@+id/ll_question"
@@ -26,6 +14,7 @@
 
         <TextView android:layout_width="match_parent"
                   android:textColor="@android:color/white"
+                  android:layout_marginTop="@dimen/margin_xxlarge"
                   android:layout_marginBottom="@dimen/margin_xxlarge"
                   android:textSize="@dimen/text_xxlarge"
                   android:gravity="center_horizontal"
@@ -36,13 +25,28 @@
         />
     </LinearLayout>
     <TextView android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="0dp"
+              android:layout_weight="1"
               android:gravity="center"
               android:layout_gravity="center"
               android:textAllCaps="true"
               android:textColor="@android:color/black"
-              android:textSize="@dimen/text_xx_xlarge"
+              android:textSize="@dimen/text_xxxxlarge"
               android:fontFamily="@string/ft_bold_font"
               android:text="@string/thank_you_for_your_input"/>
+    <Button
+            android:id="@+id/btn_home"
+            android:background="@drawable/btn_ripple"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:layout_gravity="bottom"
+            android:textSize="@dimen/text_xlarge"
+            android:gravity="center"
+            android:text="@string/home"
+            android:textAllCaps="false"
+            android:layout_margin="@dimen/margin_normal"
+            android:fontFamily="@string/ft_bold_font"/>
+
 
 </LinearLayout>
