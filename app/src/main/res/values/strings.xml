@@ -74,6 +74,7 @@
         community ?
     </string>
     <string name="finish">Finish</string>
+    <string name="posted_sucuess">Feedback posted successfully with ID:</string>
 
 
 </resources>
