@@ -28,8 +28,8 @@
             android:contentDescription="@string/app_name"/>
     <Button
             android:id="@+id/btn_go"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:text="@string/go"
             android:layout_margin="@dimen/margin_xxlarge"
             android:layout_alignParentBottom="true"
