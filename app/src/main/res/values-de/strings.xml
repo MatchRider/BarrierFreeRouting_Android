@@ -71,8 +71,7 @@
         obstacles?
     </string>
     <string name="need_to_improve_routing">Need to improve routing ?</string>
-    <string name="what_information_do_you_hvae_for_community">What information do you have for
-        community ?
+    <string name="what_information_do_you_hvae_for_community">What information do you want the community to enter ?
     </string>
     <string name="posted_sucuess">Feedback posted successfully with ID:</string>
     <string name="thank_you_for_your_input">Thank you for your input!</string>
