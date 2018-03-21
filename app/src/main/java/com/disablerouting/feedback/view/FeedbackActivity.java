@@ -68,6 +68,7 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView 
 
     @Override
     public void onFailureCreateChangeSet(String error) {
+        showSnackBar(error,this);
         hideLoader();
     }
 

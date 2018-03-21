@@ -307,5 +307,6 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
     @Override
     public void onFailureSetChangeSet(String error) {
         hideLoader();
+        showSnackBar(error,this);
     }
 }

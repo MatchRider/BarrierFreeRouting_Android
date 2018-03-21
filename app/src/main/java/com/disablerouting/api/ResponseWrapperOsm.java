@@ -1,9 +1,6 @@
 package com.disablerouting.api;
 
 import android.support.annotation.NonNull;
-import com.disablerouting.R;
-import org.json.JSONException;
-import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,10 +41,7 @@ public class ResponseWrapperOsm<T> implements Callback<T> {
                     errorBodyPayload = response.errorBody().string();
                 }
                 if (errorBodyPayload != null) {
-                    mResponseCallback.onFailure(parseErrorNew(errorBodyPayload));
-
-                } else {
-                    mResponseCallback.onFailure(new ErrorResponseNew(OPS_SOMETHING_WENT_WRONG));
+                    mResponseCallback.onFailure(parseErrorOSM(errorBodyPayload));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -72,50 +66,18 @@ public class ResponseWrapperOsm<T> implements Callback<T> {
     }
 
     /**
-     * Parse error response
-     * @param errorBodyPayload Error body
-     * @return Return error response
+     * Parse error OSM
+     * @param errorBodyPayload string error
+     * @return string error
      */
-    private ErrorResponse parseError(String errorBodyPayload) {
-        try {
-            JSONObject jsonObject = new JSONObject(errorBodyPayload);
-            JSONObject error = jsonObject.optJSONObject("error");
-            int errorCode=0;
-            if(error.has("code")) {
-                errorCode = error.optInt("code");
-            }
-            int errorMessage;
-            if (errorCode != 0) {
-                errorMessage = ApiErrorHandler.resolve(errorCode);
-            } else {
-                errorMessage = R.string.INTERNAL_SERVER_ERROR; // Unable to process request at this time, please try again in sometime.
-            }
-            return new ErrorResponse(errorCode, errorMessage);
-        } catch (JSONException e) {
-            return new ErrorResponse(500, R.string.INTERNAL_SERVER_ERROR); // Unable to process request at this time.
-        }
-    }
+    private ErrorResponseNew parseErrorOSM(String errorBodyPayload) {
 
-    private ErrorResponseNew parseErrorNew(String errorBodyPayload) {
-        try {
-            JSONObject jsonObject = new JSONObject(errorBodyPayload);
-            JSONObject error=null;
-            if(jsonObject.has("error")) {
-                error = jsonObject.optJSONObject("error");
-            }
-            String errorMessage= null;
-            if(error!=null && error.has("message")) {
-                errorMessage = error.optString("message");
-            }
-            if (errorMessage != null) {
-                return new ErrorResponseNew(errorMessage);
+            if (errorBodyPayload != null) {
+                return new ErrorResponseNew(errorBodyPayload);
             } else {
-                errorMessage = OPS_SOMETHING_WENT_WRONG; // Unable to process request at this time, please try again in sometime.
+                errorBodyPayload = OPS_SOMETHING_WENT_WRONG; // Unable to process request at this time, please try again in sometime.
             }
-            return new ErrorResponseNew(errorMessage);
-        } catch (JSONException e) {
-            return new ErrorResponseNew(OPS_SOMETHING_WENT_WRONG); // Unable to process request at this time.
-        }
+            return new ErrorResponseNew(errorBodyPayload);
     }
 
 }
