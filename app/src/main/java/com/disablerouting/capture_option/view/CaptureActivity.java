@@ -57,7 +57,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
 
     }
 
-    private void callToSetChangeSet(List<RequestTag> requestTagList){
+    private void callToSetChangeSet(){
         if(mFeedBackModel!=null) {
             RequestCreateNode requestCreateNode = new RequestCreateNode();
             String latitude = String.valueOf(mFeedBackModel.getLatitude());
@@ -282,7 +282,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
 
     @OnClick(R.id.btn_finish)
     public void onFinishClick(){
-        callToSetChangeSet(mRequestTagList);
+        callToSetChangeSet();
     }
 
     @Override

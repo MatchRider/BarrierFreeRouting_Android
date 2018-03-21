@@ -74,7 +74,9 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView 
     @OnClick(R.id.txv_way_point_or_distance)
     public void redirectToCaptureScreen(){
         Intent intentCaptureActivity= new Intent(this, CaptureActivity.class);
-        mFeedBackModel.setChangeSetID(mChangeSetID);
+        if(mFeedBackModel!=null && mChangeSetID!=null) {
+            mFeedBackModel.setChangeSetID(mChangeSetID);
+        }
         intentCaptureActivity.putExtra(AppConstant.FEED_BACK_MODEL,mFeedBackModel);
         startActivity(intentCaptureActivity);
     }
