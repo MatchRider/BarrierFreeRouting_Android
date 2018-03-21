@@ -22,7 +22,6 @@
               android:layout_marginBottom="@dimen/margin_xxxx_large"
               android:textSize="@dimen/text_xxlarge"
               android:gravity="center"
-              android:layout_marginStart="@dimen/margin_large"
               android:background="@color/colorPrimary"
               android:text="@string/need_to_improve_routing"
               android:layout_height="wrap_content"/>
@@ -46,13 +45,14 @@
         <android.support.v7.widget.CardView
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/crd_view_way_point_or_distance"
-                android:layout_marginTop="@dimen/margin_normal"
                 android:background="@color/colorWhite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="true"
-                card_view:cardCornerRadius="4dp">
+                card_view:cardUseCompatPadding="true"
+                card_view:cardElevation="@dimen/margin_normal"
+                card_view:cardCornerRadius="5dp">
 
             <TextView
                     android:id="@+id/txv_way_point_or_distance"
@@ -61,7 +61,10 @@
                     android:gravity="start"
                     android:fontFamily="@string/ft_ultra_black_font"
                     android:text="@string/information_about_a_waypoint_distance"
-                    android:padding="@dimen/padding_large"
+                    android:paddingStart="@dimen/padding_large"
+                    android:paddingEnd="@dimen/padding_large"
+                    android:paddingTop="@dimen/padding_xlarge"
+                    android:paddingBottom="@dimen/padding_xlarge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -69,13 +72,14 @@
         <android.support.v7.widget.CardView
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/crd_view_temporary"
-                android:layout_marginTop="@dimen/margin_normal"
                 android:background="@color/colorWhite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="true"
-                card_view:cardCornerRadius="4dp">
+                card_view:cardUseCompatPadding="true"
+                card_view:cardElevation="@dimen/margin_normal"
+                card_view:cardCornerRadius="5dp">
 
             <TextView
                     android:id="@+id/txv_temporary"
@@ -84,7 +88,10 @@
                     android:gravity="start"
                     android:fontFamily="@string/ft_ultra_black_font"
                     android:text="@string/information_about_a_temporary_obstacles"
-                    android:padding="@dimen/padding_large"
+                    android:paddingStart="@dimen/padding_large"
+                    android:paddingEnd="@dimen/padding_large"
+                    android:paddingTop="@dimen/padding_xlarge"
+                    android:paddingBottom="@dimen/padding_xlarge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 

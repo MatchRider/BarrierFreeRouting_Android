@@ -31,12 +31,11 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:text="@string/go"
-            android:layout_margin="@dimen/padding_large"
+            android:layout_margin="@dimen/margin_xxlarge"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_xx_xlarge"
-            android:elevation="@dimen/margin_small"
             android:background="@drawable/circle_shape"/>
 
 </RelativeLayout>

@@ -18,7 +18,6 @@
                   android:layout_marginBottom="@dimen/margin_xxlarge"
                   android:textSize="@dimen/text_xxlarge"
                   android:gravity="center_horizontal"
-                  android:layout_marginStart="@dimen/margin_large"
                   android:background="@color/colorPrimary"
                   android:text="@string/need_to_improve_routing"
                   android:layout_height="wrap_content"
@@ -33,6 +32,7 @@
               android:textColor="@android:color/black"
               android:textSize="@dimen/text_xxxxlarge"
               android:fontFamily="@string/ft_bold_font"
+              android:textStyle="bold"
               android:text="@string/thank_you_for_your_input"/>
     <Button
             android:id="@+id/btn_home"

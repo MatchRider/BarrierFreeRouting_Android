@@ -16,7 +16,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
-import com.disablerouting.capture_option.view.CaptureActivity;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.route_planner.view.RoutePlannerActivity;
 import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
@@ -107,7 +106,7 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
 
     @OnClick(R.id.btn_suggestion)
     void redirectSuggestions(){
-        launchActivity(this, CaptureActivity.class);
+       // launchActivity(this, CaptureActivity.class);
     }
     /**
      * Result when user give permission or not

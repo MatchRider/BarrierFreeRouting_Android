@@ -206,8 +206,8 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         mListDataHeader.add("Surface Type");
         mListDataHeader.add("Track Type");
         mListDataHeader.add("Smoothness Grade");
-        mListDataHeader.add("Maximum Sloped Curb(Slope in %)");
-        mListDataHeader.add("Maximum Incline(%)");
+        mListDataHeader.add("Maximum Sloped Curb(cm)");
+        mListDataHeader.add("Maximum Incline(Slope in %)");
         mListDataHeader.add("SideWalk width");
         mListDataHeader.add("Permanent Obstacle");
 
