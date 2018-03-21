@@ -111,4 +111,9 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mSourceDestinationFragment.onFeedBackClick(longitude, latitude);
         }
     }
+
+    @OnClick(R.id.btn_go)
+    public void goPlotMap(){
+        mSourceDestinationFragment.onGoAndPlotMap();
+    }
 }

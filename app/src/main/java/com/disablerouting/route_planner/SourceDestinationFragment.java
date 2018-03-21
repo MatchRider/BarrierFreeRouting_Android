@@ -216,8 +216,12 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mEditTextDestination.addTextChangedListener(mDestWatcher);
     }
 
-    @OnClick(R.id.txv_go)
-    public void onGoClick() {
+    @OnClick(R.id.btn_filter)
+    public void onGoFilter() {
+
+    }
+
+    public void onGoAndPlotMap(){
         mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource, mFeaturesDestination);
         callForDestination(null, mGeoPointSource, mGeoPointDestination);
     }
