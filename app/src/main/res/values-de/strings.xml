@@ -8,7 +8,6 @@
 
     <!-- Custom dialog -->
     <string name="setting">Setting</string>
-    <string name="no">No</string>
     <string name="txt_dialog_title_enable_location">Enable Location</string>
     <string name="txt_dialog_message_enable_location">Please enable location for access all feature of this application</string>
     <string name="settings">Settings</string>
@@ -58,24 +57,44 @@
     <string name="enter_destination">Enter Destination</string>
     <string name="go">Go</string>
     <string name="coming_soon">Coming soon</string>
-    <string name="OPS_SOMETHING_WENT_WRONG">Ops Something went wrong. Please try again after some
-        time.
-    </string>
+    <string name="please_provide_feedback_for">Please provide feedback for</string>
+    <string name="cancel">CANCEL</string>
+    <string name="min">min</string>
+    <string name="km">km</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="send">Send</string>
     <string name="what_do_you_want_to_capture">What do you want to capture ?</string>
-    <string name="information_about_a_waypoint_distance">Information about a waypoint/distance ?
+    <string name="information_about_a_waypoint_distance">1.Information about a waypoint/distance ?
     </string>
-    <string name="information_about_a_temporary_obstacles">Information about a temporary
+    <string name="information_about_a_temporary_obstacles">2.Information about a temporary
         obstacles?
     </string>
     <string name="need_to_improve_routing">Need to improve routing ?</string>
     <string name="what_information_do_you_hvae_for_community">What information do you want the community to enter ?
     </string>
+    <string name="finish">Finish</string>
     <string name="posted_sucuess">Feedback posted successfully with ID:</string>
     <string name="thank_you_for_your_input">Thank you for your input!</string>
     <string name="home">Home</string>
+    <string name="error_source_destination_same">Please select different source and destination
+    </string>
+    <string name="surface_type">Surface Type</string>
+    <string name="maximum_sloped">Maximum Sloped Curb(cm)</string>
+    <string name="maximum_incline">Maximum Incline(Slope in %)</string>
+    <string name="sidewalk_width">Sidewalk width(cm)</string>
+    <string name="permanent_obstacle">Permanent Obstacle</string>
+
+    <string name="paved">Paved</string>
+    <string name="asphalt">Asphalt</string>
+    <string name="concrete">Concrete</string>
+    <string name="paving_stones">Paving Stones(Pavers)</string>
+    <string name="cobblestone">Cobblestone</string>
+    <string name="grass_paver">Grass Paver</string>
+    <string name="gravel">Gravel</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 
 </resources>

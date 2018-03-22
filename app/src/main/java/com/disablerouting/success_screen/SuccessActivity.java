@@ -6,7 +6,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
-import com.disablerouting.sidemenu.HomeActivity;
+import com.disablerouting.route_planner.view.RoutePlannerActivity;
 
 
 public class SuccessActivity extends BaseActivityImpl {
@@ -32,8 +32,7 @@ public class SuccessActivity extends BaseActivityImpl {
 
     private void redirectToHome() {
         finish();
-        Intent goToA = new Intent(this, HomeActivity.class);
-        goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent goToA = new Intent(this, RoutePlannerActivity.class);
         startActivity(goToA);
 
     }

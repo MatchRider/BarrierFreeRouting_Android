@@ -8,7 +8,6 @@
 
     <!-- Custom dialog -->
     <string name="setting">Setting</string>
-    <string name="no">No</string>
     <string name="txt_dialog_title_enable_location">Enable Location</string>
     <string name="txt_dialog_message_enable_location">Please enable location for access all feature of this application</string>
     <string name="settings">Settings</string>
@@ -78,6 +77,22 @@
     <string name="home">Home</string>
     <string name="error_source_destination_same">Please select different source and destination
     </string>
+    <string name="surface_type">Surface Type</string>
+    <string name="maximum_sloped">Maximum Sloped Curb(inches)</string>
+    <string name="maximum_incline">Maximum Incline(Slope in %)</string>
+    <string name="sidewalk_width">Sidewalk width(inches)</string>
+    <string name="permanent_obstacle">Permanent Obstacle</string>
+
+    <string name="paved">Paved</string>
+    <string name="asphalt">Asphalt</string>
+    <string name="concrete">Concrete</string>
+    <string name="paving_stones">Paving Stones(Pavers)</string>
+    <string name="cobblestone">Cobblestone</string>
+    <string name="grass_paver">Grass Paver</string>
+    <string name="gravel">Gravel</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 
 </resources>

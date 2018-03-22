@@ -142,7 +142,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         surfaceTypeData.add("grass_pavers");
         surfaceTypeData.add("gravel");
 
-        List<String> trackTypeData = new ArrayList<String>();
+        /*List<String> trackTypeData = new ArrayList<String>();
         trackTypeData.add("cycleway");
         trackTypeData.add("footway");
         trackTypeData.add("living_street");
@@ -153,6 +153,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         smoothnessGradeData.add("good");
         smoothnessGradeData.add("intermediate");
         smoothnessGradeData.add("bad");
+        */
 
         List<String> maxSlopedCurvedData = new ArrayList<String>();
         maxSlopedCurvedData.add("0");
@@ -203,24 +204,24 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         mListDataHeader = new ArrayList<String>();
         mListDataChild = new LinkedHashMap<>();
 
-        mListDataHeader.add("Surface Type");
+        mListDataHeader.add(getString(R.string.surface_type));
         //mListDataHeader.add("Track Type");
         //mListDataHeader.add("Smoothness Grade");
-        mListDataHeader.add("Maximum Sloped Curb(cm)");
-        mListDataHeader.add("Maximum Incline(Slope in %)");
-        mListDataHeader.add("Sidewalk width");
-        mListDataHeader.add("Permanent Obstacle");
+        mListDataHeader.add(getString(R.string.maximum_sloped));
+        mListDataHeader.add(getString(R.string.maximum_incline));
+        mListDataHeader.add(getString(R.string.sidewalk_width));
+        mListDataHeader.add(getString(R.string.permanent_obstacle));
 
         List<String> surfaceTypeData = new ArrayList<String>();
-        surfaceTypeData.add("Paved");
-        surfaceTypeData.add("Asphalt");
-        surfaceTypeData.add("Concrete");
-        surfaceTypeData.add("Paving Stones(Pavers)");
-        surfaceTypeData.add("Cobblestone");
-        surfaceTypeData.add("Grass Paver");
-        surfaceTypeData.add("Gravel");
+        surfaceTypeData.add(getString(R.string.paved));
+        surfaceTypeData.add(getString(R.string.asphalt));
+        surfaceTypeData.add(getString(R.string.concrete));
+        surfaceTypeData.add(getString(R.string.paving_stones));
+        surfaceTypeData.add(getString(R.string.cobblestone));
+        surfaceTypeData.add(getString(R.string.grass_paver));
+        surfaceTypeData.add(getString(R.string.gravel));
 
-        List<String> trackTypeData = new ArrayList<String>();
+        /*List<String> trackTypeData = new ArrayList<String>();
         trackTypeData.add("Cycle Way(Bike path)");
         trackTypeData.add("Footway");
         trackTypeData.add("Living street(Road game)");
@@ -231,7 +232,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         smoothnessGradeData.add("Good");
         smoothnessGradeData.add("Intermediate");
         smoothnessGradeData.add("Bad");
-
+        */
         List<String> maxSlopedCurvedData = new ArrayList<String>();
         maxSlopedCurvedData.add("0");
         maxSlopedCurvedData.add("3");
@@ -263,8 +264,8 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
 
 
         List<String> permanentObstacleData = new ArrayList<String>();
-        permanentObstacleData.add("Yes");
-        permanentObstacleData.add("No");
+        permanentObstacleData.add(getString(R.string.yes));
+        permanentObstacleData.add(getString(R.string.no));
 
         mListDataChild.put(mListDataHeader.get(0), surfaceTypeData);
         //mListDataChild.put(mListDataHeader.get(1), trackTypeData);
