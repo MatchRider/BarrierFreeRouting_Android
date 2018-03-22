@@ -126,8 +126,8 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         mListDataChildValue = new LinkedHashMap<>();
 
         mListDataHeaderKey.add("surface");
-        mListDataHeaderKey.add("highway");
-        mListDataHeaderKey.add("smoothness");
+        //mListDataHeaderKey.add("highway");
+        //mListDataHeaderKey.add("smoothness");
         mListDataHeaderKey.add("sloped_curb");
         mListDataHeaderKey.add("incline");
         mListDataHeaderKey.add("width");
@@ -161,17 +161,17 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         maxSlopedCurvedData.add(">6");
 
         List<String> maxInclineData = new ArrayList<String>();
-        maxInclineData.add("5");
-        maxInclineData.add("4");
-        maxInclineData.add("3");
-        maxInclineData.add("2");
-        maxInclineData.add("1");
-        maxInclineData.add("0");
-        maxInclineData.add("-1");
-        maxInclineData.add("-2");
-        maxInclineData.add("-3");
-        maxInclineData.add("-4");
         maxInclineData.add("-5");
+        maxInclineData.add("-4");
+        maxInclineData.add("-3");
+        maxInclineData.add("-2");
+        maxInclineData.add("-1");
+        maxInclineData.add("0");
+        maxInclineData.add("1");
+        maxInclineData.add("2");
+        maxInclineData.add("3");
+        maxInclineData.add("4");
+        maxInclineData.add("5");
 
         List<String> sideWalkWidthData = new ArrayList<String>();
         sideWalkWidthData.add("<30");
@@ -188,12 +188,12 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         permanentObstacleData.add("No");
 
         mListDataChildValue.put(mListDataHeaderKey.get(0), surfaceTypeData);
-        mListDataChildValue.put(mListDataHeaderKey.get(1), trackTypeData);
-        mListDataChildValue.put(mListDataHeaderKey.get(2), smoothnessGradeData);
-        mListDataChildValue.put(mListDataHeaderKey.get(3), maxSlopedCurvedData);
-        mListDataChildValue.put(mListDataHeaderKey.get(4), maxInclineData);
-        mListDataChildValue.put(mListDataHeaderKey.get(5), sideWalkWidthData);
-        mListDataChildValue.put(mListDataHeaderKey.get(6), permanentObstacleData);
+       // mListDataChildValue.put(mListDataHeaderKey.get(0), trackTypeData);
+        //mListDataChildValue.put(mListDataHeaderKey.get(2), smoothnessGradeData);
+        mListDataChildValue.put(mListDataHeaderKey.get(1), maxSlopedCurvedData);
+        mListDataChildValue.put(mListDataHeaderKey.get(2), maxInclineData);
+        mListDataChildValue.put(mListDataHeaderKey.get(3), sideWalkWidthData);
+        mListDataChildValue.put(mListDataHeaderKey.get(4), permanentObstacleData);
 
     }
     /*
@@ -204,11 +204,11 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         mListDataChild = new LinkedHashMap<>();
 
         mListDataHeader.add("Surface Type");
-        mListDataHeader.add("Track Type");
-        mListDataHeader.add("Smoothness Grade");
+        //mListDataHeader.add("Track Type");
+        //mListDataHeader.add("Smoothness Grade");
         mListDataHeader.add("Maximum Sloped Curb(cm)");
         mListDataHeader.add("Maximum Incline(Slope in %)");
-        mListDataHeader.add("SideWalk width");
+        mListDataHeader.add("Sidewalk width");
         mListDataHeader.add("Permanent Obstacle");
 
         List<String> surfaceTypeData = new ArrayList<String>();
@@ -239,17 +239,17 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         maxSlopedCurvedData.add(">6");
 
         List<String> maxInclineData = new ArrayList<String>();
-        maxInclineData.add("5");
-        maxInclineData.add("4");
-        maxInclineData.add("3");
-        maxInclineData.add("2");
-        maxInclineData.add("1");
-        maxInclineData.add("0");
-        maxInclineData.add("-1");
-        maxInclineData.add("-2");
-        maxInclineData.add("-3");
-        maxInclineData.add("-4");
         maxInclineData.add("-5");
+        maxInclineData.add("-4");
+        maxInclineData.add("-3");
+        maxInclineData.add("-2");
+        maxInclineData.add("-1");
+        maxInclineData.add("0");
+        maxInclineData.add("1");
+        maxInclineData.add("2");
+        maxInclineData.add("3");
+        maxInclineData.add("4");
+        maxInclineData.add("5");
 
         List<String> sideWalkWidthData = new ArrayList<String>();
         sideWalkWidthData.add("<30");
@@ -267,12 +267,12 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         permanentObstacleData.add("No");
 
         mListDataChild.put(mListDataHeader.get(0), surfaceTypeData);
-        mListDataChild.put(mListDataHeader.get(1), trackTypeData);
-        mListDataChild.put(mListDataHeader.get(2), smoothnessGradeData);
-        mListDataChild.put(mListDataHeader.get(3), maxSlopedCurvedData);
-        mListDataChild.put(mListDataHeader.get(4), maxInclineData);
-        mListDataChild.put(mListDataHeader.get(5), sideWalkWidthData);
-        mListDataChild.put(mListDataHeader.get(6), permanentObstacleData);
+        //mListDataChild.put(mListDataHeader.get(1), trackTypeData);
+        //mListDataChild.put(mListDataHeader.get(2), smoothnessGradeData);
+        mListDataChild.put(mListDataHeader.get(1), maxSlopedCurvedData);
+        mListDataChild.put(mListDataHeader.get(2), maxInclineData);
+        mListDataChild.put(mListDataHeader.get(3), sideWalkWidthData);
+        mListDataChild.put(mListDataHeader.get(4), permanentObstacleData);
 
 
     }

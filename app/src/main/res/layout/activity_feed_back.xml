@@ -45,11 +45,11 @@
         <android.support.v7.widget.CardView
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/crd_view_way_point_or_distance"
-                android:background="@color/colorWhite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
                 card_view:cardUseCompatPadding="true"
                 card_view:cardElevation="@dimen/margin_normal"
                 card_view:cardCornerRadius="5dp">
@@ -72,12 +72,12 @@
         <android.support.v7.widget.CardView
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/crd_view_temporary"
-                android:background="@color/colorWhite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="true"
                 card_view:cardUseCompatPadding="true"
+                android:background="?android:attr/selectableItemBackground"
                 card_view:cardElevation="@dimen/margin_normal"
                 card_view:cardCornerRadius="5dp">
 

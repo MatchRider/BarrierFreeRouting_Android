@@ -4,7 +4,7 @@
               android:layout_height="wrap_content"
               android:orientation="vertical"
               android:layout_margin="@dimen/margin_xxxx_large"
-              android:background="@color/colorWhite">
+              android:background="@color/colorWhiteLight">
 
     <TextView
             android:id="@+id/txv_list_item"
@@ -19,7 +19,7 @@
             android:fontFamily="@string/ft_ultra_black_font"/>
 
     <View android:layout_width="match_parent"
-          android:background="@color/colorWhiteLight"
+          android:background="@color/colorWhite"
           android:layout_height="1dp"/>
 
 </LinearLayout>

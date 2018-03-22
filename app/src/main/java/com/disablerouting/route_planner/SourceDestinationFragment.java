@@ -230,7 +230,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource, mFeaturesDestination);
             callForDestination(null, mGeoPointSource, mGeoPointDestination);
         } else {
-            showSnackBar("Please select different source and destination");
+            showSnackBar(getContext().getResources().getString(R.string.error_source_destination_same));
         }
     }
 
@@ -413,7 +413,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource, mFeaturesDestination);
             callForDestination(null, mGeoPointSource, mGeoPointDestination);
         } else {
-            showSnackBar("Please select different source and destination");
+            showSnackBar(getContext().getResources().getString(R.string.error_source_destination_same));
         }
 
     }
