@@ -2,7 +2,7 @@ package com.disablerouting.capture_option.presenter;
 
 
 import android.support.annotation.NonNull;
-import com.disablerouting.api.ErrorResponseNew;
+import com.disablerouting.api.ErrorResponse;
 import com.disablerouting.capture_option.view.ICaptureView;
 import com.disablerouting.capture_option.manager.SetChangeSetManager;
 import com.disablerouting.capture_option.model.RequestCreateNode;
@@ -41,7 +41,7 @@ public class CaptureScreenPresenter implements ICaptureScreenPresenter , ISetCha
     }
 
     @Override
-    public void onFailureChangeSet(@NonNull ErrorResponseNew errorResponse) {
+    public void onFailureChangeSet(@NonNull ErrorResponse errorResponse) {
         if (mICaptureView != null) {
             mICaptureView.hideLoader();
             mICaptureView.onFailureSetChangeSet(errorResponse.getErrorMessage());

@@ -45,7 +45,7 @@ public class ResponseWrapperOsm<T> implements Callback<T> {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                mResponseCallback.onFailure(new ErrorResponseNew(OPS_SOMETHING_WENT_WRONG));
+                mResponseCallback.onFailure(new ErrorResponse(OPS_SOMETHING_WENT_WRONG));
             }
         }
     }
@@ -53,14 +53,13 @@ public class ResponseWrapperOsm<T> implements Callback<T> {
     /** {@inheritDoc} */
     @Override
     public void onFailure(@NonNull Call<T> call, @NonNull Throwable throwable) {
-        ErrorResponseNew errorResponse;
+        ErrorResponse errorResponse;
         if (throwable instanceof ConnectException
                 || throwable instanceof UnknownHostException) {
-            errorResponse = new ErrorResponseNew(OPS_SOMETHING_WENT_WRONG);
+            errorResponse = new ErrorResponse(OPS_SOMETHING_WENT_WRONG);
         } else {
             // some more complex error occurred like conversion etc.
-            errorResponse = new ErrorResponseNew(OPS_SOMETHING_WENT_WRONG);
-
+            errorResponse = new ErrorResponse(OPS_SOMETHING_WENT_WRONG);
         }
         mResponseCallback.onFailure(errorResponse);
     }
@@ -70,14 +69,14 @@ public class ResponseWrapperOsm<T> implements Callback<T> {
      * @param errorBodyPayload string error
      * @return string error
      */
-    private ErrorResponseNew parseErrorOSM(String errorBodyPayload) {
+    private ErrorResponse parseErrorOSM(String errorBodyPayload) {
 
             if (errorBodyPayload != null) {
-                return new ErrorResponseNew(errorBodyPayload);
+                return new ErrorResponse(errorBodyPayload);
             } else {
                 errorBodyPayload = OPS_SOMETHING_WENT_WRONG; // Unable to process request at this time, please try again in sometime.
             }
-            return new ErrorResponseNew(errorBodyPayload);
+            return new ErrorResponse(errorBodyPayload);
     }
 
 }

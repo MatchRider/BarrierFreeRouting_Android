@@ -2,18 +2,15 @@ package com.disablerouting.api;
 
 public class ErrorResponse {
 
-    private final int mErrorMessage;
-    private int mErrorCode;
+    private final String mErrorMessage;
     private String error;
 
     /**
      * Creates an instance of the error.
      * @param errorMessage the error message equivalent.
-     * @param errorCode the error code
      */
-    public ErrorResponse(int errorCode , int errorMessage) {
+    public ErrorResponse(String errorMessage) {
         mErrorMessage = errorMessage;
-        mErrorCode = errorCode;
     }
     
     /**
@@ -21,18 +18,8 @@ public class ErrorResponse {
      *
      * @return the error message.
      */
-    public int getErrorMessage() {
+    public String getErrorMessage() {
         return mErrorMessage;
-    }
-    
-    /** Get error code */
-    public int getErrorCode() {
-        return mErrorCode;
-    }
-    
-    /** Set error code */
-    public void setErrorCode(int errorCode) {
-        mErrorCode = errorCode;
     }
 
     public String getError() {

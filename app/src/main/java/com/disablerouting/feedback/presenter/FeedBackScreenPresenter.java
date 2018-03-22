@@ -2,7 +2,7 @@ package com.disablerouting.feedback.presenter;
 
 
 import android.support.annotation.NonNull;
-import com.disablerouting.api.ErrorResponseNew;
+import com.disablerouting.api.ErrorResponse;
 import com.disablerouting.feedback.manager.CreateChangeSetManager;
 import com.disablerouting.feedback.model.RequestCreateChangeSet;
 import com.disablerouting.feedback.view.IFeedbackView;
@@ -44,7 +44,7 @@ public class FeedBackScreenPresenter implements IFeedbackScreenPresenter,
     }
 
     @Override
-    public void onFailureChangeSet(@NonNull ErrorResponseNew errorResponse) {
+    public void onFailureChangeSet(@NonNull ErrorResponse errorResponse) {
         if (mIFeedbackView != null) {
             mIFeedbackView.hideLoader();
             mIFeedbackView.onFailureCreateChangeSet(errorResponse.getErrorMessage());

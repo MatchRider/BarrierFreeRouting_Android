@@ -22,6 +22,6 @@ public interface ResponseCallback<T> {
      * @param errorResponse the error response with proper display message
      *                      and proper information for debugging.
      */
-    void onFailure(@NonNull ErrorResponseNew errorResponse);
+    void onFailure(@NonNull ErrorResponse errorResponse);
 
 }

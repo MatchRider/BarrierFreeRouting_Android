@@ -19,7 +19,6 @@
     <string name="DISCLAIMER">Haftungsausschluss</string>
     <string name="LEGAL">RECHTLICH</string>
 
-
     <string name="route_planner">Routenplaner</string>
     <string name="suggestions">Vorschläge</string>
 
@@ -27,26 +26,9 @@
     <!--Expected Error Codes-->
     <string name="no_internet">Internet is not available</string>
     <string name="INTERNAL_SERVER_ERROR">The request is incorrect and therefore can not be processed.</string>
-    <string name="REQUEST_TIME_OUT">Looks like the server is taking too long to respond, please try again in sometime</string>
-    <string name="AUTHORISE_FIELD_MISSING">Authorization field missing.</string>
-    <string name="HTTP_METHOD_NOT_SUPPORTED">The specified HTTP method is not supported. For more details, refer to the EndPoint documentation.</string>
-    <string name="REQUEST_IS_LARGER">The request is larger than the server is able to process, the data provided in the request exceeds the capacity limit.</string>
-    <string name="INCORRECT_CANT_PROCESS">The request is incorrect and therefore can not be processed.</string>
-    <string name="SERVER_DOESNT_SUPPORT">Indicates that the server does not support the functionality needed to fulfill the request.</string>
-    <string name="SERVER_NOT_UAVAILABLE">The server is currently unavailable due to overload or maintenance.</string>
-    <string name="UNABLE_TO_PARSE">Unable to parse JSON request</string>
-    <string name="PARAMETER_MISSING">Required parameter is missing.</string>
-    <string name="INVALID_PARAMETER_FORMAT">Invalid parameter format.</string>
-    <string name="INVALID_PARAMETER_VALUE">Invalid parameter value.</string>
-    <string name="PARAMETER_EXCEEDS_LIMIT">Parameter value exceeds the maximum allowed limit.</string>
-    <string name="UNKNOWN_INTERNAL_ERROR">Unknown internal error.</string>
-
 
     <string name="text_skip">skip</string>
     <string name="close_drawer">Close</string>
-    <string name="user_name">User Name</string>
-    <string name="user_detail">User Detail</string>
-    <string name="title_activity_route_planner">RoutePlannerActivity</string>
     <string name="error_load_maps">Can not load maps without all the permissions granted</string>
     <string name="gps_setting">GPS is settings</string>
     <string name="message_gps">GPS is not enabled. Do you want to go to location setting?</string>
@@ -61,24 +43,17 @@
     <string name="cancel">CANCEL</string>
     <string name="min">min</string>
     <string name="km">km</string>
-    <string name="name">Name</string>
-    <string name="email">Email</string>
-    <string name="send">Send</string>
     <string name="what_do_you_want_to_capture">What do you want to capture ?</string>
-    <string name="information_about_a_waypoint_distance">1.Information about a waypoint/distance ?
-    </string>
-    <string name="information_about_a_temporary_obstacles">2.Information about a temporary
-        obstacles?
-    </string>
+    <string name="information_about_a_waypoint_distance">1.Information about a waypoint/distance ?</string>
+    <string name="information_about_a_temporary_obstacles">2.Information about a temporary obstacles?</string>
     <string name="need_to_improve_routing">Need to improve routing ?</string>
-    <string name="what_information_do_you_hvae_for_community">What information do you want the community to enter ?
-    </string>
+    <string name="what_information_do_you_hvae_for_community">What information to a waypoint do you have for the community ?</string>
     <string name="finish">Finish</string>
     <string name="posted_sucuess">Feedback posted successfully with ID:</string>
     <string name="thank_you_for_your_input">Thank you for your input!</string>
     <string name="home">Home</string>
-    <string name="error_source_destination_same">Please select different source and destination
-    </string>
+    <string name="error_source_destination_same">Please select different source and destination</string>
+
     <string name="surface_type">Surface Type</string>
     <string name="maximum_sloped">Maximum Sloped Curb(cm)</string>
     <string name="maximum_incline">Maximum Incline(Slope in %)</string>

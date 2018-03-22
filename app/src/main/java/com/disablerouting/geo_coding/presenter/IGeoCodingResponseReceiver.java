@@ -1,7 +1,7 @@
 package com.disablerouting.geo_coding.presenter;
 
 import android.support.annotation.NonNull;
-import com.disablerouting.api.ErrorResponseNew;
+import com.disablerouting.api.ErrorResponse;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
 
 public interface IGeoCodingResponseReceiver {
@@ -16,5 +16,5 @@ public interface IGeoCodingResponseReceiver {
      * Call when api get failure
      * @param errorResponse Server error response
      */
-    void onFailureGeoCoding(@NonNull ErrorResponseNew errorResponse);
+    void onFailureGeoCoding(@NonNull ErrorResponse errorResponse);
 }

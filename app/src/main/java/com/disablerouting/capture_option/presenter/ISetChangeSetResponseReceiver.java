@@ -1,7 +1,7 @@
 package com.disablerouting.capture_option.presenter;
 
 import android.support.annotation.NonNull;
-import com.disablerouting.api.ErrorResponseNew;
+import com.disablerouting.api.ErrorResponse;
 
 public interface ISetChangeSetResponseReceiver {
 
@@ -15,5 +15,5 @@ public interface ISetChangeSetResponseReceiver {
      * Call when api get failure
      * @param errorResponse Server error response
      */
-    void onFailureChangeSet(@NonNull ErrorResponseNew errorResponse);
+    void onFailureChangeSet(@NonNull ErrorResponse errorResponse);
 }

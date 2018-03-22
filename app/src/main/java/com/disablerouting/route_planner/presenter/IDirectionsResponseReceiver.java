@@ -1,7 +1,7 @@
 package com.disablerouting.route_planner.presenter;
 
 import android.support.annotation.NonNull;
-import com.disablerouting.api.ErrorResponseNew;
+import com.disablerouting.api.ErrorResponse;
 import com.disablerouting.route_planner.model.DirectionsResponse;
 
 public interface IDirectionsResponseReceiver {
@@ -16,5 +16,5 @@ public interface IDirectionsResponseReceiver {
      * Call when api get failure
      * @param errorResponse Server error response
      */
-    void onFailureDirection(@NonNull ErrorResponseNew errorResponse);
+    void onFailureDirection(@NonNull ErrorResponse errorResponse);
 }

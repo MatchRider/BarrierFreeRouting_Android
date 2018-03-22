@@ -3,7 +3,7 @@ package com.disablerouting.route_planner.presenter;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import com.disablerouting.api.ErrorResponseNew;
+import com.disablerouting.api.ErrorResponse;
 import com.disablerouting.geo_coding.manager.GeoCodingManager;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
 import com.disablerouting.geo_coding.presenter.IGeoCodingResponseReceiver;
@@ -52,7 +52,7 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
     }
 
     @Override
-    public void onFailureDirection(@NonNull ErrorResponseNew errorResponse) {
+    public void onFailureDirection(@NonNull ErrorResponse errorResponse) {
         if (mISourceDestinationViewFragment != null) {
             mISourceDestinationViewFragment.hideLoader();
             mISourceDestinationViewFragment.onFailureDirection(errorResponse.getErrorMessage());
@@ -68,7 +68,7 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
     }
 
     @Override
-    public void onFailureGeoCoding(@NonNull ErrorResponseNew errorResponse) {
+    public void onFailureGeoCoding(@NonNull ErrorResponse errorResponse) {
         if (mISourceDestinationViewFragment != null) {
             mISourceDestinationViewFragment.hideLoader();
             mISourceDestinationViewFragment.onFailureGeoCoding(errorResponse.getErrorMessage());

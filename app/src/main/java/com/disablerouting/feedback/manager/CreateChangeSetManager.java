@@ -2,7 +2,7 @@ package com.disablerouting.feedback.manager;
 
 
 import android.support.annotation.NonNull;
-import com.disablerouting.api.ErrorResponseNew;
+import com.disablerouting.api.ErrorResponse;
 import com.disablerouting.api.ResponseCallback;
 import com.disablerouting.api.ResponseWrapperOsm;
 import com.disablerouting.api.RetrofitClient;
@@ -53,7 +53,7 @@ public class CreateChangeSetManager implements ResponseCallback<ResponseBody>{
     }
 
     @Override
-    public void onFailure(@NonNull ErrorResponseNew errorResponse) {
+    public void onFailure(@NonNull ErrorResponse errorResponse) {
         if(mIChangeSetResponseReceiver!=null){
             mIChangeSetResponseReceiver.onFailureChangeSet(errorResponse);
         }

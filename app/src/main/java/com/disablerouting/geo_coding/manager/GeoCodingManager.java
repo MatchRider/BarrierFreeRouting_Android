@@ -35,7 +35,7 @@ public class GeoCodingManager implements ResponseCallback<GeoCodingResponse> {
     }
 
     @Override
-    public void onFailure(@NonNull ErrorResponseNew errorResponse) {
+    public void onFailure(@NonNull ErrorResponse errorResponse) {
         if(mIGeoCodingResponseReceiver!=null){
             mIGeoCodingResponseReceiver.onFailureGeoCoding(errorResponse);
         }
