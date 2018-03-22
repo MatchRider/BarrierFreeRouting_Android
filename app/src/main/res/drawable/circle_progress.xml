@@ -9,7 +9,7 @@
     <shape
             android:innerRadiusRatio="3"
             android:shape="ring"
-            android:thicknessRatio="50"
+            android:thicknessRatio="20"
             android:useLevel="false">
         <size
                 android:height="100dip"
