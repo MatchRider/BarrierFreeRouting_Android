@@ -144,11 +144,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      * @param stepsList
      */
     public void plotDataOfSourceDestination(String encodedGeoPoints, String startAdd, String endAdd, List<Steps> stepsList) {
-        /*mMapView.getOverlays().remove(mCurrentMarker);
-        mMapView.getOverlays().remove(mStartMarker);
-        mMapView.getOverlays().remove(mEndMarker);
-        mMapView.invalidate();
-*/
         clearItemsFromMap();
         GeoPoint geoPointStart = null, geoPointEnd = null;
         if (encodedGeoPoints != null) {
@@ -182,8 +177,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private void addPolyLine(final List<GeoPoint> geoPointList, final List<Steps> stepsList) {
         clearItemsFromMap();
         final ArrayList<Polyline> polylineArrayList = new ArrayList<>();
-        if (stepsList != null) {
-            for (int i = 0; i < stepsList.size(); i++) {
+        if (geoPointList.size()>1 && stepsList != null && stepsList.size()>2) {
+            for (int i = 0; i < stepsList.size() ; i++) {
                 int indexFirst = stepsList.get(i).getDoublesWayPoints().get(0);
                 int indexLast = stepsList.get(i).getDoublesWayPoints().get(1);
 

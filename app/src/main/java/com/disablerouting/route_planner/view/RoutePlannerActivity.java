@@ -77,7 +77,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onSourceDestinationSelected(Features featuresSource, Features featuresDestination) {
         if (featuresSource != null && featuresDestination != null && featuresSource.getProperties() != null
                 && featuresDestination.getProperties() != null) {
-            clearItemsFromMap();
             mFeaturesSourceAddress = featuresSource;
             mSourceAddress = featuresSource.getProperties().toString();
             mFeaturesDestinationAddress = featuresDestination;
@@ -115,6 +114,5 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @OnClick(R.id.btn_go)
     public void goPlotMap(){
         mSourceDestinationFragment.onGoAndPlotMap();
-
     }
 }
