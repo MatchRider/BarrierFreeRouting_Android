@@ -28,7 +28,7 @@ public class SideMenuPresenter {
     private ArrayList<SideMenuData> getList() {
         ArrayList<SideMenuData> slidingMenuItems = new ArrayList<SideMenuData>();
         slidingMenuItems.add(SideMenuData.ACKNOWLEDGEMENTS);
-        slidingMenuItems.add(SideMenuData.FEEDBACK);
+        //slidingMenuItems.add(SideMenuData.FEEDBACK);
         slidingMenuItems.add(SideMenuData.CONTACT);
         slidingMenuItems.add(SideMenuData.DISCLAIMER);
         slidingMenuItems.add(SideMenuData.LEGAL);

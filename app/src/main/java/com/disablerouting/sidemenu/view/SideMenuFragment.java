@@ -91,10 +91,10 @@ public class SideMenuFragment extends Fragment implements ISideMenuView,
         switch (message) {
             case R.string.ACKNOWLEDGEMENTS:
                 break;
-            case R.string.FEEDBACK:
+            //case R.string.FEEDBACK:
                /* newActivityIntent= new Intent(getContext(), FeedbackActivity.class);
                 startActivity(newActivityIntent);
-               */ break;
+               */ //break;
             case R.string.CONTACT:
                 break;
             case R.string.DISCLAIMER:

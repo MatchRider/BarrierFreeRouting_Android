@@ -15,8 +15,8 @@
 
     <!-- MENU ITEMS -->
     <string name="ACKNOWLEDGEMENTS">Acknowledgement</string>
-    <string name="FEEDBACK">Feedback</string>
-    <string name="CONTACT">Contact</string>
+    //<string name="FEEDBACK">Feedback</string>
+    <string name="CONTACT">Contact Us</string>
     <string name="DISCLAIMER">Disclaimer</string>
     <string name="LEGAL">Legal</string>
 

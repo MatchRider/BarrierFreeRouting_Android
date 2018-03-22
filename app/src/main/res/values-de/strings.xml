@@ -15,7 +15,7 @@
 
     <!-- MENU ITEMS -->
     <string name="ACKNOWLEDGEMENTS">WISSEN</string>
-    <string name="FEEDBACK">Feedback</string>
+    //<string name="FEEDBACK">Feedback</string>
     <string name="CONTACT">Kontakt</string>
     <string name="DISCLAIMER">Haftungsausschluss</string>
     <string name="LEGAL">RECHTLICH</string>
