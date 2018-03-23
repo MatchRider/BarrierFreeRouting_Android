@@ -19,6 +19,7 @@ public final class AppData {
     public LatLng getCurrentLoc() {
         return mCurrentLoc;
     }
+
     public void setCurrentLoc(LatLng currentLoc) {
         mCurrentLoc = currentLoc;
     }

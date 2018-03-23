@@ -20,14 +20,14 @@ public interface UIBase {
     /**
      * Method to show Toast stringRes message
      *
-     * @param message
+     * @param message string message
      */
     void showSnackBar(@StringRes int message, AppCompatActivity context);
     
     /**
      * Method to show Toast string message
      *
-     * @param message
+     * @param message string message
      */
     void showSnackBar(String message, AppCompatActivity context);
 

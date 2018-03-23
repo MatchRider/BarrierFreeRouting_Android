@@ -221,16 +221,18 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @OnClick(R.id.btn_filter)
     public void onGoFilter() {
-
+      showSnackBar(getContext().getResources().getString(R.string.coming_soon));
     }
 
     public void onGoAndPlotMap() {
-        if (mGeoPointSource != null && mGeoPointDestination != null && mGeoPointSource.getLatitude() != mGeoPointDestination.getLatitude() &&
-                mGeoPointSource.getLongitude() != mGeoPointDestination.getLongitude()) {
-            mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource, mFeaturesDestination);
-            callForDestination(null, mGeoPointSource, mGeoPointDestination);
-        } else {
-            showSnackBar(getContext().getResources().getString(R.string.error_source_destination_same));
+        if(!mEditTextSource.getText().toString().isEmpty() && !mEditTextDestination.getText().toString().isEmpty()) {
+            if (mGeoPointSource != null && mGeoPointDestination != null && mGeoPointSource.getLatitude() != mGeoPointDestination.getLatitude() &&
+                    mGeoPointSource.getLongitude() != mGeoPointDestination.getLongitude()) {
+                mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource, mFeaturesDestination);
+                callForDestination(null, mGeoPointSource, mGeoPointDestination);
+            } else {
+                showSnackBar(getContext().getResources().getString(R.string.error_source_destination_same));
+            }
         }
     }
 
@@ -369,7 +371,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @OnClick(R.id.img_swap)
     public void swapDataOfViews() {
         if (!mEditTextSource.getText().toString().isEmpty() || !mEditTextDestination.getText().toString().isEmpty()) {
-            performToogleAddress();
+            performToggleAddress();
             if (mEditTextSource.getText().toString().isEmpty()) {
                 mSourceAddressClear.setVisibility(View.GONE);
                 mSourceAddressFetch.setVisibility(View.VISIBLE);
@@ -392,7 +394,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     /**
      * Swap address when toggle
      */
-    public void performToogleAddress() {
+    private void performToggleAddress() {
         //Change string data on edit text
         String sourceData = mEditTextSource.getText().toString();
         mEditTextSource.setText((mEditTextDestination.getText().toString()));

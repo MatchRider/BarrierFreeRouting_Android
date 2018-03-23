@@ -59,20 +59,17 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     private double mLatitude = 0;
     private double mLongitude = 0;
-
     private static final int REQUEST_CHECK_SETTINGS = 500;
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest mLocationRequest;
     private LocationCallback mLocationCallback;
     public LatLng mCurrentLocation;
-
     private Marker mStartMarker = null;
     private Marker mEndMarker = null;
     private Marker mCurrentMarker = null;
     private String mStartAddress;
     private String mEndAddress;
     private static OnFeedBackListener mFeedBackListener;
-
     private Polyline mPreviousPolyline;
 
     @Override
@@ -411,6 +408,9 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         }
     }
 
+    /**
+     * Show setting dialog
+     */
     protected void openSettingDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.txt_dialog_message_enable_location);

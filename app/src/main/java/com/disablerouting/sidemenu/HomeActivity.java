@@ -1,12 +1,19 @@
 package com.disablerouting.sidemenu;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -127,13 +134,49 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
                         break;
                     } else {
                         if (ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
+                            Log.e("allowed", permission);
                         } else {
-                            finish();
+                            openSettingDialog();
                             break;
                         }
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * SHo setting dialog for location
+     */
+    protected void openSettingDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.txt_dialog_message_enable_location);
+        builder.setMessage(R.string.message_gps);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startSettingActivity();
+            }
+        });
+        Dialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+
+    }
+    /**
+     * Open setting activity
+     */
+    protected void startSettingActivity() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivityForResult(intent, AppConstant.SETTING_REQUEST_CODE);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppConstant.SETTING_REQUEST_CODE) {
+            checkLocationStatus();
         }
     }
 }

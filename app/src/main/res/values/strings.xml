@@ -27,9 +27,9 @@
     <string name="INTERNAL_SERVER_ERROR">The request is incorrect and therefore can not be processed.</string>
 
     <string name="text_skip">skip</string>
-    <string name="close_drawer">Close</string>
+    <string name="close_drawer" translatable="false">Close</string>
     <string name="error_load_maps">Can not load maps without all the permissions granted</string>
-    <string name="gps_setting">GPS is settings</string>
+    <string name="gps_setting">GPS settings</string>
     <string name="message_gps">GPS is not enabled. Do you want to go to location setting?</string>
     <string name="ok">OK</string>
     <string name="a">A</string>
