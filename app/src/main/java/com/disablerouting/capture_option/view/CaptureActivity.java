@@ -1,8 +1,11 @@
 package com.disablerouting.capture_option.view;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -20,6 +23,7 @@ import com.disablerouting.route_planner.model.FeedBackModel;
 import com.disablerouting.success_screen.SuccessActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -31,6 +35,15 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
     @BindView(R.id.exp_list_view)
     ExpandableListView mExpandableListView;
 
+    @BindView(R.id.btn_finish)
+    Button mBtnFinish;
+
+    @BindView(R.id.btn_clear)
+    Button mBtnClear;
+
+    @BindView(R.id.btn_apply)
+    Button mBtnApply;
+
     private List<String> mListDataHeader;
     private LinkedHashMap<String, List<String>> mListDataChild;
     private int mLastExpandedPosition = -1;
@@ -40,7 +53,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
     List<RequestTag> mRequestTagList = new ArrayList<>();
     private List<String> mListDataHeaderKey;
     private LinkedHashMap<String, List<String>> mListDataChildValue;
-
+    HashMap<String, String> hashMapResult= new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +62,16 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         ButterKnife.bind(this);
 
         mFeedBackModel = getIntent().getParcelableExtra(AppConstant.FEED_BACK_MODEL);
+        boolean isFilter = getIntent().getBooleanExtra(AppConstant.IS_FILTER, false);
+        if(getIntent().hasExtra(AppConstant.IS_FILTER) && isFilter){
+            mBtnFinish.setVisibility(View.GONE);
+            mBtnClear.setVisibility(View.VISIBLE);
+            mBtnApply.setVisibility(View.VISIBLE);
+        }else {
+            mBtnFinish.setVisibility(View.VISIBLE);
+            mBtnClear.setVisibility(View.GONE);
+            mBtnApply.setVisibility(View.GONE);
+        }
         mCaptureScreenPresenter= new CaptureScreenPresenter(this, new SetChangeSetManager());
 
         prepareListDataForKeyValue();
@@ -113,8 +136,9 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
                 RequestTag requestTag = new RequestTag(mListDataHeaderKey.get(groupPosition),
                         mListDataChildValue.get(mListDataHeaderKey.get(groupPosition)).get(childPosition));
                 mRequestTagList.add(requestTag);
+                hashMapResult.put(mListDataHeaderKey.get(groupPosition),mListDataChildValue.get(mListDataHeaderKey.get(groupPosition)).get(childPosition));
 
-                //Handle click of item slected of child and set to sub subtitle
+                //Handle click of item selected of child and set to sub subtitle
                 mExpandableListAdapter.addSubTitleWhenChildClicked(groupPosition, childPosition, mParentView);
                 return false;
             }
@@ -311,5 +335,18 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
     public void onFailureSetChangeSet(String error) {
         hideLoader();
         showSnackBar(error,this);
+    }
+
+    @OnClick(R.id.btn_clear)
+    public void onClickClear(){
+        mExpandableListAdapter.removeSubTitlesWhenClearClicked();
+    }
+
+    @OnClick(R.id.btn_apply)
+    public void onClickApply(){
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(AppConstant.DATA_FILTER, hashMapResult);
+        setResult(Activity.RESULT_OK,returnIntent);
+        finish();
     }
 }

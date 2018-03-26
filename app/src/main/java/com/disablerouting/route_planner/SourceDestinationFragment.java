@@ -40,6 +40,7 @@ import com.disablerouting.utils.Utility;
 import com.disablerouting.widget.CustomAutoCompleteTextView;
 import org.osmdroid.util.GeoPoint;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class SourceDestinationFragment extends BaseFragmentImpl implements ISourceDestinationViewFragment,
@@ -221,10 +222,11 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @OnClick(R.id.btn_filter)
     public void onGoFilter() {
+        mOnSourceDestinationListener.onApplyFilter();
       showSnackBar(getContext().getResources().getString(R.string.coming_soon));
     }
 
-    public void onGoAndPlotMap() {
+    public void onGoAndPlotMap(HashMap<String, String> stringStringHashMap) {
         if(!mEditTextSource.getText().toString().isEmpty() && !mEditTextDestination.getText().toString().isEmpty()) {
             if (mGeoPointSource != null && mGeoPointDestination != null && mGeoPointSource.getLatitude() != mGeoPointDestination.getLatitude() &&
                     mGeoPointSource.getLongitude() != mGeoPointDestination.getLongitude()) {

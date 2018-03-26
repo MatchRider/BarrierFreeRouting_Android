@@ -13,4 +13,6 @@ public interface OnSourceDestinationListener {
     void onBackPress();
 
     void onSourceDestinationSelected(Features featuresSource, Features featuresDestination);
+
+    void onApplyFilter();
 }

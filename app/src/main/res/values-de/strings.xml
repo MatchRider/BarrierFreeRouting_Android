@@ -70,6 +70,8 @@
 
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
+    <string name="clear">Clear</string>
+    <string name="apply">Apply</string>
 
 
 </resources>

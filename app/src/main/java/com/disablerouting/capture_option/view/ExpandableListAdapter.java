@@ -134,4 +134,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * Remove subtitles when clear button cliked
+     */
+    public void removeSubTitlesWhenClearClicked() {
+        mSelectionMap.clear();
+        notifyDataSetChanged();
+    }
 }

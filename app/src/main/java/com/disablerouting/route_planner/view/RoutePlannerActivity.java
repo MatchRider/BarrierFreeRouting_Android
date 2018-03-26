@@ -1,10 +1,14 @@
 package com.disablerouting.route_planner.view;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
+import com.disablerouting.capture_option.view.CaptureActivity;
+import com.disablerouting.common.AppConstant;
 import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.map_base.MapBaseActivity;
 import com.disablerouting.route_planner.SourceDestinationFragment;
@@ -12,6 +16,7 @@ import com.disablerouting.route_planner.model.Steps;
 import com.google.android.gms.maps.model.LatLng;
 import org.osmdroid.util.GeoPoint;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDestinationListener {
@@ -23,6 +28,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private String mDestinationAddress;
     private String mEncodedPolyline;
     private List<Steps> mStepsList;
+    private HashMap<String, String> mHashMapObjectFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +90,14 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
     }
 
+    @Override
+    public void onApplyFilter() {
+        Intent intentFilter= new Intent(this,CaptureActivity.class);
+        intentFilter.putExtra(AppConstant.IS_FILTER,true);
+        startActivityForResult(intentFilter,AppConstant.REQUEST_CODE_CAPTURE);
+    }
+
+
     @OnClick(R.id.img_re_center)
     public void reCenter() {
         clearItemsFromMap();
@@ -113,6 +127,16 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @OnClick(R.id.btn_go)
     public void goPlotMap(){
-        mSourceDestinationFragment.onGoAndPlotMap();
+        mSourceDestinationFragment.onGoAndPlotMap(mHashMapObjectFilter);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == AppConstant.REQUEST_CODE_CAPTURE) {
+            if(resultCode == Activity.RESULT_OK){
+                mHashMapObjectFilter = (HashMap<String, String>)data.getSerializableExtra(AppConstant.DATA_FILTER);
+            }
+        }
+    }
+
 }
