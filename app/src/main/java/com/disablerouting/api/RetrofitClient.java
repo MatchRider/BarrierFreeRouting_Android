@@ -1,6 +1,7 @@
 package com.disablerouting.api;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
@@ -10,8 +11,10 @@ import java.util.concurrent.TimeUnit;
 public class RetrofitClient {
     private static Retrofit sRetrofit;
     private static Retrofit sRetrofitOSM;
+    private static Retrofit sRetrofitDirections;
     private static ApiService sApiService;
     private static ApiService sApiServiceOSM;
+    private static ApiService sApiServiceDirections;
 
 
     /**
@@ -22,13 +25,17 @@ public class RetrofitClient {
         if (sRetrofit == null) {
 
             final String baseUrl = ApiEndPoint.BASE_URL;
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            // set your desired log level
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             final OkHttpClient client = new OkHttpClient.Builder()
                     .followRedirects(true)
                     .readTimeout(30, TimeUnit.SECONDS)
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .connectTimeout(30, TimeUnit.SECONDS)
-                    .addInterceptor(new ApiInterceptor())
+                    .addInterceptor(new ApiInterceptor(false))
+                    .addInterceptor(logging)
                     .build();
 
             sRetrofit = new Retrofit.Builder()
@@ -40,6 +47,7 @@ public class RetrofitClient {
 
         return sRetrofit;
     }
+
 
     /**
      * Initialize retrofit client with base url
@@ -101,6 +109,39 @@ public class RetrofitClient {
             sApiServiceOSM = getRetrofitForOsm().create(ApiService.class);
         }
         return sApiServiceOSM;
+    }
+
+    private static Retrofit getRetrofitDirections() {
+        if (sRetrofitDirections == null) {
+
+            final String baseUrl = ApiEndPoint.BASE_URL;
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            // set your desired log level
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+            final OkHttpClient client = new OkHttpClient.Builder()
+                    .followRedirects(true)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .addInterceptor(new ApiInterceptor(true))
+                    .addInterceptor(logging)
+                    .build();
+
+            sRetrofitDirections = new Retrofit.Builder()
+                    .client(client)
+                    .baseUrl(baseUrl)
+                    .addConverterFactory(JacksonConverterFactory.create())
+                    .build();
+        }
+
+        return sRetrofitDirections;
+    }
+    public static ApiService getApiServiceDirections() {
+        if (sApiServiceDirections == null) {
+            sApiServiceDirections = getRetrofitDirections().create(ApiService.class);
+        }
+        return sApiServiceDirections;
     }
 
 }

@@ -28,7 +28,7 @@ import com.disablerouting.route_planner.view.RoutePlannerActivity;
 import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
 import com.disablerouting.utils.PermissionUtils;
 
-public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragmentCallback{
+public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragmentCallback {
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -57,6 +57,7 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         checkLocationStatus();
 
     }
+
     /**
      * Check location services status
      */
@@ -67,6 +68,7 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
             }
         }
     }
+
     /**
      * Add Listener for drawer
      */
@@ -89,17 +91,17 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
 
 
     @OnClick(R.id.navigation_btn)
-    public void clickNavigation(){
-        if(slideState){
+    public void clickNavigation() {
+        if (slideState) {
             mDrawerLayout.openDrawer(Gravity.START);
-        }else{
+        } else {
             mDrawerLayout.openDrawer(Gravity.START);
         }
     }
 
     @Override
     public void onBackPressed() {
-        if(slideState){
+        if (slideState) {
             mDrawerLayout.closeDrawer(Gravity.START);
             return;
         }
@@ -107,14 +109,15 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
     }
 
     @OnClick(R.id.btn_route_planner)
-    void redirectRoutePlanner(){
+    void redirectRoutePlanner() {
         launchActivity(this, RoutePlannerActivity.class);
     }
 
     @OnClick(R.id.btn_suggestion)
-    void redirectSuggestions(){
-       // launchActivity(this, CaptureActivity.class);
+    void redirectSuggestions() {
+        // launchActivity(this, CaptureActivity.class);
     }
+
     /**
      * Result when user give permission or not
      *
@@ -163,6 +166,7 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         alertDialog.show();
 
     }
+
     /**
      * Open setting activity
      */
@@ -172,6 +176,7 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         intent.setData(uri);
         startActivityForResult(intent, AppConstant.SETTING_REQUEST_CODE);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -179,4 +184,5 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
             checkLocationStatus();
         }
     }
+
 }

@@ -54,6 +54,8 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
     private List<String> mListDataHeaderKey;
     private LinkedHashMap<String, List<String>> mListDataChildValue;
     HashMap<String, String> hashMapResult= new HashMap<>();
+    private List<String> mListDataHeaderKeyForFilter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +138,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
                 RequestTag requestTag = new RequestTag(mListDataHeaderKey.get(groupPosition),
                         mListDataChildValue.get(mListDataHeaderKey.get(groupPosition)).get(childPosition));
                 mRequestTagList.add(requestTag);
-                hashMapResult.put(mListDataHeaderKey.get(groupPosition),mListDataChildValue.get(mListDataHeaderKey.get(groupPosition)).get(childPosition));
+                hashMapResult.put(mListDataHeaderKeyForFilter.get(groupPosition),mListDataChildValue.get(mListDataHeaderKey.get(groupPosition)).get(childPosition));
 
                 //Handle click of item selected of child and set to sub subtitle
                 mExpandableListAdapter.addSubTitleWhenChildClicked(groupPosition, childPosition, mParentView);
@@ -147,6 +149,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
 
     private void prepareListDataForKeyValue() {
         mListDataHeaderKey = new ArrayList<String>();
+        mListDataHeaderKeyForFilter = new ArrayList<String>();
         mListDataChildValue = new LinkedHashMap<>();
 
         mListDataHeaderKey.add("surface");
@@ -156,6 +159,13 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         mListDataHeaderKey.add("incline");
         mListDataHeaderKey.add("width");
         mListDataHeaderKey.add("obstacle");
+
+        mListDataHeaderKeyForFilter.add("surface_type");
+        mListDataHeaderKeyForFilter.add("maximum_sloped_curb");
+        mListDataHeaderKeyForFilter.add("maximum_incline");
+        mListDataHeaderKeyForFilter.add("width");
+        mListDataHeaderKeyForFilter.add("obstacle");
+
 
         List<String> surfaceTypeData = new ArrayList<String>();
         surfaceTypeData.add("paved");

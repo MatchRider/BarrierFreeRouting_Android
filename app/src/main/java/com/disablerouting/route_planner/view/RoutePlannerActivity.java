@@ -14,10 +14,13 @@ import com.disablerouting.map_base.MapBaseActivity;
 import com.disablerouting.route_planner.SourceDestinationFragment;
 import com.disablerouting.route_planner.model.Steps;
 import com.google.android.gms.maps.model.LatLng;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDestinationListener {
 
@@ -29,6 +32,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private String mEncodedPolyline;
     private List<Steps> mStepsList;
     private HashMap<String, String> mHashMapObjectFilter;
+    JSONObject mJsonObjectFilter = new JSONObject();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +115,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
                 geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
                         mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
-                mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination);
+                mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination, mJsonObjectFilter);
             }
         } else {
             plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null);
@@ -127,7 +131,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @OnClick(R.id.btn_go)
     public void goPlotMap(){
-        mSourceDestinationFragment.onGoAndPlotMap(mHashMapObjectFilter);
+        mSourceDestinationFragment.onGoAndPlotMap(mJsonObjectFilter);
     }
 
     @Override
@@ -135,6 +139,24 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (requestCode == AppConstant.REQUEST_CODE_CAPTURE) {
             if(resultCode == Activity.RESULT_OK){
                 mHashMapObjectFilter = (HashMap<String, String>)data.getSerializableExtra(AppConstant.DATA_FILTER);
+
+                JSONObject jsonObject = new JSONObject();
+                JSONObject jsonObjectProfileParams = new JSONObject();
+                JSONObject restrictions = new JSONObject();
+
+                try {
+                    for (Map.Entry<String, String> entry : mHashMapObjectFilter.entrySet()) {
+                        String key = entry.getKey();
+                        String value = entry.getValue();
+                        restrictions.put(key, value);
+                    }
+                    jsonObjectProfileParams.put("restrictions", restrictions);
+                    mJsonObjectFilter.put("profile_params", jsonObjectProfileParams);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

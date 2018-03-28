@@ -38,9 +38,9 @@ import com.disablerouting.route_planner.view.ISourceDestinationViewFragment;
 import com.disablerouting.route_planner.view.OnSourceDestinationListener;
 import com.disablerouting.utils.Utility;
 import com.disablerouting.widget.CustomAutoCompleteTextView;
+import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class SourceDestinationFragment extends BaseFragmentImpl implements ISourceDestinationViewFragment,
@@ -99,6 +99,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     private Features mFeaturesSource;
     private Features mFeaturesDestination;
     private boolean mIsTextInputManually = false;
+    private JSONObject mJSONObjectFilter;
 
     @SuppressLint("HandlerLeak")
     final Handler handler = new Handler() {
@@ -194,17 +195,18 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         });
     }
 
-    public void callForDestination(GeoPoint geoPointCurrent, GeoPoint geoPointSource, GeoPoint geoPointDestination) {
+    public void callForDestination(GeoPoint geoPointCurrent, GeoPoint geoPointSource, GeoPoint geoPointDestination , JSONObject jsonObject) {
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         mGeoPointSource = geoPointSource;
         mGeoPointDestination = geoPointDestination;
+        mJSONObjectFilter= jsonObject;
         if (mGeoPointSource.getLatitude() != mGeoPointDestination.getLatitude() &&
                 mGeoPointSource.getLongitude() != mGeoPointDestination.getLongitude()) {
             if (mEditTextSource != null && !mEditTextSource.getText().toString().isEmpty() &&
                     mEditTextDestination != null && !mEditTextDestination.getText().toString().isEmpty()) {
 
                 mCoordinates = mGeoPointSource + "|" + mGeoPointDestination;
-                mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates, mProfileType);
+                mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates, mProfileType , jsonObject);
             }
             handler.removeMessages(SEARCH_TEXT_CHANGED);
         }
@@ -226,12 +228,13 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
       showSnackBar(getContext().getResources().getString(R.string.coming_soon));
     }
 
-    public void onGoAndPlotMap(HashMap<String, String> stringStringHashMap) {
+    public void onGoAndPlotMap(JSONObject jsonObject) {
         if(!mEditTextSource.getText().toString().isEmpty() && !mEditTextDestination.getText().toString().isEmpty()) {
             if (mGeoPointSource != null && mGeoPointDestination != null && mGeoPointSource.getLatitude() != mGeoPointDestination.getLatitude() &&
                     mGeoPointSource.getLongitude() != mGeoPointDestination.getLongitude()) {
                 mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource, mFeaturesDestination);
-                callForDestination(null, mGeoPointSource, mGeoPointDestination);
+                mJSONObjectFilter= jsonObject;
+                callForDestination(null, mGeoPointSource, mGeoPointDestination, jsonObject);
             } else {
                 showSnackBar(getContext().getResources().getString(R.string.error_source_destination_same));
             }
@@ -415,7 +418,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         if (mGeoPointSource != null && mGeoPointDestination != null && mGeoPointSource.getLatitude() != mGeoPointDestination.getLatitude() &&
                 mGeoPointSource.getLongitude() != mGeoPointDestination.getLongitude()) {
             mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource, mFeaturesDestination);
-            callForDestination(null, mGeoPointSource, mGeoPointDestination);
+            callForDestination(null, mGeoPointSource, mGeoPointDestination, mJSONObjectFilter);
+
         } else {
             showSnackBar(getContext().getResources().getString(R.string.error_source_destination_same));
         }

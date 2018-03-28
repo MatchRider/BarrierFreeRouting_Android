@@ -10,6 +10,7 @@ import com.disablerouting.geo_coding.presenter.IGeoCodingResponseReceiver;
 import com.disablerouting.route_planner.manager.DirectionsManager;
 import com.disablerouting.route_planner.model.DirectionsResponse;
 import com.disablerouting.route_planner.view.ISourceDestinationViewFragment;
+import org.json.JSONObject;
 
 public class SourceDestinationScreenPresenter implements ISourceDestinationScreenPresenter,
         IDirectionsResponseReceiver , IGeoCodingResponseReceiver {
@@ -27,10 +28,10 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
     }
 
     @Override
-    public void getDestinationsData(String coordinates, String profile ) {
+    public void getDestinationsData(String coordinates, String profile , JSONObject jsonObject) {
         if (mISourceDestinationViewFragment != null) {
             mISourceDestinationViewFragment.showLoader();
-            mDirectionsManager.getDestination(this, coordinates, profile);
+            mDirectionsManager.getDestination(this, coordinates, profile , jsonObject);
         }
     }
 

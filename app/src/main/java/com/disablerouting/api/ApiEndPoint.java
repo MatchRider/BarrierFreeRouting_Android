@@ -5,6 +5,8 @@ public interface ApiEndPoint {
 
     String BASE_URL = "https://api.openrouteservice.org/";
     String APP_CONTENT_TYPE = "Content-Type";
+    String APP_ACCEPT_ENCODING = "Accept-Encoding";
+    String APP_CONTENT_ENCODING = "Content-Encoding";
     String API_KEY= "58d904a497c67e00015b45fc2deebb0cd8724d54ba2d7d57c525bf8d";
 
     String LIVE_BASE_URL_OSM = ""; // need to change
