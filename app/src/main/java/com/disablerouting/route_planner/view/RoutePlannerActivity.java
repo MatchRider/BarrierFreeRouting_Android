@@ -140,7 +140,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             if(resultCode == Activity.RESULT_OK){
                 mHashMapObjectFilter = (HashMap<String, String>)data.getSerializableExtra(AppConstant.DATA_FILTER);
 
-                JSONObject jsonObject = new JSONObject();
                 JSONObject jsonObjectProfileParams = new JSONObject();
                 JSONObject restrictions = new JSONObject();
 

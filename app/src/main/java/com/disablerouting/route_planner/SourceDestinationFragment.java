@@ -225,7 +225,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @OnClick(R.id.btn_filter)
     public void onGoFilter() {
         mOnSourceDestinationListener.onApplyFilter();
-      showSnackBar(getContext().getResources().getString(R.string.coming_soon));
     }
 
     public void onGoAndPlotMap(JSONObject jsonObject) {
