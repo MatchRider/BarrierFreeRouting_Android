@@ -11,4 +11,5 @@ public interface AppConstant {
     String FEED_BACK_MODEL = "feedBackModel";
     String IS_FILTER = "isFilter";
     String DATA_FILTER= "data_filter";
+    String DATA_FILTER_SELECTED= "data_filter_selected";
 }

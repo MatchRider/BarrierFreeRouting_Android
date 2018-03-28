@@ -1,6 +1,7 @@
 package com.disablerouting.capture_option.view;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.capture_option.manager.SetChangeSetManager;
+import com.disablerouting.capture_option.model.DataModelExpandableList;
 import com.disablerouting.capture_option.model.Node;
 import com.disablerouting.capture_option.model.RequestCreateNode;
 import com.disablerouting.capture_option.presenter.CaptureScreenPresenter;
@@ -22,10 +24,7 @@ import com.disablerouting.feedback.model.RequestTag;
 import com.disablerouting.route_planner.model.FeedBackModel;
 import com.disablerouting.success_screen.SuccessActivity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
 
@@ -45,16 +44,18 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
     Button mBtnApply;
 
     private List<String> mListDataHeader;
-    private LinkedHashMap<String, List<String>> mListDataChild;
+    private LinkedHashMap<String, List<DataModelExpandableList>> mListDataChild;
     private int mLastExpandedPosition = -1;
     private View mParentView;
 
     private FeedBackModel mFeedBackModel;
     List<RequestTag> mRequestTagList = new ArrayList<>();
     private List<String> mListDataHeaderKey;
-    private LinkedHashMap<String, List<String>> mListDataChildValue;
+    private LinkedHashMap<String, List<DataModelExpandableList>> mListDataChildValue;
     HashMap<String, String> hashMapResult= new HashMap<>();
     private List<String> mListDataHeaderKeyForFilter;
+    @SuppressLint("UseSparseArrays")
+    private HashMap<Integer, Integer> mHashMapObjectFilterItem = new HashMap<>();
 
 
     @Override
@@ -65,10 +66,14 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
 
         mFeedBackModel = getIntent().getParcelableExtra(AppConstant.FEED_BACK_MODEL);
         boolean isFilter = getIntent().getBooleanExtra(AppConstant.IS_FILTER, false);
+
         if(getIntent().hasExtra(AppConstant.IS_FILTER) && isFilter){
             mBtnFinish.setVisibility(View.GONE);
             mBtnClear.setVisibility(View.VISIBLE);
             mBtnApply.setVisibility(View.VISIBLE);
+            if (getIntent().hasExtra(AppConstant.DATA_FILTER_SELECTED)){
+                mHashMapObjectFilterItem = (HashMap<Integer, Integer>)getIntent().getSerializableExtra(AppConstant.DATA_FILTER_SELECTED);
+            }
         }else {
             mBtnFinish.setVisibility(View.VISIBLE);
             mBtnClear.setVisibility(View.GONE);
@@ -99,6 +104,9 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
     }
     private void onExpandListeners() {
         mExpandableListAdapter = new ExpandableListAdapter(this, mListDataHeader, mListDataChild);
+
+        mExpandableListAdapter.setSelectionMap(mHashMapObjectFilterItem);
+
         mExpandableListView.setAdapter(mExpandableListAdapter);
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 
@@ -136,9 +144,13 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
 
                  //Add data for API call
                 RequestTag requestTag = new RequestTag(mListDataHeaderKey.get(groupPosition),
-                        mListDataChildValue.get(mListDataHeaderKey.get(groupPosition)).get(childPosition));
+                        mListDataChildValue.get(mListDataHeaderKey.get(groupPosition)).get(childPosition).getValue());
+
                 mRequestTagList.add(requestTag);
-                hashMapResult.put(mListDataHeaderKeyForFilter.get(groupPosition),mListDataChildValue.get(mListDataHeaderKey.get(groupPosition)).get(childPosition));
+
+                hashMapResult.put(mListDataHeaderKeyForFilter.get(groupPosition),mListDataChildValue.get(mListDataHeaderKey.get(groupPosition)).get(childPosition).getValue());
+
+//                mListDataChildValue.get(mListDataHeaderKey.get(groupPosition)).get(childPosition).setSelected(!mListDataChildValue.get(mListDataHeaderKey.get(groupPosition)).get(childPosition).isSelected());
 
                 //Handle click of item selected of child and set to sub subtitle
                 mExpandableListAdapter.addSubTitleWhenChildClicked(groupPosition, childPosition, mParentView);
@@ -167,15 +179,23 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         mListDataHeaderKeyForFilter.add("obstacle");
 
 
-        List<String> surfaceTypeData = new ArrayList<String>();
-        surfaceTypeData.add("paved");
+        List<DataModelExpandableList> surfaceTypeData = new ArrayList<DataModelExpandableList>();
+        surfaceTypeData.add(new DataModelExpandableList("paved"));
+        surfaceTypeData.add(new DataModelExpandableList("asphalt"));
+        surfaceTypeData.add(new DataModelExpandableList("concrete_plates"));
+        surfaceTypeData.add(new DataModelExpandableList("paving_stones"));
+        surfaceTypeData.add(new DataModelExpandableList("cobblestone"));
+        surfaceTypeData.add(new DataModelExpandableList("grass_pavers"));
+        surfaceTypeData.add(new DataModelExpandableList("gravel"));
+
+        /*surfaceTypeData.add("paved","");
         surfaceTypeData.add("asphalt");
         surfaceTypeData.add("concrete_plates");
         surfaceTypeData.add("paving_stones");
         surfaceTypeData.add("cobblestone");
         surfaceTypeData.add("grass_pavers");
         surfaceTypeData.add("gravel");
-
+*/
         /*List<String> trackTypeData = new ArrayList<String>();
         trackTypeData.add("cycleway");
         trackTypeData.add("footway");
@@ -189,38 +209,38 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         smoothnessGradeData.add("bad");
         */
 
-        List<String> maxSlopedCurvedData = new ArrayList<String>();
-        maxSlopedCurvedData.add("0");
-        maxSlopedCurvedData.add("3");
-        maxSlopedCurvedData.add("6");
-        maxSlopedCurvedData.add(">6");
+        List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<DataModelExpandableList>();
+        maxSlopedCurvedData.add(new DataModelExpandableList("0"));
+        maxSlopedCurvedData.add(new DataModelExpandableList("3"));
+        maxSlopedCurvedData.add(new DataModelExpandableList("6"));
+        maxSlopedCurvedData.add(new DataModelExpandableList(">6"));
 
-        List<String> maxInclineData = new ArrayList<String>();
-        maxInclineData.add("-5");
-        maxInclineData.add("-4");
-        maxInclineData.add("-3");
-        maxInclineData.add("-2");
-        maxInclineData.add("-1");
-        maxInclineData.add("0");
-        maxInclineData.add("1");
-        maxInclineData.add("2");
-        maxInclineData.add("3");
-        maxInclineData.add("4");
-        maxInclineData.add("5");
+        List<DataModelExpandableList> maxInclineData = new ArrayList<DataModelExpandableList>();
+        maxInclineData.add(new DataModelExpandableList("-5"));
+        maxInclineData.add(new DataModelExpandableList("-4"));
+        maxInclineData.add(new DataModelExpandableList("-3"));
+        maxInclineData.add(new DataModelExpandableList("-2"));
+        maxInclineData.add(new DataModelExpandableList("-1"));
+        maxInclineData.add(new DataModelExpandableList("0"));
+        maxInclineData.add(new DataModelExpandableList("1"));
+        maxInclineData.add(new DataModelExpandableList("2"));
+        maxInclineData.add(new DataModelExpandableList("3"));
+        maxInclineData.add(new DataModelExpandableList("4"));
+        maxInclineData.add(new DataModelExpandableList("5"));
 
-        List<String> sideWalkWidthData = new ArrayList<String>();
-        sideWalkWidthData.add("<30");
-        sideWalkWidthData.add("30-45");
-        sideWalkWidthData.add("46-75");
-        sideWalkWidthData.add("76-100");
-        sideWalkWidthData.add("101-125");
-        sideWalkWidthData.add("126-150");
-        sideWalkWidthData.add("150-175");
-        sideWalkWidthData.add(">176");
+        List<DataModelExpandableList> sideWalkWidthData = new ArrayList<DataModelExpandableList>();
+        sideWalkWidthData.add(new DataModelExpandableList("<30"));
+        sideWalkWidthData.add(new DataModelExpandableList("30-45"));
+        sideWalkWidthData.add(new DataModelExpandableList("46-75"));
+        sideWalkWidthData.add(new DataModelExpandableList("76-100"));
+        sideWalkWidthData.add(new DataModelExpandableList("101-125"));
+        sideWalkWidthData.add(new DataModelExpandableList("126-150"));
+        sideWalkWidthData.add(new DataModelExpandableList("150-175"));
+        sideWalkWidthData.add(new DataModelExpandableList(">176"));
 
-        List<String> permanentObstacleData = new ArrayList<String>();
-        permanentObstacleData.add("Yes");
-        permanentObstacleData.add("No");
+        List<DataModelExpandableList> permanentObstacleData = new ArrayList<DataModelExpandableList>();
+        permanentObstacleData.add(new DataModelExpandableList("Yes"));
+        permanentObstacleData.add(new DataModelExpandableList("No"));
 
         mListDataChildValue.put(mListDataHeaderKey.get(0), surfaceTypeData);
        // mListDataChildValue.put(mListDataHeaderKey.get(0), trackTypeData);
@@ -246,14 +266,14 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         mListDataHeader.add(getString(R.string.sidewalk_width));
         mListDataHeader.add(getString(R.string.permanent_obstacle));
 
-        List<String> surfaceTypeData = new ArrayList<String>();
-        surfaceTypeData.add(getString(R.string.paved));
-        surfaceTypeData.add(getString(R.string.asphalt));
-        surfaceTypeData.add(getString(R.string.concrete));
-        surfaceTypeData.add(getString(R.string.paving_stones));
-        surfaceTypeData.add(getString(R.string.cobblestone));
-        surfaceTypeData.add(getString(R.string.grass_paver));
-        surfaceTypeData.add(getString(R.string.gravel));
+        List<DataModelExpandableList> surfaceTypeData = new ArrayList<DataModelExpandableList>();
+        surfaceTypeData.add(new DataModelExpandableList("Paved"));
+        surfaceTypeData.add(new DataModelExpandableList("Asphalt"));
+        surfaceTypeData.add(new DataModelExpandableList("Concrete"));
+        surfaceTypeData.add(new DataModelExpandableList("Paving Stones"));
+        surfaceTypeData.add(new DataModelExpandableList("Cobblestone"));
+        surfaceTypeData.add(new DataModelExpandableList("Grass Pavers"));
+        surfaceTypeData.add(new DataModelExpandableList("Gravel"));
 
         /*List<String> trackTypeData = new ArrayList<String>();
         trackTypeData.add("Cycle Way(Bike path)");
@@ -267,39 +287,40 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         smoothnessGradeData.add("Intermediate");
         smoothnessGradeData.add("Bad");
         */
-        List<String> maxSlopedCurvedData = new ArrayList<String>();
-        maxSlopedCurvedData.add("0");
-        maxSlopedCurvedData.add("3");
-        maxSlopedCurvedData.add("6");
-        maxSlopedCurvedData.add(">6");
 
-        List<String> maxInclineData = new ArrayList<String>();
-        maxInclineData.add("-5");
-        maxInclineData.add("-4");
-        maxInclineData.add("-3");
-        maxInclineData.add("-2");
-        maxInclineData.add("-1");
-        maxInclineData.add("0");
-        maxInclineData.add("1");
-        maxInclineData.add("2");
-        maxInclineData.add("3");
-        maxInclineData.add("4");
-        maxInclineData.add("5");
+        List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<DataModelExpandableList>();
+        maxSlopedCurvedData.add(new DataModelExpandableList("0"));
+        maxSlopedCurvedData.add(new DataModelExpandableList("3"));
+        maxSlopedCurvedData.add(new DataModelExpandableList("6"));
+        maxSlopedCurvedData.add(new DataModelExpandableList(">6"));
 
-        List<String> sideWalkWidthData = new ArrayList<String>();
-        sideWalkWidthData.add("<30");
-        sideWalkWidthData.add("30-45");
-        sideWalkWidthData.add("46-75");
-        sideWalkWidthData.add("76-100");
-        sideWalkWidthData.add("101-125");
-        sideWalkWidthData.add("126-150");
-        sideWalkWidthData.add("150-175");
-        sideWalkWidthData.add(">176");
+        List<DataModelExpandableList> maxInclineData = new ArrayList<DataModelExpandableList>();
+        maxInclineData.add(new DataModelExpandableList("-5"));
+        maxInclineData.add(new DataModelExpandableList("-4"));
+        maxInclineData.add(new DataModelExpandableList("-3"));
+        maxInclineData.add(new DataModelExpandableList("-2"));
+        maxInclineData.add(new DataModelExpandableList("-1"));
+        maxInclineData.add(new DataModelExpandableList("0"));
+        maxInclineData.add(new DataModelExpandableList("1"));
+        maxInclineData.add(new DataModelExpandableList("2"));
+        maxInclineData.add(new DataModelExpandableList("3"));
+        maxInclineData.add(new DataModelExpandableList("4"));
+        maxInclineData.add(new DataModelExpandableList("5"));
+
+        List<DataModelExpandableList> sideWalkWidthData = new ArrayList<DataModelExpandableList>();
+        sideWalkWidthData.add(new DataModelExpandableList("<30"));
+        sideWalkWidthData.add(new DataModelExpandableList("30-45"));
+        sideWalkWidthData.add(new DataModelExpandableList("46-75"));
+        sideWalkWidthData.add(new DataModelExpandableList("76-100"));
+        sideWalkWidthData.add(new DataModelExpandableList("101-125"));
+        sideWalkWidthData.add(new DataModelExpandableList("126-150"));
+        sideWalkWidthData.add(new DataModelExpandableList("150-175"));
+        sideWalkWidthData.add(new DataModelExpandableList(">176"));
 
 
-        List<String> permanentObstacleData = new ArrayList<String>();
-        permanentObstacleData.add(getString(R.string.yes));
-        permanentObstacleData.add(getString(R.string.no));
+        List<DataModelExpandableList> permanentObstacleData = new ArrayList<DataModelExpandableList>();
+        permanentObstacleData.add(new DataModelExpandableList("Yes"));
+        permanentObstacleData.add(new DataModelExpandableList("No"));
 
         mListDataChild.put(mListDataHeader.get(0), surfaceTypeData);
         //mListDataChild.put(mListDataHeader.get(1), trackTypeData);
@@ -356,7 +377,9 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
     public void onClickApply(){
         Intent returnIntent = new Intent();
         returnIntent.putExtra(AppConstant.DATA_FILTER, hashMapResult);
+        returnIntent.putExtra(AppConstant.DATA_FILTER_SELECTED, mExpandableListAdapter.getSelectionMap());
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
     }
+
 }

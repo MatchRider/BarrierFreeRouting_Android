@@ -1,5 +1,6 @@
 package com.disablerouting.route_planner.view;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
@@ -33,6 +34,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private List<Steps> mStepsList;
     private HashMap<String, String> mHashMapObjectFilter;
     JSONObject mJsonObjectFilter = new JSONObject();
+    @SuppressLint("UseSparseArrays")
+    private HashMap<Integer,Integer> mHashMapObjectFilterItem=new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onApplyFilter() {
         Intent intentFilter= new Intent(this,CaptureActivity.class);
         intentFilter.putExtra(AppConstant.IS_FILTER,true);
+        intentFilter.putExtra(AppConstant.DATA_FILTER_SELECTED,mHashMapObjectFilterItem);
         startActivityForResult(intentFilter,AppConstant.REQUEST_CODE_CAPTURE);
     }
 
@@ -139,6 +143,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (requestCode == AppConstant.REQUEST_CODE_CAPTURE) {
             if(resultCode == Activity.RESULT_OK){
                 mHashMapObjectFilter = (HashMap<String, String>)data.getSerializableExtra(AppConstant.DATA_FILTER);
+                mHashMapObjectFilterItem = (HashMap<Integer, Integer>)data.getSerializableExtra(AppConstant.DATA_FILTER_SELECTED);
 
                 JSONObject jsonObjectProfileParams = new JSONObject();
                 JSONObject restrictions = new JSONObject();
