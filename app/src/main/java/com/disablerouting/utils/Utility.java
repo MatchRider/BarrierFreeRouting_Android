@@ -4,11 +4,8 @@ package com.disablerouting.utils;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
-import fr.arnaudguyon.xmltojsonlib.XmlToJson;
-import org.json.JSONObject;
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.views.overlay.OverlayItem;
@@ -70,7 +67,7 @@ public class Utility {
         return formatter.format(value);
     }
 
-    public static JSONObject convertXMLtoJSON(String xmlString){
+    /*public static JSONObject convertXMLtoJSON(String xmlString){
         JSONObject jsonObj=null;
         try {
             XmlToJson xmlToJson = new XmlToJson.Builder(xmlString).build();
@@ -84,5 +81,5 @@ public class Utility {
         }
 
         return jsonObj;
-    }
+    }*/
 }
