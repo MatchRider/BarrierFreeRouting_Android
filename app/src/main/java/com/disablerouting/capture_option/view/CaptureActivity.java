@@ -371,10 +371,16 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
     @OnClick(R.id.btn_clear)
     public void onClickClear(){
         mExpandableListAdapter.removeSubTitlesWhenClearClicked();
+        hashMapResult = new HashMap<>();
+        setDataWhenFilterApplied();
     }
 
     @OnClick(R.id.btn_apply)
     public void onClickApply(){
+       setDataWhenFilterApplied();
+    }
+
+    private void setDataWhenFilterApplied(){
         Intent returnIntent = new Intent();
         returnIntent.putExtra(AppConstant.DATA_FILTER, hashMapResult);
         returnIntent.putExtra(AppConstant.DATA_FILTER_SELECTED, mExpandableListAdapter.getSelectionMap());

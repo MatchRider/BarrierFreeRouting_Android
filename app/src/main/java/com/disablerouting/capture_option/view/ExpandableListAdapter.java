@@ -146,6 +146,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
      */
     public void removeSubTitlesWhenClearClicked() {
         mSelectionMap.clear();
+        mSelectionMap= new HashMap<>();
         notifyDataSetChanged();
     }
 
