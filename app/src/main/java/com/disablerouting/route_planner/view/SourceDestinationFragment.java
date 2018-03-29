@@ -1,4 +1,4 @@
-package com.disablerouting.route_planner;
+package com.disablerouting.route_planner.view;
 
 
 import android.annotation.SuppressLint;
@@ -30,12 +30,12 @@ import com.disablerouting.geo_coding.model.GeoCodingResponse;
 import com.disablerouting.map_base.OnFeedBackListener;
 import com.disablerouting.route_planner.adapter.CustomListAdapter;
 import com.disablerouting.route_planner.manager.DirectionsManager;
+import com.disablerouting.route_planner.manager.NodeManager;
 import com.disablerouting.route_planner.model.DirectionsResponse;
 import com.disablerouting.route_planner.model.FeedBackModel;
+import com.disablerouting.route_planner.model.NodeResponse;
 import com.disablerouting.route_planner.presenter.ISourceDestinationScreenPresenter;
 import com.disablerouting.route_planner.presenter.SourceDestinationScreenPresenter;
-import com.disablerouting.route_planner.view.ISourceDestinationViewFragment;
-import com.disablerouting.route_planner.view.OnSourceDestinationListener;
 import com.disablerouting.utils.Utility;
 import com.disablerouting.widget.CustomAutoCompleteTextView;
 import org.json.JSONObject;
@@ -151,7 +151,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mISourceDestinationScreenPresenter = new SourceDestinationScreenPresenter(this, new DirectionsManager(), new GeoCodingManager());
+        mISourceDestinationScreenPresenter = new SourceDestinationScreenPresenter(this, new DirectionsManager(), new GeoCodingManager() , new NodeManager());
     }
 
     @Override
@@ -227,11 +227,17 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mOnSourceDestinationListener.onApplyFilter();
     }
 
-    public void onGoAndPlotMap(JSONObject jsonObject) {
+
+    public void plotRoute(JSONObject jsonObject) {
         if(!mEditTextSource.getText().toString().isEmpty() && !mEditTextDestination.getText().toString().isEmpty()) {
             if (mGeoPointSource != null && mGeoPointDestination != null && mGeoPointSource.getLatitude() != mGeoPointDestination.getLatitude() &&
                     mGeoPointSource.getLongitude() != mGeoPointDestination.getLongitude()) {
                 mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource, mFeaturesDestination);
+                String bBox= mGeoPointSource.getLatitude() +","+ mGeoPointSource.getLongitude() + "," +
+                        mGeoPointDestination.getLatitude() + ","+ mGeoPointDestination.getLongitude();
+
+                //String bBox= "8.681319,49.41225,13.792309,52.293829";
+                getNodes(bBox);
                 mJSONObjectFilter= jsonObject;
                 callForDestination(null, mGeoPointSource, mGeoPointDestination, jsonObject);
             } else {
@@ -349,6 +355,23 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         showSnackBar(error);
     }
 
+    public void getNodes(String bBox){
+        mISourceDestinationScreenPresenter.getNodesData(bBox);
+    }
+    @Override
+    public void onNodeDataReceived(NodeResponse data) {
+        if(data!=null) {
+            mOnSourceDestinationListener.plotNodesOnMap(data.getNodes());
+        }
+    }
+
+    @Override
+    public void onFailureNode(String error) {
+        Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
+        showSnackBar(error);
+
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -414,14 +437,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mGeoPointSource = mGeoPointDestination;
         mGeoPointDestination = geoPoint;
 
-        if (mGeoPointSource != null && mGeoPointDestination != null && mGeoPointSource.getLatitude() != mGeoPointDestination.getLatitude() &&
-                mGeoPointSource.getLongitude() != mGeoPointDestination.getLongitude()) {
-            mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource, mFeaturesDestination);
-            callForDestination(null, mGeoPointSource, mGeoPointDestination, mJSONObjectFilter);
-
-        } else {
-            showSnackBar(getContext().getResources().getString(R.string.error_source_destination_same));
-        }
+        plotRoute(mJSONObjectFilter);
 
     }
 

@@ -12,4 +12,9 @@ public interface AppConstant {
     String IS_FILTER = "isFilter";
     String DATA_FILTER= "data_filter";
     String DATA_FILTER_SELECTED= "data_filter_selected";
+
+    String publicTransfer= "platform";
+    String publicToilets= "toilets";
+    String publicBusStop= "bus_stop";
+
 }

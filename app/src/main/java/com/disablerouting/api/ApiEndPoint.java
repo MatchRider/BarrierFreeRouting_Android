@@ -5,13 +5,15 @@ public interface ApiEndPoint {
 
     String BASE_URL = "https://api.openrouteservice.org/";
     String APP_CONTENT_TYPE = "Content-Type";
-    String APP_ACCEPT_ENCODING = "Accept-Encoding";
-    String APP_CONTENT_ENCODING = "Content-Encoding";
     String API_KEY= "58d904a497c67e00015b45fc2deebb0cd8724d54ba2d7d57c525bf8d";
 
     String LIVE_BASE_URL_OSM = ""; // need to change
     String SANDBOX_BASE_URL_OSM = "https://master.apis.dev.openstreetmap.org/api/0.6/";
     String AUTHORIZATION_TAG_OSM = "Authorization";
     String AUTHORIZATION_KEY_OSM= "Basic c2h1YmhhbS5zYWhnYWxAZGFmZm9kaWxzdy5jb206U2h1YmhhbUAwOTEx";
+
+    String BASE_URL_WHEEL_MAP ="https://wheelmap.org/api/";
+    String API_KEY_WHEEL_MAP= "b4W1zzy2xnWjwjKQ87Tu";
+
 
 }

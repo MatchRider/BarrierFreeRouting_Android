@@ -12,13 +12,14 @@ import com.disablerouting.capture_option.view.CaptureActivity;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.map_base.MapBaseActivity;
-import com.disablerouting.route_planner.SourceDestinationFragment;
+import com.disablerouting.route_planner.model.NodeItem;
 import com.disablerouting.route_planner.model.Steps;
 import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private HashMap<String, String> mHashMapObjectFilter;
     JSONObject mJsonObjectFilter = new JSONObject();
     @SuppressLint("UseSparseArrays")
-    private HashMap<Integer,Integer> mHashMapObjectFilterItem=new HashMap<>();
+    private HashMap<Integer, Integer> mHashMapObjectFilterItem = new HashMap<>();
+    List<NodeItem> mNodeItemListFiltered = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +80,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mEncodedPolyline = encodedString;
             mStepsList = stepsList;
             plotDataOfSourceDestination(mEncodedPolyline, mSourceAddress, mDestinationAddress, mStepsList);
+            plotDataOfNodes(mNodeItemListFiltered);
+            mNodeItemListFiltered.clear();
         }
     }
 
@@ -99,10 +103,23 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onApplyFilter() {
-        Intent intentFilter= new Intent(this,CaptureActivity.class);
-        intentFilter.putExtra(AppConstant.IS_FILTER,true);
-        intentFilter.putExtra(AppConstant.DATA_FILTER_SELECTED,mHashMapObjectFilterItem);
-        startActivityForResult(intentFilter,AppConstant.REQUEST_CODE_CAPTURE);
+        Intent intentFilter = new Intent(this, CaptureActivity.class);
+        intentFilter.putExtra(AppConstant.IS_FILTER, true);
+        intentFilter.putExtra(AppConstant.DATA_FILTER_SELECTED, mHashMapObjectFilterItem);
+        startActivityForResult(intentFilter, AppConstant.REQUEST_CODE_CAPTURE);
+    }
+
+    @Override
+    public void plotNodesOnMap(List<NodeItem> mNodes) {
+        for (NodeItem nodeItem : mNodes) {
+            if (nodeItem.getNodeType() != null && nodeItem.getNodeType().getIdentifier() != null &&
+                    nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicTransfer) ||
+                    nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicToilets) ||
+                    nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicBusStop)) {
+                mNodeItemListFiltered.add(nodeItem);
+            }
+        }
+
     }
 
 
@@ -128,38 +145,42 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onFeedBackClick(double longitude, double latitude) {
-        if(mSourceDestinationFragment!=null) {
+        if (mSourceDestinationFragment != null) {
             mSourceDestinationFragment.onFeedBackClick(longitude, latitude);
         }
     }
 
     @OnClick(R.id.btn_go)
-    public void goPlotMap(){
-        mSourceDestinationFragment.onGoAndPlotMap(mJsonObjectFilter);
+    public void goPlotMap() {
+        mSourceDestinationFragment.plotRoute(mJsonObjectFilter);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == AppConstant.REQUEST_CODE_CAPTURE) {
-            if(resultCode == Activity.RESULT_OK){
-                mHashMapObjectFilter = (HashMap<String, String>)data.getSerializableExtra(AppConstant.DATA_FILTER);
-                mHashMapObjectFilterItem = (HashMap<Integer, Integer>)data.getSerializableExtra(AppConstant.DATA_FILTER_SELECTED);
+            if (resultCode == Activity.RESULT_OK) {
+                mHashMapObjectFilter = (HashMap<String, String>) data.getSerializableExtra(AppConstant.DATA_FILTER);
+                mHashMapObjectFilterItem = (HashMap<Integer, Integer>) data.getSerializableExtra(AppConstant.DATA_FILTER_SELECTED);
 
-                JSONObject jsonObjectProfileParams = new JSONObject();
-                JSONObject restrictions = new JSONObject();
+                if (mHashMapObjectFilterItem != null && mHashMapObjectFilterItem.size() != 0) {
+                    JSONObject jsonObjectProfileParams = new JSONObject();
+                    JSONObject restrictions = new JSONObject();
 
-                try {
-                    for (Map.Entry<String, String> entry : mHashMapObjectFilter.entrySet()) {
-                        String key = entry.getKey();
-                        String value = entry.getValue();
-                        restrictions.put(key, value);
+                    try {
+                        for (Map.Entry<String, String> entry : mHashMapObjectFilter.entrySet()) {
+                            String key = entry.getKey();
+                            String value = entry.getValue();
+                            restrictions.put(key, value);
+                        }
+                        jsonObjectProfileParams.put("restrictions", restrictions);
+                        mJsonObjectFilter.put("profile_params", jsonObjectProfileParams);
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    jsonObjectProfileParams.put("restrictions", restrictions);
-                    mJsonObjectFilter.put("profile_params", jsonObjectProfileParams);
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                }else {
+                    mJsonObjectFilter = null;
                 }
             }
         }

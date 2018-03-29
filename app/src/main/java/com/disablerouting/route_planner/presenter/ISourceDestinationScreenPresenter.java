@@ -9,6 +9,8 @@ public interface ISourceDestinationScreenPresenter {
 
     void getCoordinatesData(String query, String location, int limit);
 
+    void getNodesData(String bBox);
+
 
     /**
      * Disconnect ongoing calls on network

@@ -4,6 +4,7 @@ import com.disablerouting.capture_option.model.RequestCreateNode;
 import com.disablerouting.feedback.model.RequestCreateChangeSet;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
 import com.disablerouting.route_planner.model.DirectionsResponse;
+import com.disablerouting.route_planner.model.NodeResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.*;
@@ -67,5 +68,8 @@ public interface ApiService {
     @PUT("{type}/create")
     Call<ResponseBody> setChangeSet(@Path("type") String type,@Body RequestCreateNode requestCreateNode);
 
+
+    @GET("nodes")
+    Call<NodeResponse> getNodes(@Query("api_key") String apiKey,@Query("bbox") String bbox, @Query("per_page") int perPage , @Query("wheelchair") String wheelChair);
 
 }

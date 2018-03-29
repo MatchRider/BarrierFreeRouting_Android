@@ -1,5 +1,6 @@
 package com.disablerouting.map_base;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import com.disablerouting.application.AppData;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.common.PolylineDecoder;
+import com.disablerouting.route_planner.model.NodeItem;
 import com.disablerouting.route_planner.model.Steps;
 import com.disablerouting.utils.PermissionUtils;
 import com.google.android.gms.common.api.ApiException;
@@ -71,6 +73,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private String mEndAddress;
     private static OnFeedBackListener mFeedBackListener;
     private Polyline mPreviousPolyline;
+    private Marker mNodeMarker = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -294,6 +297,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     /**
      * Creating location request to get last known or latest location of user
      */
+    @SuppressLint("RestrictedApi")
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(60000);
@@ -480,5 +484,61 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         mMapView.invalidate();
     }
 
+    public void plotDataOfNodes(List<NodeItem> nodeItemList) {
+       // clearItemsFromMap();
+        for (NodeItem nodeItem : nodeItemList){
+            switch (nodeItem.getNodeType().getIdentifier()){
+                case AppConstant.publicTransfer:
+                    if(nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicTransfer)){
+                        GeoPoint geoPoint = new GeoPoint(nodeItem.getLatitude(),
+                                nodeItem.getLongitude());
+                        addMarkerNode(geoPoint,nodeItem.getNodeType().getIdentifier());
+                    }
+                    break;
+                case AppConstant.publicToilets:
+                    if(nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicToilets)){
+                        GeoPoint geoPoint = new GeoPoint(nodeItem.getLatitude(),
+                                nodeItem.getLongitude());
+                        addMarkerNode(geoPoint,nodeItem.getNodeType().getIdentifier());
+                    }
+                    break;
+                case AppConstant.publicBusStop:
+                    if(nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicBusStop)){
+                        GeoPoint geoPoint = new GeoPoint(nodeItem.getLatitude(),
+                                nodeItem.getLongitude());
+                        addMarkerNode(geoPoint,nodeItem.getNodeType().getIdentifier());
+                    }
+                    break;
+            }
 
+        }
+
+    }
+
+    private void addMarkerNode(GeoPoint geoPoint, String category){
+        mNodeMarker = new Marker(mMapView);
+        GeoPoint nodePoints = new GeoPoint(geoPoint.getLatitude(), geoPoint.getLongitude());
+        switch (category){
+            case AppConstant.publicTransfer:
+                mNodeMarker.setPosition(nodePoints);
+                mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                mMapView.getOverlays().add(mNodeMarker);
+                mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_train));
+                break;
+            case AppConstant.publicToilets:
+                mNodeMarker.setPosition(nodePoints);
+                mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                mMapView.getOverlays().add(mNodeMarker);
+                mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_toilet));
+                break;
+            case AppConstant.publicBusStop:
+                mNodeMarker.setPosition(nodePoints);
+                mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                mMapView.getOverlays().add(mNodeMarker);
+                mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_bus));
+                break;
+
+        }
+
+    }
 }
