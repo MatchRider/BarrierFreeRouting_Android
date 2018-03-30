@@ -128,8 +128,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         clearItemsFromMap();
         if (mCurrentLocation != null && mSourceAddress != null && mDestinationAddress != null) {
             GeoPoint geoPoint = new GeoPoint(mCurrentLocation.longitude, mCurrentLocation.latitude);
-            GeoPoint geoPointSource = null;
-            GeoPoint geoPointDestination = null;
+            GeoPoint geoPointSource;
+            GeoPoint geoPointDestination;
             if (mFeaturesSourceAddress != null && mFeaturesDestinationAddress != null) {
                 geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
                         mFeaturesSourceAddress.getGeometry().getCoordinates().get(1));
