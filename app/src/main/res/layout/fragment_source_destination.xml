@@ -196,7 +196,7 @@
             android:layout_width="match_parent"
             android:background="@color/colorWhite"
             android:gravity="center"
-            android:visibility="gone"
+            android:visibility="visible"
             android:padding="@dimen/padding_xminor"
             android:layout_height="wrap_content">
         <TextView
@@ -219,7 +219,7 @@
                 android:layout_weight="1"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:drawableStart="@drawable/ic_compare_arrows"
+                android:drawableStart="@drawable/ic_bi_directional"
                 android:drawablePadding="@dimen/padding_minor"
                 tools:text="0.15"
                 android:textSize="@dimen/text_normal"
