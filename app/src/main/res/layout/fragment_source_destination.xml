@@ -196,7 +196,7 @@
             android:layout_width="match_parent"
             android:background="@color/colorWhite"
             android:gravity="center"
-            android:visibility="visible"
+            android:visibility="gone"
             android:padding="@dimen/padding_xminor"
             android:layout_height="wrap_content">
         <TextView
