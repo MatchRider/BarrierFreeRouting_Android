@@ -13,8 +13,13 @@ public interface AppConstant {
     String DATA_FILTER= "data_filter";
     String DATA_FILTER_SELECTED= "data_filter_selected";
 
-    String publicTransfer= "platform";
+    String publicTramStop = "tram_stop";
     String publicToilets= "toilets";
     String publicBusStop= "bus_stop";
+
+    String TramStopTitle= "Tram stop";
+    String ToiletsTitle= "Toilets";
+    String BusStopTitle= "Bus Stop";
+
 
 }

@@ -113,7 +113,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void plotNodesOnMap(List<NodeItem> mNodes) {
         for (NodeItem nodeItem : mNodes) {
             if (nodeItem.getNodeType() != null && nodeItem.getNodeType().getIdentifier() != null &&
-                    nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicTransfer) ||
+                    nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicTramStop) ||
                     nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicToilets) ||
                     nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicBusStop)) {
                 mNodeItemListFiltered.add(nodeItem);

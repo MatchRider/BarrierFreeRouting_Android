@@ -78,6 +78,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private Polyline mPreviousPolyline;
     private Marker mNodeMarker = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -496,8 +497,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
        // clearItemsFromMap();
         for (NodeItem nodeItem : nodeItemList){
             switch (nodeItem.getNodeType().getIdentifier()){
-                case AppConstant.publicTransfer:
-                    if(nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicTransfer)){
+                case AppConstant.publicTramStop:
+                    if(nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicTramStop)){
                         GeoPoint geoPoint = new GeoPoint(nodeItem.getLatitude(),
                                 nodeItem.getLongitude());
                         addMarkerNode(geoPoint,nodeItem.getNodeType().getIdentifier());
@@ -527,12 +528,12 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         mNodeMarker = new Marker(mMapView);
         GeoPoint nodePoints = new GeoPoint(geoPoint.getLatitude(), geoPoint.getLongitude());
         switch (category){
-            case AppConstant.publicTransfer:
+            case AppConstant.publicTramStop:
                 mNodeMarker.setPosition(nodePoints);
                 mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mMapView.getOverlays().add(mNodeMarker);
                 mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_train));
-                mNodeMarker.setTitle(AppConstant.publicTransfer);
+                mNodeMarker.setTitle(AppConstant.TramStopTitle);
 
                 break;
             case AppConstant.publicToilets:
@@ -540,14 +541,14 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mMapView.getOverlays().add(mNodeMarker);
                 mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_toilet));
-                mNodeMarker.setTitle(AppConstant.publicToilets);
+                mNodeMarker.setTitle(AppConstant.ToiletsTitle);
                 break;
             case AppConstant.publicBusStop:
                 mNodeMarker.setPosition(nodePoints);
                 mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mMapView.getOverlays().add(mNodeMarker);
                 mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_bus));
-                mNodeMarker.setTitle(AppConstant.publicBusStop);
+                mNodeMarker.setTitle(AppConstant.BusStopTitle);
                 break;
 
         }
