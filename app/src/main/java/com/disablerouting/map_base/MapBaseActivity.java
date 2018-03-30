@@ -36,21 +36,24 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
+import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeedBackListener {
+public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeedBackListener , MapEventsReceiver {
 
     private MapView mMapView = null;
     private MyLocationNewOverlay mLocationOverlay;
@@ -118,11 +121,13 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         myScaleBarOverlay.setCentred(true);
         mMapView.getOverlays().add(myScaleBarOverlay);
         setProvider();
+
         mMapView.getOverlays().clear();
 
         mStartMarker = new Marker(mMapView);
         mEndMarker = new Marker(mMapView);
         mCurrentMarker = new Marker(mMapView);
+
     }
 
     private void setProvider() {
@@ -162,9 +167,12 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mMapView.getController().setCenter(boundingBox.getCenter());
                 mMapView.zoomToBoundingBox(boundingBox, false);
             }
+
         } else {
             addCurrentLocation();
         }
+        MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this, this);
+        mMapView.getOverlays().add(0, mapEventsOverlay);
 
     }
 
@@ -524,21 +532,38 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mMapView.getOverlays().add(mNodeMarker);
                 mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_train));
+                mNodeMarker.setTitle(AppConstant.publicTransfer);
+
                 break;
             case AppConstant.publicToilets:
                 mNodeMarker.setPosition(nodePoints);
                 mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mMapView.getOverlays().add(mNodeMarker);
                 mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_toilet));
+                mNodeMarker.setTitle(AppConstant.publicToilets);
                 break;
             case AppConstant.publicBusStop:
                 mNodeMarker.setPosition(nodePoints);
                 mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mMapView.getOverlays().add(mNodeMarker);
                 mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_bus));
+                mNodeMarker.setTitle(AppConstant.publicBusStop);
                 break;
 
         }
+        MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this, this);
+        mMapView.getOverlays().add(0, mapEventsOverlay);
 
+    }
+
+    @Override
+    public boolean singleTapConfirmedHelper(GeoPoint p) {
+        InfoWindow.closeAllInfoWindowsOn(mMapView);
+        return true;
+    }
+
+    @Override
+    public boolean longPressHelper(GeoPoint p) {
+        return false;
     }
 }
