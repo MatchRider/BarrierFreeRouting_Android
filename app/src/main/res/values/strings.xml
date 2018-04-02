@@ -70,6 +70,7 @@
     <string name="no">No</string>
     <string name="clear">Clear</string>
     <string name="apply">Apply</string>
+    <string name="wheelchair_accessible">Wheelchair Accessible :</string>
 
 
 </resources>

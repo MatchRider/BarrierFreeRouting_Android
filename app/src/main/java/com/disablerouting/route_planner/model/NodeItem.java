@@ -53,4 +53,8 @@ public class NodeItem {
     public NodeType getNodeType() {
         return mNodeType;
     }
+
+    public String getWheelChair() {
+        return mWheelChair;
+    }
 }

@@ -501,21 +501,21 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                     if(nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicTramStop)){
                         GeoPoint geoPoint = new GeoPoint(nodeItem.getLatitude(),
                                 nodeItem.getLongitude());
-                        addMarkerNode(geoPoint,nodeItem.getNodeType().getIdentifier());
+                        addMarkerNode(geoPoint,nodeItem.getNodeType().getIdentifier(),nodeItem.getWheelChair().toUpperCase());
                     }
                     break;
                 case AppConstant.publicToilets:
                     if(nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicToilets)){
                         GeoPoint geoPoint = new GeoPoint(nodeItem.getLatitude(),
                                 nodeItem.getLongitude());
-                        addMarkerNode(geoPoint,nodeItem.getNodeType().getIdentifier());
+                        addMarkerNode(geoPoint,nodeItem.getNodeType().getIdentifier(),nodeItem.getWheelChair().toUpperCase());
                     }
                     break;
                 case AppConstant.publicBusStop:
                     if(nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicBusStop)){
                         GeoPoint geoPoint = new GeoPoint(nodeItem.getLatitude(),
                                 nodeItem.getLongitude());
-                        addMarkerNode(geoPoint,nodeItem.getNodeType().getIdentifier());
+                        addMarkerNode(geoPoint,nodeItem.getNodeType().getIdentifier(),nodeItem.getWheelChair().toUpperCase());
                     }
                     break;
             }
@@ -524,7 +524,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     }
 
-    private void addMarkerNode(GeoPoint geoPoint, String category){
+    private void addMarkerNode(GeoPoint geoPoint, String category, String wheelChairAccessible){
         mNodeMarker = new Marker(mMapView);
         GeoPoint nodePoints = new GeoPoint(geoPoint.getLatitude(), geoPoint.getLongitude());
         switch (category){
@@ -534,7 +534,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mMapView.getOverlays().add(mNodeMarker);
                 mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_train));
                 mNodeMarker.setTitle(AppConstant.TramStopTitle);
-
+                mNodeMarker.setSnippet(getString(R.string.wheelchair_accessible) + wheelChairAccessible);
                 break;
             case AppConstant.publicToilets:
                 mNodeMarker.setPosition(nodePoints);
@@ -542,6 +542,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mMapView.getOverlays().add(mNodeMarker);
                 mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_toilet));
                 mNodeMarker.setTitle(AppConstant.ToiletsTitle);
+                mNodeMarker.setSnippet(getString(R.string.wheelchair_accessible) + wheelChairAccessible);
                 break;
             case AppConstant.publicBusStop:
                 mNodeMarker.setPosition(nodePoints);
@@ -549,6 +550,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mMapView.getOverlays().add(mNodeMarker);
                 mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_bus));
                 mNodeMarker.setTitle(AppConstant.BusStopTitle);
+                mNodeMarker.setSnippet(getString(R.string.wheelchair_accessible) + wheelChairAccessible);
                 break;
 
         }
@@ -568,3 +570,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         return false;
     }
 }
+
+
+

@@ -69,7 +69,7 @@ public interface ApiService {
     Call<ResponseBody> setChangeSet(@Path("type") String type,@Body RequestCreateNode requestCreateNode);
 
 
-    @GET("nodes")
-    Call<NodeResponse> getNodes(@Query("api_key") String apiKey,@Query("bbox") String bbox, @Query("per_page") int perPage , @Query("wheelchair") String wheelChair);
+    @GET("nodes") //, @Query("wheelchair") String wheelChair not using
+    Call<NodeResponse> getNodes(@Query("api_key") String apiKey,@Query("bbox") String bbox, @Query("per_page") int perPage );
 
 }
