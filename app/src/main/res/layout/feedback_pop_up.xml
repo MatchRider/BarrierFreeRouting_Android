@@ -33,31 +33,33 @@
     <LinearLayout
             android:layout_below="@id/txv_description"
             android:layout_width="match_parent"
-                  android:orientation="horizontal"
-                  android:layout_height="wrap_content">
-    <Button
-            android:id="@+id/btn_cancel"
-            android:background="@drawable/btn_ripple"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="@dimen/text_normal"
-            android:text="@string/cancel"
-            android:fontFamily="@string/ft_ultra_black_font"
-            android:textColor="@color/colorWhite"
-            android:layout_height="wrap_content"
-            tools:ignore="ButtonStyle"/>
-    <Button
-            android:id="@+id/btn_feedback"
-            android:background="@drawable/btn_ripple"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="@dimen/text_normal"
-            android:text="@string/FEEDBACK"
-            android:fontFamily="@string/ft_ultra_black_font"
-            android:textColor="@color/colorWhite"
-            android:layout_height="wrap_content"
-            tools:ignore="ButtonStyle"/>
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+        <Button
+                android:id="@+id/btn_cancel"
+                android:background="@drawable/btn_ripple"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="@dimen/text_normal"
+                android:text="@string/cancel"
+                android:fontFamily="@string/ft_ultra_black_font"
+                android:textColor="@color/colorWhite"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/padding_minor"
+                tools:ignore="ButtonStyle"/>
+        <Button
+                android:id="@+id/btn_feedback"
+                android:background="@drawable/btn_ripple"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="@dimen/text_normal"
+                android:text="@string/FEEDBACK"
+                android:fontFamily="@string/ft_ultra_black_font"
+                android:textColor="@color/colorWhite"
+                android:layout_marginStart="@dimen/padding_minor"
+                android:layout_height="wrap_content"
+                tools:ignore="ButtonStyle"/>
     </LinearLayout>
 </RelativeLayout>

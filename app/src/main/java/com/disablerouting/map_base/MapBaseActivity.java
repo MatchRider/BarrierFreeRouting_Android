@@ -457,7 +457,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      * @param latitude double latitude
      */
     private void showFeedbackDialog(final double longitude, final double latitude) {
-        String description = String.valueOf((longitude + " " + latitude));
+        String description = String.valueOf((latitude + " " + longitude));
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater layoutInflater = getLayoutInflater();
         View customView = layoutInflater.inflate(R.layout.feedback_pop_up, null);
