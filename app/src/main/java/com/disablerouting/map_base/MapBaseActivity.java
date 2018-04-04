@@ -533,7 +533,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mMapView.getOverlays().add(mNodeMarker);
                 mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_train));
-                mNodeMarker.setTitle(AppConstant.TramStopTitle);
+                mNodeMarker.setTitle(getResources().getString(R.string.tram_stop_title));
                 mNodeMarker.setSnippet(getString(R.string.wheelchair_accessible) + wheelChairAccessible);
                 break;
             case AppConstant.publicToilets:
@@ -541,7 +541,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mMapView.getOverlays().add(mNodeMarker);
                 mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_toilet));
-                mNodeMarker.setTitle(AppConstant.ToiletsTitle);
+                mNodeMarker.setTitle(getResources().getString(R.string.toilets_title));
                 mNodeMarker.setSnippet(getString(R.string.wheelchair_accessible) + wheelChairAccessible);
                 break;
             case AppConstant.publicBusStop:
@@ -549,7 +549,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mMapView.getOverlays().add(mNodeMarker);
                 mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_bus));
-                mNodeMarker.setTitle(AppConstant.BusStopTitle);
+                mNodeMarker.setTitle(getResources().getString(R.string.bus_stop_title));
                 mNodeMarker.setSnippet(getString(R.string.wheelchair_accessible) + wheelChairAccessible);
                 break;
 
