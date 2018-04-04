@@ -51,7 +51,6 @@
     <string name="finish">Fertig</string>
     <string name="posted_sucuess">Feedback erfolgreich mit ID gepostet:</string>
     <string name="thank_you_for_your_input">Danke für deinen Beitrag!</string>
-    <string name="home">Zuhause</string>
     <string name="error_source_destination_same">Bitte wählen Sie eine andere Quelle und ein anderes Ziel</string>
 
     <string name="surface_type">Oberflächentyp</string>

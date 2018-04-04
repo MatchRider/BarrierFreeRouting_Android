@@ -50,7 +50,6 @@
     <string name="finish">Finish</string>
     <string name="posted_sucuess">Feedback posted successfully with ID:</string>
     <string name="thank_you_for_your_input">Thank you for your input!</string>
-    <string name="home">Home</string>
     <string name="error_source_destination_same">Please select different source and destination</string>
     <string name="surface_type">Surface Type</string>
     <string name="maximum_sloped">Maximum Sloped Curb(inches)</string>
