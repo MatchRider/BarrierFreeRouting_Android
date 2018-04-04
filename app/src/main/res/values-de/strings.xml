@@ -13,11 +13,11 @@
     <string name="settings">die Einstellungen</string>
 
     <!-- MENU ITEMS -->
-    <string name="ACKNOWLEDGEMENTS">WISSEN</string>
+    <string name="ACKNOWLEDGEMENTS">Impressum/Danksagung</string>
     //<string name="FEEDBACK">Feedback</string>
     <string name="CONTACT">Kontakt</string>
     <string name="DISCLAIMER">Haftungsausschluss</string>
-    <string name="LEGAL">RECHTLICH</string>
+    <string name="LEGAL">Rechtliches</string>
 
     <string name="route_planner">Routenplaner</string>
     <string name="suggestions">Vorschläge</string>
