@@ -52,9 +52,9 @@
     <string name="thank_you_for_your_input">Thank you for your input!</string>
     <string name="error_source_destination_same">Please select different source and destination</string>
     <string name="surface_type">Surface Type</string>
-    <string name="maximum_sloped">Maximum Sloped Curb(inches)</string>
-    <string name="maximum_incline">Maximum Incline(Slope in %)</string>
-    <string name="sidewalk_width">Sidewalk width(inches)</string>
+    <string name="maximum_sloped">Maximum Sloped Curb (inches)</string>
+    <string name="maximum_incline">Maximum Incline (Slope in %)</string>
+    <string name="sidewalk_width">Sidewalk width (inches)</string>
     <string name="permanent_obstacle">Permanent Obstacle</string>
 
     <string name="paved">Paved</string>

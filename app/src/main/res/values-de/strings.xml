@@ -37,7 +37,7 @@
     <string name="enter_source">von</string>
     <string name="b">B</string>
     <string name="enter_destination">nach</string>
-    <string name="go">los</string>
+    <string name="go">los!</string>
     <string name="coming_soon">Demnächst</string>
     <string name="please_provide_feedback_for">Bitte geben Sie Feedback für</string>
     <string name="cancel">STORNIEREN</string>
@@ -46,7 +46,7 @@
     <string name="what_do_you_want_to_capture">Was möchten Sie erfassen?</string>
     <string name="information_about_a_waypoint_distance">1.Informationen über einen Wegpunkt / Entfernung?</string>
     <string name="information_about_a_temporary_obstacles">2.Informationen über temporäre Hindernisse?</string>
-    <string name="need_to_improve_routing">Müssen Sie das Routing verbessern?</string>
+    <string name="need_to_improve_routing">Möchtest du das Routing verbessern?</string>
     <string name="what_information_do_you_hvae_for_community">Welche Informationen zu einem Wegpunkt hast du für die Community?</string>
     <string name="finish">Fertig</string>
     <string name="posted_sucuess">Feedback erfolgreich mit ID gepostet:</string>
@@ -54,9 +54,9 @@
     <string name="error_source_destination_same">Bitte wählen Sie eine andere Quelle und ein anderes Ziel</string>
 
     <string name="surface_type">Oberflächentyp</string>
-    <string name="maximum_sloped">Maximale geneigte Bordsteinkante(cm)</string>
-    <string name="maximum_incline">Maximale Steigung(Steigung im %)</string>
-    <string name="sidewalk_width">Bürgersteigbreite(cm)</string>
+    <string name="maximum_sloped">Maximal geneigte Bordsteinkante (cm)</string>
+    <string name="maximum_incline">Maximale Steigung (%)</string>
+    <string name="sidewalk_width">Bürgersteigbreite (cm)</string>
     <string name="permanent_obstacle">Permanentes Hindernis</string>
 
     <string name="paved">Gepflastert</string>
@@ -69,8 +69,8 @@
 
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
-    <string name="clear">Clear</string>
-    <string name="apply">Apply</string>
+    <string name="clear">Eingabe löschen</string>
+    <string name="apply">Übernehmen</string>
     <string name="wheelchair_accessible">Wheelchair Accessible :</string>
 
     <string name="tram_stop_title">Straßenbahnhaltestelle - barrierefrei</string>
