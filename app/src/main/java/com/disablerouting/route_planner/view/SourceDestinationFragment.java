@@ -352,12 +352,17 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @Override
     public void onFailureGeoCoding(String error) {
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
-        showSnackBar(error);
+        if(error.equalsIgnoreCase("No address found.")){
+            showSnackBar(getResources().getString(R.string.no_address_found));
+        }else {
+            showSnackBar(error);
+        }
     }
 
     public void getNodes(String bBox){
         mISourceDestinationScreenPresenter.getNodesData(bBox);
     }
+
     @Override
     public void onNodeDataReceived(NodeResponse data) {
         if(data!=null) {

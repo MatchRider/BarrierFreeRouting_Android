@@ -77,5 +77,6 @@
     <string name="toilets_title">Öffentliches WC – barrierefrei</string>
     <string name="bus_stop_title">Bushaltestelle - barrierefrei</string>
     <string name="home">Home</string>
+    <string name="no_address_found">Keine Adresse gefunden.</string>
 
 </resources>
