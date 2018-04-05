@@ -34,7 +34,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private String mEncodedPolyline;
     private List<Steps> mStepsList;
     private HashMap<String, String> mHashMapObjectFilter;
-    JSONObject mJsonObjectFilter = new JSONObject();
+    JSONObject mJsonObjectFilter=null;
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, Integer> mHashMapObjectFilterItem = new HashMap<>();
     List<NodeItem> mNodeItemListFiltered = new ArrayList<>();
@@ -80,8 +80,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mEncodedPolyline = encodedString;
             mStepsList = stepsList;
             plotDataOfSourceDestination(mEncodedPolyline, mSourceAddress, mDestinationAddress, mStepsList);
-            plotDataOfNodes(mNodeItemListFiltered);
-            mNodeItemListFiltered.clear();
+
         }
     }
 
@@ -119,6 +118,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mNodeItemListFiltered.add(nodeItem);
             }
         }
+        plotDataOfNodes(mNodeItemListFiltered);
+        mNodeItemListFiltered.clear();
 
     }
 
@@ -163,6 +164,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mHashMapObjectFilterItem = (HashMap<Integer, Integer>) data.getSerializableExtra(AppConstant.DATA_FILTER_SELECTED);
 
                 if (mHashMapObjectFilterItem != null && mHashMapObjectFilterItem.size() != 0) {
+                    mJsonObjectFilter= new JSONObject();
                     JSONObject jsonObjectProfileParams = new JSONObject();
                     JSONObject restrictions = new JSONObject();
 

@@ -106,8 +106,11 @@ public class RetrofitClient {
 
     private static Retrofit getRetrofitForWheelChair() {
         if (sRetrofitWheelChair == null) {
-
             final String baseUrl = ApiEndPoint.BASE_URL_WHEEL_MAP;
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            // set your desired log level
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
 
             final OkHttpClient client = new OkHttpClient.Builder()
                     .followRedirects(true)
@@ -115,6 +118,7 @@ public class RetrofitClient {
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .connectTimeout(30, TimeUnit.SECONDS)
                     .addInterceptor(new ApiInterceptor(false))
+                    .addInterceptor(logging)
                     .build();
 
             sRetrofitWheelChair = new Retrofit.Builder()
