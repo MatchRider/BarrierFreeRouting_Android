@@ -13,7 +13,7 @@
     <string name="settings">die Einstellungen</string>
 
     <!-- MENU ITEMS -->
-    <string name="ACKNOWLEDGEMENTS">Impressum/Danksagung</string>
+    <string name="ACKNOWLEDGEMENTS">Impressum</string>
     //<string name="FEEDBACK">Feedback</string>
     <string name="CONTACT">Kontakt</string>
     <string name="DISCLAIMER">Haftungsausschluss</string>
@@ -41,7 +41,7 @@
     <string name="coming_soon">Demnächst</string>
     <string name="please_provide_feedback_for">Bitte geben Sie Feedback für</string>
     <string name="cancel">STORNIEREN</string>
-    <string name="min">Mindest</string>
+    <string name="min">min</string>
     <string name="km">km</string>
     <string name="what_do_you_want_to_capture">Was möchten Sie erfassen?</string>
     <string name="information_about_a_waypoint_distance">1.Informationen über einen Wegpunkt / Entfernung?</string>
@@ -76,5 +76,6 @@
     <string name="tram_stop_title">Straßenbahnhaltestelle - barrierefrei</string>
     <string name="toilets_title">Öffentliches WC – barrierefrei</string>
     <string name="bus_stop_title">Bushaltestelle - barrierefrei</string>
+    <string name="home">Home</string>
 
 </resources>

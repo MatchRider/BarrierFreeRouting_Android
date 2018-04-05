@@ -75,7 +75,7 @@
     <string name="tram_stop_title">Tram Stop</string>
     <string name="toilets_title">Public toilet – barrier-free</string>
     <string name="bus_stop_title">Bus Stop</string>
-
+    <string name="home">Home</string>
 
 
 </resources>
