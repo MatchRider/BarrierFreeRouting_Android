@@ -267,13 +267,12 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         mListDataHeader.add(getString(R.string.permanent_obstacle));
 
         List<DataModelExpandableList> surfaceTypeData = new ArrayList<DataModelExpandableList>();
-        surfaceTypeData.add(new DataModelExpandableList("Paved"));
-        surfaceTypeData.add(new DataModelExpandableList("Asphalt"));
-        surfaceTypeData.add(new DataModelExpandableList("Concrete"));
-        surfaceTypeData.add(new DataModelExpandableList("Paving Stones"));
-        surfaceTypeData.add(new DataModelExpandableList("Cobblestone"));
-        surfaceTypeData.add(new DataModelExpandableList("Grass Pavers"));
-        surfaceTypeData.add(new DataModelExpandableList("Gravel"));
+        surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.asphalt)));
+        surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.concrete)));
+        surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.paving_stones)));
+        surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.cobblestone)));
+        surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.grass_paver)));
+        surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.gravel)));
 
         /*List<String> trackTypeData = new ArrayList<String>();
         trackTypeData.add("Cycle Way(Bike path)");
@@ -290,33 +289,21 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
 
         List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<DataModelExpandableList>();
         maxSlopedCurvedData.add(new DataModelExpandableList("0"));
-        maxSlopedCurvedData.add(new DataModelExpandableList("3"));
-        maxSlopedCurvedData.add(new DataModelExpandableList("6"));
-        maxSlopedCurvedData.add(new DataModelExpandableList(">6"));
+        maxSlopedCurvedData.add(new DataModelExpandableList("1.2"));
+        maxSlopedCurvedData.add(new DataModelExpandableList("2.4"));
+        maxSlopedCurvedData.add(new DataModelExpandableList(">2.4"));
 
         List<DataModelExpandableList> maxInclineData = new ArrayList<DataModelExpandableList>();
-        maxInclineData.add(new DataModelExpandableList("-5"));
-        maxInclineData.add(new DataModelExpandableList("-4"));
-        maxInclineData.add(new DataModelExpandableList("-3"));
-        maxInclineData.add(new DataModelExpandableList("-2"));
-        maxInclineData.add(new DataModelExpandableList("-1"));
         maxInclineData.add(new DataModelExpandableList("0"));
-        maxInclineData.add(new DataModelExpandableList("1"));
-        maxInclineData.add(new DataModelExpandableList("2"));
-        maxInclineData.add(new DataModelExpandableList("3"));
-        maxInclineData.add(new DataModelExpandableList("4"));
-        maxInclineData.add(new DataModelExpandableList("5"));
+        maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_three)));
+        maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_six)));
+        maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_ten)));
+        maxInclineData.add(new DataModelExpandableList("< 10"));
 
         List<DataModelExpandableList> sideWalkWidthData = new ArrayList<DataModelExpandableList>();
-        sideWalkWidthData.add(new DataModelExpandableList("<30"));
-        sideWalkWidthData.add(new DataModelExpandableList("30-45"));
-        sideWalkWidthData.add(new DataModelExpandableList("46-75"));
-        sideWalkWidthData.add(new DataModelExpandableList("76-100"));
-        sideWalkWidthData.add(new DataModelExpandableList("101-125"));
-        sideWalkWidthData.add(new DataModelExpandableList("126-150"));
-        sideWalkWidthData.add(new DataModelExpandableList("150-175"));
-        sideWalkWidthData.add(new DataModelExpandableList(">176"));
-
+        sideWalkWidthData.add(new DataModelExpandableList("< 90"));
+        sideWalkWidthData.add(new DataModelExpandableList("90-120"));
+        sideWalkWidthData.add(new DataModelExpandableList("> 120"));
 
         List<DataModelExpandableList> permanentObstacleData = new ArrayList<DataModelExpandableList>();
         permanentObstacleData.add(new DataModelExpandableList("Yes"));

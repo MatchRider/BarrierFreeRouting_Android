@@ -57,13 +57,17 @@
     <string name="sidewalk_width">Sidewalk width (inches)</string>
     <string name="permanent_obstacle">Permanent Obstacle</string>
 
-    <string name="paved">Paved</string>
     <string name="asphalt">Asphalt</string>
     <string name="concrete">Concrete</string>
     <string name="paving_stones">Paving Stones(Pavers)</string>
     <string name="cobblestone">Cobblestone</string>
     <string name="grass_paver">Grass Paver</string>
     <string name="gravel">Gravel</string>
+
+    <string name="up_to_three">Up to 3</string>
+    <string name="up_to_six">Up to 6</string>
+    <string name="up_to_ten">Up to 10</string>
+
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
