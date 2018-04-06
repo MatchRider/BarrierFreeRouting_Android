@@ -42,6 +42,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/a"
                         android:textSize="@dimen/text_xlarge"
+                        android:layout_gravity="center_vertical"
                         android:fontFamily="@font/frutiger_lt_bold"
                         android:textColor="@color/colorWhite"/>
                 <LinearLayout
@@ -124,6 +125,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/b"
                         android:textSize="@dimen/text_xlarge"
+                        android:layout_gravity="center_vertical"
                         android:fontFamily="@font/frutiger_lt_bold"
                         android:textColor="@color/colorWhite"/>
                 <LinearLayout
