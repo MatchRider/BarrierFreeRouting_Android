@@ -5,6 +5,8 @@
     <string name="ft_bold_font">FTB.ttf</string>
     <string name="ft_light_condensed_font">FTLC.ttf</string>
     <string name="ft_ultra_black_font">FTUBL.ttf</string>
+    <string name="frutiger_light_font">FrutigerLight.ttf</string>
+    <string name="frutiger_bold_font">FrutigerLTBold.ttf</string>
 
     <!-- Custom dialog -->
     <string name="setting">Setting</string>
