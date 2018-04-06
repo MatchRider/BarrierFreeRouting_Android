@@ -477,8 +477,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mListPopupWindow.setAdapter(mAddressListAdapter);
         mListPopupWindow.setOnItemClickListener(this);
         mListPopupWindow.show();
-
-
     }
 
     @Override
