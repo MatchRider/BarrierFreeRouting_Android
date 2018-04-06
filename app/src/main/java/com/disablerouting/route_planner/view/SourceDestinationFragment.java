@@ -151,7 +151,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mISourceDestinationScreenPresenter = new SourceDestinationScreenPresenter(this, new DirectionsManager(), new GeoCodingManager() , new NodeManager());
+        mISourceDestinationScreenPresenter = new SourceDestinationScreenPresenter(this, new DirectionsManager(), new GeoCodingManager(), new NodeManager());
     }
 
     @Override
@@ -195,18 +195,18 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         });
     }
 
-    public void callForDestination(GeoPoint geoPointCurrent, GeoPoint geoPointSource, GeoPoint geoPointDestination , JSONObject jsonObject) {
+    public void callForDestination(GeoPoint geoPointCurrent, GeoPoint geoPointSource, GeoPoint geoPointDestination, JSONObject jsonObject) {
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         mGeoPointSource = geoPointSource;
         mGeoPointDestination = geoPointDestination;
-        mJSONObjectFilter= jsonObject;
+        mJSONObjectFilter = jsonObject;
         if (mGeoPointSource.getLatitude() != mGeoPointDestination.getLatitude() &&
                 mGeoPointSource.getLongitude() != mGeoPointDestination.getLongitude()) {
             if (mEditTextSource != null && !mEditTextSource.getText().toString().isEmpty() &&
                     mEditTextDestination != null && !mEditTextDestination.getText().toString().isEmpty()) {
 
                 mCoordinates = mGeoPointSource + "|" + mGeoPointDestination;
-                mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates, mProfileType , jsonObject);
+                mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates, mProfileType, jsonObject);
             }
             handler.removeMessages(SEARCH_TEXT_CHANGED);
         }
@@ -229,14 +229,14 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
 
     public void plotRoute(JSONObject jsonObject) {
-        if(!mEditTextSource.getText().toString().isEmpty() && !mEditTextDestination.getText().toString().isEmpty()) {
+        if (!mEditTextSource.getText().toString().isEmpty() && !mEditTextDestination.getText().toString().isEmpty()) {
             if (mGeoPointSource != null && mGeoPointDestination != null && mGeoPointSource.getLatitude() != mGeoPointDestination.getLatitude() &&
                     mGeoPointSource.getLongitude() != mGeoPointDestination.getLongitude()) {
                 mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource, mFeaturesDestination);
-                String bBox= mGeoPointSource.getLatitude() +","+ mGeoPointSource.getLongitude() + "," +
-                        mGeoPointDestination.getLatitude() + ","+ mGeoPointDestination.getLongitude();
+                String bBox = mGeoPointSource.getLatitude() + "," + mGeoPointSource.getLongitude() + "," +
+                        mGeoPointDestination.getLatitude() + "," + mGeoPointDestination.getLongitude();
                 getNodes(bBox); // API call for set markers of amenity
-                mJSONObjectFilter= jsonObject;
+                mJSONObjectFilter = jsonObject;
                 callForDestination(null, mGeoPointSource, mGeoPointDestination, jsonObject);
             } else {
                 showSnackBar(getContext().getResources().getString(R.string.error_source_destination_same));
@@ -288,8 +288,19 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             mLinearLayoutTimeDistance.setVisibility(View.VISIBLE);
             if (data.getRoutesList().get(0).getSummary() != null) {
                 if (data.getRoutesList().get(0).getSummary().getDuration() != 0) {
-                    String time = String.valueOf(data.getRoutesList().get(0).getSummary().getDuration() / 60);
-                    mTextViewTime.setText(String.format("%s%s", time, getContext().getResources().getString(R.string.min)));
+                    int time = data.getRoutesList().get(0).getSummary().getDuration();
+
+                    int hours = time / 3600;
+                    int minutes = (time % 3600) / 60;
+
+                    if (hours == 0) {
+                        mTextViewTime.setText(String.format("%s%s", minutes, getContext().getResources().getString(R.string.min)));
+
+                    } else {
+                        mTextViewTime.setText(String.format("%s%s", hours + getContext().getResources().getString(R.string.hr) + " " + minutes, getContext().getResources().getString(R.string.min)));
+
+                    }
+
                 } else {
                     mTextViewTime.setText(String.format("%s%s", "--", getContext().getResources().getString(R.string.min)));
                 }
@@ -350,20 +361,20 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @Override
     public void onFailureGeoCoding(String error) {
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
-        if(error.equalsIgnoreCase("No address found.")){
+        if (error.equalsIgnoreCase("No address found.")) {
             showSnackBar(getResources().getString(R.string.no_address_found));
-        }else {
+        } else {
             showSnackBar(error);
         }
     }
 
-    public void getNodes(String bBox){
+    public void getNodes(String bBox) {
         mISourceDestinationScreenPresenter.getNodesData(bBox);
     }
 
     @Override
     public void onNodeDataReceived(NodeResponse data) {
-        if(data!=null) {
+        if (data != null) {
             mOnSourceDestinationListener.plotNodesOnMap(data.getNodes());
         }
     }

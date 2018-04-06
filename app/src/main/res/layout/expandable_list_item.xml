@@ -15,7 +15,7 @@
             android:paddingStart="?android:attr/expandableListPreferredChildPaddingLeft"
             android:paddingEnd="?android:attr/expandableListPreferredChildPaddingLeft"
             android:textSize="@dimen/text_normal"
-            android:fontFamily="@font/frutiger_lt_bold"
+            android:fontFamily="@font/frutiger_light"
             android:textColor="@android:color/black"/>
 
     <View android:layout_width="match_parent"
