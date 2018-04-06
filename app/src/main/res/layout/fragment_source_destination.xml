@@ -42,6 +42,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/a"
                         android:textSize="@dimen/text_xlarge"
+                        android:fontFamily="@font/frutiger_lt_bold"
                         android:textColor="@color/colorWhite"/>
                 <LinearLayout
                         android:layout_width="0dp"
@@ -68,7 +69,9 @@
                             android:textSize="@dimen/text_large"
                             android:textColorHint="@color/colorBlackHint"
                             android:textColor="@color/colorTextGray"
-                            tools:ignore="NestedWeights"/>
+                            tools:ignore="NestedWeights"
+                            android:fontFamily="@font/frutiger_light"
+                    />
                     <FrameLayout android:layout_width="wrap_content"
                                  android:layout_height="match_parent">
                         <ImageView
@@ -121,6 +124,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/b"
                         android:textSize="@dimen/text_xlarge"
+                        android:fontFamily="@font/frutiger_lt_bold"
                         android:textColor="@color/colorWhite"/>
                 <LinearLayout
                         android:layout_width="0dp"
@@ -146,7 +150,9 @@
                             android:ellipsize="end"
                             android:textColorHint="@color/colorBlackHint"
                             android:textColor="@color/colorTextGray"
-                            tools:ignore="NestedWeights"/>
+                            tools:ignore="NestedWeights"
+                            android:fontFamily="@font/frutiger_light"
+                    />
                     <FrameLayout android:layout_width="wrap_content"
                                  android:layout_height="match_parent">
                         <ImageView

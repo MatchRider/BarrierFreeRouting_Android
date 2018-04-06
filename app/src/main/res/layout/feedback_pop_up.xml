@@ -14,8 +14,8 @@
             android:gravity="center"
             android:padding="@dimen/padding_normal"
             android:textColor="@color/colorPrimary"
-            android:fontFamily="@string/ft_ultra_black_font"
             android:textSize="@dimen/text_xxlarge"
+            android:fontFamily="@font/frutiger_lt_bold"
             android:layout_height="wrap_content"/>
 
     <TextView
@@ -26,8 +26,8 @@
             android:gravity="center"
             android:padding="@dimen/padding_normal"
             android:textColor="@android:color/black"
-            android:fontFamily="@string/ft_ultra_black_font"
             android:textSize="@dimen/text_xxlarge"
+            android:fontFamily="@font/frutiger_light"
             android:layout_height="wrap_content"/>
 
     <LinearLayout
@@ -43,9 +43,9 @@
                 android:gravity="center"
                 android:textSize="@dimen/text_normal"
                 android:text="@string/cancel"
-                android:fontFamily="@string/ft_ultra_black_font"
                 android:textColor="@color/colorWhite"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/frutiger_lt_bold"
                 android:layout_marginEnd="@dimen/padding_minor"
                 tools:ignore="ButtonStyle"/>
         <Button
@@ -56,8 +56,8 @@
                 android:gravity="center"
                 android:textSize="@dimen/text_normal"
                 android:text="@string/FEEDBACK"
-                android:fontFamily="@string/ft_ultra_black_font"
                 android:textColor="@color/colorWhite"
+                android:fontFamily="@font/frutiger_lt_bold"
                 android:layout_marginStart="@dimen/padding_minor"
                 android:layout_height="wrap_content"
                 tools:ignore="ButtonStyle"/>

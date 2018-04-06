@@ -38,7 +38,7 @@
                         android:maxLines="2"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/text_xlarge"
-                        android:fontFamily="@string/frutiger_bold_font"
+                        android:fontFamily="@font/frutiger_lt_bold"
                         android:text="@string/app_name"/>
               <!--  <TextView
                         android:id="@+id/txv_detail"

@@ -21,6 +21,8 @@
                   android:background="@color/colorPrimary"
                   android:text="@string/need_to_improve_routing"
                   android:layout_height="wrap_content"
+                  android:fontFamily="@font/frutiger_lt_bold"
+
         />
     </LinearLayout>
     <TextView android:layout_width="match_parent"
@@ -46,7 +48,7 @@
             android:text="@string/home"
             android:textAllCaps="false"
             android:layout_margin="@dimen/margin_normal"
-            android:fontFamily="@string/frutiger_bold_font"/>
+            android:fontFamily="@font/frutiger_lt_bold"/>
 
 
 </LinearLayout>

@@ -37,6 +37,7 @@
                     android:paddingStart="@dimen/margin_small"
                     android:paddingEnd="@dimen/margin_small"
                     android:textSize="@dimen/text_normal"
+                    android:fontFamily="@font/frutiger_lt_bold"
                     android:textColor="@color/colorWhiteLight"/>
 
             <TextView
@@ -49,6 +50,7 @@
                     android:paddingEnd="@dimen/margin_small"
                     android:textSize="@dimen/text_normal"
                     android:visibility="gone"
+                    android:fontFamily="@font/frutiger_light"
                     android:textColor="@color/colorWhiteLight"
             />
 

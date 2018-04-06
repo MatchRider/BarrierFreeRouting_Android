@@ -1,10 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Tbd</string>
+    <string name="app_name">Disable Routing</string>
 
     <!-- Font file name for Blue theme -->
     <string name="frutiger_bold_font">FrutigerLTBold.ttf</string>
     <string name="frutiger_light_font">FrutigerLight.ttf</string>
-    <string name="ft_ultra_black_font">FTUBL.ttf</string>
 
     <!-- Custom dialog -->
     <string name="setting">Setting</string>

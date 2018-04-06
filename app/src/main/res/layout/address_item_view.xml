@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_normal"
-                android:fontFamily="@string/frutiger_bold_font"
+                android:fontFamily="@font/frutiger_lt_bold"
                 tools:text="Header 1"/>
 
         <TextView
@@ -47,7 +47,7 @@
                 android:layout_marginTop="@dimen/margin_smallest"
                 android:textColor="@color/colorBlackHint"
                 android:textSize="@dimen/text_large"
-                android:fontFamily="@string/frutiger_bold_font"
+                android:fontFamily="@font/frutiger_lt_bold"
                 tools:text="Header 1"/>
     </RelativeLayout>
 

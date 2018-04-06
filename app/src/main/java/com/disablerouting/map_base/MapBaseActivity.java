@@ -528,7 +528,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private void addMarkerNode(GeoPoint geoPoint, String category, String wheelChairAccessible){
         mNodeMarker = new Marker(mMapView);
         GeoPoint nodePoints = new GeoPoint(geoPoint.getLatitude(), geoPoint.getLongitude());
-        /*Typeface tf = Typeface.createFromAsset(this.getAssets(), "fonts/FTUBL.ttf");
+       /* Typeface tf = Typeface.createFromAsset(this.getAssets(), "FTUBL.ttf");
         TextView textViewTitle = (TextView)findViewById(R.id.bubble_title);
         textViewTitle.setTypeface(tf);
         TextView textViewSnippet = (TextView)findViewById(R.id.bubble_description);
@@ -575,6 +575,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     public boolean longPressHelper(GeoPoint p) {
         return false;
     }
+
+
 }
 
 

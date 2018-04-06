@@ -32,6 +32,7 @@
                   android:background="@color/colorPrimary"
                   android:text="@string/need_to_improve_routing"
                   android:layout_height="wrap_content"
+                  android:fontFamily="@font/frutiger_lt_bold"
         />
     </LinearLayout>
 
@@ -44,6 +45,7 @@
             android:gravity="center_horizontal"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginEnd="@dimen/margin_normal"
+            android:fontFamily="@font/frutiger_lt_bold"
             android:text="@string/what_information_do_you_hvae_for_community"
             android:layout_height="wrap_content"/>
 
@@ -76,7 +78,7 @@
                 android:text="@string/finish"
                 android:visibility="gone"
                 android:textAllCaps="false"
-                android:fontFamily="@string/frutiger_bold_font"/>
+                android:fontFamily="@font/frutiger_lt_bold"/>
 
         <Button
                 android:id="@+id/btn_clear"
@@ -91,7 +93,8 @@
                 android:textAllCaps="false"
                 android:visibility="gone"
                 android:layout_marginEnd="@dimen/margin_normal"
-                android:fontFamily="@string/frutiger_bold_font"/>
+                android:fontFamily="@font/frutiger_lt_bold"
+        />
         <Button
                 android:id="@+id/btn_apply"
                 android:background="@drawable/btn_ripple"
@@ -105,6 +108,7 @@
                 android:text="@string/apply"
                 android:textAllCaps="false"
                 android:visibility="gone"
-                android:fontFamily="@string/frutiger_bold_font"/>
+                android:fontFamily="@font/frutiger_lt_bold"
+        />
     </LinearLayout>
 </LinearLayout>
