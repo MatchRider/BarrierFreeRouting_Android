@@ -528,12 +528,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private void addMarkerNode(GeoPoint geoPoint, String category, String wheelChairAccessible){
         mNodeMarker = new Marker(mMapView);
         GeoPoint nodePoints = new GeoPoint(geoPoint.getLatitude(), geoPoint.getLongitude());
-       /* Typeface tf = Typeface.createFromAsset(this.getAssets(), "FTUBL.ttf");
-        TextView textViewTitle = (TextView)findViewById(R.id.bubble_title);
-        textViewTitle.setTypeface(tf);
-        TextView textViewSnippet = (TextView)findViewById(R.id.bubble_description);
-        textViewSnippet.setTypeface(tf);
-       */ switch (category){
+        switch (category){
             case AppConstant.publicTramStop:
                 mNodeMarker.setPosition(nodePoints);
                 mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
