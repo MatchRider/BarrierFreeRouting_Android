@@ -153,6 +153,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @OnClick(R.id.btn_go)
     public void goPlotMap() {
+        clearItemsFromMap();
         mSourceDestinationFragment.plotRoute(mJsonObjectFilter);
     }
 
