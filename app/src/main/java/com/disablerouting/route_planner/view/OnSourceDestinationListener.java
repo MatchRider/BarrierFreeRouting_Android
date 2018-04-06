@@ -18,4 +18,6 @@ public interface OnSourceDestinationListener {
     void onApplyFilter();
 
     void plotNodesOnMap(List<NodeItem> mNodes);
+
+    void onSwapData();
 }

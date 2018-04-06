@@ -31,7 +31,7 @@
               android:textAllCaps="true"
               android:textColor="@android:color/black"
               android:textSize="@dimen/text_xxxxlarge"
-              android:fontFamily="@string/ft_bold_font"
+              android:fontFamily="@string/frutiger_bold_font"
               android:textStyle="bold"
               android:text="@string/thank_you_for_your_input"/>
     <Button
@@ -46,7 +46,7 @@
             android:text="@string/home"
             android:textAllCaps="false"
             android:layout_margin="@dimen/margin_normal"
-            android:fontFamily="@string/ft_bold_font"/>
+            android:fontFamily="@string/frutiger_bold_font"/>
 
 
 </LinearLayout>

@@ -76,7 +76,7 @@
                 android:text="@string/finish"
                 android:visibility="gone"
                 android:textAllCaps="false"
-                android:fontFamily="@string/ft_bold_font"/>
+                android:fontFamily="@string/frutiger_bold_font"/>
 
         <Button
                 android:id="@+id/btn_clear"
@@ -91,7 +91,7 @@
                 android:textAllCaps="false"
                 android:visibility="gone"
                 android:layout_marginEnd="@dimen/margin_normal"
-                android:fontFamily="@string/ft_bold_font"/>
+                android:fontFamily="@string/frutiger_bold_font"/>
         <Button
                 android:id="@+id/btn_apply"
                 android:background="@drawable/btn_ripple"
@@ -105,6 +105,6 @@
                 android:text="@string/apply"
                 android:textAllCaps="false"
                 android:visibility="gone"
-                android:fontFamily="@string/ft_bold_font"/>
+                android:fontFamily="@string/frutiger_bold_font"/>
     </LinearLayout>
 </LinearLayout>

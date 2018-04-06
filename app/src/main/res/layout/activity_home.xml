@@ -55,7 +55,7 @@
                     android:gravity="center"
                     android:text="@string/route_planner"
                     android:textAllCaps="false"
-                    android:fontFamily="@string/ft_bold_font"/>
+                    android:fontFamily="@string/frutiger_bold_font"/>
             <Button
                     android:id="@+id/btn_suggestion"
                     android:background="@drawable/btn_ripple"
@@ -72,7 +72,7 @@
                     android:paddingBottom="@dimen/padding_normal"
                     android:paddingStart="@dimen/padding_xxx_large"
                     android:paddingEnd="@dimen/padding_xxx_large"
-                    android:fontFamily="@string/ft_bold_font"/>
+                    android:fontFamily="@string/frutiger_bold_font"/>
         </LinearLayout>
 
     </RelativeLayout>

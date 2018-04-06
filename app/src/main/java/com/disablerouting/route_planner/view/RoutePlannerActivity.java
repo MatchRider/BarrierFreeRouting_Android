@@ -31,13 +31,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private Features mFeaturesDestinationAddress;
     private String mSourceAddress;
     private String mDestinationAddress;
-    private String mEncodedPolyline;
-    private List<Steps> mStepsList;
-    private HashMap<String, String> mHashMapObjectFilter;
-    JSONObject mJsonObjectFilter=null;
+    private JSONObject mJsonObjectFilter=null;
+
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, Integer> mHashMapObjectFilterItem = new HashMap<>();
-    List<NodeItem> mNodeItemListFiltered = new ArrayList<>();
+    private List<NodeItem> mNodeItemListFiltered = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +56,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
         GeoPoint geoPoint = new GeoPoint(mCurrentLocation.longitude, mCurrentLocation.latitude);
         mSourceDestinationFragment.onUpdateLocation(geoPoint);
-
-        GeoPoint geoPointSource = null;
-        GeoPoint geoPointDestination = null;
         if (mFeaturesSourceAddress != null && mFeaturesDestinationAddress != null) {
-            geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
+            GeoPoint  geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
                     mFeaturesSourceAddress.getGeometry().getCoordinates().get(1));
 
-            geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
+            GeoPoint geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
                     mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
             //mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination);
         } else {
@@ -77,10 +72,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void plotDataOnMap(String encodedString, List<Steps> stepsList) {
         if (encodedString != null && stepsList != null) {
-            mEncodedPolyline = encodedString;
-            mStepsList = stepsList;
-            plotDataOfSourceDestination(mEncodedPolyline, mSourceAddress, mDestinationAddress, mStepsList);
-
+            plotDataOfSourceDestination(encodedString, mSourceAddress, mDestinationAddress, stepsList);
         }
     }
 
@@ -123,25 +115,15 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     }
 
+    @Override
+    public void onSwapData() {
+        clearItemsFromMap();
+    }
+
 
     @OnClick(R.id.img_re_center)
     public void reCenter() {
-        clearItemsFromMap();
-        if (mCurrentLocation != null && mSourceAddress != null && mDestinationAddress != null) {
-            GeoPoint geoPoint = new GeoPoint(mCurrentLocation.longitude, mCurrentLocation.latitude);
-            GeoPoint geoPointSource;
-            GeoPoint geoPointDestination;
-            if (mFeaturesSourceAddress != null && mFeaturesDestinationAddress != null) {
-                geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
-                        mFeaturesSourceAddress.getGeometry().getCoordinates().get(1));
-
-                geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
-                        mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
-                mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination, mJsonObjectFilter);
-            }
-        } else {
-            plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null);
-        }
+        addCurrentLocation();
     }
 
     @Override
@@ -161,7 +143,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == AppConstant.REQUEST_CODE_CAPTURE) {
             if (resultCode == Activity.RESULT_OK) {
-                mHashMapObjectFilter = (HashMap<String, String>) data.getSerializableExtra(AppConstant.DATA_FILTER);
+                HashMap<String, String> hashMapObjectFilter = (HashMap<String, String>) data.getSerializableExtra(AppConstant.DATA_FILTER);
                 mHashMapObjectFilterItem = (HashMap<Integer, Integer>) data.getSerializableExtra(AppConstant.DATA_FILTER_SELECTED);
 
                 if (mHashMapObjectFilterItem != null && mHashMapObjectFilterItem.size() != 0) {
@@ -170,7 +152,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     JSONObject restrictions = new JSONObject();
 
                     try {
-                        for (Map.Entry<String, String> entry : mHashMapObjectFilter.entrySet()) {
+                        for (Map.Entry<String, String> entry : hashMapObjectFilter.entrySet()) {
                             String key = entry.getKey();
                             String value = entry.getValue();
                             restrictions.put(key, value);

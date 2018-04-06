@@ -235,9 +235,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource, mFeaturesDestination);
                 String bBox= mGeoPointSource.getLatitude() +","+ mGeoPointSource.getLongitude() + "," +
                         mGeoPointDestination.getLatitude() + ","+ mGeoPointDestination.getLongitude();
-
-                //String bBox= "8.681319,49.41225,13.792309,52.293829";
-                getNodes(bBox);
+                getNodes(bBox); // API call for set markers of amenity
                 mJSONObjectFilter= jsonObject;
                 callForDestination(null, mGeoPointSource, mGeoPointDestination, jsonObject);
             } else {
@@ -404,6 +402,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     public void swapDataOfViews() {
         if (!mEditTextSource.getText().toString().isEmpty() || !mEditTextDestination.getText().toString().isEmpty()) {
             performToggleAddress();
+            mOnSourceDestinationListener.onSwapData();
             if (mEditTextSource.getText().toString().isEmpty()) {
                 mSourceAddressClear.setVisibility(View.GONE);
                 mSourceAddressFetch.setVisibility(View.VISIBLE);

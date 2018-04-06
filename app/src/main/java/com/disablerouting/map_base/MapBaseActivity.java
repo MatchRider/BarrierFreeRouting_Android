@@ -147,7 +147,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      * Add path between two points
      *
      * @param encodedGeoPoints plot encoded points
-     * @param stepsList
+     * @param stepsList step list array
      */
     public void plotDataOfSourceDestination(String encodedGeoPoints, String startAdd, String endAdd, List<Steps> stepsList) {
         GeoPoint geoPointStart = null, geoPointEnd = null;
@@ -161,12 +161,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mEndAddress = endAdd;
                 addMarkers(geoPointStart, startAdd, geoPointEnd, endAdd);
             }
-            if (geoPointStart != null && geoPointEnd != null) {
-                BoundingBox boundingBox = new BoundingBox(geoPointStart.getLatitude(), geoPointStart.getLongitude(),
-                        geoPointEnd.getLatitude(), geoPointEnd.getLongitude());
-                mMapView.getController().setCenter(boundingBox.getCenter());
-                mMapView.zoomToBoundingBox(boundingBox, false);
-            }
+            setBoundingBox(geoPointStart,geoPointEnd);
 
         } else {
             addCurrentLocation();
@@ -174,6 +169,15 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this, this);
         mMapView.getOverlays().add(0, mapEventsOverlay);
 
+    }
+
+    public void setBoundingBox(GeoPoint geoPointStart, GeoPoint geoPointEnd){
+        if (geoPointStart != null && geoPointEnd != null) {
+            BoundingBox boundingBox = new BoundingBox(geoPointStart.getLatitude(), geoPointStart.getLongitude(),
+                    geoPointEnd.getLatitude(), geoPointEnd.getLongitude());
+            mMapView.getController().setCenter(boundingBox.getCenter());
+            mMapView.zoomToBoundingBox(boundingBox, false);
+        }
     }
 
     /**
@@ -223,7 +227,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     /**
      * Add current location
      */
-    private void addCurrentLocation() {
+    public void addCurrentLocation() {
         if (mMapView != null) {
             GeoPoint currentGeoPoints = new GeoPoint(mLatitude, mLongitude);
             mCurrentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
