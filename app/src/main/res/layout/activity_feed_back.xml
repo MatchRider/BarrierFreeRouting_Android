@@ -24,6 +24,8 @@
               android:gravity="center"
               android:background="@color/colorPrimary"
               android:text="@string/need_to_improve_routing"
+              android:layout_marginStart="@dimen/margin_large"
+              android:layout_marginEnd="@dimen/margin_large"
               android:layout_height="wrap_content"
               android:fontFamily="@font/frutiger_lt_bold"
     />

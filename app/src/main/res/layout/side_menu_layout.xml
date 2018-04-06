@@ -38,18 +38,10 @@
                         android:maxLines="2"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/text_xlarge"
+                        android:textAllCaps="true"
                         android:fontFamily="@font/frutiger_lt_bold"
                         android:text="@string/app_name"/>
-              <!--  <TextView
-                        android:id="@+id/txv_detail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="2"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_xlarge"
-                        android:text="@string/user_detail"/>
--->
+
             </LinearLayout>
         </RelativeLayout>
 

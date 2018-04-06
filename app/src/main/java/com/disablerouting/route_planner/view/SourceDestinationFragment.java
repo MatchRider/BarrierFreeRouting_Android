@@ -289,16 +289,12 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             if (data.getRoutesList().get(0).getSummary() != null) {
                 if (data.getRoutesList().get(0).getSummary().getDuration() != 0) {
                     int time = data.getRoutesList().get(0).getSummary().getDuration();
-
                     int hours = time / 3600;
                     int minutes = (time % 3600) / 60;
-
                     if (hours == 0) {
-                        mTextViewTime.setText(String.format("%s%s", minutes, getContext().getResources().getString(R.string.min)));
-
+                        mTextViewTime.setText(new StringBuilder().append(minutes).append(" ").append(getContext().getResources().getString(R.string.min)).toString());
                     } else {
-                        mTextViewTime.setText(String.format("%s%s", hours + getContext().getResources().getString(R.string.hr) + " " + minutes, getContext().getResources().getString(R.string.min)));
-
+                        mTextViewTime.setText(new StringBuilder().append(hours).append(" ").append(getContext().getResources().getString(R.string.hr)).append(" ").append(minutes).append(getContext().getResources().getString(R.string.min)).toString());
                     }
 
                 } else {
@@ -306,9 +302,9 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 }
                 if (data.getRoutesList().get(0).getSummary().getDistance() != 0) {
                     String distance = String.valueOf(Utility.trimTWoDecimalPlaces(data.getRoutesList().get(0).getSummary().getDistance() / 1000));
-                    mTextViewKM.setText(String.format("%s%s", distance, getContext().getResources().getString(R.string.km)));
+                    mTextViewKM.setText(new StringBuilder().append(distance).append(" ").append(getContext().getResources().getString(R.string.km)).toString());
                 } else {
-                    mTextViewKM.setText(String.format("%s%s", "--", getContext().getResources().getString(R.string.km)));
+                    mTextViewKM.setText(new StringBuilder().append("--").append(" ").append(getContext().getResources().getString(R.string.km)).toString());
                 }
                 mTextViewAccent.setText("--");
                 mTextViewDecent.setText("--");
