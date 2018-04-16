@@ -8,8 +8,8 @@ import android.os.Bundle;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
-import com.disablerouting.capture_option.view.CaptureActivity;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.filter.view.FilterActivity;
 import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.map_base.MapBaseActivity;
 import com.disablerouting.route_planner.model.NodeItem;
@@ -94,7 +94,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onApplyFilter() {
-        Intent intentFilter = new Intent(this, CaptureActivity.class);
+        Intent intentFilter = new Intent(this, FilterActivity.class);
         intentFilter.putExtra(AppConstant.IS_FILTER, true);
         intentFilter.putExtra(AppConstant.DATA_FILTER_SELECTED, mHashMapObjectFilterItem);
         startActivityForResult(intentFilter, AppConstant.REQUEST_CODE_CAPTURE);

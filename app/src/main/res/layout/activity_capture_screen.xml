@@ -78,39 +78,9 @@
                 android:textSize="@dimen/text_xlarge"
                 android:gravity="center"
                 android:text="@string/finish"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:textAllCaps="false"
                 android:fontFamily="@font/frutiger_lt_bold"/>
 
-        <Button
-                android:id="@+id/btn_clear"
-                android:background="@drawable/btn_ripple"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_xlarge"
-                android:gravity="center"
-                android:text="@string/clear"
-                android:textAllCaps="false"
-                android:visibility="gone"
-                android:layout_marginEnd="@dimen/margin_normal"
-                android:fontFamily="@font/frutiger_lt_bold"
-        />
-        <Button
-                android:id="@+id/btn_apply"
-                android:background="@drawable/btn_ripple"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginStart="@dimen/margin_normal"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_xlarge"
-                android:gravity="center"
-                android:text="@string/apply"
-                android:textAllCaps="false"
-                android:visibility="gone"
-                android:fontFamily="@font/frutiger_lt_bold"
-        />
     </LinearLayout>
 </LinearLayout>
