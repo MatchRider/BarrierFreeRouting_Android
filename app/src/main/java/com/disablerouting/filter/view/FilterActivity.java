@@ -215,7 +215,7 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView {
         mListDataHeader.add(getString(R.string.surface_type));
         mListDataHeader.add(getString(R.string.maximum_sloped));
         mListDataHeader.add(getString(R.string.maximum_incline));
-        mListDataHeader.add(getString(R.string.sidewalk_width));
+        mListDataHeader.add(getString(R.string.walk_way_width));
 
         List<DataModelExpandableList> surfaceTypeData = new ArrayList<DataModelExpandableList>();
         surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.asphalt_filter)));
@@ -238,9 +238,8 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView {
         maxInclineData.add(new DataModelExpandableList("< 10"));
 
         List<DataModelExpandableList> sideWalkWidthData = new ArrayList<DataModelExpandableList>();
-        sideWalkWidthData.add(new DataModelExpandableList("< 90"));
-        sideWalkWidthData.add(new DataModelExpandableList("90-120"));
-        sideWalkWidthData.add(new DataModelExpandableList("> 120"));
+        sideWalkWidthData.add(new DataModelExpandableList("< 35.4"));
+        sideWalkWidthData.add(new DataModelExpandableList("> 35.4"));
 
 
         mListDataChild.put(mListDataHeader.get(0), surfaceTypeData);

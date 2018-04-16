@@ -65,6 +65,8 @@
     <string name="grass_paver">Grass Paver</string>
     <string name="gravel">Gravel</string>
 
+    <string name="walk_way_width">Walkway width (inches)</string>
+
     <string name="asphalt_filter">Asphalt/Concrete</string>
     <string name="paving_stones_filter">Paving Stones/better</string>
     <string name="cobblestone_filter">Cobblestone/better</string>
