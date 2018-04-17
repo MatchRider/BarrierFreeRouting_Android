@@ -247,7 +247,7 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
     }
 
     private void prepareListDataForKeyValue() {
-        mListDataHeaderKeyForFilter = new ArrayList<String>();
+        mListDataHeaderKeyForFilter = new ArrayList<>();
         mListDataChildValue = new LinkedHashMap<>();
 
         mListDataHeaderKeyForFilter.add("surface_type");
@@ -256,7 +256,7 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         mListDataHeaderKeyForFilter.add("width");
 
 
-        List<DataModelExpandableList> surfaceTypeData = new ArrayList<DataModelExpandableList>();
+        List<DataModelExpandableList> surfaceTypeData = new ArrayList<>();
         surfaceTypeData.add(new DataModelExpandableList("asphalt/concrete_plates"));
         surfaceTypeData.add(new DataModelExpandableList("paving_stones"));
         surfaceTypeData.add(new DataModelExpandableList("cobblestone"));
@@ -264,20 +264,20 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         surfaceTypeData.add(new DataModelExpandableList("cobblestone"));
         surfaceTypeData.add(new DataModelExpandableList("traversable"));
 
-        List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<DataModelExpandableList>();
+        List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<>();
         maxSlopedCurvedData.add(new DataModelExpandableList("0"));
         maxSlopedCurvedData.add(new DataModelExpandableList("1.2"));
         maxSlopedCurvedData.add(new DataModelExpandableList("2.4"));
         maxSlopedCurvedData.add(new DataModelExpandableList(">2.4"));
 
-        List<DataModelExpandableList> maxInclineData = new ArrayList<DataModelExpandableList>();
+        List<DataModelExpandableList> maxInclineData = new ArrayList<>();
         maxInclineData.add(new DataModelExpandableList("0"));
         maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_three)));
         maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_six)));
         maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_ten)));
         maxInclineData.add(new DataModelExpandableList("< 10"));
 
-        List<DataModelExpandableList> sideWalkWidthData = new ArrayList<DataModelExpandableList>();
+        List<DataModelExpandableList> sideWalkWidthData = new ArrayList<>();
         sideWalkWidthData.add(new DataModelExpandableList("< 35.4"));
         sideWalkWidthData.add(new DataModelExpandableList("> 35.4"));
 
@@ -292,7 +292,7 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
      * Preparing the list data
      */
     private void prepareListData() {
-        mListDataHeader = new ArrayList<String>();
+        mListDataHeader = new ArrayList<>();
         mListDataChild = new LinkedHashMap<>();
 
         mListDataHeader.add(getString(R.string.surface_type));
@@ -300,27 +300,27 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         mListDataHeader.add(getString(R.string.maximum_incline));
         mListDataHeader.add(getString(R.string.walk_way_width));
 
-        List<DataModelExpandableList> surfaceTypeData = new ArrayList<DataModelExpandableList>();
+        List<DataModelExpandableList> surfaceTypeData = new ArrayList<>();
         surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.asphalt_filter)));
         surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.paving_stones_filter)));
         surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.cobblestone_filter)));
         surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.grass_paver_filter)));
         surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.all_filter)));
 
-        List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<DataModelExpandableList>();
+        List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<>();
         maxSlopedCurvedData.add(new DataModelExpandableList("0"));
         maxSlopedCurvedData.add(new DataModelExpandableList("1.2"));
         maxSlopedCurvedData.add(new DataModelExpandableList("2.4"));
         maxSlopedCurvedData.add(new DataModelExpandableList(">2.4"));
 
-        List<DataModelExpandableList> maxInclineData = new ArrayList<DataModelExpandableList>();
+        List<DataModelExpandableList> maxInclineData = new ArrayList<>();
         maxInclineData.add(new DataModelExpandableList("0"));
         maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_three)));
         maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_six)));
         maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_ten)));
         maxInclineData.add(new DataModelExpandableList("< 10"));
 
-        List<DataModelExpandableList> sideWalkWidthData = new ArrayList<DataModelExpandableList>();
+        List<DataModelExpandableList> sideWalkWidthData = new ArrayList<>();
         sideWalkWidthData.add(new DataModelExpandableList("< 35.4"));
         sideWalkWidthData.add(new DataModelExpandableList("> 35.4"));
 
@@ -342,6 +342,7 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         mHashMapResult = new HashMap<>();
         mtxvListSubTitle.setVisibility(View.GONE);
         mtxvListSubTitle.setText("");
+        mHashMapResultForRouting= new HashMap<>();
         setDataWhenFilterApplied();
     }
 

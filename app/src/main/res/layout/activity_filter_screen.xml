@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="fill_parent"
+              xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:nestedScrollingEnabled="true"
               android:background="@color/colorWhite">
 
     <LinearLayout android:layout_width="match_parent"
@@ -91,6 +89,7 @@
                     android:paddingEnd="@dimen/margin_small"
                     android:textSize="@dimen/text_normal"
                     android:visibility="gone"
+                    android:textStyle="italic"
                     android:fontFamily="@font/frutiger_light"
                     android:textColor="@color/colorWhiteLight"
             />
@@ -139,7 +138,7 @@
                     android:layout_marginStart="@dimen/padding_normal"
                     android:layout_marginEnd="@dimen/padding_normal"
                     android:clickable="true"
-                    android:focusable="false"
+                    android:focusable="true"
                     android:visibility="gone"
                     android:src="@drawable/ic_recenter_edit_field"
                     android:contentDescription="@string/app_name"/>
@@ -199,7 +198,7 @@
                 android:visibility="visible"
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:fontFamily="@font/frutiger_lt_bold"
-        />
+                tools:ignore="ButtonStyle"/>
         <Button
                 android:id="@+id/btn_apply"
                 android:background="@drawable/btn_ripple"
@@ -214,6 +213,6 @@
                 android:textAllCaps="false"
                 android:visibility="visible"
                 android:fontFamily="@font/frutiger_lt_bold"
-        />
+                tools:ignore="ButtonStyle"/>
     </LinearLayout>
 </LinearLayout>
