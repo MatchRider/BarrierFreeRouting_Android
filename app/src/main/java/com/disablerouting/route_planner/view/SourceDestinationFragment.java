@@ -265,14 +265,15 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     public void clearSource() {
         mSourceAddressClear.setVisibility(View.GONE);
         mSourceAddressFetch.setVisibility(View.GONE);
-        clearSourceComplete();
+        mEditTextSource.setText("");
+
     }
 
     @OnClick(R.id.clear_destination_address)
     public void clearDestination() {
         mDestinationAddressClear.setVisibility(View.GONE);
         mDestinationAddressFetch.setVisibility(View.GONE);
-        clearDestinationComplete();
+        mEditTextDestination.setText("");
     }
 
     @Override

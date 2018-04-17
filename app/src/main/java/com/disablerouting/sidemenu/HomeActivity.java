@@ -28,6 +28,7 @@ import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.route_planner.view.RoutePlannerActivity;
 import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
+import com.disablerouting.suggestions.SuggestionsActivity;
 import com.disablerouting.utils.PermissionUtils;
 
 public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragmentCallback {
@@ -202,7 +203,9 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
             @Override
             public void onClick(View view) {
                 alertDialog.dismiss();
-                //TODO redirect
+                redirectToSuggestionScreen();
+
+
             }
         });
         btnNo.setOnClickListener(new View.OnClickListener() {
@@ -211,6 +214,10 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
                 alertDialog.dismiss();
             }
         });
+    }
+    
+    private void redirectToSuggestionScreen(){
+        launchActivity(this, SuggestionsActivity.class);
     }
 
 }
