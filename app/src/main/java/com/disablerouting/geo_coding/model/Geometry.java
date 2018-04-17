@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -19,18 +20,12 @@ public class Geometry implements Parcelable{
     public Geometry() {
     }
 
+
     protected Geometry(Parcel in) {
         mType = in.readString();
-    }
+        mCoordinates = new ArrayList<Double>();
+        in.readList(mCoordinates,null);
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mType);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     public static final Creator<Geometry> CREATOR = new Creator<Geometry>() {
@@ -53,4 +48,14 @@ public class Geometry implements Parcelable{
         return mCoordinates;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mType);
+        parcel.writeList(mCoordinates);
+    }
 }

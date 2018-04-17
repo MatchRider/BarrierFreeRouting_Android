@@ -122,6 +122,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         clearItemsFromMap();
     }
 
+    @Override
+    public void plotMidWayRouteMarker(GeoPoint geoPoint) {
+        addMidWayMarkers(geoPoint,"Way Point");
+    }
+
 
     @OnClick(R.id.img_re_center)
     public void reCenter() {
@@ -138,7 +143,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @OnClick(R.id.btn_go)
     public void goPlotMap() {
         clearItemsFromMap();
-        mSourceDestinationFragment.plotRoute(mJsonObjectFilter);
+        Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
+        mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
     }
 
     @Override

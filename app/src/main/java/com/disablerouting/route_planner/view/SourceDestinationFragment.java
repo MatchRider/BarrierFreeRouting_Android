@@ -100,6 +100,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     private Features mFeaturesDestination;
     private boolean mIsTextInputManually = false;
     private JSONObject mJSONObjectFilter;
+    private Features mFeaturesRouteVia;
 
     @SuppressLint("HandlerLeak")
     final Handler handler = new Handler() {
@@ -195,17 +196,23 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         });
     }
 
-    public void callForDestination(GeoPoint geoPointCurrent, GeoPoint geoPointSource, GeoPoint geoPointDestination, JSONObject jsonObject) {
+    public void callForDestination(GeoPoint geoPointCurrent, GeoPoint geoPointSource, GeoPoint geoPointDestination, JSONObject jsonObject, Features featuresRouteVia) {
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         mGeoPointSource = geoPointSource;
         mGeoPointDestination = geoPointDestination;
-        mJSONObjectFilter = jsonObject;
         if (mGeoPointSource.getLatitude() != mGeoPointDestination.getLatitude() &&
                 mGeoPointSource.getLongitude() != mGeoPointDestination.getLongitude()) {
             if (mEditTextSource != null && !mEditTextSource.getText().toString().isEmpty() &&
                     mEditTextDestination != null && !mEditTextDestination.getText().toString().isEmpty()) {
 
-                mCoordinates = mGeoPointSource + "|" + mGeoPointDestination;
+                if(featuresRouteVia!=null && featuresRouteVia.getGeometry()!=null && featuresRouteVia.getGeometry().getCoordinates()!=null){
+                   GeoPoint geoPointRouteVia = new GeoPoint(featuresRouteVia.getGeometry().getCoordinates().get(0),
+                           featuresRouteVia.getGeometry().getCoordinates().get(1));
+                    mCoordinates = mGeoPointSource + "|" +geoPointRouteVia+ "|"+mGeoPointDestination;
+
+                }else {
+                    mCoordinates = mGeoPointSource + "|" + mGeoPointDestination;
+                }
                 mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates, mProfileType, jsonObject);
             }
             handler.removeMessages(SEARCH_TEXT_CHANGED);
@@ -228,7 +235,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     }
 
 
-    public void plotRoute(JSONObject jsonObject) {
+    public void plotRoute(JSONObject jsonObject , Features featuresRouteVia) {
         if (!mEditTextSource.getText().toString().isEmpty() && !mEditTextDestination.getText().toString().isEmpty()) {
             if (mGeoPointSource != null && mGeoPointDestination != null && mGeoPointSource.getLatitude() != mGeoPointDestination.getLatitude() &&
                     mGeoPointSource.getLongitude() != mGeoPointDestination.getLongitude()) {
@@ -237,7 +244,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                         mGeoPointDestination.getLatitude() + "," + mGeoPointDestination.getLongitude();
                 getNodes(bBox); // API call for set markers of amenity
                 mJSONObjectFilter = jsonObject;
-                callForDestination(null, mGeoPointSource, mGeoPointDestination, jsonObject);
+                mFeaturesRouteVia = featuresRouteVia;
+                callForDestination(null, mGeoPointSource, mGeoPointDestination, mJSONObjectFilter,mFeaturesRouteVia);
             } else {
                 showSnackBar(getContext().getResources().getString(R.string.error_source_destination_same));
             }
@@ -283,8 +291,19 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     public void onDirectionDataReceived(DirectionsResponse data) {
         if (data != null && data.getRoutesList() != null && data.getRoutesList().size() != 0
                 && data.getRoutesList().get(0).getGeometry() != null && data.getRoutesList().get(0).getSegmentList().get(0).getStepsList() != null) {
+            for (int i= 0 ;i< data.getRoutesList().get(0).getSegmentList().size();i++){
+                    mOnSourceDestinationListener.plotDataOnMap(data.getRoutesList().get(0).getGeometry(), data.getRoutesList().get(0).
+                            getSegmentList().get(i).getStepsList());
 
-            mOnSourceDestinationListener.plotDataOnMap(data.getRoutesList().get(0).getGeometry(), data.getRoutesList().get(0).getSegmentList().get(0).getStepsList());
+            }
+            if(data.getRoutesList().get(0).getSegmentList().size()>1 && data.getInfo()!=null && data.getInfo().getQuery()!=null && data.getInfo().getQuery().getCoordinatesList()!=null &&
+                    data.getInfo().getQuery().getCoordinatesList().get(1)!=null) {
+                GeoPoint geoPointMid = new GeoPoint(data.getInfo().getQuery().getCoordinatesList().get(1).get(1),
+                        data.getInfo().getQuery().getCoordinatesList().get(1).get(0));
+
+                mOnSourceDestinationListener.plotMidWayRouteMarker(geoPointMid);
+            }
+
             mLinearLayoutTimeDistance.setVisibility(View.VISIBLE);
             if (data.getRoutesList().get(0).getSummary() != null) {
                 if (data.getRoutesList().get(0).getSummary().getDuration() != 0) {
@@ -448,7 +467,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mGeoPointSource = mGeoPointDestination;
         mGeoPointDestination = geoPoint;
 
-        plotRoute(mJSONObjectFilter);
+        plotRoute(mJSONObjectFilter , mFeaturesRouteVia);
 
     }
 

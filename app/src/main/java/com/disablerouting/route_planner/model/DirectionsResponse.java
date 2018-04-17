@@ -11,6 +11,13 @@ public class DirectionsResponse {
     @JsonProperty("routes")
     private List<Routes> mRoutesList;
 
+    @JsonProperty("info")
+    private Info mInfo;
+
+    public Info getInfo() {
+        return mInfo;
+    }
+
     public List<Routes> getRoutesList() {
         return mRoutesList;
     }
