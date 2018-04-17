@@ -5,21 +5,27 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ExpandableListView;
-import android.widget.ImageView;
+import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
+import com.disablerouting.application.AppData;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.capture_option.model.DataModelExpandableList;
 import com.disablerouting.common.AppConstant;
-import com.disablerouting.feedback.model.RequestTag;
 import com.disablerouting.filter.presenter.FilterScreenPresenter;
+import com.disablerouting.filter.presenter.IFilterScreenPresenter;
 import com.disablerouting.geo_coding.manager.GeoCodingManager;
+import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
+import com.disablerouting.route_planner.adapter.CustomListAdapter;
+import com.disablerouting.utils.Utility;
 import com.disablerouting.widget.CustomAutoCompleteTextView;
 
 import java.util.ArrayList;
@@ -27,7 +33,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class FilterActivity extends BaseActivityImpl implements IFilterView {
+public class FilterActivity extends BaseActivityImpl implements IFilterView, AdapterView.OnItemClickListener {
 
     private FilterExpandableListAdapter mExpandableListAdapter;
 
@@ -36,6 +42,9 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView {
 
     @BindView(R.id.edt_routing_via)
     CustomAutoCompleteTextView mEditTextRoutingVia;
+
+    @BindView(R.id.txv_list_sub_title)
+    TextView mtxvListSubTitle;
 
     @BindView(R.id.clear_routing_via)
     ImageView mRoutingViaAddressClear;
@@ -49,19 +58,44 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView {
     @BindView(R.id.btn_apply)
     Button mBtnApply;
 
+
     private List<String> mListDataHeader;
     private LinkedHashMap<String, List<DataModelExpandableList>> mListDataChild;
     private int mLastExpandedPosition = -1;
     private View mParentView;
 
-    List<RequestTag> mRequestTagList = new ArrayList<>();
-    private List<String> mListDataHeaderKey;
     private LinkedHashMap<String, List<DataModelExpandableList>> mListDataChildValue;
-    HashMap<String, String> hashMapResult= new HashMap<>();
+    private HashMap<String, String> mHashMapResult = new HashMap<>();
     private List<String> mListDataHeaderKeyForFilter;
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, Integer> mHashMapObjectFilterItem = new HashMap<>();
 
+    private IFilterScreenPresenter mIFilterScreenPresenter;
+    private static final int SEARCH_TEXT_CHANGED = 1000;
+    private boolean mIsTextInputManually = false;
+    private List<Features> mFeaturesResultSearch;
+    private CustomListAdapter mAddressListAdapter;
+    private String mCurrentLocation = null;
+    private android.support.v7.widget.ListPopupWindow mListPopupWindow;
+    private HashMap<String, Features> mHashMapResultForRouting = new HashMap<>();
+
+
+    @SuppressLint("HandlerLeak")
+    final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (!msg.obj.equals("")) {
+                if (mListPopupWindow != null && mListPopupWindow.isShowing()) {
+                    mListPopupWindow.dismiss();
+                }
+                if (mEditTextRoutingVia.hasFocus() && mEditTextRoutingVia != null && !mEditTextRoutingVia.getText().toString().equalsIgnoreCase("")) {
+                    mIFilterScreenPresenter.getCoordinatesData(mEditTextRoutingVia.getText().toString(), "", 5);
+                }
+            }
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,24 +105,97 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView {
 
         boolean isFilter = getIntent().getBooleanExtra(AppConstant.IS_FILTER, false);
 
-        if(getIntent().hasExtra(AppConstant.IS_FILTER) && isFilter){
-            mBtnClear.setVisibility(View.VISIBLE);
-            mBtnApply.setVisibility(View.VISIBLE);
-            if (getIntent().hasExtra(AppConstant.DATA_FILTER_SELECTED)){
-                mHashMapObjectFilterItem = (HashMap<Integer, Integer>)getIntent().getSerializableExtra(AppConstant.DATA_FILTER_SELECTED);
+        if (getIntent().hasExtra(AppConstant.IS_FILTER) && isFilter) {
+            if (getIntent().hasExtra(AppConstant.DATA_FILTER_SELECTED)) {
+                mHashMapObjectFilterItem = (HashMap<Integer, Integer>) getIntent().getSerializableExtra(AppConstant.DATA_FILTER_SELECTED);
+            }
+            if (getIntent().hasExtra(AppConstant.DATA_FILTER_ROUTING_VIA)) {
+                mHashMapResultForRouting = (HashMap<String, Features>) getIntent().getSerializableExtra(AppConstant.DATA_FILTER_ROUTING_VIA);
+                Features value = mHashMapResultForRouting.get(AppConstant.DATA_FILTER_ROUTING_VIA);
+                if(value!=null && value.getProperties()!=null){
+                    mtxvListSubTitle.setVisibility(View.VISIBLE);
+                    mtxvListSubTitle.setText(value.getProperties().toString());
+                }
+            }else {
+                mtxvListSubTitle.setVisibility(View.GONE);
             }
         }
-        FilterScreenPresenter filterScreenPresenter = new FilterScreenPresenter(this, new GeoCodingManager());
+        mIFilterScreenPresenter = new FilterScreenPresenter(this, new GeoCodingManager());
 
+        if (AppData.getNewInstance().getCurrentLoc() != null) {
+            mCurrentLocation = AppData.getNewInstance().getCurrentLoc().longitude + "," + AppData.getNewInstance().getCurrentLoc().latitude;
+        }
         prepareListDataForKeyValue();
         prepareListData();
         onExpandListeners();
+        addFocusChangeListener();
+        addListener();
 
     }
 
-    private void callForRoutingVia(){
-      //  mFilterScreenPresenter.getCoordinatesData();
+    @OnClick(R.id.fetch_current_routing_via)
+    public void fetchCurrentRoutingAdd() {
+        mIsTextInputManually = false;
+        if (mEditTextRoutingVia.hasFocus() && mEditTextRoutingVia != null && mEditTextRoutingVia.getText().toString().equalsIgnoreCase("")) {
+            mIFilterScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
+        }
+
     }
+
+    @OnClick(R.id.clear_routing_via)
+    public void clearRoutingVia() {
+        mRoutingViaAddressClear.setVisibility(View.GONE);
+        mRoutingViaAddressFetch.setVisibility(View.GONE);
+        mtxvListSubTitle.setVisibility(View.GONE);
+        mtxvListSubTitle.setText("");
+        mEditTextRoutingVia.setText("");
+
+    }
+
+    public void addFocusChangeListener() {
+        mEditTextRoutingVia.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b && mEditTextRoutingVia.getText().toString().trim().length() == 0) {
+                    mRoutingViaAddressFetch.setVisibility(View.VISIBLE);
+                } else {
+                    mRoutingViaAddressFetch.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    private void addListener() {
+        mEditTextRoutingVia.addTextChangedListener(mRoutingViaWatcher);
+    }
+
+    private TextWatcher mRoutingViaWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable str) {
+            updateEditControls(mEditTextRoutingVia, mRoutingViaAddressFetch, mRoutingViaAddressClear);
+            if (str.toString().length() > 3 && mIsTextInputManually) {
+                handler.removeMessages(SEARCH_TEXT_CHANGED);
+                handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, str.toString()), 500);
+            } else {
+                mIsTextInputManually = true;
+                handler.removeMessages(SEARCH_TEXT_CHANGED);
+                handler.sendMessageDelayed(handler.obtainMessage(SEARCH_TEXT_CHANGED, ""), 500);
+            }
+
+        }
+    };
+
+
 
     private void onExpandListeners() {
         mExpandableListAdapter = new FilterExpandableListAdapter(this, mListDataHeader, mListDataChild);
@@ -100,8 +207,8 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView {
 
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                    mParentView = v;
-                    mExpandableListView.setSelection(groupPosition);
+                mParentView = v;
+                mExpandableListView.setSelection(groupPosition);
 
                 return false;
             }
@@ -130,13 +237,7 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView {
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
 
-                 //Add data for API call
-                RequestTag requestTag = new RequestTag(mListDataHeaderKey.get(groupPosition),
-                        mListDataChildValue.get(mListDataHeaderKey.get(groupPosition)).get(childPosition).getValue());
-
-                mRequestTagList.add(requestTag);
-
-                hashMapResult.put(mListDataHeaderKeyForFilter.get(groupPosition),mListDataChildValue.get(mListDataHeaderKey.get(groupPosition)).get(childPosition).getValue());
+                mHashMapResult.put(mListDataHeaderKeyForFilter.get(groupPosition), mListDataChildValue.get(mListDataHeaderKeyForFilter.get(groupPosition)).get(childPosition).getValue());
 
                 //Handle click of item selected of child and set to sub subtitle
                 mExpandableListAdapter.addSubTitleWhenChildClicked(groupPosition, childPosition, mParentView);
@@ -146,14 +247,8 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView {
     }
 
     private void prepareListDataForKeyValue() {
-        mListDataHeaderKey = new ArrayList<String>();
         mListDataHeaderKeyForFilter = new ArrayList<String>();
         mListDataChildValue = new LinkedHashMap<>();
-
-        mListDataHeaderKey.add("surface");
-        mListDataHeaderKey.add("sloped_curb");
-        mListDataHeaderKey.add("incline");
-        mListDataHeaderKey.add("width");
 
         mListDataHeaderKeyForFilter.add("surface_type");
         mListDataHeaderKeyForFilter.add("maximum_sloped_curb");
@@ -162,49 +257,37 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView {
 
 
         List<DataModelExpandableList> surfaceTypeData = new ArrayList<DataModelExpandableList>();
-        surfaceTypeData.add(new DataModelExpandableList("paved"));
-        surfaceTypeData.add(new DataModelExpandableList("asphalt"));
-        surfaceTypeData.add(new DataModelExpandableList("concrete_plates"));
+        surfaceTypeData.add(new DataModelExpandableList("asphalt/concrete_plates"));
         surfaceTypeData.add(new DataModelExpandableList("paving_stones"));
         surfaceTypeData.add(new DataModelExpandableList("cobblestone"));
-        surfaceTypeData.add(new DataModelExpandableList("grass_pavers"));
-        surfaceTypeData.add(new DataModelExpandableList("gravel"));
+        surfaceTypeData.add(new DataModelExpandableList("compacted"));
+        surfaceTypeData.add(new DataModelExpandableList("cobblestone"));
+        surfaceTypeData.add(new DataModelExpandableList("traversable"));
 
         List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<DataModelExpandableList>();
         maxSlopedCurvedData.add(new DataModelExpandableList("0"));
-        maxSlopedCurvedData.add(new DataModelExpandableList("3"));
-        maxSlopedCurvedData.add(new DataModelExpandableList("6"));
-        maxSlopedCurvedData.add(new DataModelExpandableList(">6"));
+        maxSlopedCurvedData.add(new DataModelExpandableList("1.2"));
+        maxSlopedCurvedData.add(new DataModelExpandableList("2.4"));
+        maxSlopedCurvedData.add(new DataModelExpandableList(">2.4"));
 
         List<DataModelExpandableList> maxInclineData = new ArrayList<DataModelExpandableList>();
-        maxInclineData.add(new DataModelExpandableList("-5"));
-        maxInclineData.add(new DataModelExpandableList("-4"));
-        maxInclineData.add(new DataModelExpandableList("-3"));
-        maxInclineData.add(new DataModelExpandableList("-2"));
-        maxInclineData.add(new DataModelExpandableList("-1"));
         maxInclineData.add(new DataModelExpandableList("0"));
-        maxInclineData.add(new DataModelExpandableList("1"));
-        maxInclineData.add(new DataModelExpandableList("2"));
-        maxInclineData.add(new DataModelExpandableList("3"));
-        maxInclineData.add(new DataModelExpandableList("4"));
-        maxInclineData.add(new DataModelExpandableList("5"));
+        maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_three)));
+        maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_six)));
+        maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_ten)));
+        maxInclineData.add(new DataModelExpandableList("< 10"));
 
         List<DataModelExpandableList> sideWalkWidthData = new ArrayList<DataModelExpandableList>();
-        sideWalkWidthData.add(new DataModelExpandableList("<30"));
-        sideWalkWidthData.add(new DataModelExpandableList("30-45"));
-        sideWalkWidthData.add(new DataModelExpandableList("46-75"));
-        sideWalkWidthData.add(new DataModelExpandableList("76-100"));
-        sideWalkWidthData.add(new DataModelExpandableList("101-125"));
-        sideWalkWidthData.add(new DataModelExpandableList("126-150"));
-        sideWalkWidthData.add(new DataModelExpandableList("150-175"));
-        sideWalkWidthData.add(new DataModelExpandableList(">176"));
+        sideWalkWidthData.add(new DataModelExpandableList("< 35.4"));
+        sideWalkWidthData.add(new DataModelExpandableList("> 35.4"));
 
-        mListDataChildValue.put(mListDataHeaderKey.get(0), surfaceTypeData);
-        mListDataChildValue.put(mListDataHeaderKey.get(1), maxSlopedCurvedData);
-        mListDataChildValue.put(mListDataHeaderKey.get(2), maxInclineData);
-        mListDataChildValue.put(mListDataHeaderKey.get(3), sideWalkWidthData);
+        mListDataChildValue.put(mListDataHeaderKeyForFilter.get(0), surfaceTypeData);
+        mListDataChildValue.put(mListDataHeaderKeyForFilter.get(1), maxSlopedCurvedData);
+        mListDataChildValue.put(mListDataHeaderKeyForFilter.get(2), maxInclineData);
+        mListDataChildValue.put(mListDataHeaderKeyForFilter.get(3), sideWalkWidthData);
 
     }
+
     /*
      * Preparing the list data
      */
@@ -253,6 +336,100 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView {
         finish();
     }
 
+    @OnClick(R.id.btn_clear)
+    public void onClickClear() {
+        mExpandableListAdapter.removeSubTitlesWhenClearClicked();
+        mHashMapResult = new HashMap<>();
+        mtxvListSubTitle.setVisibility(View.GONE);
+        mtxvListSubTitle.setText("");
+        setDataWhenFilterApplied();
+    }
+
+    @OnClick(R.id.btn_apply)
+    public void onClickApply() {
+        setDataWhenFilterApplied();
+    }
+
+    private void setDataWhenFilterApplied() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(AppConstant.DATA_FILTER, mHashMapResult);
+        returnIntent.putExtra(AppConstant.DATA_FILTER_ROUTING_VIA, mHashMapResultForRouting);
+        returnIntent.putExtra(AppConstant.DATA_FILTER_SELECTED, mExpandableListAdapter.getSelectionMap());
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
+    }
+
+    @Override
+    public void onGeoDataDataReceived(GeoCodingResponse data, boolean isForCurrentLoc) {
+        handler.removeMessages(SEARCH_TEXT_CHANGED);
+        if (isForCurrentLoc && data != null && data.getFeatures() != null && data.getFeatures().size() == 1) {
+            Utility.hideSoftKeyboard(this);
+            mFeaturesResultSearch = data.getFeatures();
+            if (mEditTextRoutingVia.hasFocus()) {
+                mEditTextRoutingVia.removeTextChangedListener(mRoutingViaWatcher);
+                mEditTextRoutingVia.setText(mFeaturesResultSearch.get(0).getProperties().toString());
+                mtxvListSubTitle.setVisibility(View.VISIBLE);
+                mtxvListSubTitle.setText(mFeaturesResultSearch.get(0).getProperties().toString());
+                mHashMapResultForRouting.put(AppConstant.DATA_FILTER_ROUTING_VIA,mFeaturesResultSearch.get(0));
+                mEditTextRoutingVia.addTextChangedListener(mRoutingViaWatcher);
+                updateEditControls(mEditTextRoutingVia, mRoutingViaAddressFetch, mRoutingViaAddressClear);
+
+            }
+
+        } else if (data != null && data.getFeatures() != null && !data.getFeatures().isEmpty()) {
+            mFeaturesResultSearch = data.getFeatures();
+            mAddressListAdapter = new CustomListAdapter(this, R.layout.address_item_view, data.getFeatures());
+            Utility.hideSoftKeyboard(this);
+            setListPopUp(mEditTextRoutingVia);
+        }
+    }
+
+    @Override
+    public void onFailureGeoCoding(String error) {
+        Utility.hideSoftKeyboard(this);
+        if (error.equalsIgnoreCase("No address found.")) {
+            showSnackBar(getResources().getString(R.string.no_address_found), this);
+        } else {
+            showSnackBar(error, this);
+        }
+    }
+
+    private void updateEditControls(CustomAutoCompleteTextView mTV, View loc, View clear) {
+        if (mTV.hasFocus() && mTV.getText().toString().isEmpty()) {
+            clear.setVisibility(View.GONE);
+            loc.setVisibility(View.VISIBLE);
+        } else if (mTV.hasFocus() && mTV.getText().toString().trim().length() >= 1) {
+            loc.setVisibility(View.GONE);
+            clear.setVisibility(View.VISIBLE);
+        } else {
+            loc.setVisibility(View.GONE);
+            clear.setVisibility(View.GONE);
+        }
+    }
+
+    private void setListPopUp(View anchor) {
+        mListPopupWindow = new android.support.v7.widget.ListPopupWindow(this);
+        mListPopupWindow.setAnchorView(anchor);
+        mListPopupWindow.setAnimationStyle(R.style.popup_window_animation);
+        int height = Utility.calculatePopUpHeight(this);
+        mListPopupWindow.setHeight(height / 4);
+        mListPopupWindow.setWidth(android.support.v7.widget.ListPopupWindow.MATCH_PARENT);
+        mListPopupWindow.setAdapter(mAddressListAdapter);
+        mListPopupWindow.setOnItemClickListener(this);
+        mListPopupWindow.show();
+    }
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Utility.hideSoftKeyboard(this);
+        mListPopupWindow.dismiss();
+        if (mEditTextRoutingVia.hasFocus()) {
+            mEditTextRoutingVia.setText(mFeaturesResultSearch.get(i).getProperties().toString());
+            mtxvListSubTitle.setVisibility(View.VISIBLE);
+            mtxvListSubTitle.setText(mFeaturesResultSearch.get(i).getProperties().toString());
+            mHashMapResultForRouting.put(AppConstant.DATA_FILTER_ROUTING_VIA,mFeaturesResultSearch.get(0));
+        }
+        handler.removeMessages(SEARCH_TEXT_CHANGED);
+    }
     @Override
     public void showLoader() {
         showProgress();
@@ -263,34 +440,4 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView {
         hideProgress();
     }
 
-
-    @OnClick(R.id.btn_clear)
-    public void onClickClear(){
-        mExpandableListAdapter.removeSubTitlesWhenClearClicked();
-        hashMapResult = new HashMap<>();
-        setDataWhenFilterApplied();
-    }
-
-    @OnClick(R.id.btn_apply)
-    public void onClickApply(){
-       setDataWhenFilterApplied();
-    }
-
-    private void setDataWhenFilterApplied(){
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra(AppConstant.DATA_FILTER, hashMapResult);
-        returnIntent.putExtra(AppConstant.DATA_FILTER_SELECTED, mExpandableListAdapter.getSelectionMap());
-        setResult(Activity.RESULT_OK,returnIntent);
-        finish();
-    }
-
-    @Override
-    public void onGeoDataDataReceived(GeoCodingResponse data, boolean isForCurrentLoc) {
-
-    }
-
-    @Override
-    public void onFailureGeoCoding(String error) {
-
-    }
 }

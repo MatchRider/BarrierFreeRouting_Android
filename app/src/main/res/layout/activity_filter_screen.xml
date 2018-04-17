@@ -5,6 +5,7 @@
               android:layout_width="fill_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
+              android:nestedScrollingEnabled="true"
               android:background="@color/colorWhite">
 
     <LinearLayout android:layout_width="match_parent"
@@ -138,8 +139,7 @@
                     android:layout_marginStart="@dimen/padding_normal"
                     android:layout_marginEnd="@dimen/padding_normal"
                     android:clickable="true"
-                    tools:visibility="visible"
-                    android:focusable="true"
+                    android:focusable="false"
                     android:visibility="gone"
                     android:src="@drawable/ic_recenter_edit_field"
                     android:contentDescription="@string/app_name"/>
@@ -161,10 +161,6 @@
     </RelativeLayout>
 
 
-    <ListView android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-
-    </ListView>
 
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="0dp"
@@ -183,7 +179,6 @@
                 android:layout_marginBottom="@dimen/margin_normal"
                 android:childIndicator="@null"/>
     </LinearLayout>
-
     <LinearLayout android:layout_width="match_parent"
                   android:layout_gravity="bottom"
                   android:orientation="horizontal"
@@ -201,7 +196,7 @@
                 android:gravity="center"
                 android:text="@string/clear"
                 android:textAllCaps="false"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:fontFamily="@font/frutiger_lt_bold"
         />
@@ -217,7 +212,7 @@
                 android:gravity="center"
                 android:text="@string/apply"
                 android:textAllCaps="false"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:fontFamily="@font/frutiger_lt_bold"
         />
     </LinearLayout>

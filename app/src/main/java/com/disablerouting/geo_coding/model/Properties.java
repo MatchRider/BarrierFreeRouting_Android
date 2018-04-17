@@ -1,10 +1,12 @@
 package com.disablerouting.geo_coding.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Properties {
+public class Properties implements Parcelable {
 
     @JsonProperty("country")
     private String mCountry=" ";
@@ -29,6 +31,49 @@ public class Properties {
 
     @JsonProperty("place_type")
     private String mPlaceType="";
+
+    public Properties() {
+    }
+
+    protected Properties(Parcel in) {
+        mCountry = in.readString();
+        mCountry_code = in.readString();
+        mRegion = in.readString();
+        mLocality = in.readString();
+        mStreet = in.readString();
+        mName = in.readString();
+        mHouseNumber = in.readString();
+        mPlaceType = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mCountry);
+        dest.writeString(mCountry_code);
+        dest.writeString(mRegion);
+        dest.writeString(mLocality);
+        dest.writeString(mStreet);
+        dest.writeString(mName);
+        dest.writeString(mHouseNumber);
+        dest.writeString(mPlaceType);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Properties> CREATOR = new Creator<Properties>() {
+        @Override
+        public Properties createFromParcel(Parcel in) {
+            return new Properties(in);
+        }
+
+        @Override
+        public Properties[] newArray(int size) {
+            return new Properties[size];
+        }
+    };
 
     public void setCountry(String country) {
         mCountry = country;

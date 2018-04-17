@@ -36,6 +36,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, Integer> mHashMapObjectFilterItem = new HashMap<>();
     private List<NodeItem> mNodeItemListFiltered = new ArrayList<>();
+    private HashMap<String, Features> mHashMapObjectFilterRoutingVia= new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +98,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         Intent intentFilter = new Intent(this, FilterActivity.class);
         intentFilter.putExtra(AppConstant.IS_FILTER, true);
         intentFilter.putExtra(AppConstant.DATA_FILTER_SELECTED, mHashMapObjectFilterItem);
+        intentFilter.putExtra(AppConstant.DATA_FILTER_ROUTING_VIA, mHashMapObjectFilterRoutingVia);
         startActivityForResult(intentFilter, AppConstant.REQUEST_CODE_CAPTURE);
     }
 
@@ -145,6 +147,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             if (resultCode == Activity.RESULT_OK) {
                 HashMap<String, String> hashMapObjectFilter = (HashMap<String, String>) data.getSerializableExtra(AppConstant.DATA_FILTER);
                 mHashMapObjectFilterItem = (HashMap<Integer, Integer>) data.getSerializableExtra(AppConstant.DATA_FILTER_SELECTED);
+                mHashMapObjectFilterRoutingVia = (HashMap<String, Features>) data.getSerializableExtra(AppConstant.DATA_FILTER_ROUTING_VIA);
 
                 if (mHashMapObjectFilterItem != null && mHashMapObjectFilterItem.size() != 0) {
                     mJsonObjectFilter= new JSONObject();
