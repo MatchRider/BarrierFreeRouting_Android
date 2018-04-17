@@ -91,5 +91,6 @@
     <string name="home">Home</string>
     <string name="no_address_found">Keine Adresse gefunden.</string>
     <string name="hint_routing_via">Bitte Ort eingeben</string>
+    <string name="you_want_to_enhance_the_routing">You want to enhance the routing ?</string>
 
 </resources>

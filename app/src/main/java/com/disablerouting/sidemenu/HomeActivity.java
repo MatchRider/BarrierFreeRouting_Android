@@ -15,7 +15,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import butterknife.BindView;
@@ -115,7 +117,7 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
 
     @OnClick(R.id.btn_suggestion)
     void redirectSuggestions() {
-        // launchActivity(this, CaptureActivity.class);
+        showSuggestionDialog();
     }
 
     /**
@@ -183,6 +185,32 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         if (requestCode == AppConstant.SETTING_REQUEST_CODE) {
             checkLocationStatus();
         }
+    }
+
+    private void showSuggestionDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View customView = layoutInflater.inflate(R.layout.suggestion_pop_up, null);
+        Button btnYes = (Button) customView.findViewById(R.id.btn_yes);
+        Button btnNo = (Button) customView.findViewById(R.id.btn_no);
+        builder.setView(customView);
+
+        final Dialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
+        btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+                //TODO redirect
+            }
+        });
+        btnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
     }
 
 }
