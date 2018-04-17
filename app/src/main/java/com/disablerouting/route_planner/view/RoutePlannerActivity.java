@@ -124,7 +124,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void plotMidWayRouteMarker(GeoPoint geoPoint) {
-        addMidWayMarkers(geoPoint,"Way Point");
+        Features value = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
+        if(value!=null) {
+            addMidWayMarkers(geoPoint, value.getProperties().toString());
+        }
     }
 
 

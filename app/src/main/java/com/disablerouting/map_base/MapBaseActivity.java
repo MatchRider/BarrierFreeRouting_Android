@@ -582,7 +582,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mMidMarker.setPosition(geoPointMid);
                 mMidMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mMapView.getOverlays().add(mMidMarker);
-                mMidMarker.setIcon(getResources().getDrawable(R.drawable.ic_media_pause_dark));
+                mMidMarker.setIcon(getResources().getDrawable(R.drawable.ic_way_point));
                 mMidMarker.setTitle(geoPointAddress);
             }
         }
