@@ -53,7 +53,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeedBackListener , MapEventsReceiver {
+public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeedBackListener, MapEventsReceiver {
 
     private MapView mMapView = null;
     private MyLocationNewOverlay mLocationOverlay;
@@ -78,6 +78,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private static OnFeedBackListener mFeedBackListener;
     private Polyline mPreviousPolyline;
     private Marker mNodeMarker = null;
+    private boolean mShowFeedbackDialog;
 
 
     @Override
@@ -151,8 +152,9 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      * @param encodedGeoPoints plot encoded points
      * @param stepsList        step list array
      */
-    public void plotDataOfSourceDestination(String encodedGeoPoints, String startAdd, String endAdd, List<Steps> stepsList) {
+    public void plotDataOfSourceDestination(String encodedGeoPoints, String startAdd, String endAdd, List<Steps> stepsList, boolean showFeedbackDialog) {
         GeoPoint geoPointStart = null, geoPointEnd = null;
+        mShowFeedbackDialog = showFeedbackDialog;
         if (encodedGeoPoints != null) {
             List<GeoPoint> geoPointArrayList = PolylineDecoder.decodePoly(encodedGeoPoints);
             addPolyLine(geoPointArrayList, stepsList);
@@ -202,21 +204,24 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 polylineArrayList.add(mPolyline);
                 mPolyline.setColor(getResources().getColor(R.color.colorPrimary));
 
-                mPolyline.setOnClickListener(new Polyline.OnClickListener() {
-                    @Override
-                    public boolean onClick(final Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                        if (mPreviousPolyline != null) {
-                            mPreviousPolyline.setColor(getResources().getColor(R.color.colorPrimary));
-                            mPreviousPolyline.setWidth(20);
+                if (mShowFeedbackDialog) {
+                    mPolyline.setOnClickListener(new Polyline.OnClickListener() {
+                        @Override
+                        public boolean onClick(final Polyline polyline, MapView mapView, GeoPoint eventPos) {
+                            if (mPreviousPolyline != null) {
+                                mPreviousPolyline.setColor(getResources().getColor(R.color.colorPrimary));
+                                mPreviousPolyline.setWidth(20);
+                            }
+                            polyline.setColor(getResources().getColor(R.color.colorGreen));
+                            polyline.setWidth(30);
+                            mPreviousPolyline = polyline;
+                            mMapView.invalidate();
+                            showFeedbackDialog(eventPos.getLongitude(), eventPos.getLatitude());
+
+                            return false;
                         }
-                        polyline.setColor(getResources().getColor(R.color.colorGreen));
-                        polyline.setWidth(30);
-                        mPreviousPolyline = polyline;
-                        mMapView.invalidate();
-                        showFeedbackDialog(eventPos.getLongitude(), eventPos.getLatitude());
-                        return false;
-                    }
-                });
+                    });
+                }
 
             }
             if (mMapView != null) {

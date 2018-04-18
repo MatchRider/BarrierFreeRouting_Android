@@ -9,7 +9,8 @@
               android:focusableInTouchMode="true"
               android:baselineAligned="false">
 
-    <LinearLayout android:layout_width="match_parent"
+    <LinearLayout android:id="@+id/ll_result"
+                  android:layout_width="match_parent"
                   android:orientation="vertical"
                   android:paddingStart="@dimen/padding_normal"
                   android:paddingEnd="@dimen/padding_normal"
@@ -48,7 +49,9 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView android:layout_width="match_parent"
+        <TextView
+                  android:id="@+id/txv_sub_title"
+                  android:layout_width="match_parent"
                   android:textColor="@android:color/white"
                   android:layout_marginBottom="@dimen/margin_normal"
                   android:textSize="@dimen/text_xxlarge"
@@ -59,10 +62,40 @@
                   android:layout_height="wrap_content"
                   android:fontFamily="@font/frutiger_lt_bold"
         />
+        <TextView
+                android:id="@+id/txv_sub_title_no"
+                android:layout_width="match_parent"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:textSize="@dimen/text_xxlarge"
+                android:gravity="center_horizontal"
+                android:background="@color/colorPrimary"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:visibility="gone"
+                android:text="@string/no_just_information_for_a_waypoint"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/frutiger_light"
+                android:focusable="true"/>
+        <TextView
+                android:id="@+id/txv_sub_title_yes"
+                android:layout_width="match_parent"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:textSize="@dimen/text_xxlarge"
+                android:gravity="center_horizontal"
+                android:background="@color/colorPrimary"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:visibility="gone"
+                android:text="@string/yes_please_choose"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/frutiger_light"
+                android:focusable="true"/>
 
         <LinearLayout android:layout_width="match_parent"
                       android:orientation="horizontal"
-                      android:layout_marginStart="@dimen/margin_normal"
+                      android:id="@+id/ll_source"
                       android:layout_height="wrap_content">
             <TextView
                     android:id="@+id/txv_source_a"
@@ -138,7 +171,7 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:visibility="gone"
-                android:layout_marginStart="@dimen/margin_normal"
+                android:id="@+id/ll_dest"
                 android:layout_height="wrap_content">
             <TextView
                     android:id="@+id/txv_source_b"
@@ -153,12 +186,12 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:layout_marginStart="@dimen/padding_normal"
+                    android:layout_marginStart="@dimen/padding_medium"
                     android:background="@android:color/white"
                     android:layout_height="wrap_content">
                 <com.disablerouting.widget.CustomAutoCompleteTextView
                         android:id="@+id/edt_dest_add"
-                        android:layout_marginStart="@dimen/margin_small"
+                        android:layout_marginStart="@dimen/padding_normal"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
@@ -209,75 +242,6 @@
 
     </LinearLayout>
 
-
-    <LinearLayout
-            android:id="@+id/ll_time_distance"
-            android:layout_width="match_parent"
-            android:background="@color/colorWhite"
-            android:gravity="center"
-            android:visibility="gone"
-            android:paddingStart="@dimen/padding_normal"
-            android:paddingEnd="@dimen/padding_normal"
-            android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small"
-            android:layout_height="wrap_content">
-        <TextView
-                android:id="@+id/txv_time"
-                android:layout_width="0dp"
-                android:layout_weight="3"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:drawableStart="@drawable/ic_access_time"
-                android:drawablePadding="@dimen/padding_minor"
-                tools:text="0.15"
-                android:textSize="@dimen/text_medium"
-                android:fontFamily="@string/frutiger_bold_font"
-                android:gravity="center_vertical"
-                android:textColor="@color/colorTextGray"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:id="@+id/txv_km"
-                android:layout_width="0dp"
-                android:layout_weight="3"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:drawableStart="@drawable/ic_bi_directional"
-                android:drawablePadding="@dimen/padding_minor"
-                tools:text="0.15"
-                android:textSize="@dimen/text_medium"
-                android:fontFamily="@string/frutiger_bold_font"
-                android:gravity="center_vertical"
-                android:textColor="@color/colorTextGray"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:id="@+id/txv_accent"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:drawableStart="@drawable/ic_arrow_upwward"
-                android:drawablePadding="@dimen/padding_minor"
-                tools:text="0.15"
-                android:textSize="@dimen/text_medium"
-                android:fontFamily="@string/frutiger_bold_font"
-                android:gravity="center_vertical"
-                android:textColor="@color/colorTextGray"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:id="@+id/txv_decent"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:drawableStart="@drawable/ic_arrow_downward"
-                android:drawablePadding="@dimen/padding_minor"
-                tools:text="0.15"
-                android:textSize="@dimen/text_medium"
-                android:fontFamily="@string/frutiger_bold_font"
-                android:gravity="center_vertical"
-                android:textColor="@color/colorTextGray"
-                android:layout_height="wrap_content"/>
-    </LinearLayout>
 </LinearLayout>
 
 

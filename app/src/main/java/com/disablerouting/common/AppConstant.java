@@ -19,6 +19,8 @@ public interface AppConstant {
     String publicToilets= "toilets";
     String publicBusStop= "bus_stop";
 
+    String PROFILE_DRIVING_CAR="driving-car";
+
 
 
 }

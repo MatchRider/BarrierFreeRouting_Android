@@ -65,7 +65,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
             //mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination);
         } else {
-            plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null);
+            plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null, true);
         }
     }
 
@@ -73,7 +73,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void plotDataOnMap(String encodedString, List<Steps> stepsList) {
         if (encodedString != null && stepsList != null) {
-            plotDataOfSourceDestination(encodedString, mSourceAddress, mDestinationAddress, stepsList);
+            plotDataOfSourceDestination(encodedString, mSourceAddress, mDestinationAddress, stepsList,true);
         }
     }
 

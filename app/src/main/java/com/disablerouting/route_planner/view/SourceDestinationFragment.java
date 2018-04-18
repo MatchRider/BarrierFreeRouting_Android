@@ -87,8 +87,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     private String mCurrentLocation = null;
 
     private ISourceDestinationScreenPresenter mISourceDestinationScreenPresenter;
-    private String mCoordinates = null;
-    private String mProfileType = "driving-car";
     private GeoPoint mGeoPointSource;
     private GeoPoint mGeoPointDestination;
     private static OnSourceDestinationListener mOnSourceDestinationListener;
@@ -205,15 +203,17 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             if (mEditTextSource != null && !mEditTextSource.getText().toString().isEmpty() &&
                     mEditTextDestination != null && !mEditTextDestination.getText().toString().isEmpty()) {
 
+                String coordinates = null;
                 if(featuresRouteVia!=null && featuresRouteVia.getGeometry()!=null && featuresRouteVia.getGeometry().getCoordinates()!=null){
                    GeoPoint geoPointRouteVia = new GeoPoint(featuresRouteVia.getGeometry().getCoordinates().get(0),
                            featuresRouteVia.getGeometry().getCoordinates().get(1));
-                    mCoordinates = mGeoPointSource + "|" +geoPointRouteVia+ "|"+mGeoPointDestination;
+                    coordinates = mGeoPointSource + "|" +geoPointRouteVia+ "|"+mGeoPointDestination;
 
                 }else {
-                    mCoordinates = mGeoPointSource + "|" + mGeoPointDestination;
+                    coordinates = mGeoPointSource + "|" + mGeoPointDestination;
                 }
-                mISourceDestinationScreenPresenter.getDestinationsData(mCoordinates, mProfileType, jsonObject);
+                String profileType = AppConstant.PROFILE_DRIVING_CAR;
+                mISourceDestinationScreenPresenter.getDestinationsData(coordinates, profileType, jsonObject);
             }
             handler.removeMessages(SEARCH_TEXT_CHANGED);
         }

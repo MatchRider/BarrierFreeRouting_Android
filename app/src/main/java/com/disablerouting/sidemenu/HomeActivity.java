@@ -28,7 +28,7 @@ import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.route_planner.view.RoutePlannerActivity;
 import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
-import com.disablerouting.suggestions.SuggestionsActivity;
+import com.disablerouting.suggestions.view.SuggestionsActivity;
 import com.disablerouting.utils.PermissionUtils;
 
 public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragmentCallback {
