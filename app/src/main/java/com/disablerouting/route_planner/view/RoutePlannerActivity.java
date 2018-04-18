@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.widget.Button;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
@@ -31,12 +33,17 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private Features mFeaturesDestinationAddress;
     private String mSourceAddress;
     private String mDestinationAddress;
-    private JSONObject mJsonObjectFilter=null;
+    private JSONObject mJsonObjectFilter = null;
 
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, Integer> mHashMapObjectFilterItem = new HashMap<>();
     private List<NodeItem> mNodeItemListFiltered = new ArrayList<>();
-    private HashMap<String, Features> mHashMapObjectFilterRoutingVia= new HashMap<>();
+    private HashMap<String, Features> mHashMapObjectFilterRoutingVia = new HashMap<>();
+
+    @BindView(R.id.btn_go)
+    Button mButtonGo;
+
+    private boolean mISMapPlotted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +65,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         GeoPoint geoPoint = new GeoPoint(mCurrentLocation.longitude, mCurrentLocation.latitude);
         mSourceDestinationFragment.onUpdateLocation(geoPoint);
         if (mFeaturesSourceAddress != null && mFeaturesDestinationAddress != null) {
-            GeoPoint  geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
+            GeoPoint geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
                     mFeaturesSourceAddress.getGeometry().getCoordinates().get(1));
 
             GeoPoint geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
@@ -73,7 +80,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void plotDataOnMap(String encodedString, List<Steps> stepsList) {
         if (encodedString != null && stepsList != null) {
-            plotDataOfSourceDestination(encodedString, mSourceAddress, mDestinationAddress, stepsList,true);
+            plotDataOfSourceDestination(encodedString, mSourceAddress, mDestinationAddress, stepsList, true);
         }
     }
 
@@ -125,7 +132,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void plotMidWayRouteMarker(GeoPoint geoPoint) {
         Features value = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
-        if(value!=null) {
+        if (value != null) {
             addMidWayMarkers(geoPoint, value.getProperties().toString());
         }
     }
@@ -143,11 +150,23 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
     }
 
+    @Override
+    public void onMapPlotted() {
+        mButtonGo.setText(R.string.start);
+        mISMapPlotted = true;
+
+    }
+
     @OnClick(R.id.btn_go)
     public void goPlotMap() {
-        clearItemsFromMap();
-        Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
-        mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
+        if (mISMapPlotted) {
+            UI_HANDLER.post(updateMarker);
+        } else {
+            clearItemsFromMap();
+            Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
+            mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
+
+        }
     }
 
     @Override
@@ -159,7 +178,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mHashMapObjectFilterRoutingVia = (HashMap<String, Features>) data.getSerializableExtra(AppConstant.DATA_FILTER_ROUTING_VIA);
 
                 if (mHashMapObjectFilterItem != null && mHashMapObjectFilterItem.size() != 0) {
-                    mJsonObjectFilter= new JSONObject();
+                    mJsonObjectFilter = new JSONObject();
                     JSONObject jsonObjectProfileParams = new JSONObject();
                     JSONObject restrictions = new JSONObject();
 
@@ -176,7 +195,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }else {
+                } else {
                     mJsonObjectFilter = null;
                 }
             }

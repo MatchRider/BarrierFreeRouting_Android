@@ -15,10 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -75,10 +72,10 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
     TextView mSubTitle;
 
     @BindView(R.id.txv_sub_title_no)
-    TextView mSubTitleNo;
+    Button mSubTitleNo;
 
     @BindView(R.id.txv_sub_title_yes)
-    TextView mSubTitleYes;
+    Button mSubTitleYes;
 
     private static final int SEARCH_TEXT_CHANGED = 1000;
     private String mCurrentLocation = null;
@@ -145,6 +142,7 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
         mSourceAddressClear.setVisibility(View.GONE);
         mSourceAddressFetch.setVisibility(View.GONE);
         mEditTextSource.setText("");
+        mEditTextDestination.setText("");
         mSubTitle.setText(R.string.tell_us_where_you_are);
         mSubTitleNo.setVisibility(View.GONE);
         mSubTitleYes.setVisibility(View.GONE);

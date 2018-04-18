@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -72,13 +73,54 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private Marker mStartMarker = null;
     private Marker mEndMarker = null;
     private Marker mMidMarker = null;
+    private Marker mRunningMarker = null;
     private Marker mCurrentMarker = null;
-    private String mStartAddress;
-    private String mEndAddress;
     private static OnFeedBackListener mFeedBackListener;
     private Polyline mPreviousPolyline;
-    private Marker mNodeMarker = null;
     private boolean mShowFeedbackDialog;
+    private ArrayList<Polyline> mPolylineArrayList = new ArrayList<>();
+    protected Handler UI_HANDLER = new Handler();
+
+    //Runnable marker data
+    private int mPolylineIndex = -1;
+    private int mGeoPointIndex = -1;
+
+    protected Runnable updateMarker = new Runnable() {
+        @Override
+        public void run() {
+            if (mPolylineArrayList.size() > 0) {
+                if (mPolylineIndex == -1) {
+                    //Update polyline index to 0;
+                    mPolylineIndex = 0;
+                    mGeoPointIndex = 0;
+                } else if (mPolylineIndex < mPolylineArrayList.size()) {
+                    if ((mGeoPointIndex + 1) < mPolylineArrayList.get(mPolylineIndex).getPoints().size()) {
+                        //update GeoPint to next for current polyline
+                        mGeoPointIndex++;
+                    } else {
+                        //Switch to next polyline
+                        mPolylineIndex++;
+                        mGeoPointIndex = 0;
+                        if (mPolylineIndex < mPolylineArrayList.size()) {
+                            GeoPoint start = mPolylineArrayList.get(mPolylineIndex).getPoints().get(0);
+                            GeoPoint end = mPolylineArrayList.get(mPolylineIndex).getPoints().get(mPolylineArrayList.get(mPolylineIndex).getPoints().size() - 1);
+                            //setBoundingBox(start, end);
+                        }
+                    }
+                }
+                if (mPolylineIndex < mPolylineArrayList.size() && mPolylineIndex != -1 && mGeoPointIndex != -1) {
+                    updatePolylineUI(mPolylineArrayList.get(mPolylineIndex));
+                    addRunningMarker(mPolylineArrayList.get(mPolylineIndex).getPoints().get(mGeoPointIndex));
+                    UI_HANDLER.postDelayed(updateMarker, 1000);
+                } else {
+                    stopRunningMarker();
+                    GeoPoint start = mPolylineArrayList.get(0).getPoints().get(0);
+                    GeoPoint end = mPolylineArrayList.get(mPolylineArrayList.size() - 1).getPoints().get(mPolylineArrayList.get(mPolylineArrayList.size() - 1).getPoints().size() - 1);
+                    //setBoundingBox(start, end);
+                }
+            }
+        }
+    };
 
 
     @Override
@@ -130,6 +172,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         mStartMarker = new Marker(mMapView);
         mEndMarker = new Marker(mMapView);
         mMidMarker = new Marker(mMapView);
+        mRunningMarker = new Marker(mMapView);
         mCurrentMarker = new Marker(mMapView);
 
     }
@@ -161,8 +204,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             if (geoPointArrayList != null && geoPointArrayList.size() != 0) {
                 geoPointStart = geoPointArrayList.get(0);
                 geoPointEnd = geoPointArrayList.get(geoPointArrayList.size() - 1);
-                mStartAddress = startAdd;
-                mEndAddress = endAdd;
                 addMarkers(geoPointStart, startAdd, geoPointEnd, endAdd);
             }
             setBoundingBox(geoPointStart, geoPointEnd);
@@ -174,6 +215,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         mMapView.getOverlays().add(0, mapEventsOverlay);
 
     }
+
 
     public void setBoundingBox(GeoPoint geoPointStart, GeoPoint geoPointEnd) {
         if (geoPointStart != null && geoPointEnd != null) {
@@ -191,7 +233,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      * @param stepsList    way points index
      */
     private void addPolyLine(final List<GeoPoint> geoPointList, final List<Steps> stepsList) {
-        final ArrayList<Polyline> polylineArrayList = new ArrayList<>();
+        resetRunningMarker();
+        mPolylineArrayList.clear();
         if (geoPointList.size() > 1 && stepsList != null && stepsList.size() > 2) {
             for (int i = 0; i < stepsList.size(); i++) {
                 int indexFirst = stepsList.get(i).getDoublesWayPoints().get(0);
@@ -201,21 +244,14 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 final Polyline mPolyline = new Polyline();
                 mPolyline.setPoints(geoPointsToSet);
                 mPolyline.setWidth(20);
-                polylineArrayList.add(mPolyline);
+                mPolylineArrayList.add(mPolyline);
                 mPolyline.setColor(getResources().getColor(R.color.colorPrimary));
 
                 if (mShowFeedbackDialog) {
                     mPolyline.setOnClickListener(new Polyline.OnClickListener() {
                         @Override
                         public boolean onClick(final Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                            if (mPreviousPolyline != null) {
-                                mPreviousPolyline.setColor(getResources().getColor(R.color.colorPrimary));
-                                mPreviousPolyline.setWidth(20);
-                            }
-                            polyline.setColor(getResources().getColor(R.color.colorGreen));
-                            polyline.setWidth(30);
-                            mPreviousPolyline = polyline;
-                            mMapView.invalidate();
+                            updatePolylineUI(polyline);
                             showFeedbackDialog(eventPos.getLongitude(), eventPos.getLatitude());
 
                             return false;
@@ -225,10 +261,27 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
             }
             if (mMapView != null) {
-                mMapView.getOverlayManager().addAll(polylineArrayList);
+                mMapView.getOverlayManager().addAll(mPolylineArrayList);
             }
 
         }
+    }
+
+    private void updatePolylineUI(Polyline polyline) {
+        if (mPreviousPolyline != null) {
+            mPreviousPolyline.setColor(getResources().getColor(R.color.colorPrimary));
+            mPreviousPolyline.setWidth(20);
+        }
+        polyline.setColor(getResources().getColor(R.color.colorGreen));
+        polyline.setWidth(30);
+        mPreviousPolyline = polyline;
+        mMapView.invalidate();
+    }
+
+    private void resetRunningMarker() {
+        UI_HANDLER.removeCallbacks(updateMarker);
+        mPolylineIndex = -1;
+        mGeoPointIndex = -1;
     }
 
     /**
@@ -281,6 +334,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mEndMarker.setTitle(endAdd);
             }
         }
+        mFeedBackListener.onMapPlotted();
+
     }
 
 
@@ -534,32 +589,32 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     }
 
     private void addMarkerNode(GeoPoint geoPoint, String category, String wheelChairAccessible) {
-        mNodeMarker = new Marker(mMapView);
+        Marker nodeMarker = new Marker(mMapView);
         GeoPoint nodePoints = new GeoPoint(geoPoint.getLatitude(), geoPoint.getLongitude());
         switch (category) {
             case AppConstant.publicTramStop:
-                mNodeMarker.setPosition(nodePoints);
-                mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                mMapView.getOverlays().add(mNodeMarker);
-                mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_train));
-                mNodeMarker.setTitle(getResources().getString(R.string.tram_stop_title));
-                mNodeMarker.setSnippet(getString(R.string.wheelchair_accessible) + wheelChairAccessible);
+                nodeMarker.setPosition(nodePoints);
+                nodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                mMapView.getOverlays().add(nodeMarker);
+                nodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_train));
+                nodeMarker.setTitle(getResources().getString(R.string.tram_stop_title));
+                nodeMarker.setSnippet(getString(R.string.wheelchair_accessible) + wheelChairAccessible);
                 break;
             case AppConstant.publicToilets:
-                mNodeMarker.setPosition(nodePoints);
-                mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                mMapView.getOverlays().add(mNodeMarker);
-                mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_toilet));
-                mNodeMarker.setTitle(getResources().getString(R.string.toilets_title));
-                mNodeMarker.setSnippet(getString(R.string.wheelchair_accessible) + wheelChairAccessible);
+                nodeMarker.setPosition(nodePoints);
+                nodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                mMapView.getOverlays().add(nodeMarker);
+                nodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_toilet));
+                nodeMarker.setTitle(getResources().getString(R.string.toilets_title));
+                nodeMarker.setSnippet(getString(R.string.wheelchair_accessible) + wheelChairAccessible);
                 break;
             case AppConstant.publicBusStop:
-                mNodeMarker.setPosition(nodePoints);
-                mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                mMapView.getOverlays().add(mNodeMarker);
-                mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_bus));
-                mNodeMarker.setTitle(getResources().getString(R.string.bus_stop_title));
-                mNodeMarker.setSnippet(getString(R.string.wheelchair_accessible) + wheelChairAccessible);
+                nodeMarker.setPosition(nodePoints);
+                nodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                mMapView.getOverlays().add(nodeMarker);
+                nodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_bus));
+                nodeMarker.setTitle(getResources().getString(R.string.bus_stop_title));
+                nodeMarker.setSnippet(getString(R.string.wheelchair_accessible) + wheelChairAccessible);
                 break;
 
         }
@@ -590,6 +645,25 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mMidMarker.setIcon(getResources().getDrawable(R.drawable.ic_way_point));
                 mMidMarker.setTitle(geoPointAddress);
             }
+        }
+    }
+
+    public void addRunningMarker(GeoPoint geoPointRunning) {
+        if (mMapView != null) {
+            if (mRunningMarker == null) {
+                mRunningMarker = new Marker(mMapView);
+                mRunningMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                mRunningMarker.setIcon(getResources().getDrawable(R.drawable.ic_media_pause_dark));
+            }
+            mRunningMarker.setPosition(geoPointRunning);
+            mMapView.getOverlays().add(mRunningMarker);
+        }
+    }
+
+    public void stopRunningMarker() {
+        if (mRunningMarker != null && mMapView != null) {
+            mMapView.getOverlays().remove(mRunningMarker);
+            mMapView.invalidate();
         }
     }
 }

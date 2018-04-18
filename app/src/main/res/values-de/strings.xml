@@ -57,7 +57,7 @@
     <string name="maximum_sloped">Maximal geneigte Bordsteinkante (cm)</string>
     <string name="maximum_incline">Maximale Steigung (%)</string>
     <string name="sidewalk_width">Bürgersteigbreite (cm)</string>
-    <string name="permanent_obstacle">Permanentes Hindernis</string>
+    <string name="permanent_obstacle">Hindernis liegt vor</string>
     <string name="routing_via" tools:ignore="TypographyEllipsis">Routing über...</string>
 
     <string name="asphalt">Asphaltiert</string>
@@ -91,10 +91,11 @@
     <string name="home">Home</string>
     <string name="no_address_found">Keine Adresse gefunden.</string>
     <string name="hint_routing_via">Bitte Ort eingeben</string>
-    <string name="you_want_to_enhance_the_routing">You want to enhance the routing ?</string>
-    <string name="tell_us_where_you_are">Tell us where you are!</string>
-    <string name="give_feedback_title">Do you want to give feedback for a certain way?</string>
-    <string name="no_just_information_for_a_waypoint">No: Just information for a waypoint</string>
-    <string name="yes_please_choose">Yes: Please choose</string>
+    <string name="you_want_to_enhance_the_routing">Du möchtest das Routing verbessern?!</string>
+    <string name="tell_us_where_you_are">Sag uns wo du bist!</string>
+    <string name="give_feedback_title">Möchtest du Informationen zu einer Strecke eingeben?</string>
+    <string name="no_just_information_for_a_waypoint">Nein: Nur Information zu einem Ort</string>
+    <string name="yes_please_choose">Ja: Bitte Ziel eingeben:</string>
+    <string name="start">Start</string>
 
 </resources>

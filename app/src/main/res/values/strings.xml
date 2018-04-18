@@ -95,8 +95,9 @@
     <string name="you_want_to_enhance_the_routing">You want to enhance the routing ?</string>
     <string name="tell_us_where_you_are">Tell us where you are!</string>
     <string name="give_feedback_title">Do you want to give feedback for a certain way?</string>
-    <string name="no_just_information_for_a_waypoint">No: Just information for a waypoint</string>
-    <string name="yes_please_choose">Yes: Please choose</string>
+    <string name="no_just_information_for_a_waypoint">No: Just information for a way point</string>
+    <string name="yes_please_choose">Yes: Please choose:</string>
+    <string name="start">Start</string>
 
 
 </resources>

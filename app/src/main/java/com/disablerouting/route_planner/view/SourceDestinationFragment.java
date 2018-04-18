@@ -617,4 +617,9 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         intentFeedback.putExtra(AppConstant.FEED_BACK_MODEL, feedBackModel);
         startActivity(intentFeedback);
     }
+
+    @Override
+    public void onMapPlotted() {
+        //Nothing to do
+    }
 }
