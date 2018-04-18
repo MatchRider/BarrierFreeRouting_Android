@@ -23,6 +23,7 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView 
     private FeedBackScreenPresenter mFeedBackScreenPresenter;
     private String mChangeSetID;
     private FeedBackModel mFeedBackModel;
+    private boolean mISStartedFromSuggestion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,9 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView 
 
         mFeedBackModel = getIntent().getParcelableExtra(AppConstant.FEED_BACK_MODEL);
         mFeedBackScreenPresenter= new FeedBackScreenPresenter(this, new CreateChangeSetManager());
+        if(getIntent().hasExtra(AppConstant.STARTED_FROM_SUGGESTION)){
+            mISStartedFromSuggestion= getIntent().getBooleanExtra(AppConstant.STARTED_FROM_SUGGESTION,false);
+        }
         callToGetChangeSet();
     }
 
@@ -79,6 +83,7 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView 
             mFeedBackModel.setChangeSetID(mChangeSetID);
         }
         intentCaptureActivity.putExtra(AppConstant.FEED_BACK_MODEL,mFeedBackModel);
+        intentCaptureActivity.putExtra(AppConstant.STARTED_FROM_SUGGESTION,mISStartedFromSuggestion);
         startActivity(intentCaptureActivity);
     }
 

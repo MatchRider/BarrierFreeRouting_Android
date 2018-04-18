@@ -131,6 +131,7 @@ public class SuggestionsActivity extends MapBaseActivity implements OnSuggestion
         FeedBackModel feedBackModel = new FeedBackModel(latitude, longitude);
         Intent intentFeedback = new Intent(this, FeedbackActivity.class);
         intentFeedback.putExtra(AppConstant.FEED_BACK_MODEL, feedBackModel);
+        intentFeedback.putExtra(AppConstant.STARTED_FROM_SUGGESTION,true);
         startActivity(intentFeedback);
     }
 

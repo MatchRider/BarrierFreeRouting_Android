@@ -21,6 +21,9 @@ public interface AppConstant {
 
     String PROFILE_DRIVING_CAR="driving-car";
 
+    String STARTED_FROM_SUGGESTION = "startedFromSuggestion";
+
+
 
 
 }

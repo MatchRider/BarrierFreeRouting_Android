@@ -2,6 +2,7 @@ package com.disablerouting.capture_option.view;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -49,6 +50,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
     private LinkedHashMap<String, List<DataModelExpandableList>> mListDataChildValue;
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, Integer> mHashMapObjectFilterItem = new HashMap<>();
+    private boolean mISStartedFromSuggestion;
 
 
     @Override
@@ -59,6 +61,9 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
 
         mFeedBackModel = getIntent().getParcelableExtra(AppConstant.FEED_BACK_MODEL);
         mCaptureScreenPresenter= new CaptureScreenPresenter(this, new SetChangeSetManager());
+        if(getIntent().hasExtra(AppConstant.STARTED_FROM_SUGGESTION)){
+            mISStartedFromSuggestion= getIntent().getBooleanExtra(AppConstant.STARTED_FROM_SUGGESTION,false);
+        }
         prepareListDataForKeyValue();
         prepareListData();
         onExpandListeners();
@@ -279,7 +284,9 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
         hideLoader();
         if(id!=null){
             Toast.makeText(this,getString(R.string.posted_sucuess)+id,Toast.LENGTH_LONG).show();
-            launchActivity(this, SuccessActivity.class);
+            Intent intent= new Intent(this, SuccessActivity.class);
+            intent.putExtra(AppConstant.STARTED_FROM_SUGGESTION,mISStartedFromSuggestion);
+            startActivity(intent);
         }
     }
 
