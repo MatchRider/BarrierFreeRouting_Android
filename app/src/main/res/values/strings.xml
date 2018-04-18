@@ -98,6 +98,14 @@
     <string name="no_just_information_for_a_waypoint">No: Just information for a way point</string>
     <string name="yes_please_choose">Yes: Please choose:</string>
     <string name="start">Start</string>
+    <string name="please_help_us_to_envhane_this_trip_leg">Please help us to enhance this trip
+        leg!
+    </string>
+    <string name="sorry_no">Sorry,No!</string>
+    <string name="that_s_a_pity_maybe_next_time">That‘s a pity. Maybe next time?</string>
+    <string name="please_take_a_closer_look_at_the_following_leg">Please take a closer look at the
+        following leg.
+    </string>
 
 
 </resources>

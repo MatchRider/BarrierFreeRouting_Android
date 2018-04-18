@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -17,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -98,6 +101,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                         //update GeoPint to next for current polyline
                         mGeoPointIndex++;
                     } else {
+                        showEnhanceDialog();
                         //Switch to next polyline
                         mPolylineIndex++;
                         mGeoPointIndex = 0;
@@ -665,6 +669,105 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             mMapView.getOverlays().remove(mRunningMarker);
             mMapView.invalidate();
         }
+    }
+
+    /**
+     * Show enhance feedback dialog
+     */
+    private void showEnhanceDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View customView = layoutInflater.inflate(R.layout.enchance_feedback_pop_up, null);
+        Button btnSorryNo = (Button) customView.findViewById(R.id.btn_sorry_no);
+        Button btnOk = (Button) customView.findViewById(R.id.btn_ok);
+        builder.setView(customView);
+        final Dialog alertDialog = builder.create();
+        assert alertDialog != null;
+        if (alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        }
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.getWindow().setGravity(Gravity.BOTTOM);
+        if(!alertDialog.isShowing()) {
+            alertDialog.show();
+        }
+        btnSorryNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+                showSorryDialog();
+            }
+        });
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+                showCloserLookDialog();
+            }
+        });
+    }
+    /**
+     * Show sorry feedback dialog
+     */
+    private void showSorryDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View customView = layoutInflater.inflate(R.layout.on_sorry_click_dialog, null);
+        Button btnOk = (Button) customView.findViewById(R.id.btn_ok);
+        builder.setView(customView);
+        final AlertDialog alertDialog = builder.create();
+        assert alertDialog != null;
+        if (alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        }
+
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.getWindow().setGravity(Gravity.BOTTOM);
+        if(!alertDialog.isShowing()) {
+            alertDialog.show();
+        }
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+    }
+
+    /**
+     * Take closer look dialog
+     */
+    private void showCloserLookDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View customView = layoutInflater.inflate(R.layout.take_closer_look_dialog, null);
+        Button btnOk = (Button) customView.findViewById(R.id.btn_ok);
+        builder.setView(customView);
+        final AlertDialog alertDialog = builder.create();
+        assert alertDialog != null;
+        if (alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        }
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.getWindow().setGravity(Gravity.BOTTOM);
+        if(!alertDialog.isShowing()) {
+            alertDialog.show();
+        }
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        UI_HANDLER.removeCallbacks(updateMarker);
     }
 }
 
