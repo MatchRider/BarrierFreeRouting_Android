@@ -137,6 +137,26 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
     }
 
+    @Override
+    public void onSourceClickWhileNavigationRunning() {
+        if(mISMapPlotted){
+            mISMapPlotted= false;
+            mButtonGo.setClickable(true);
+            mButtonGo.setText(R.string.go);
+            stopRunningMarker();
+        }
+    }
+
+    @Override
+    public void onDestinationClickWhileNavigationRunning() {
+        if(mISMapPlotted) {
+            mISMapPlotted= false;
+            mButtonGo.setClickable(true);
+            mButtonGo.setText(R.string.go);
+            stopRunningMarker();
+        }
+    }
+
 
     @OnClick(R.id.img_re_center)
     public void reCenter() {
@@ -160,8 +180,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @OnClick(R.id.btn_go)
     public void goPlotMap() {
         if (mISMapPlotted) {
+            mButtonGo.setClickable(false);
             UI_HANDLER.post(updateMarker);
         } else {
+            mButtonGo.setClickable(true);
+            mButtonGo.setText(R.string.go);
             clearItemsFromMap();
             Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
             mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);

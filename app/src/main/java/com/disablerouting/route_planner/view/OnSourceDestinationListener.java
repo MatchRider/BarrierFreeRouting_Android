@@ -23,4 +23,9 @@ public interface OnSourceDestinationListener {
     void onSwapData();
 
     void plotMidWayRouteMarker(GeoPoint geoPoint);
+
+    void onSourceClickWhileNavigationRunning();
+
+    void onDestinationClickWhileNavigationRunning();
+
 }

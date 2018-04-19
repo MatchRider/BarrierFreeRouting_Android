@@ -266,6 +266,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mSourceAddressClear.setVisibility(View.GONE);
         mSourceAddressFetch.setVisibility(View.GONE);
         mEditTextSource.setText("");
+        mOnSourceDestinationListener.onSourceClickWhileNavigationRunning();
 
     }
 
@@ -274,6 +275,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mDestinationAddressClear.setVisibility(View.GONE);
         mDestinationAddressFetch.setVisibility(View.GONE);
         mEditTextDestination.setText("");
+        mOnSourceDestinationListener.onSourceClickWhileNavigationRunning();
+
     }
 
     @Override

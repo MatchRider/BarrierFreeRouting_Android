@@ -82,6 +82,10 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private Polyline mPreviousPolyline;
     private boolean mShowFeedbackDialog;
     private ArrayList<Polyline> mPolylineArrayList = new ArrayList<>();
+    private Dialog mAlertDialogFeedback = null;
+    private Dialog mAlertDialogEnhance = null;
+    private Dialog mAlertDialogSorry = null;
+    private Dialog mAlertDialogCloserLook = null;
     protected Handler UI_HANDLER = new Handler();
 
     //Runnable marker data
@@ -535,21 +539,24 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         Button btnCancel = (Button) customView.findViewById(R.id.btn_cancel);
         textViewDescription.setText(description);
         builder.setView(customView);
-
-        final Dialog alertDialog = builder.create();
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.show();
+        if (mAlertDialogFeedback == null){
+            mAlertDialogFeedback = builder.create();
+        }
+        if (!mAlertDialogFeedback.isShowing()) {
+            mAlertDialogFeedback.show();
+        }
+        mAlertDialogFeedback.setCanceledOnTouchOutside(true);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alertDialog.dismiss();
+                mAlertDialogFeedback.dismiss();
             }
         });
         btnFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mFeedBackListener.onFeedBackClick(longitude, latitude);
-                alertDialog.dismiss();
+                mAlertDialogFeedback.dismiss();
             }
         });
     }
@@ -668,6 +675,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         if (mRunningMarker != null && mMapView != null) {
             mMapView.getOverlays().remove(mRunningMarker);
             mMapView.invalidate();
+            UI_HANDLER.removeCallbacks(updateMarker);
         }
     }
 
@@ -681,32 +689,38 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         Button btnSorryNo = (Button) customView.findViewById(R.id.btn_sorry_no);
         Button btnOk = (Button) customView.findViewById(R.id.btn_ok);
         builder.setView(customView);
-        final Dialog alertDialog = builder.create();
-        assert alertDialog != null;
-        if (alertDialog.isShowing()) {
-            alertDialog.dismiss();
+        if (mAlertDialogEnhance == null){
+            mAlertDialogEnhance = builder.create();
         }
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        alertDialog.getWindow().setGravity(Gravity.BOTTOM);
-        if(!alertDialog.isShowing()) {
-            alertDialog.show();
+        if (mAlertDialogEnhance.isShowing()) {
+            mAlertDialogEnhance.dismiss();
+            showEnhanceDialog();
+        } else {
+            mAlertDialogEnhance.show();
+
         }
+
+
+        mAlertDialogEnhance.setCanceledOnTouchOutside(true);
+        mAlertDialogEnhance.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mAlertDialogEnhance.getWindow().setGravity(Gravity.BOTTOM);
+
         btnSorryNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alertDialog.dismiss();
+                mAlertDialogEnhance.dismiss();
                 showSorryDialog();
             }
         });
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alertDialog.dismiss();
+                mAlertDialogEnhance.dismiss();
                 showCloserLookDialog();
             }
         });
     }
+
     /**
      * Show sorry feedback dialog
      */
@@ -716,22 +730,24 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         View customView = layoutInflater.inflate(R.layout.on_sorry_click_dialog, null);
         Button btnOk = (Button) customView.findViewById(R.id.btn_ok);
         builder.setView(customView);
-        final AlertDialog alertDialog = builder.create();
-        assert alertDialog != null;
-        if (alertDialog.isShowing()) {
-            alertDialog.dismiss();
+        if (mAlertDialogSorry == null){
+            mAlertDialogSorry = builder.create();
         }
+        if (mAlertDialogSorry.isShowing()) {
+            mAlertDialogSorry.dismiss();
+        } else {
+            if(mAlertDialogEnhance!=null && !mAlertDialogEnhance.isShowing()) {
+                mAlertDialogSorry.show();
+            }
+        }
+        mAlertDialogSorry.setCanceledOnTouchOutside(true);
+        mAlertDialogSorry.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mAlertDialogSorry.getWindow().setGravity(Gravity.BOTTOM);
 
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        alertDialog.getWindow().setGravity(Gravity.BOTTOM);
-        if(!alertDialog.isShowing()) {
-            alertDialog.show();
-        }
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alertDialog.dismiss();
+                mAlertDialogSorry.dismiss();
             }
         });
     }
@@ -745,21 +761,24 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         View customView = layoutInflater.inflate(R.layout.take_closer_look_dialog, null);
         Button btnOk = (Button) customView.findViewById(R.id.btn_ok);
         builder.setView(customView);
-        final AlertDialog alertDialog = builder.create();
-        assert alertDialog != null;
-        if (alertDialog.isShowing()) {
-            alertDialog.dismiss();
+        if (mAlertDialogCloserLook == null){
+            mAlertDialogCloserLook = builder.create();
         }
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        alertDialog.getWindow().setGravity(Gravity.BOTTOM);
-        if(!alertDialog.isShowing()) {
-            alertDialog.show();
+        if (mAlertDialogCloserLook.isShowing()) {
+            mAlertDialogCloserLook.dismiss();
+        } else {
+            if(mAlertDialogEnhance!=null && !mAlertDialogEnhance.isShowing()) {
+                mAlertDialogCloserLook.show();
+            }
         }
+        mAlertDialogCloserLook.setCanceledOnTouchOutside(true);
+        mAlertDialogCloserLook.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mAlertDialogCloserLook.getWindow().setGravity(Gravity.BOTTOM);
+
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alertDialog.dismiss();
+                mAlertDialogCloserLook.dismiss();
             }
         });
     }
