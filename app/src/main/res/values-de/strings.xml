@@ -12,7 +12,7 @@
     <string name="settings">die Einstellungen</string>
 
     <!-- MENU ITEMS -->
-    <string name="ACKNOWLEDGEMENTS">Impressum</string>
+    <string name="ACKNOWLEDGEMENTS">Impressum/Danksagung</string>
     //<string name="FEEDBACK">Feedback</string>
     <string name="CONTACT">Kontakt</string>
     <string name="DISCLAIMER">Haftungsausschluss</string>
@@ -65,7 +65,7 @@
     <string name="paving_stones">Pflastersteine</string>
     <string name="cobblestone">Kopfsteinpflaster</string>
     <string name="grass_paver">Rasengittersteine</string>
-    <string name="gravel">Kies</string>
+    <string name="gravel">Schotter</string>
 
     <string name="walk_way_width">Gehwegbreite (inches)</string>
 
@@ -88,7 +88,7 @@
     <string name="tram_stop_title">Straßenbahnhaltestelle - barrierefrei</string>
     <string name="toilets_title">Öffentliches WC – barrierefrei</string>
     <string name="bus_stop_title">Bushaltestelle - barrierefrei</string>
-    <string name="home">Home</string>
+    <string name="home">Zurück zum Routing</string>
     <string name="no_address_found">Keine Adresse gefunden.</string>
     <string name="hint_routing_via">Bitte Ort eingeben</string>
     <string name="you_want_to_enhance_the_routing">Du möchtest das Routing verbessern?!</string>
@@ -96,14 +96,23 @@
     <string name="give_feedback_title">Möchtest du Informationen zu einer Strecke eingeben?</string>
     <string name="no_just_information_for_a_waypoint">Nein: Nur Information zu einem Ort</string>
     <string name="yes_please_choose">Ja: Bitte Ziel eingeben:</string>
-    <string name="start">Start</string>
-    <string name="please_help_us_to_envhane_this_trip_leg">Please help us to envhane this trip
-        leg!
-    </string>
-    <string name="sorry_no">Sorry,No!</string>
-    <string name="that_s_a_pity_maybe_next_time">That‘s a pity. Maybe next time?</string>
-    <string name="please_take_a_closer_look_at_the_following_leg">Please take a closer look at the
-        following leg.
-    </string>
+    <string name="start">Anfang</string>
+    <string name="please_help_us_to_envhane_this_trip_leg">Hilf uns bitte, Daten für diesen Abschnitt zu ver!</string>
+    <string name="sorry_no">leider nein!</string>
+    <string name="that_s_a_pity_maybe_next_time">Schade, vielleicht beim nächsten Mal!?</string>
+    <string name="please_take_a_closer_look_at_the_following_leg"> Es geht um folgenden Abschnitt.</string>
+    <string name="verified">Verified</string>
+    <string name="is_the_following_correct">Stimmen folgende Informationen?</string>
+    <string name="what_information_do_you_have_for_community">Welche Informationen möchtest du für die Community eingeben?</string>
+    <string name="done">Fertig!</string>
+    <string name="string_one_point_two">1,2</string>
+    <string name="string_two_point_four">2,4</string>
+    <string name="string_two_point_four_greater"><![CDATA[> 2,4]]></string>
+    <string name="please_choose">(bitte auswählen)</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="text">Text</string>
+    <string name="send">senden</string>
+
 
 </resources>

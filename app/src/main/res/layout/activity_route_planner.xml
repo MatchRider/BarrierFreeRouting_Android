@@ -36,6 +36,7 @@
             android:layout_alignParentEnd="true"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_normal"
+            android:textAllCaps="false"
             android:fontFamily="@font/frutiger_lt_bold"
             android:background="@drawable/circle_shape"/>
 

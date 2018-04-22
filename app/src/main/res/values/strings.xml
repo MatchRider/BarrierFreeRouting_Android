@@ -12,7 +12,7 @@
     <string name="settings">Settings</string>
 
     <!-- MENU ITEMS -->
-    <string name="ACKNOWLEDGEMENTS">Acknowledgement</string>
+    <string name="ACKNOWLEDGEMENTS">Imprint/Acknowledgement</string>
     //<string name="FEEDBACK">Feedback</string>
     <string name="CONTACT">Contact Us</string>
     <string name="DISCLAIMER">Disclaimer</string>
@@ -98,14 +98,33 @@
     <string name="no_just_information_for_a_waypoint">No: Just information for a way point</string>
     <string name="yes_please_choose">Yes: Please choose:</string>
     <string name="start">Start</string>
-    <string name="please_help_us_to_envhane_this_trip_leg">Please help us to enhance this trip
-        leg!
-    </string>
+    <string name="please_help_us_to_envhane_this_trip_leg">Please help us to enhance this trip leg!</string>
     <string name="sorry_no">Sorry,No!</string>
     <string name="that_s_a_pity_maybe_next_time">That‘s a pity. Maybe next time?</string>
-    <string name="please_take_a_closer_look_at_the_following_leg">Please take a closer look at the
-        following leg.
-    </string>
+    <string name="please_take_a_closer_look_at_the_following_leg">Please take a closer look at the following leg.</string>
+    <string name="verified">Verified</string>
+    <string name="is_the_following_correct">Is the following correct ?</string>
+    <string name="what_information_do_you_have_for_community">What information do you have for the community ?</string>
+    <string name="done">Done!</string>
+    <string name="acknowledgement_data">"Imprint\nStadt Heidelberg\nMarktplatz 10\n69117 Heidelberg\n
+        Acknowledgements
+        This project was funded within the programme\n „Städte und Gemeinde 4.0 – Future\n Communities“ by the Ministerium für Inneres,\n Digitales und Migration Baden-Württemberg.\n
+        Project management
+        Stadt Heidelberg (www.heidelberg.de)\n Universität Heidelberg – GIScience\n (https://openrouteservice.org)\n
+        App development
+        Match Rider UG, Heidelberg\n (www.matchrider.de)\n
+        Sensoric data capture
+        Streetguard GmbH (www.wolfert-gmbh.de)"</string>
+    <string name="legal_data">\n\nDer Programm-Code der gesamten Anwendung und Funktion unterliegt der European Union Public Licence (EUPL).\n
+        Der Programm-Code ist via www.github.com/MatchRider/Routing abrufbar.</string>
+    <string name="string_one_point_two">1.2</string>
+    <string name="string_two_point_four">2.4</string>
+    <string name="string_two_point_four_greater"><![CDATA[> 2.4]]></string>
+    <string name="please_choose">(Please Choose)</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="text">Text</string>
+    <string name="send">Send</string>
 
 
 </resources>

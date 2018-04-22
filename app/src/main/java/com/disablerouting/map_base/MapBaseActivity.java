@@ -31,6 +31,7 @@ import com.disablerouting.common.AppConstant;
 import com.disablerouting.common.PolylineDecoder;
 import com.disablerouting.route_planner.model.NodeItem;
 import com.disablerouting.route_planner.model.Steps;
+import com.disablerouting.setting.SettingActivity;
 import com.disablerouting.utils.PermissionUtils;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -779,6 +780,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             @Override
             public void onClick(View view) {
                 mAlertDialogCloserLook.dismiss();
+                launchActivity(MapBaseActivity.this, SettingActivity.class);
             }
         });
     }

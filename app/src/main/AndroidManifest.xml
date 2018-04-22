@@ -76,5 +76,36 @@
                 android:windowSoftInputMode="stateHidden"
                 android:theme="@style/AppTheme">
         </activity>
+        <activity
+                android:name=".setting.SettingActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".setting.setting_detail.SettingDetailActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".acknowledement.AcknowledgementActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".disclaimer.DisclaimerActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".legal.LegalActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".contact.ContactActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme">
+        </activity>
+
     </application>
 </manifest>

@@ -22,7 +22,10 @@ public interface AppConstant {
     String PROFILE_DRIVING_CAR="driving-car";
 
     String STARTED_FROM_SUGGESTION = "startedFromSuggestion";
-
+    String POSITION_SETTING="position";
+    String POSITION_SETTING_DETAIL="position";
+    String SETTING_ITEM_SELECTED_RECIEVE ="selected";
+    String SETTING_ITEM_SELECTED_SEND="selected";
 
 
 

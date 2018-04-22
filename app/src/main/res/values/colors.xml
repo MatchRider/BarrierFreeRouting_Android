@@ -10,5 +10,6 @@
     <color name="colorRed">#b20000</color>
     <color name="colorGreen">#339900</color>
     <color name="colorTextGray">#75787c</color>
+    <color name="colorLightGray">#DBDBDB</color>
 
 </resources>
