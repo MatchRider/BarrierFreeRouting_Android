@@ -12,12 +12,29 @@
                   tools:ignore="UselessParent">
         <ImageView
                 android:id="@+id/img_back"
+                android:paddingEnd="@dimen/padding_xlarge"
                 android:paddingBottom="@dimen/padding_large"
-                android:paddingEnd="@dimen/padding_large"
+                android:paddingTop="@dimen/padding_large"
                 android:layout_width="wrap_content"
                 android:src="@drawable/ic_navigate_back"
+                android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/app_name"/>
+
+        <TextView android:layout_width="match_parent"
+                  android:id="@+id/txv_data_side_title"
+                  android:textColor="@android:color/white"
+                  android:layout_marginTop="@dimen/margin_small"
+                  android:layout_marginBottom="@dimen/margin_normal"
+                  android:textSize="@dimen/text_xxxxlarge"
+                  android:gravity="center"
+                  android:layout_gravity="center"
+                  tools:text="@string/ACKNOWLEDGEMENTS"
+                  android:background="@color/colorPrimary"
+                  android:layout_height="wrap_content"
+                  android:fontFamily="@font/frutiger_lt_bold"
+        />
+
     </LinearLayout>
     <ScrollView android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -50,7 +67,7 @@
                         android:hint="@string/name"
                         android:inputType="textPersonName"
                         android:maxLines="1"
-                        android:background="@drawable/edittext_border"
+                        android:background="@drawable/edittext_plain_background"
                         android:fontFamily="@font/frutiger_light"
                         android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -80,7 +97,7 @@
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
                         android:fontFamily="@font/frutiger_light"
-                        android:background="@drawable/edittext_border"
+                        android:background="@drawable/edittext_plain_background"
                         android:layout_height="wrap_content"/>
             </LinearLayout>
             <LinearLayout android:layout_width="match_parent"
@@ -110,17 +127,18 @@
                         android:maxLines="1"
                         android:ellipsize="end"
                         android:fontFamily="@font/frutiger_light"
-                        android:background="@drawable/edittext_border"
+                        android:background="@drawable/edittext_plain_background"
                         android:layout_height="wrap_content"/>
             </LinearLayout>
 
             <Button android:id="@+id/btn_send"
                     android:layout_width="wrap_content"
                     android:padding="@dimen/padding_normal"
-                    android:background="@drawable/edittext_border"
+                    android:background="@drawable/edittext_plain_background"
                     android:textColor="@color/colorPrimary"
                     android:text="@string/send"
                     android:textSize="@dimen/text_normal"
+                    android:textAllCaps="false"
                     android:fontFamily="@font/frutiger_lt_bold"
                     android:layout_marginTop="@dimen/margin_xxxx_large"
                     android:layout_marginStart="@dimen/padding_large"

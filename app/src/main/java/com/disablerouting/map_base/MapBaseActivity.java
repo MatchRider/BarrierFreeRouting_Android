@@ -113,7 +113,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                         if (mPolylineIndex < mPolylineArrayList.size()) {
                             GeoPoint start = mPolylineArrayList.get(mPolylineIndex).getPoints().get(0);
                             GeoPoint end = mPolylineArrayList.get(mPolylineIndex).getPoints().get(mPolylineArrayList.get(mPolylineIndex).getPoints().size() - 1);
-                            //setBoundingBox(start, end);
+                            setBoundingBox(start, end);
                         }
                     }
                 }
@@ -125,7 +125,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                     stopRunningMarker();
                     GeoPoint start = mPolylineArrayList.get(0).getPoints().get(0);
                     GeoPoint end = mPolylineArrayList.get(mPolylineArrayList.size() - 1).getPoints().get(mPolylineArrayList.get(mPolylineArrayList.size() - 1).getPoints().size() - 1);
-                    //setBoundingBox(start, end);
+                    setBoundingBox(start, end);
                 }
             }
         }

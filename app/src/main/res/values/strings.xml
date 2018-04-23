@@ -35,7 +35,7 @@
     <string name="enter_source">Enter Source</string>
     <string name="b">B</string>
     <string name="enter_destination">Enter Destination</string>
-    <string name="go">Go</string>
+    <string name="go">Go!</string>
     <string name="coming_soon">Coming soon</string>
     <string name="please_provide_feedback_for">Please provide feedback for</string>
     <string name="cancel" tools:ignore="ButtonCase">CANCEL</string>
@@ -45,9 +45,9 @@
     <string name="what_do_you_want_to_capture">What do you want to capture ?</string>
     <string name="information_about_a_waypoint_distance">1. Information about a waypoint/distance ?</string>
     <string name="information_about_a_temporary_obstacles">2. Information about a temporary obstacles?</string>
-    <string name="need_to_improve_routing">Need to improve routing ?</string>
+    <string name="need_to_improve_routing">Need to improve the routing ?</string>
     <string name="what_information_do_you_hvae_for_community">What information to a waypoint do you have for the community ?</string>
-    <string name="finish">Finish</string>
+    <string name="finish">Finished</string>
     <string name="posted_sucuess">Feedback posted successfully with ID:</string>
     <string name="thank_you_for_your_input">Thank you for your input!</string>
     <string name="error_source_destination_same">Please select different source and destination</string>
@@ -68,8 +68,8 @@
     <string name="walk_way_width">Walkway width (inches)</string>
 
     <string name="asphalt_filter">Asphalt/Concrete</string>
-    <string name="paving_stones_filter">Paving Stones/better</string>
-    <string name="cobblestone_filter">Cobblestone/better</string>
+    <string name="paving_stones_filter">Paving Stones or better</string>
+    <string name="cobblestone_filter">Cobblestone or better</string>
     <string name="grass_paver_filter">Compacted</string>
     <string name="all_filter">All traversable surfaces</string>
 
@@ -95,7 +95,7 @@
     <string name="you_want_to_enhance_the_routing">You want to enhance the routing ?</string>
     <string name="tell_us_where_you_are">Tell us where you are!</string>
     <string name="give_feedback_title">Do you want to give feedback for a certain way?</string>
-    <string name="no_just_information_for_a_waypoint">No: Just information for a way point</string>
+    <string name="no_just_information_for_a_waypoint">No: Just information for a waypoint</string>
     <string name="yes_please_choose">Yes: Please choose:</string>
     <string name="start">Start</string>
     <string name="please_help_us_to_envhane_this_trip_leg">Please help us to enhance this trip leg!</string>
@@ -115,7 +115,7 @@
         Match Rider UG, Heidelberg\n (www.matchrider.de)\n
         Sensoric data capture
         Streetguard GmbH (www.wolfert-gmbh.de)"</string>
-    <string name="legal_data">\n\nDer Programm-Code der gesamten Anwendung und Funktion unterliegt der European Union Public Licence (EUPL).\n
+    <string name="legal_data">\n\nDer Programm-Code der gesamten Anwendung und Funktion unterliegt der European Union Public Licence (EUPL).\n\n
         Der Programm-Code ist via www.github.com/MatchRider/Routing abrufbar.</string>
     <string name="string_one_point_two">1.2</string>
     <string name="string_two_point_four">2.4</string>
@@ -125,6 +125,8 @@
     <string name="email">Email</string>
     <string name="text">Text</string>
     <string name="send">Send</string>
+    <string name="thirty_five_less"><![CDATA[< 35.4]]></string>
+    <string name="thirty_five_greater"><![CDATA[> 35.4]]></string>
 
 
 </resources>

@@ -23,7 +23,7 @@ public interface AppConstant {
 
     String STARTED_FROM_SUGGESTION = "startedFromSuggestion";
     String POSITION_SETTING="position";
-    String POSITION_SETTING_DETAIL="position";
+    String TITLE_TEXT="title";
     String SETTING_ITEM_SELECTED_RECIEVE ="selected";
     String SETTING_ITEM_SELECTED_SEND="selected";
 

@@ -111,8 +111,10 @@
     <string name="please_choose">(bitte auswählen)</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
-    <string name="text">Text</string>
-    <string name="send">senden</string>
+    <string name="text">Dein Text</string>
+    <string name="send">Absenden</string>
+    <string name="thirty_five_less"><![CDATA[< 35,4]]></string>
+    <string name="thirty_five_greater"><![CDATA[> 35,4]]></string>
 
 
 </resources>

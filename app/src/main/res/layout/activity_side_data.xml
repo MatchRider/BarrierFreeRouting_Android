@@ -12,12 +12,30 @@
                   tools:ignore="UselessParent">
         <ImageView
                 android:id="@+id/img_back"
+                android:paddingEnd="@dimen/padding_xlarge"
                 android:paddingBottom="@dimen/padding_large"
-                android:paddingEnd="@dimen/padding_large"
+                android:paddingTop="@dimen/padding_large"
                 android:layout_width="wrap_content"
                 android:src="@drawable/ic_navigate_back"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:contentDescription="@string/app_name"/>
+
+        <TextView android:layout_width="match_parent"
+                  android:id="@+id/txv_data_side_title"
+                  android:textColor="@android:color/white"
+                  android:layout_marginTop="@dimen/margin_small"
+                  android:layout_marginBottom="@dimen/margin_normal"
+                  android:textSize="@dimen/text_xxxxlarge"
+                  android:gravity="center"
+                  android:layout_gravity="center"
+                  tools:text="@string/LEGAL"
+                  android:layout_marginEnd="@dimen/margin_x_large"
+                  android:background="@color/colorPrimary"
+                  android:layout_height="wrap_content"
+                  android:fontFamily="@font/frutiger_lt_bold"
+        />
+
     </LinearLayout>
     <ScrollView android:layout_width="match_parent"
                 android:layout_height="wrap_content">

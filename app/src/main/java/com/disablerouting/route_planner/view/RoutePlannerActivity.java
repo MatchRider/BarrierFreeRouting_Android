@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -127,6 +128,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void onSwapData() {
         clearItemsFromMap();
+        mButtonGo.setVisibility(View.VISIBLE);
+        mButtonGo.setClickable(true);
+        mButtonGo.setText(R.string.go);
+
     }
 
     @Override
@@ -141,6 +146,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onSourceClickWhileNavigationRunning() {
         if(mISMapPlotted){
             mISMapPlotted= false;
+            mButtonGo.setVisibility(View.VISIBLE);
             mButtonGo.setClickable(true);
             mButtonGo.setText(R.string.go);
             stopRunningMarker();
@@ -151,6 +157,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onDestinationClickWhileNavigationRunning() {
         if(mISMapPlotted) {
             mISMapPlotted= false;
+            mButtonGo.setVisibility(View.VISIBLE);
             mButtonGo.setClickable(true);
             mButtonGo.setText(R.string.go);
             stopRunningMarker();
@@ -180,9 +187,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @OnClick(R.id.btn_go)
     public void goPlotMap() {
         if (mISMapPlotted) {
+            mButtonGo.setVisibility(View.GONE);
             mButtonGo.setClickable(false);
             UI_HANDLER.post(updateMarker);
         } else {
+            mButtonGo.setVisibility(View.VISIBLE);
             mButtonGo.setClickable(true);
             mButtonGo.setText(R.string.go);
             clearItemsFromMap();

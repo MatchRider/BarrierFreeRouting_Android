@@ -12,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.disablerouting.R;
 import com.disablerouting.acknowledement.AcknowledgementActivity;
+import com.disablerouting.common.AppConstant;
 import com.disablerouting.contact.ContactActivity;
 import com.disablerouting.disclaimer.DisclaimerActivity;
 import com.disablerouting.legal.LegalActivity;
@@ -95,6 +96,7 @@ public class SideMenuFragment extends Fragment implements ISideMenuView,
         switch (message) {
             case R.string.ACKNOWLEDGEMENTS:
                 newActivityIntent= new Intent(getContext(), AcknowledgementActivity.class);
+                newActivityIntent.putExtra(AppConstant.TITLE_TEXT, getString(R.string.ACKNOWLEDGEMENTS));
                 startActivity(newActivityIntent);
                 break;
             //case R.string.FEEDBACK:
@@ -103,14 +105,17 @@ public class SideMenuFragment extends Fragment implements ISideMenuView,
                */ //break;
             case R.string.CONTACT:
                 newActivityIntent= new Intent(getContext(), ContactActivity.class);
+                newActivityIntent.putExtra(AppConstant.TITLE_TEXT, getString(R.string.CONTACT));
                 startActivity(newActivityIntent);
                 break;
             case R.string.DISCLAIMER:
                 newActivityIntent= new Intent(getContext(), DisclaimerActivity.class);
+                newActivityIntent.putExtra(AppConstant.TITLE_TEXT, getString(R.string.DISCLAIMER));
                 startActivity(newActivityIntent);
                 break;
             case R.string.LEGAL:
                 newActivityIntent= new Intent(getContext(), LegalActivity.class);
+                newActivityIntent.putExtra(AppConstant.TITLE_TEXT, getString(R.string.LEGAL));
                 startActivity(newActivityIntent);
                 break;
 

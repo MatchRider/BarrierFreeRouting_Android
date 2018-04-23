@@ -50,22 +50,22 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
         SettingDetailAdapter settingDetailAdapter;
         switch (positionOfTitle) {
             case 0:
-                settingDetailAdapter = new SettingDetailAdapter(prepareListDataSurface(), this);
+                settingDetailAdapter = new SettingDetailAdapter(prepareListDataSurface(), this, true);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                 mRecyclerView.setAdapter(settingDetailAdapter);
                 break;
             case 1:
-                settingDetailAdapter = new SettingDetailAdapter(prepareListDataMaxSlope(), this);
+                settingDetailAdapter = new SettingDetailAdapter(prepareListDataMaxSlope(), this,false);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                 mRecyclerView.setAdapter(settingDetailAdapter);
                 break;
             case 2:
-                settingDetailAdapter = new SettingDetailAdapter(prepareListDataMaxIncline(), this);
+                settingDetailAdapter = new SettingDetailAdapter(prepareListDataMaxIncline(), this,false);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                 mRecyclerView.setAdapter(settingDetailAdapter);
                 break;
             case 3:
-                settingDetailAdapter = new SettingDetailAdapter(prepareListDataSideWalk(), this);
+                settingDetailAdapter = new SettingDetailAdapter(prepareListDataSideWalk(), this,false);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                 mRecyclerView.setAdapter(settingDetailAdapter);
                 break;

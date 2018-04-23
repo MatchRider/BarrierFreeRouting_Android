@@ -16,11 +16,13 @@ public class SettingDetailAdapter extends RecyclerView.Adapter<SettingDetailAdap
 
     private List<String> mStringArrayList;
     private SettingDetailAdapterListener mOnClickListener;
+    private boolean mImgVisible;
 
 
-    public SettingDetailAdapter(List<String> stringArrayList, SettingDetailAdapterListener settingAdapterListener) {
+    public SettingDetailAdapter(List<String> stringArrayList, SettingDetailAdapterListener settingAdapterListener, boolean imageVisibility) {
         mStringArrayList = stringArrayList;
         mOnClickListener= settingAdapterListener;
+        mImgVisible= imageVisibility;
 
     }
 
@@ -36,6 +38,12 @@ public class SettingDetailAdapter extends RecyclerView.Adapter<SettingDetailAdap
         String data = mStringArrayList.get(position);
         if(data!=null){
             holder.mTextViewTitle.setText(data);
+        }
+        if(mImgVisible){
+            holder.mImageView.setVisibility(View.VISIBLE);
+        }else {
+            holder.mImageView.setVisibility(View.GONE);
+
         }
         holder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
