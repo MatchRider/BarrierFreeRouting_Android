@@ -83,6 +83,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private Polyline mPreviousPolyline;
     private boolean mShowFeedbackDialog;
     private ArrayList<Polyline> mPolylineArrayList = new ArrayList<>();
+    private ArrayList<Polyline> mPolylineArrayListViaMidPoints = new ArrayList<>();
     private Dialog mAlertDialogFeedback = null;
     private Dialog mAlertDialogEnhance = null;
     private Dialog mAlertDialogSorry = null;
@@ -96,13 +97,13 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     protected Runnable updateMarker = new Runnable() {
         @Override
         public void run() {
-            if (mPolylineArrayList.size() > 0) {
+            if (mPolylineArrayListViaMidPoints.size() > 0) {
                 if (mPolylineIndex == -1) {
                     //Update polyline index to 0;
                     mPolylineIndex = 0;
                     mGeoPointIndex = 0;
-                } else if (mPolylineIndex < mPolylineArrayList.size()) {
-                    if ((mGeoPointIndex + 1) < mPolylineArrayList.get(mPolylineIndex).getPoints().size()) {
+                } else if (mPolylineIndex < mPolylineArrayListViaMidPoints.size()) {
+                    if ((mGeoPointIndex + 1) < mPolylineArrayListViaMidPoints.get(mPolylineIndex).getPoints().size()) {
                         //update GeoPint to next for current polyline
                         mGeoPointIndex++;
                     } else {
@@ -110,21 +111,22 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                         //Switch to next polyline
                         mPolylineIndex++;
                         mGeoPointIndex = 0;
-                        if (mPolylineIndex < mPolylineArrayList.size()) {
-                            GeoPoint start = mPolylineArrayList.get(mPolylineIndex).getPoints().get(0);
-                            GeoPoint end = mPolylineArrayList.get(mPolylineIndex).getPoints().get(mPolylineArrayList.get(mPolylineIndex).getPoints().size() - 1);
+                        if (mPolylineIndex < mPolylineArrayListViaMidPoints.size()) {
+                            GeoPoint start = mPolylineArrayListViaMidPoints.get(mPolylineIndex).getPoints().get(0);
+                            GeoPoint end = mPolylineArrayListViaMidPoints.get(mPolylineIndex).getPoints().
+                                    get(mPolylineArrayListViaMidPoints.get(mPolylineIndex).getPoints().size() - 1);
                             setBoundingBox(start, end);
                         }
                     }
                 }
-                if (mPolylineIndex < mPolylineArrayList.size() && mPolylineIndex != -1 && mGeoPointIndex != -1) {
-                    updatePolylineUI(mPolylineArrayList.get(mPolylineIndex));
-                    addRunningMarker(mPolylineArrayList.get(mPolylineIndex).getPoints().get(mGeoPointIndex));
+                if (mPolylineIndex < mPolylineArrayListViaMidPoints.size() && mPolylineIndex != -1 && mGeoPointIndex != -1) {
+                    updatePolylineUI(mPolylineArrayListViaMidPoints.get(mPolylineIndex));
+                    addRunningMarker(mPolylineArrayListViaMidPoints.get(mPolylineIndex).getPoints().get(mGeoPointIndex));
                     UI_HANDLER.postDelayed(updateMarker, 1000);
                 } else {
                     stopRunningMarker();
-                    GeoPoint start = mPolylineArrayList.get(0).getPoints().get(0);
-                    GeoPoint end = mPolylineArrayList.get(mPolylineArrayList.size() - 1).getPoints().get(mPolylineArrayList.get(mPolylineArrayList.size() - 1).getPoints().size() - 1);
+                    GeoPoint start = mPolylineArrayListViaMidPoints.get(0).getPoints().get(0);
+                    GeoPoint end = mPolylineArrayListViaMidPoints.get(mPolylineArrayListViaMidPoints.size() - 1).getPoints().get(mPolylineArrayListViaMidPoints.get(mPolylineArrayListViaMidPoints.size() - 1).getPoints().size() - 1);
                     setBoundingBox(start, end);
                 }
             }
@@ -254,6 +256,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mPolyline.setPoints(geoPointsToSet);
                 mPolyline.setWidth(20);
                 mPolylineArrayList.add(mPolyline);
+                mPolylineArrayListViaMidPoints.add(mPolyline);
                 mPolyline.setColor(getResources().getColor(R.color.colorPrimary));
 
                 if (mShowFeedbackDialog) {
@@ -700,8 +703,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             mAlertDialogEnhance.show();
 
         }
-
-
         mAlertDialogEnhance.setCanceledOnTouchOutside(true);
         mAlertDialogEnhance.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mAlertDialogEnhance.getWindow().setGravity(Gravity.BOTTOM);
