@@ -445,7 +445,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                         Log.e("latlngfromupdate", String.valueOf(mLatitude + mLongitude));
                         //mMapView.getOverlays().clear();
                         //mMapView.invalidate();
-                        onUpdateLocation(location);
+                       // onUpdateLocation(location);
                         AppData.getNewInstance().setCurrentLoc(new LatLng(location.getLatitude(), location.getLongitude()));
                     }
                 }

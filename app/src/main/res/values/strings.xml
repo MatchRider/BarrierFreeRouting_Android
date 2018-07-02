@@ -8,12 +8,15 @@
     <!-- Custom dialog -->
     <string name="setting">Setting</string>
     <string name="txt_dialog_title_enable_location">Enable Location</string>
-    <string name="txt_dialog_message_enable_location">Please enable location for access all feature of this application</string>
+    <string name="txt_dialog_message_enable_location">Please enable location for access all feature
+        of this application
+    </string>
     <string name="settings">Settings</string>
 
     <!-- MENU ITEMS -->
     <string name="ACKNOWLEDGEMENTS">Imprint/Acknowledgement</string>
-    //<string name="FEEDBACK">Feedback</string>
+    //
+    <string name="FEEDBACK">Feedback</string>
     <string name="CONTACT">Contact Us</string>
     <string name="DISCLAIMER">Disclaimer</string>
     <string name="LEGAL">Legal</string>
@@ -23,7 +26,9 @@
 
     <!--Expected Error Codes-->
     <string name="no_internet">Internet is not available</string>
-    <string name="INTERNAL_SERVER_ERROR">The request is incorrect and therefore can not be processed.</string>
+    <string name="INTERNAL_SERVER_ERROR">The request is incorrect and therefore can not be
+        processed.
+    </string>
 
     <string name="text_skip">skip</string>
     <string name="close_drawer" translatable="false">Close</string>
@@ -43,14 +48,21 @@
     <string name="hr">hr</string>
     <string name="km">km</string>
     <string name="what_do_you_want_to_capture">What do you want to capture ?</string>
-    <string name="information_about_a_waypoint_distance">1. Information about a waypoint/distance ?</string>
-    <string name="information_about_a_temporary_obstacles">2. Information about a temporary obstacles?</string>
+    <string name="information_about_a_waypoint_distance">1. Information about a waypoint/distance
+        ?
+    </string>
+    <string name="information_about_a_temporary_obstacles">2. Information about a temporary
+        obstacles?
+    </string>
     <string name="need_to_improve_routing">Need to improve the routing ?</string>
-    <string name="what_information_do_you_hvae_for_community">What information to a waypoint do you have for the community ?</string>
+    <string name="what_information_do_you_hvae_for_community">What information to a waypoint do you
+        have for the community ?
+    </string>
     <string name="finish">Finished</string>
     <string name="posted_sucuess">Feedback posted successfully with ID:</string>
     <string name="thank_you_for_your_input">Thank you for your input!</string>
-    <string name="error_source_destination_same">Please select different source and destination</string>
+    <string name="error_source_destination_same">Please select different source and destination
+    </string>
     <string name="surface_type">Surface Type</string>
     <string name="maximum_sloped">Maximum Sloped Curb (inches)</string>
     <string name="maximum_incline">Maximum Incline (Slope in %)</string>
@@ -98,25 +110,38 @@
     <string name="no_just_information_for_a_waypoint">No: Just information for a waypoint</string>
     <string name="yes_please_choose">Yes: Please choose:</string>
     <string name="start">Start</string>
-    <string name="please_help_us_to_envhane_this_trip_leg">Please help us to enhance this trip leg!</string>
+    <string name="please_help_us_to_envhane_this_trip_leg">Please help us to enhance this trip
+        leg!
+    </string>
     <string name="sorry_no">Sorry,No!</string>
     <string name="that_s_a_pity_maybe_next_time">That‘s a pity. Maybe next time?</string>
-    <string name="please_take_a_closer_look_at_the_following_leg">Please take a closer look at the following leg.</string>
+    <string name="please_take_a_closer_look_at_the_following_leg">Please take a closer look at the
+        following leg.
+    </string>
     <string name="verified">Verified</string>
     <string name="is_the_following_correct">Is the following correct ?</string>
-    <string name="what_information_do_you_have_for_community">What information do you have for the community ?</string>
+    <string name="what_information_do_you_have_for_community">What information do you have for the
+        community ?
+    </string>
     <string name="done">Done!</string>
-    <string name="acknowledgement_data">"Imprint\nStadt Heidelberg\nMarktplatz 10\n69117 Heidelberg\n
+    <string name="acknowledgement_data">"Imprint\nStadt Heidelberg\nMarktplatz 10\n69117
+        Heidelberg\n
         Acknowledgements
-        This project was funded within the programme\n „Städte und Gemeinde 4.0 – Future\n Communities“ by the Ministerium für Inneres,\n Digitales und Migration Baden-Württemberg.\n
+        This project was funded within the programme\n „Städte und Gemeinde 4.0 – Future\n
+        Communities“ by the Ministerium für Inneres,\n Digitales und Migration
+        Baden-Württemberg.\n
         Project management
-        Stadt Heidelberg (www.heidelberg.de)\n Universität Heidelberg – GIScience\n (https://openrouteservice.org)\n
+        Stadt Heidelberg (www.heidelberg.de)\n Universität Heidelberg – GIScience\n
+        (https://openrouteservice.org)\n
         App development
         Match Rider UG, Heidelberg\n (www.matchrider.de)\n
         Sensoric data capture
-        Streetguard GmbH (www.wolfert-gmbh.de)"</string>
-    <string name="legal_data">\n\nDer Programm-Code der gesamten Anwendung und Funktion unterliegt der European Union Public Licence (EUPL).\n\n
-        Der Programm-Code ist via www.github.com/MatchRider/Routing abrufbar.</string>
+        Streetguard GmbH (www.wolfert-gmbh.de)"
+    </string>
+    <string name="legal_data">\n\nDer Programm-Code der gesamten Anwendung und Funktion unterliegt
+        der European Union Public Licence (EUPL).\n\n
+        Der Programm-Code ist via www.github.com/MatchRider/Routing abrufbar.
+    </string>
     <string name="string_one_point_two">1.2</string>
     <string name="string_two_point_four">2.4</string>
     <string name="string_two_point_four_greater"><![CDATA[> 2.4]]></string>
@@ -127,6 +152,8 @@
     <string name="send">Send</string>
     <string name="thirty_five_less"><![CDATA[< 35.4]]></string>
     <string name="thirty_five_greater"><![CDATA[> 35.4]]></string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="log_in_with_osm">Log in with OSM</string>
 
 
 </resources>

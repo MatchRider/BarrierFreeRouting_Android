@@ -115,6 +115,7 @@
     <string name="send">Absenden</string>
     <string name="thirty_five_less"><![CDATA[< 35,4]]></string>
     <string name="thirty_five_greater"><![CDATA[> 35,4]]></string>
+    <string name="log_in_with_osm">Log in with OSM</string>
 
 
 </resources>

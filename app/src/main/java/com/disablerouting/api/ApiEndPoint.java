@@ -16,4 +16,17 @@ public interface ApiEndPoint {
     String API_KEY_WHEEL_MAP= "b4W1zzy2xnWjwjKQ87Tu";
 
 
+    String BASE_URL_OAUTH="https://master.apis.dev.openstreetmap.org/oauth/"; // developement
+   // String BASE_URL_OAUTH="https://www.openstreetmap.org/oauth/"; // live
+
+    String CONSUMER_KEY=    "lIHzMdENQdGnwi1TXwh1J6mgtDfTKIv8NjNaX6B9"; // developement
+    String CONSUMER_SECRET_KEY=  "OWzh43EcXC3Q7wfkZIIg2OQKTPoqr0VcpzR4PRTb"; // developement
+
+    String requestTokenUrl= "request_token";
+    String authorizeUrl=   "authorize";
+    String accessTokenUrl=  "access_token";
+
+    String OSM_REDIRECT_URI = "disabled-routing://oauth-callback/";
+
+
 }

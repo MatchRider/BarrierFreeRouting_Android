@@ -11,7 +11,7 @@ class ApiInterceptor implements Interceptor {
 
     private boolean mIsReplace;
 
-    public ApiInterceptor(boolean isReplace) {
+    ApiInterceptor(boolean isReplace) {
         this.mIsReplace= isReplace;
     }
 
@@ -63,9 +63,11 @@ class ApiInterceptor implements Interceptor {
         if (request != null) {
             Request.Builder builder = request.newBuilder();
             builder.header(ApiEndPoint.APP_CONTENT_TYPE, "application/json");
+
             return builder.build();
         }
 
         return null;
     }
+
 }

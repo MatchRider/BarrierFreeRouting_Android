@@ -22,7 +22,7 @@ public interface ApiService {
      */
     @GET("directions")
     Call<DirectionsResponse> getDirections(@Query("api_key") String api_key, @Query("coordinates") String coordinates,
-                                           @Query("profile") String profile, @Query("options" ) String options);
+                                           @Query("profile") String profile, @Query("options") String options);
 
     /***
      * Api call for Directions
@@ -38,19 +38,21 @@ public interface ApiService {
 
     /**
      * Api call for getting places
-     * @param api_key Insert your API Key here.
-     * @param query String to search
-     * @param limit max no of data items
+     *
+     * @param api_key  Insert your API Key here.
+     * @param query    String to search
+     * @param limit    max no of data items
      * @param location String of Default: 8.68353,49.412623 long,lat
      * @return return address of places
      */
     @GET("geocoding")
     Call<GeoCodingResponse> getGeoCoding(@Query("api_key") String api_key, @Query("query") String query,
-             @Query("location") String location,@Query("limit") int limit);
+                                         @Query("location") String location, @Query("limit") int limit);
 
 
     /**
      * APi call for get changeset id
+     *
      * @param requestCreateChangeSet Request model for rrequesting change set id
      * @return return change set id
      */
@@ -61,15 +63,18 @@ public interface ApiService {
 
     /**
      * Api call for creating node
-     * @param type can be of three type (Nodes, Ways and Relations)
+     *
+     * @param type              can be of three type (Nodes, Ways and Relations)
      * @param requestCreateNode Request model for create node
      * @return return change set id if successful
      */
     @PUT("{type}/create")
-    Call<ResponseBody> setChangeSet(@Path("type") String type,@Body RequestCreateNode requestCreateNode);
+    Call<ResponseBody> setChangeSet(@Path("type") String type, @Body RequestCreateNode requestCreateNode);
 
 
-    @GET("nodes") //, @Query("wheelchair") String wheelChair not using
-    Call<NodeResponse> getNodes(@Query("api_key") String apiKey,@Query("bbox") String bbox, @Query("per_page") int perPage );
+    @GET("nodes")
+        //, @Query("wheelchair") String wheelChair not using
+    Call<NodeResponse> getNodes(@Query("api_key") String apiKey, @Query("bbox") String bbox, @Query("per_page") int perPage);
+
 
 }

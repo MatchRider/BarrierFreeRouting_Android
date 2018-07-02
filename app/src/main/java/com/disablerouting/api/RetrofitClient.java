@@ -13,10 +13,14 @@ public class RetrofitClient {
     private static Retrofit sRetrofitOSM;
     private static Retrofit sRetrofitDirections;
     private static Retrofit sRetrofitWheelChair;
+    private static Retrofit sRetrofitOAUTH;
+
     private static ApiService sApiService;
     private static ApiService sApiServiceOSM;
     private static ApiService sApiServiceDirections;
     private static ApiService sApiServiceWheelChair;
+    private static ApiService sApiServiceOAUTH;
+
 
 
     /**
@@ -161,4 +165,6 @@ public class RetrofitClient {
         }
         return sApiServiceWheelChair;
     }
+
+
 }

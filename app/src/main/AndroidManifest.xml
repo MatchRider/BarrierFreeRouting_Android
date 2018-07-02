@@ -4,10 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <application
             android:name=".application.DisableRouteApp"
@@ -38,21 +38,23 @@
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="stateHidden|adjustNothing">
         </activity>
+
         <receiver
                 android:name=".network.NetworkChangeReceiver"
                 android:label="NetworkChangeReceiver">
         </receiver>
+
         <activity
                 android:name=".route_planner.view.RoutePlannerActivity"
-                android:windowSoftInputMode="stateHidden"
                 android:launchMode="singleTask"
                 android:screenOrientation="portrait"
-                android:theme="@style/AppTheme">
+                android:theme="@style/AppTheme"
+                android:windowSoftInputMode="stateHidden">
         </activity>
         <activity
                 android:name=".suggestions.view.SuggestionsActivity"
-                android:screenOrientation="portrait"
                 android:launchMode="singleTask"
+                android:screenOrientation="portrait"
                 android:theme="@style/AppTheme">
         </activity>
         <activity
@@ -73,8 +75,8 @@
         <activity
                 android:name=".filter.view.FilterActivity"
                 android:screenOrientation="portrait"
-                android:windowSoftInputMode="stateHidden"
-                android:theme="@style/AppTheme">
+                android:theme="@style/AppTheme"
+                android:windowSoftInputMode="stateHidden">
         </activity>
         <activity
                 android:name=".setting.SettingActivity"
@@ -104,9 +106,23 @@
         <activity
                 android:name=".contact.ContactActivity"
                 android:screenOrientation="portrait"
-                android:windowSoftInputMode="stateHidden"
-                android:theme="@style/AppTheme">
+                android:theme="@style/AppTheme"
+                android:windowSoftInputMode="stateHidden">
         </activity>
-
+        <activity
+                android:name=".login.LoginActivity"
+                android:label="@string/title_activity_login"
+                android:launchMode="singleTop"
+                android:theme="@style/AppTheme">
+             <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                        android:host="oauth-callback"
+                        android:scheme="disabled-routing" />
+            </intent-filter>
+        </activity>
     </application>
+
 </manifest>
