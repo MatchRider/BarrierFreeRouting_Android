@@ -17,6 +17,7 @@
     <string name="CONTACT">Kontakt</string>
     <string name="DISCLAIMER">Haftungsausschluss</string>
     <string name="LEGAL">Rechtliches</string>
+    <string name="LOGOUT">Ausloggen</string>
 
     <string name="route_planner">Routenplaner</string>
     <string name="suggestions">Vorschläge</string>

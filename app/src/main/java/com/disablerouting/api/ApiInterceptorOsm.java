@@ -9,6 +9,12 @@ import java.io.IOException;
 
 class ApiInterceptorOsm implements Interceptor {
 
+    String mStringOSMKey;
+
+    public ApiInterceptorOsm(String osm) {
+        mStringOSMKey= osm;
+    }
+
     /**
      * Interceptor that modify/add header for outgoing request
      * @param chain Request chain
@@ -47,7 +53,7 @@ class ApiInterceptorOsm implements Interceptor {
     private Request modifyNonAuthHeaders(Request request) {
         if (request != null) {
             Request.Builder builder = request.newBuilder();
-            builder.header(ApiEndPoint.AUTHORIZATION_TAG_OSM, ApiEndPoint.AUTHORIZATION_KEY_OSM);
+            builder.header(ApiEndPoint.AUTHORIZATION_TAG_OSM, mStringOSMKey);
             builder.header(ApiEndPoint.APP_CONTENT_TYPE, "text/plain");
 
             return builder.build();

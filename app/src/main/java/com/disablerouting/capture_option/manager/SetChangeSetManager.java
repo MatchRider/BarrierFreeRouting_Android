@@ -1,6 +1,7 @@
 package com.disablerouting.capture_option.manager;
 
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import com.disablerouting.api.ErrorResponse;
 import com.disablerouting.api.ResponseCallback;
@@ -18,10 +19,10 @@ public class SetChangeSetManager implements ResponseCallback<ResponseBody>{
     private Call<ResponseBody> mCreateChangeSet;
     private ISetChangeSetResponseReceiver mIChangeSetResponseReceiver;
 
-    public void setChangeSet(ISetChangeSetResponseReceiver receiver, RequestCreateNode requestCreateNode) {
+    public void setChangeSet(Context context,ISetChangeSetResponseReceiver receiver, RequestCreateNode requestCreateNode) {
         this.mIChangeSetResponseReceiver = receiver;
         String type = "node";
-        mCreateChangeSet = RetrofitClient.getApiServiceOsm().setChangeSet(type,requestCreateNode);
+        mCreateChangeSet = RetrofitClient.getApiServiceOsm(context).setChangeSet(type,requestCreateNode);
         mCreateChangeSet.enqueue(new ResponseWrapperOsm<ResponseBody>(this));
     }
 

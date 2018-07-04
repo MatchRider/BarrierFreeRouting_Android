@@ -25,8 +25,7 @@ public final class UserPreferences {
 
 
     public String getAccessToken() {
-        String savedToken = mPreferences.getString(ACCESS_TOKEN, null);
-        return savedToken;
+        return mPreferences.getString(ACCESS_TOKEN, null);
     }
 
 
@@ -47,6 +46,26 @@ public final class UserPreferences {
         }
 
         return sInstance;
+    }
+
+    public boolean isUserLoggedIn() {
+        return mPreferences!=null && mPreferences.getString(ACCESS_TOKEN,null) != null;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    public void destroySession() throws IllegalStateException {
+        checkForInitialization();
+        mPreferences.edit().clear().apply();
+    }
+
+    /*
+     * Throws IllegalStateException if initialization has not been performed.
+     */
+    protected void checkForInitialization() {
+        if (mPreferences == null) {
+            throw new IllegalStateException("Initialization is not performed yet.");
+        }
     }
 
 }

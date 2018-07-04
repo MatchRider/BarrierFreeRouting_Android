@@ -47,7 +47,7 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView 
         requestTag = new RequestTag("comment","Just adding some streetnames");
         list.add(requestTag);
         requestCreateChangeSet.setRequestTag(list);
-        mFeedBackScreenPresenter.createChangeSet(requestCreateChangeSet);
+        mFeedBackScreenPresenter.createChangeSet(requestCreateChangeSet,this);
     }
 
 

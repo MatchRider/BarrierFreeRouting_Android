@@ -155,6 +155,7 @@ public class BaseActivityImpl extends AppCompatActivity implements UIBase, Netwo
     public void onClick(int close) {
         switch (close) {
             case R.string.close_drawer:
+
                 break;
         }
     }

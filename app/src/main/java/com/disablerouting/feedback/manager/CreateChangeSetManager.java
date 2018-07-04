@@ -1,13 +1,14 @@
 package com.disablerouting.feedback.manager;
 
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import com.disablerouting.api.ErrorResponse;
 import com.disablerouting.api.ResponseCallback;
 import com.disablerouting.api.ResponseWrapperOsm;
 import com.disablerouting.api.RetrofitClient;
-import com.disablerouting.feedback.presenter.IChangeSetResponseReceiver;
 import com.disablerouting.feedback.model.RequestCreateChangeSet;
+import com.disablerouting.feedback.presenter.IChangeSetResponseReceiver;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 
@@ -18,7 +19,7 @@ public class CreateChangeSetManager implements ResponseCallback<ResponseBody>{
     private Call<ResponseBody> mCreateChangeSet;
     private IChangeSetResponseReceiver mIChangeSetResponseReceiver;
 
-    public void getCreateChangeSet(IChangeSetResponseReceiver receiver, RequestCreateChangeSet requestCreateChangeSet) {
+    public void getCreateChangeSet(Context context,IChangeSetResponseReceiver receiver, RequestCreateChangeSet requestCreateChangeSet) {
         this.mIChangeSetResponseReceiver = receiver;
         /*String string="<osm>\n" +
                 "   <changeset>\n" +
@@ -28,8 +29,12 @@ public class CreateChangeSetManager implements ResponseCallback<ResponseBody>{
                 "</osm>";
         RequestBody requestBody= RequestBody.create(MediaType.parse("text/plain"),string);*/
 
-        mCreateChangeSet = RetrofitClient.getApiServiceOsm().createChangeSet(requestCreateChangeSet);
+        mCreateChangeSet = RetrofitClient.getApiServiceOsm(context).createChangeSet(requestCreateChangeSet);
         mCreateChangeSet.enqueue(new ResponseWrapperOsm<ResponseBody>(this));
+
+       /* String string="<osm><changeset><tag k=\"created_by\" v=\"JOSM 1.61\"/><tag k=\"comment\" v=\"Just adding some streetnames\"/></changeset></osm>";
+        OauthData oauthData= new OauthData(Verb.PUT,string,"https://master.apis.dev.openstreetmap.org/api/0.6/changeset/create");
+        new AsyncTaskOsmApi(this,oauthData,this).execute("");*/
     }
 
     /**

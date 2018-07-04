@@ -1,5 +1,7 @@
 package com.disablerouting.api;
 
+import android.content.Context;
+import com.disablerouting.login.UserPreferences;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -59,17 +61,21 @@ public class RetrofitClient {
      * Initialize retrofit client with base url
      * @return Instance if retrofit
      */
-    private static Retrofit getRetrofitForOsm() {
+    private static Retrofit getRetrofitForOsm(Context context) {
         if (sRetrofitOSM == null) {
 
             final String baseUrl = ApiEndPoint.SANDBOX_BASE_URL_OSM;
+            String osm = null;
+            if(UserPreferences.getInstance(context)!=null && UserPreferences.getInstance(context).getAccessToken()!=null){
+                osm= UserPreferences.getInstance(context).getAccessToken();
+            }
 
             final OkHttpClient client = new OkHttpClient.Builder()
                     .followRedirects(true)
                     .readTimeout(30, TimeUnit.SECONDS)
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .connectTimeout(30, TimeUnit.SECONDS)
-                    .addInterceptor(new ApiInterceptorOsm())
+                    .addInterceptor(new ApiInterceptorOsm(osm))
                     .build();
 
             sRetrofitOSM = new Retrofit.Builder()
@@ -144,9 +150,9 @@ public class RetrofitClient {
      * Get api retrofit object
      * @return Instance of api service
      */
-    public static ApiService getApiServiceOsm() {
+    public static ApiService getApiServiceOsm(Context context) {
         if (sApiServiceOSM == null) {
-            sApiServiceOSM = getRetrofitForOsm().create(ApiService.class);
+            sApiServiceOSM = getRetrofitForOsm(context).create(ApiService.class);
         }
         return sApiServiceOSM;
     }

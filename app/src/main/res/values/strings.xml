@@ -20,6 +20,7 @@
     <string name="CONTACT">Contact Us</string>
     <string name="DISCLAIMER">Disclaimer</string>
     <string name="LEGAL">Legal</string>
+    <string name="LOGOUT">Logout</string>
 
     <string name="route_planner">Route Planner</string>
     <string name="suggestions">Suggestions</string>

@@ -82,7 +82,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
             node.setRequestTagList(mRequestTagList);
             requestCreateNode.setNode(node);
 
-            mCaptureScreenPresenter.setChangeSet(requestCreateNode);
+            mCaptureScreenPresenter.setChangeSet(requestCreateNode, this);
         }
     }
     private void onExpandListeners() {

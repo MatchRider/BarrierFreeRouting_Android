@@ -1,6 +1,7 @@
 package com.disablerouting.feedback.presenter;
 
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import com.disablerouting.api.ErrorResponse;
 import com.disablerouting.feedback.manager.CreateChangeSetManager;
@@ -20,10 +21,10 @@ public class FeedBackScreenPresenter implements IFeedbackScreenPresenter,
     }
 
     @Override
-    public void createChangeSet(RequestCreateChangeSet createChangeSet) {
+    public void createChangeSet(RequestCreateChangeSet createChangeSet, Context context) {
         if (mIFeedbackView != null) {
             mIFeedbackView.showLoader();
-            mCreateChangeSetManager.getCreateChangeSet(this,createChangeSet);
+            mCreateChangeSetManager.getCreateChangeSet(context,this,createChangeSet);
         }
     }
 

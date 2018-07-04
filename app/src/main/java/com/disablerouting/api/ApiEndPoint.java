@@ -17,10 +17,14 @@ public interface ApiEndPoint {
 
 
     String BASE_URL_OAUTH="https://master.apis.dev.openstreetmap.org/oauth/"; // developement
-   // String BASE_URL_OAUTH="https://www.openstreetmap.org/oauth/"; // live
-
     String CONSUMER_KEY=    "lIHzMdENQdGnwi1TXwh1J6mgtDfTKIv8NjNaX6B9"; // developement
     String CONSUMER_SECRET_KEY=  "OWzh43EcXC3Q7wfkZIIg2OQKTPoqr0VcpzR4PRTb"; // developement
+
+    // String BASE_URL_OAUTH="https://www.openstreetmap.org/oauth/"; // live
+    // String CONSUMER_KEY=    "lIHzMdENQdGnwi1TXwh1J6mgtDfTKIv8NjNaX6B9"; // developement
+    // String CONSUMER_SECRET_KEY=  "OWzh43EcXC3Q7wfkZIIg2OQKTPoqr0VcpzR4PRTb"; // developement
+
+
 
     String requestTokenUrl= "request_token";
     String authorizeUrl=   "authorize";

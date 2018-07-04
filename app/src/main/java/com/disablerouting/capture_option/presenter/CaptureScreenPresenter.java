@@ -1,6 +1,7 @@
 package com.disablerouting.capture_option.presenter;
 
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import com.disablerouting.api.ErrorResponse;
 import com.disablerouting.capture_option.view.ICaptureView;
@@ -18,10 +19,10 @@ public class CaptureScreenPresenter implements ICaptureScreenPresenter , ISetCha
     }
 
     @Override
-    public void setChangeSet(RequestCreateNode requestCreateNode) {
+    public void setChangeSet(RequestCreateNode requestCreateNode, Context context) {
         if (mICaptureView != null) {
             mICaptureView.showLoader();
-            mSetChangeSetManager.setChangeSet(this,requestCreateNode);
+            mSetChangeSetManager.setChangeSet(context,this,requestCreateNode);
         }
     }
 

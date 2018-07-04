@@ -1,5 +1,7 @@
 package com.disablerouting.sidemenu.view;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.disablerouting.R;
@@ -16,6 +19,8 @@ import com.disablerouting.common.AppConstant;
 import com.disablerouting.contact.ContactActivity;
 import com.disablerouting.disclaimer.DisclaimerActivity;
 import com.disablerouting.legal.LegalActivity;
+import com.disablerouting.login.LoginActivity;
+import com.disablerouting.login.UserPreferences;
 import com.disablerouting.sidemenu.adapter.SideMenuAdapter;
 import com.disablerouting.sidemenu.model.SideMenuData;
 import com.disablerouting.sidemenu.presenter.ISideMenuViewListener;
@@ -47,7 +52,7 @@ public class SideMenuFragment extends Fragment implements ISideMenuView,
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSideMenuPresenter = new SideMenuPresenter();
+        mSideMenuPresenter = new SideMenuPresenter(getContext());
     }
 
     @Nullable
@@ -80,6 +85,7 @@ public class SideMenuFragment extends Fragment implements ISideMenuView,
     public void setClickListener(ISideMenuFragmentCallback sideMenuFragmentCallback) {
         mSideMenuFragmentCallback = sideMenuFragmentCallback;
     }
+
 
     @Override
     public void setSideMenuListToView(List<SideMenuData> list) {
@@ -117,6 +123,30 @@ public class SideMenuFragment extends Fragment implements ISideMenuView,
                 newActivityIntent= new Intent(getContext(), LegalActivity.class);
                 newActivityIntent.putExtra(AppConstant.TITLE_TEXT, getString(R.string.LEGAL));
                 startActivity(newActivityIntent);
+                break;
+            case R.string.LOGOUT:
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Logout")
+                        .setMessage("Are you sure you want to logout?")
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                UserPreferences.getInstance(getContext()).destroySession();
+                                Toast.makeText(getContext(),"Logout Clicked",Toast.LENGTH_SHORT).show();
+                                mSideMenuAdapter.remove(SideMenuData.LOGOUT);
+                                mSideMenuAdapter.notifyDataSetChanged();
+                                Intent intent= new Intent(getContext(), LoginActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+
+                            }
+                        })
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+
                 break;
 
         }

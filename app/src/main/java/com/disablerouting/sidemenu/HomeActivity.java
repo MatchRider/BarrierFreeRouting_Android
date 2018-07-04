@@ -220,4 +220,16 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         launchActivity(this, SuggestionsActivity.class);
     }
 
+    @Override
+    public void onClick(int close) {
+        if(slideState) {
+            mDrawerLayout.closeDrawer(Gravity.START);
+        }
+        super.onClick(close);
+
+    }
+
+
+
+
 }

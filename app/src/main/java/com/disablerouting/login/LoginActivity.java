@@ -9,10 +9,9 @@ import android.os.Bundle;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
-import com.disablerouting.api.ApiEndPoint;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.sidemenu.HomeActivity;
-import com.github.scribejava.core.builder.ServiceBuilder;
+import com.disablerouting.utils.Utility;
 import com.github.scribejava.core.model.OAuth1AccessToken;
 import com.github.scribejava.core.model.OAuth1RequestToken;
 import com.github.scribejava.core.oauth.OAuth10aService;
@@ -34,11 +33,7 @@ public class LoginActivity extends BaseActivityImpl  {
 
     @OnClick(R.id.btn_log_in)
     public void OnLoginClick() {
-        service = new ServiceBuilder(ApiEndPoint.CONSUMER_KEY)
-                .apiSecret(ApiEndPoint.CONSUMER_SECRET_KEY)
-                .callback(ApiEndPoint.OSM_REDIRECT_URI)
-                .build(OSMApi.instance());
-
+        service = Utility.createOauth10a();
         new fetchRequestToken().execute("");
     }
 
@@ -52,8 +47,9 @@ public class LoginActivity extends BaseActivityImpl  {
         if (intent != null && intent.getData() != null) {
             try {
                 OAuth1AccessToken oAuth1AccessToken = service.getAccessToken(requestToken, intent.getData().getQueryParameter("oauth_verifier"));
-                String accessToken = oAuth1AccessToken.getTokenSecret();
-                UserPreferences.getInstance(this).saveToken(accessToken);
+                String accessToken = oAuth1AccessToken.getToken(); // Oauth Token
+                String accessTokenSecret = oAuth1AccessToken.getTokenSecret(); // Oauth Token Secret
+                UserPreferences.getInstance(this).saveToken(accessToken+","+accessTokenSecret);
                 Intent intentHome= new Intent(this, HomeActivity.class);
                 startActivity(intentHome);
 

@@ -6,6 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
+import com.disablerouting.api.ApiEndPoint;
+import com.disablerouting.login.OSMApi;
+import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.core.oauth.OAuth10aService;
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.views.overlay.OverlayItem;
@@ -82,4 +86,11 @@ public class Utility {
 
         return jsonObj;
     }*/
+
+    public static OAuth10aService createOauth10a(){
+        return new ServiceBuilder(ApiEndPoint.CONSUMER_KEY)
+               .apiSecret(ApiEndPoint.CONSUMER_SECRET_KEY)
+               .callback(ApiEndPoint.OSM_REDIRECT_URI)
+               .build(OSMApi.instance());
+    }
 }
