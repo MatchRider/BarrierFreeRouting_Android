@@ -20,15 +20,19 @@ import com.disablerouting.capture_option.model.RequestCreateNode;
 import com.disablerouting.capture_option.presenter.CaptureScreenPresenter;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.feedback.model.RequestTag;
+import com.disablerouting.login.AsyncTaskOsmApi;
+import com.disablerouting.login.IAysncTaskOsm;
+import com.disablerouting.login.OauthData;
 import com.disablerouting.route_planner.model.FeedBackModel;
 import com.disablerouting.success_screen.SuccessActivity;
+import com.github.scribejava.core.model.Verb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
+public class CaptureActivity extends BaseActivityImpl implements ICaptureView, IAysncTaskOsm{
 
     private ExpandableListAdapter mExpandableListAdapter;
     private CaptureScreenPresenter mCaptureScreenPresenter;
@@ -51,6 +55,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, Integer> mHashMapObjectFilterItem = new HashMap<>();
     private boolean mISStartedFromSuggestion;
+    private String mURL="https://master.apis.dev.openstreetmap.org/api/0.6/node/create";
 
 
     @Override
@@ -82,7 +87,21 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
             node.setRequestTagList(mRequestTagList);
             requestCreateNode.setNode(node);
 
-            mCaptureScreenPresenter.setChangeSet(requestCreateNode, this);
+            String stringBuilder = "<osm><node changeset=" + "\""+String.valueOf(mFeedBackModel.getChangeSetID()) +"\""+ " "+
+                    "lat=" + "\""+String.valueOf(mFeedBackModel.getLatitude())+"\"" +" "+
+                    "lon=" +"\""+ String.valueOf(mFeedBackModel.getLongitude()) +"\""+ ">" +
+                    "<tag k=\"note\" v=\"Just a node\"/></node></osm>";
+
+
+            String string="<osm>\n" +
+                    " <node changeset=\"112100\" lat=\"28.584220243018713\" lon=\"77.13020324707031\">\n" +
+                    "   <tag k=\"note\" v=\"Just a node\"/>\n" +
+                    " </node>\n" +
+                    "</osm>";
+           // mCaptureScreenPresenter.setChangeSet(requestCreateNode, this);
+
+            OauthData oauthData= new OauthData(Verb.PUT, stringBuilder,mURL);
+            new AsyncTaskOsmApi(CaptureActivity.this,oauthData,this).execute("");
         }
     }
     private void onExpandListeners() {
@@ -297,4 +316,29 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView{
     }
 
 
+    @Override
+    public void onSuccessAsyncTask(final String responseBody) {
+
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                if(responseBody!=null){
+                    Toast.makeText(CaptureActivity.this,getString(R.string.posted_sucuess)+responseBody,Toast.LENGTH_LONG).show();
+                    Intent intent= new Intent(CaptureActivity.this, SuccessActivity.class);
+                    intent.putExtra(AppConstant.STARTED_FROM_SUGGESTION,mISStartedFromSuggestion);
+                    startActivity(intent);
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onFailureAsyncTask(final String errorBody) {
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+
+                Toast.makeText(CaptureActivity.this, errorBody, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

@@ -45,6 +45,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     Button mButtonGo;
 
     private boolean mISMapPlotted = false;
+    private boolean mIsUpdateAgain = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,19 +64,23 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     protected void onUpdateLocation(Location location) {
-        mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        GeoPoint geoPoint = new GeoPoint(mCurrentLocation.longitude, mCurrentLocation.latitude);
-        mSourceDestinationFragment.onUpdateLocation(geoPoint);
-        if (mFeaturesSourceAddress != null && mFeaturesDestinationAddress != null) {
-            GeoPoint geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
-                    mFeaturesSourceAddress.getGeometry().getCoordinates().get(1));
+        if(!mIsUpdateAgain) {
+            mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+            GeoPoint geoPoint = new GeoPoint(mCurrentLocation.longitude, mCurrentLocation.latitude);
+            mSourceDestinationFragment.onUpdateLocation(geoPoint);
+            if (mFeaturesSourceAddress != null && mFeaturesDestinationAddress != null) {
+                GeoPoint geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
+                        mFeaturesSourceAddress.getGeometry().getCoordinates().get(1));
 
-            GeoPoint geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
-                    mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
-            //mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination);
-        } else {
-            plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null, true);
+                GeoPoint geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
+                        mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
+                //mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination);
+            } else {
+                plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null, true);
+            }
+            mIsUpdateAgain=true;
         }
+
     }
 
 

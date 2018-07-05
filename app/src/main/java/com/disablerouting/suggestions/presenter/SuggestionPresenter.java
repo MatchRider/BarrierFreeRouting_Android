@@ -47,6 +47,24 @@ public class SuggestionPresenter implements ISuggestionScreenPresenter, IDirecti
     }
 
     @Override
+    public void getGeoCodeDataForward(String query) {
+        isForCurrentLoc=false;
+        if (mISuggestionFragment != null) {
+            mISuggestionFragment.showLoader();
+            mGeoCodingManager.getGeoCodeForward(this, query);
+        }
+    }
+
+    @Override
+    public void getGeoCodeDataReverse(double latitude, double longitude) {
+        isForCurrentLoc=true;
+        if (mISuggestionFragment != null) {
+            mISuggestionFragment.showLoader();
+            mGeoCodingManager.getGeoCodeReverse(this, latitude,longitude);
+        }
+    }
+
+    @Override
     public void onSuccessDirection(DirectionsResponse data) {
         if (mISuggestionFragment != null) {
             mISuggestionFragment.hideLoader();

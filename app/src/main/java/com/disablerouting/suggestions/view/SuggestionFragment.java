@@ -110,10 +110,13 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
                     mListPopupWindow.dismiss();
                 }
                 if (mEditTextSource.hasFocus() && !mEditTextSource.getText().toString().equalsIgnoreCase("")) {
-                   mISuggestionScreenPresenter.getCoordinatesData(mEditTextSource.getText().toString(), "", 10);
+                  // mISuggestionScreenPresenter.getCoordinatesData(mEditTextSource.getText().toString(), "", 10);
+                mISuggestionScreenPresenter.getGeoCodeDataForward(mEditTextSource.getText().toString());
                 }
                 if (mEditTextDestination.hasFocus() && !mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
-                    mISuggestionScreenPresenter.getCoordinatesData(mEditTextDestination.getText().toString(), "", 10);
+                   // mISuggestionScreenPresenter.getCoordinatesData(mEditTextDestination.getText().toString(), "", 10);
+                    mISuggestionScreenPresenter.getGeoCodeDataForward(mEditTextDestination.getText().toString());
+
                 }
             }
 
@@ -124,7 +127,11 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
     public void fetchCurrentSourceAdd() {
         mIsTextInputManually = false;
         if (mEditTextSource.hasFocus() && mEditTextSource.getText().toString().equalsIgnoreCase("")) {
-            mISuggestionScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
+          //  mISuggestionScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
+            if(mCurrentLocation!=null) {
+                String[] location = mCurrentLocation.split(",");
+                mISuggestionScreenPresenter.getGeoCodeDataReverse(Double.parseDouble(location[1]), Double.parseDouble(location[0]));
+            }
         }
 
     }
@@ -134,7 +141,11 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
         mIsTextInputManually = false;
         handler.removeMessages(SEARCH_TEXT_CHANGED);
         if (mEditTextDestination.hasFocus() && mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
-           mISuggestionScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
+           //mISuggestionScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
+            if(mCurrentLocation!=null) {
+                String[] location = mCurrentLocation.split(",");
+                mISuggestionScreenPresenter.getGeoCodeDataReverse(Double.parseDouble(location[1]), Double.parseDouble(location[0]));
+            }
         }
     }
     @OnClick(R.id.clear_source_address)

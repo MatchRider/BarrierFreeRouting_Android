@@ -9,6 +9,11 @@ public interface ISuggestionScreenPresenter {
 
     void getCoordinatesData(String query, String location, int limit);
 
+    void getGeoCodeDataForward(String query);
+
+    void getGeoCodeDataReverse(double latitude, double longitude);
+
+
     void disconnect();
 
 }

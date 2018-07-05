@@ -110,10 +110,12 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                     mListPopupWindow.dismiss();
                 }
                 if (mEditTextSource.hasFocus() && mEditTextSource != null && !mEditTextSource.getText().toString().equalsIgnoreCase("")) {
-                    mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextSource.getText().toString(), "", 10);
+                   // mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextSource.getText().toString(), "", 10);
+                    mISourceDestinationScreenPresenter.getGeoCodeDataForward(mEditTextSource.getText().toString());
                 }
                 if (mEditTextDestination.hasFocus() && mEditTextDestination != null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
-                    mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextDestination.getText().toString(), "", 10);
+                    //mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextDestination.getText().toString(), "", 10);
+                    mISourceDestinationScreenPresenter.getGeoCodeDataForward(mEditTextDestination.getText().toString());
                 }
             }
 
@@ -133,7 +135,11 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     public void fetchCurrentSourceAdd() {
         mIsTextInputManually = false;
         if (mEditTextSource.hasFocus() && mEditTextSource != null && mEditTextSource.getText().toString().equalsIgnoreCase("")) {
-            mISourceDestinationScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
+           // mISourceDestinationScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
+            if(mCurrentLocation!=null) {
+                String[] location = mCurrentLocation.split(",");
+                mISourceDestinationScreenPresenter.getGeoCodeDataReverse(Double.parseDouble(location[1]), Double.parseDouble(location[0]));
+            }
         }
 
     }
@@ -143,7 +149,11 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mIsTextInputManually = false;
         handler.removeMessages(SEARCH_TEXT_CHANGED);
         if (mEditTextDestination.hasFocus() && mEditTextDestination != null && mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
-            mISourceDestinationScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
+           // mISourceDestinationScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
+            if(mCurrentLocation!=null) {
+                String[] location = mCurrentLocation.split(",");
+                mISourceDestinationScreenPresenter.getGeoCodeDataReverse(Double.parseDouble(location[1]), Double.parseDouble(location[0]));
+            }
         }
     }
 

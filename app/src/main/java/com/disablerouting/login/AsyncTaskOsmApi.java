@@ -35,7 +35,11 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
         pDialog = new ProgressDialog(mContext);
         pDialog.setMessage("Please Wait...");
         pDialog.setCancelable(false);
-        pDialog.show();
+        if(pDialog.isShowing()) {
+            pDialog.dismiss();
+        }else {
+            pDialog.show();
+        }
     }
 
     @Override
@@ -52,11 +56,20 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
         Response response;
         try {
             response = service.execute(request);
+            if(pDialog!=null){
+                pDialog.dismiss();
+            }
             if(response.isSuccessful()){
                 mIAysncTaskOsm.onSuccessAsyncTask(response.getBody());
-            }else {
-                mIAysncTaskOsm.onFailureAsyncTask(response.getMessage());
             }
+            else {
+                if(response.getCode()==409){
+                    mIAysncTaskOsm.onFailureAsyncTask(response.getBody());
+                }else {
+                    mIAysncTaskOsm.onFailureAsyncTask(response.getMessage());
+                }
+            }
+
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -65,14 +78,15 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return "Executed!";
     }
 
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        pDialog.dismiss();
+        if(pDialog!=null) {
+            pDialog.dismiss();
+        }
 
     }
 }

@@ -50,6 +50,21 @@ public interface ApiService {
                                          @Query("location") String location, @Query("limit") int limit);
 
 
+    //Its a Forward Geo Code search
+    /**
+     *
+     * @param api_key  Insert your API Key here.
+     * @param query    String to search
+     * @return return address of places
+     */
+    @GET("geocode/search")
+    Call<GeoCodingResponse> getGeoCode(@Query("api_key") String api_key, @Query("text") String query);
+
+
+    @GET("geocode/reverse")
+    Call<GeoCodingResponse> getGeoCodeReverse(@Query("api_key") String api_key, @Query("point.lat") double latitude,
+                                              @Query("point.lon") double longitude,@Query("size") int size);
+
     /**
      * APi call for get changeset id
      *

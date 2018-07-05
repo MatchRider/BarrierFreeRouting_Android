@@ -31,6 +31,24 @@ public class FilterScreenPresenter implements IFilterScreenPresenter , IGeoCodin
     }
 
     @Override
+    public void getGeoCodeDataForward(String query) {
+        isForCurrentLoc=false;
+        if (mIFilterView != null) {
+            mIFilterView.showLoader();
+            mGeoCodingManager.getGeoCodeForward(this, query);
+        }
+    }
+
+    @Override
+    public void getGeoCodeDataReverse(double latitude, double longitude) {
+        isForCurrentLoc=true;
+        if (mIFilterView != null) {
+            mIFilterView.showLoader();
+            mGeoCodingManager.getGeoCodeReverse(this, latitude, longitude);
+        }
+    }
+
+    @Override
     public void disconnect() {
         if(mGeoCodingManager!=null){
             mGeoCodingManager.cancel();

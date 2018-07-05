@@ -31,6 +31,8 @@ public class SuggestionsActivity extends MapBaseActivity implements OnSuggestion
     @BindView(R.id.btn_go)
     Button mBtnGo;
 
+    private boolean mIsUpdateAgain = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +50,22 @@ public class SuggestionsActivity extends MapBaseActivity implements OnSuggestion
 
     @Override
     protected void onUpdateLocation(Location location) {
-        mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        GeoPoint geoPoint = new GeoPoint(mCurrentLocation.longitude, mCurrentLocation.latitude);
-        mSuggestionFragment.onUpdateLocation(geoPoint);
-        if (mFeaturesSourceAddress != null && mFeaturesDestinationAddress != null) {
-            GeoPoint geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
-                    mFeaturesSourceAddress.getGeometry().getCoordinates().get(1));
+        if(!mIsUpdateAgain) {
 
-            GeoPoint geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
-                    mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
-            //mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination);
-        } else {
-            plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null, false);
+            mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+            GeoPoint geoPoint = new GeoPoint(mCurrentLocation.longitude, mCurrentLocation.latitude);
+            mSuggestionFragment.onUpdateLocation(geoPoint);
+            if (mFeaturesSourceAddress != null && mFeaturesDestinationAddress != null) {
+                GeoPoint geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
+                        mFeaturesSourceAddress.getGeometry().getCoordinates().get(1));
+
+                GeoPoint geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
+                        mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
+                //mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination);
+            } else {
+                plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null, false);
+            }
+            mIsUpdateAgain=true;
         }
     }
 

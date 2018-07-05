@@ -18,6 +18,18 @@ public class GeoCodingManager implements ResponseCallback<GeoCodingResponse> {
         mGeoCodingResponseCall.enqueue(new ResponseWrapper<GeoCodingResponse>(this));
     }
 
+    public void getGeoCodeForward(IGeoCodingResponseReceiver receiver, String queryString) {
+        this.mIGeoCodingResponseReceiver = receiver;
+        mGeoCodingResponseCall = RetrofitClient.getApiService().getGeoCode(ApiEndPoint.API_KEY,queryString);
+        mGeoCodingResponseCall.enqueue(new ResponseWrapper<GeoCodingResponse>(this));
+    }
+
+    public void getGeoCodeReverse(IGeoCodingResponseReceiver receiver, double latitude, double longitude) {
+        this.mIGeoCodingResponseReceiver = receiver;
+        mGeoCodingResponseCall = RetrofitClient.getApiService().getGeoCodeReverse(ApiEndPoint.API_KEY,latitude,longitude,1);
+        mGeoCodingResponseCall.enqueue(new ResponseWrapper<GeoCodingResponse>(this));
+    }
+
     /**
      * To cancel all on going calls from network
      */

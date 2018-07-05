@@ -49,6 +49,24 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
     }
 
     @Override
+    public void getGeoCodeDataForward(String query) {
+        isForCurrentLoc=false;
+        if (mISourceDestinationViewFragment != null) {
+            mISourceDestinationViewFragment.showLoader();
+            mGeoCodingManager.getGeoCodeForward(this, query);
+        }
+    }
+
+    @Override
+    public void getGeoCodeDataReverse(double latitude, double longitude) {
+        isForCurrentLoc=true;
+        if (mISourceDestinationViewFragment != null) {
+            mISourceDestinationViewFragment.showLoader();
+            mGeoCodingManager.getGeoCodeReverse(this, latitude,longitude);
+        }
+    }
+
+    @Override
     public void getNodesData(String bBox) {
         if (mISourceDestinationViewFragment != null) {
             mISourceDestinationViewFragment.showLoader();

@@ -90,7 +90,8 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
                     mListPopupWindow.dismiss();
                 }
                 if (mEditTextRoutingVia.hasFocus() && mEditTextRoutingVia != null && !mEditTextRoutingVia.getText().toString().equalsIgnoreCase("")) {
-                    mIFilterScreenPresenter.getCoordinatesData(mEditTextRoutingVia.getText().toString(), "", 5);
+                   // mIFilterScreenPresenter.getCoordinatesData(mEditTextRoutingVia.getText().toString(), "", 5);
+                    mIFilterScreenPresenter.getGeoCodeDataForward(mEditTextRoutingVia.getText().toString());
                 }
             }
 
@@ -137,7 +138,11 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
     public void fetchCurrentRoutingAdd() {
         mIsTextInputManually = false;
         if (mEditTextRoutingVia.hasFocus() && mEditTextRoutingVia != null && mEditTextRoutingVia.getText().toString().equalsIgnoreCase("")) {
-            mIFilterScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
+          //  mIFilterScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
+            if(mCurrentLocation!=null) {
+                String[] location = mCurrentLocation.split(",");
+                mIFilterScreenPresenter.getGeoCodeDataReverse(Double.parseDouble(location[1]),Double.parseDouble(location[0]));
+            }
         }
 
     }
