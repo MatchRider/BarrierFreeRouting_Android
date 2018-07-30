@@ -25,6 +25,8 @@ public interface ApiEndPoint {
     // String CONSUMER_SECRET_KEY=  "OWzh43EcXC3Q7wfkZIIg2OQKTPoqr0VcpzR4PRTb"; // developement
 
 
+    String BASE_URL_SALIL = "https://disabledrouteapi.azurewebsites.net/DisableRoute/";
+
 
     String requestTokenUrl= "request_token";
     String authorizeUrl=   "authorize";

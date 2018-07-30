@@ -1,6 +1,8 @@
 package com.disablerouting.api;
 
 import com.disablerouting.capture_option.model.RequestCreateNode;
+import com.disablerouting.curd_operations.model.RequestGetWay;
+import com.disablerouting.curd_operations.model.ResponseWay;
 import com.disablerouting.feedback.model.RequestCreateChangeSet;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
 import com.disablerouting.route_planner.model.DirectionsResponse;
@@ -91,5 +93,8 @@ public interface ApiService {
         //, @Query("wheelchair") String wheelChair not using
     Call<NodeResponse> getNodes(@Query("api_key") String apiKey, @Query("bbox") String bbox, @Query("per_page") int perPage);
 
+
+    @POST("Get/")
+    Call<ResponseWay> getWays(@Body RequestGetWay getWay);
 
 }
