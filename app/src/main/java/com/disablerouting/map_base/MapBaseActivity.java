@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.disablerouting.R;
 import com.disablerouting.application.AppData;
 import com.disablerouting.base.BaseActivityImpl;
@@ -543,7 +544,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         Button btnCancel = (Button) customView.findViewById(R.id.btn_cancel);
         textViewDescription.setText(description);
         builder.setView(customView);
-        if (mAlertDialogFeedback == null){
+        if (mAlertDialogFeedback == null) {
             mAlertDialogFeedback = builder.create();
         }
         if (!mAlertDialogFeedback.isShowing()) {
@@ -693,7 +694,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         Button btnSorryNo = (Button) customView.findViewById(R.id.btn_sorry_no);
         Button btnOk = (Button) customView.findViewById(R.id.btn_ok);
         builder.setView(customView);
-        if (mAlertDialogEnhance == null){
+        if (mAlertDialogEnhance == null) {
             mAlertDialogEnhance = builder.create();
         }
         if (mAlertDialogEnhance.isShowing()) {
@@ -732,13 +733,13 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         View customView = layoutInflater.inflate(R.layout.on_sorry_click_dialog, null);
         Button btnOk = (Button) customView.findViewById(R.id.btn_ok);
         builder.setView(customView);
-        if (mAlertDialogSorry == null){
+        if (mAlertDialogSorry == null) {
             mAlertDialogSorry = builder.create();
         }
         if (mAlertDialogSorry.isShowing()) {
             mAlertDialogSorry.dismiss();
         } else {
-            if(mAlertDialogEnhance!=null && !mAlertDialogEnhance.isShowing()) {
+            if (mAlertDialogEnhance != null && !mAlertDialogEnhance.isShowing()) {
                 mAlertDialogSorry.show();
             }
         }
@@ -763,13 +764,13 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         View customView = layoutInflater.inflate(R.layout.take_closer_look_dialog, null);
         Button btnOk = (Button) customView.findViewById(R.id.btn_ok);
         builder.setView(customView);
-        if (mAlertDialogCloserLook == null){
+        if (mAlertDialogCloserLook == null) {
             mAlertDialogCloserLook = builder.create();
         }
         if (mAlertDialogCloserLook.isShowing()) {
             mAlertDialogCloserLook.dismiss();
         } else {
-            if(mAlertDialogEnhance!=null && !mAlertDialogEnhance.isShowing()) {
+            if (mAlertDialogEnhance != null && !mAlertDialogEnhance.isShowing()) {
                 mAlertDialogCloserLook.show();
             }
         }
@@ -790,6 +791,26 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     public void onDestroy() {
         super.onDestroy();
         UI_HANDLER.removeCallbacks(updateMarker);
+    }
+    int[] color = {R.color.colorTextGray,R.color.colorGreen,R.color.colorRed,android.R.color.holo_blue_bright};
+    int colorIndex=0;
+    public void addPolyLineForWays(List<GeoPoint> geoPoints, GeoPoint startPoint) {
+        Polyline line = new Polyline();
+        line.setPoints(geoPoints);
+        line.setWidth(10);
+        line.setColor(getResources().getColor(color[colorIndex]));
+        colorIndex=(colorIndex+1)%4;
+        line.setOnClickListener(new Polyline.OnClickListener() {
+            @Override
+            public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
+                Toast.makeText(mapView.getContext(), "polyline with " + polyline.getPoints().size() + "pts was tapped", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
+        mMapView.getOverlayManager().add(line);
+        setBoundingBox(startPoint, geoPoints.get(geoPoints.size() - 1));
+
+
     }
 }
 

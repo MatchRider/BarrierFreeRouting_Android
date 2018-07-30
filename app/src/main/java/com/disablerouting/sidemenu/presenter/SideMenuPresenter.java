@@ -42,7 +42,7 @@ public class SideMenuPresenter {
         if(UserPreferences.getInstance(mContext).isUserLoggedIn()) {
             slidingMenuItems.add(SideMenuData.LOGOUT);
         }else {
-            slidingMenuItems.remove(4);
+           // slidingMenuItems.remove(4); //TODO
         }
         return slidingMenuItems;
     }

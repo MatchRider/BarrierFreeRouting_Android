@@ -35,7 +35,10 @@ public class LoginActivity extends BaseActivityImpl  {
     public void OnLoginClick() {
         service = Utility.createOauth10a();
         new fetchRequestToken().execute("");
+
     }
+
+
 
     @Override
     protected void onNewIntent(Intent intent) {

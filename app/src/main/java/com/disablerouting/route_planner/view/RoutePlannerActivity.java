@@ -2,11 +2,16 @@ package com.disablerouting.route_planner.view;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -15,13 +20,19 @@ import com.disablerouting.common.AppConstant;
 import com.disablerouting.filter.view.FilterActivity;
 import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.map_base.MapBaseActivity;
-import com.disablerouting.route_planner.model.NodeItem;
-import com.disablerouting.route_planner.model.Steps;
+import com.disablerouting.route_planner.model.*;
+import com.disablerouting.utils.Utility;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,8 +55,16 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @BindView(R.id.btn_go)
     Button mButtonGo;
 
+    @BindView(R.id.toggle)
+    SwitchCompat mButtonToggle;
+
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
+
     private boolean mISMapPlotted = false;
     private boolean mIsUpdateAgain = false;
+    private OSMData mOSMData;
+    private HashMap<String, Node> mNodeHashMap = new HashMap<>();
 
 
     @Override
@@ -55,6 +74,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
         addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
 
+        String data = readOSMFile();
+        convertDataIntoModel(data);
     }
 
     @Override
@@ -64,7 +85,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     protected void onUpdateLocation(Location location) {
-        if(!mIsUpdateAgain) {
+        if (!mIsUpdateAgain) {
             mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
             GeoPoint geoPoint = new GeoPoint(mCurrentLocation.longitude, mCurrentLocation.latitude);
             mSourceDestinationFragment.onUpdateLocation(geoPoint);
@@ -78,7 +99,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             } else {
                 plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null, true);
             }
-            mIsUpdateAgain=true;
+            mIsUpdateAgain = true;
         }
 
     }
@@ -150,8 +171,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onSourceClickWhileNavigationRunning() {
-        if(mISMapPlotted){
-            mISMapPlotted= false;
+        if (mISMapPlotted) {
+            mISMapPlotted = false;
             mButtonGo.setVisibility(View.VISIBLE);
             mButtonGo.setClickable(true);
             mButtonGo.setText(R.string.go);
@@ -161,8 +182,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onDestinationClickWhileNavigationRunning() {
-        if(mISMapPlotted) {
-            mISMapPlotted= false;
+        if (mISMapPlotted) {
+            mISMapPlotted = false;
             mButtonGo.setVisibility(View.VISIBLE);
             mButtonGo.setClickable(true);
             mButtonGo.setText(R.string.go);
@@ -240,4 +261,158 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
     }
 
+    @OnClick(R.id.toggle)
+    public void onToggle() {
+        if (mButtonToggle.isChecked()) {
+            new MyTask().execute();
+
+        } else {
+            clearItemsFromMap();
+            Toast.makeText(this, "NormalMap", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void convertDataIntoModel(String data) {
+        JSONObject jsonObject = Utility.convertXMLtoJSON(data);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+            mOSMData = objectMapper.readValue(jsonObject.toString(), OSMData.class);
+            for (int i = 0; i < mOSMData.getOSM().getNode().size(); i++) {
+                mNodeHashMap.put(mOSMData.getOSM().getNode().get(i).getID(), mOSMData.getOSM().getNode().get(i));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String readOSMFile() {
+        InputStream input = null;
+        try {
+            input = getAssets().open("Befahrung_Incline_Matchrider.osm");
+            Reader reader = new InputStreamReader(input);
+            StringBuilder sb = new StringBuilder();
+            char buffer[] = new char[16384];  // read 16k blocks
+            int len;
+            while ((len = reader.read(buffer)) > 0) {
+                sb.append(buffer, 0, len);
+            }
+            reader.close();
+            return sb.toString();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class MyTask extends AsyncTask<Void, Void, List<WayCustomModel>> {
+        ProgressDialog pDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(RoutePlannerActivity.this);
+            pDialog.setMessage("Please Wait...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+        }
+
+        @Override
+        protected void onPostExecute(List<WayCustomModel> aVoid) {
+            super.onPostExecute(aVoid);
+            GeoPoint start = null;
+            for (int i=0;i<aVoid.size();i++){
+                if (i == 0)
+                    start = aVoid.get(i).getGeoPoint().get(0);
+
+                final GeoPoint finalStart = start;
+                addPolyLineForWays(aVoid.get(i).getGeoPoint(), finalStart);
+
+            }
+            pDialog.dismiss();
+
+
+        }
+
+        @Override
+        protected List<WayCustomModel> doInBackground(Void... params) {
+            try {
+                GeoPoint start = null;
+                final List<GeoPoint> geoPointsEnd = new ArrayList<>();
+                GeoPoint geoPoint = null;
+                final List<WayCustomModel> wayCustomModelList = new ArrayList<>();
+                for (int i = 0; i < mOSMData.getOSM().getWay().size(); i++) {
+                    final List<GeoPoint> geoPoints = new ArrayList<>();
+                    List<Node> nodeList = new ArrayList<>();
+                    List<GeoPoint> geoPointArrayList = new ArrayList<>();
+                    WayCustomModel wayCustomModel = new WayCustomModel();
+
+                    for (int j = 0; j < mOSMData.getOSM().getWay().get(i).getNdList().size(); j++) {
+
+                        String refNode = mOSMData.getOSM().getWay().get(i).getNdList().get(j).getRef();
+                          /*  if (refNode.equalsIgnoreCase(mNodeHashMap.get(refNode).getID())) {
+                                geoPoint = new GeoPoint(Double.parseDouble(mNodeHashMap.get(refNode).getLatitude()),
+                                        Double.parseDouble(mNodeHashMap.get(refNode).getLongitude()));
+                                geoPoints.add(geoPoint);
+
+                            }
+                          */
+
+                        nodeList.add(mNodeHashMap.get(refNode));
+                        geoPointArrayList.add(new GeoPoint(Double.parseDouble(mNodeHashMap.get(refNode).getLatitude()),
+                                Double.parseDouble(mNodeHashMap.get(refNode).getLongitude())));
+                        wayCustomModel.setGeoPoint(geoPointArrayList);
+
+                    }
+                    wayCustomModel.setId(mOSMData.getOSM().getWay().get(i).getID());
+                    wayCustomModel.setTag(mOSMData.getOSM().getWay().get(i).getTagList());
+                    wayCustomModel.setNode(nodeList);
+                    wayCustomModel.setGeoPoint(geoPointArrayList);
+                    wayCustomModelList.add(wayCustomModel);
+
+
+                    /*if (i == 0)
+                        start = geoPoints.get(0);
+
+                    final GeoPoint finalStart = start;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            addPolyLineForWays(geoPoints, finalStart);
+
+                        }
+                    });
+                    geoPointsEnd.add(geoPoint);*/
+                }
+
+                /*for (int i=0;i<wayCustomModelList.size();i++){
+                    if (i == 0)
+                        start = wayCustomModelList.get(i).getGeoPoint().get(0);
+
+                    final GeoPoint finalStart = start;
+                    addPolyLineForWays(wayCustomModelList.get(i).getGeoPoint(), finalStart);
+
+                    *//*runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            addPolyLineForWays(wayCustomModelList.get(finalI).getGeoPoint(), finalStart);
+
+                        }
+                    });*//*
+                }*/
+
+                publishProgress();
+                return wayCustomModelList;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 }
