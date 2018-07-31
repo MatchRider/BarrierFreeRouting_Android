@@ -17,10 +17,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.curd_operations.manager.GetWayManager;
+import com.disablerouting.curd_operations.model.RequestGetWay;
+import com.disablerouting.curd_operations.model.ResponseWay;
 import com.disablerouting.filter.view.FilterActivity;
 import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.map_base.MapBaseActivity;
 import com.disablerouting.route_planner.model.*;
+import com.disablerouting.route_planner.presenter.IRoutePlannerScreenPresenter;
+import com.disablerouting.route_planner.presenter.IRouteView;
+import com.disablerouting.route_planner.presenter.RoutePlannerScreenPresenter;
 import com.disablerouting.utils.Utility;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.overlay.Polyline;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDestinationListener {
+public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDestinationListener , IRouteView {
 
     private SourceDestinationFragment mSourceDestinationFragment;
     private Features mFeaturesSourceAddress;
@@ -65,15 +72,14 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private boolean mIsUpdateAgain = false;
     private OSMData mOSMData;
     private HashMap<String, Node> mNodeHashMap = new HashMap<>();
-
-
+    private IRoutePlannerScreenPresenter mIRoutePlannerScreenPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
         addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
-
+        mIRoutePlannerScreenPresenter= new RoutePlannerScreenPresenter(this, new GetWayManager());
         String data = readOSMFile();
         convertDataIntoModel(data);
     }
@@ -308,6 +314,27 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         return "";
     }
 
+    @Override
+    public void showLoader() {
+        mProgressBar.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    public void hideLoader() {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onWayDataReceived(ResponseWay responseWay) {
+        Toast.makeText(RoutePlannerActivity.this,"Status is : "+responseWay.isStatus(),Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFailure(String error) {
+        Toast.makeText(RoutePlannerActivity.this,"Status is not found: ",Toast.LENGTH_SHORT).show();
+    }
+
     @SuppressLint("StaticFieldLeak")
     private class MyTask extends AsyncTask<Void, Void, List<WayCustomModel>> {
         ProgressDialog pDialog;
@@ -325,43 +352,28 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         @Override
         protected void onPostExecute(List<WayCustomModel> aVoid) {
             super.onPostExecute(aVoid);
-            GeoPoint start = null;
-            for (int i=0;i<aVoid.size();i++){
-                if (i == 0)
-                    start = aVoid.get(i).getGeoPoint().get(0);
+            setBoundingBox(aVoid.get(0).getGeoPoint().get(0), aVoid.get(aVoid.size()-1).getGeoPoint().get(0));
 
-                final GeoPoint finalStart = start;
-                addPolyLineForWays(aVoid.get(i).getGeoPoint(), finalStart);
-
-            }
             pDialog.dismiss();
-
 
         }
 
         @Override
         protected List<WayCustomModel> doInBackground(Void... params) {
             try {
+
                 GeoPoint start = null;
-                final List<GeoPoint> geoPointsEnd = new ArrayList<>();
-                GeoPoint geoPoint = null;
                 final List<WayCustomModel> wayCustomModelList = new ArrayList<>();
+
                 for (int i = 0; i < mOSMData.getOSM().getWay().size(); i++) {
-                    final List<GeoPoint> geoPoints = new ArrayList<>();
+
                     List<Node> nodeList = new ArrayList<>();
                     List<GeoPoint> geoPointArrayList = new ArrayList<>();
-                    WayCustomModel wayCustomModel = new WayCustomModel();
+                    final WayCustomModel wayCustomModel = new WayCustomModel();
 
                     for (int j = 0; j < mOSMData.getOSM().getWay().get(i).getNdList().size(); j++) {
 
                         String refNode = mOSMData.getOSM().getWay().get(i).getNdList().get(j).getRef();
-                          /*  if (refNode.equalsIgnoreCase(mNodeHashMap.get(refNode).getID())) {
-                                geoPoint = new GeoPoint(Double.parseDouble(mNodeHashMap.get(refNode).getLatitude()),
-                                        Double.parseDouble(mNodeHashMap.get(refNode).getLongitude()));
-                                geoPoints.add(geoPoint);
-
-                            }
-                          */
 
                         nodeList.add(mNodeHashMap.get(refNode));
                         geoPointArrayList.add(new GeoPoint(Double.parseDouble(mNodeHashMap.get(refNode).getLatitude()),
@@ -375,38 +387,22 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     wayCustomModel.setGeoPoint(geoPointArrayList);
                     wayCustomModelList.add(wayCustomModel);
 
+                    start = null;
+                        if (i == 0)
+                            start = geoPointArrayList.get(0);
 
-                    /*if (i == 0)
-                        start = geoPoints.get(0);
+                        final GeoPoint finalStart = start;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                addPolyLineForWays(wayCustomModel.getGeoPoint(), finalStart, wayCustomModel);
 
-                    final GeoPoint finalStart = start;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            addPolyLineForWays(geoPoints, finalStart);
-
-                        }
-                    });
-                    geoPointsEnd.add(geoPoint);*/
+                            }
+                        });
                 }
 
-                /*for (int i=0;i<wayCustomModelList.size();i++){
-                    if (i == 0)
-                        start = wayCustomModelList.get(i).getGeoPoint().get(0);
+                //setBoundingBox(wayCustomModelList.get(0).getGeoPoint().get(0), wayCustomModelList.get(wayCustomModelList.size()-1).getGeoPoint().get(0));
 
-                    final GeoPoint finalStart = start;
-                    addPolyLineForWays(wayCustomModelList.get(i).getGeoPoint(), finalStart);
-
-                    *//*runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            addPolyLineForWays(wayCustomModelList.get(finalI).getGeoPoint(), finalStart);
-
-                        }
-                    });*//*
-                }*/
-
-                publishProgress();
                 return wayCustomModelList;
 
             } catch (Exception e) {
@@ -414,5 +410,19 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             }
             return null;
         }
+    }
+
+    @Override
+    public void checkForWay(Polyline polyline, String way) {
+        super.checkForWay(polyline, way);
+        RequestGetWay requestGetWay= new RequestGetWay();
+        requestGetWay.setStringWay(way);
+        mIRoutePlannerScreenPresenter.getWays(requestGetWay);
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

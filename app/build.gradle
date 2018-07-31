@@ -45,7 +45,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:12.0.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
     implementation 'com.github.scribejava:scribejava-apis:5.4.0'
-    implementation 'com.github.smart-fun:XmlToJson:1.4.4'    // add this line
+    implementation 'com.github.smart-fun:XmlToJson:1.4.4'
 
 
 }

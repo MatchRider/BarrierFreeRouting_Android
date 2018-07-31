@@ -32,6 +32,7 @@ import com.disablerouting.common.AppConstant;
 import com.disablerouting.common.PolylineDecoder;
 import com.disablerouting.route_planner.model.NodeItem;
 import com.disablerouting.route_planner.model.Steps;
+import com.disablerouting.route_planner.model.WayCustomModel;
 import com.disablerouting.setting.SettingActivity;
 import com.disablerouting.utils.PermissionUtils;
 import com.google.android.gms.common.api.ApiException;
@@ -792,25 +793,32 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         super.onDestroy();
         UI_HANDLER.removeCallbacks(updateMarker);
     }
-    int[] color = {R.color.colorTextGray,R.color.colorGreen,R.color.colorRed,android.R.color.holo_blue_bright};
-    int colorIndex=0;
-    public void addPolyLineForWays(List<GeoPoint> geoPoints, GeoPoint startPoint) {
+
+
+    private int[] color = {R.color.colorTextGray,R.color.colorGreen,R.color.colorRed,android.R.color.holo_blue_bright};
+    private int colorIndex=0;
+
+    public void addPolyLineForWays(List<GeoPoint> geoPoints, GeoPoint startPoint, WayCustomModel wayCustomModel) {
         Polyline line = new Polyline();
         line.setPoints(geoPoints);
+        line.setRelatedObject(wayCustomModel.getId());
         line.setWidth(10);
         line.setColor(getResources().getColor(color[colorIndex]));
         colorIndex=(colorIndex+1)%4;
         line.setOnClickListener(new Polyline.OnClickListener() {
             @Override
             public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                Toast.makeText(mapView.getContext(), "polyline with " + polyline.getPoints().size() + "pts was tapped", Toast.LENGTH_LONG).show();
+                checkForWay(polyline,polyline.getRelatedObject().toString());
                 return false;
             }
         });
         mMapView.getOverlayManager().add(line);
-        setBoundingBox(startPoint, geoPoints.get(geoPoints.size() - 1));
+       // setBoundingBox(startPoint, geoPoints.get(geoPoints.size() - 1));
 
+    }
 
+    public void checkForWay(Polyline polyline, String way){
+        Toast.makeText(mMapView.getContext(), "polyline with " + polyline.getPoints().size() + "pts was tapped", Toast.LENGTH_LONG).show();
     }
 }
 
