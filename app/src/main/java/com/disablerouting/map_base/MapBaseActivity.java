@@ -24,7 +24,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.disablerouting.R;
 import com.disablerouting.application.AppData;
 import com.disablerouting.base.BaseActivityImpl;
@@ -826,7 +825,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     }
 
     public void checkForWay(Polyline polyline, String way){
-        Toast.makeText(mMapView.getContext(), "polyline with " + polyline.getPoints().size() + "pts was tapped", Toast.LENGTH_LONG).show();
+        //oast.makeText(mMapView.getContext(), "polyline with " + polyline.getPoints().size() + "pts was tapped", Toast.LENGTH_LONG).show();
     }
 }
 

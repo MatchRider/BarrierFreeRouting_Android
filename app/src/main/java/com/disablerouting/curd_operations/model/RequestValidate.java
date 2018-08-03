@@ -15,4 +15,8 @@ public class RequestValidate {
     public List<WayDataValidate> getWayDataValidates() {
         return mWayDataValidates;
     }
+
+    public void setWayDataValidates(List<WayDataValidate> wayDataValidates) {
+        mWayDataValidates = wayDataValidates;
+    }
 }

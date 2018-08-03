@@ -14,11 +14,44 @@ public class AttributesValidate {
     @JsonProperty("highway")
     String mHighWay;
 
+
+
+    @JsonProperty("incline")
+    String mIncline;
+
+    @JsonProperty("width")
+    String mHWidth;
+
+
     public String getFootWay() {
         return mFootWay;
     }
 
     public String getHighWay() {
         return mHighWay;
+    }
+
+    public void setFootWay(String footWay) {
+        mFootWay = footWay;
+    }
+
+    public void setHighWay(String highWay) {
+        mHighWay = highWay;
+    }
+
+    public String getIncline() {
+        return mIncline;
+    }
+
+    public void setIncline(String incline) {
+        mIncline = incline;
+    }
+
+    public String getHWidth() {
+        return mHWidth;
+    }
+
+    public void setHWidth(String HWidth) {
+        mHWidth = HWidth;
     }
 }

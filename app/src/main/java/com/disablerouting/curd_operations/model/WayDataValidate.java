@@ -20,4 +20,12 @@ public class WayDataValidate {
     public AttributesValidate getAttributes() {
         return mAttributesValidate;
     }
+
+    public void setId(String id) {
+        mId = id;
+    }
+
+    public void setAttributesValidate(AttributesValidate attributesValidate) {
+        mAttributesValidate = attributesValidate;
+    }
 }

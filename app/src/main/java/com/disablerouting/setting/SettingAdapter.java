@@ -93,4 +93,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
         mSelectionMap = selectionMap;
     }
 
+    public HashMap<Integer, String> getSelectionMap() {
+        return mSelectionMap;
+    }
 }
