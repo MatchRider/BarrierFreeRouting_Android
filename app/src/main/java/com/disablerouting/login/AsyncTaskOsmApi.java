@@ -50,7 +50,10 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
         request.addHeader("Content-Type", "application/xml;charset=UTF-8");
         request.addHeader("Accept", "application/xml;versions=1");
         request.setPayload(mOauthData.getRequestBody());
-        String[] tokens = UserPreferences.getInstance(mContext).getAccessToken().split(",", -1);
+        String[] tokens=null;
+        if(UserPreferences.getInstance(mContext)!=null) {
+            tokens = UserPreferences.getInstance(mContext).getAccessToken().split(",", -1);
+        }
         OAuth1AccessToken oAuth1AccessToken = new OAuth1AccessToken(tokens[0],tokens[1]);
         service.signRequest(oAuth1AccessToken, request);
         Response response;
@@ -88,5 +91,11 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
             pDialog.dismiss();
         }
 
+    }
+
+    public void dismissDialog(){
+        if(pDialog!=null){
+            pDialog.dismiss();
+        }
     }
 }

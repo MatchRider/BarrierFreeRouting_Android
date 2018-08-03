@@ -21,9 +21,58 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:padding="@dimen/padding_large"
+            android:visibility="gone"
             android:layout_below="@id/contentContainer"
             android:layout_gravity="center"
-            />
+    />
+
+    <RadioGroup
+            android:layout_below="@id/contentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioGroup"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_centerHorizontal="true">
+
+        <RadioButton
+                android:text="Route"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButtonRoutes"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="@dimen/padding_normal"
+                android:textColor="@color/colorPrimary"
+                android:background="@drawable/custom_btn_radio"
+                tools:text="Route"/>
+
+        <RadioButton
+                android:text="Validated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButtonValidated"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="@dimen/padding_normal"
+                android:textColor="@color/colorPrimary"
+                android:background="@drawable/custom_btn_radio"
+                android:layout_weight="1"/>
+
+        <RadioButton
+                android:text="Not Validated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:gravity="center"
+                android:textColor="@color/colorPrimary"
+                android:padding="@dimen/padding_normal"
+                android:background="@drawable/custom_btn_radio"
+                android:id="@+id/radioButtonNotValidated"/>
+    </RadioGroup>
     <ImageView
             android:id="@+id/img_re_center"
             android:layout_width="wrap_content"

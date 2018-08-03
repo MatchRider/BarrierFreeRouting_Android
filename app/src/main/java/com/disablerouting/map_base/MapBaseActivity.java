@@ -798,6 +798,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private int[] color = {R.color.colorTextGray,R.color.colorGreen,R.color.colorRed,android.R.color.holo_blue_bright};
     private int colorIndex=0;
 
+
     public void addPolyLineForWays(List<GeoPoint> geoPoints, GeoPoint startPoint, WayCustomModel wayCustomModel) {
         Polyline line = new Polyline();
         line.setPoints(geoPoints);
@@ -812,7 +813,9 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 return false;
             }
         });
-        mMapView.getOverlayManager().add(line);
+        mMapView.getOverlays().add(line);
+//        mMapView.getOverlayManager().add(line);
+
        // setBoundingBox(startPoint, geoPoints.get(geoPoints.size() - 1));
 
     }

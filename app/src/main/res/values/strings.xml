@@ -41,7 +41,7 @@
     <string name="enter_source">Enter Source</string>
     <string name="b">B</string>
     <string name="enter_destination">Enter Destination</string>
-    <string name="go">Go!</string>
+    <string name="go">los!</string>
     <string name="coming_soon">Coming soon</string>
     <string name="please_provide_feedback_for">Please provide feedback for</string>
     <string name="cancel" tools:ignore="ButtonCase">CANCEL</string>

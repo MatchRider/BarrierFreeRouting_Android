@@ -30,7 +30,7 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView,
     private FeedBackModel mFeedBackModel;
     private boolean mISStartedFromSuggestion;
     private String mURL="https://master.apis.dev.openstreetmap.org/api/0.6/changeset/create";
-
+    private AsyncTaskOsmApi asyncTaskOsmApi;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +57,8 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView,
 
         String string="<osm><changeset><tag k=\"created_by\" v=\"JOSM 1.61\"/><tag k=\"comment\" v=\"Just adding some streetnames\"/></changeset></osm>";
         OauthData oauthData= new OauthData(Verb.PUT,string,mURL);
-        new AsyncTaskOsmApi(FeedbackActivity.this,oauthData,this).execute("");
+        asyncTaskOsmApi= new AsyncTaskOsmApi(FeedbackActivity.this,oauthData,this);
+        asyncTaskOsmApi.execute("");
     }
 
 
@@ -116,5 +117,11 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView,
                 Toast.makeText(FeedbackActivity.this, errorBody, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        asyncTaskOsmApi.dismissDialog();
     }
 }

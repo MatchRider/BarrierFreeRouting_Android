@@ -2,6 +2,7 @@ package com.disablerouting.api;
 
 import com.disablerouting.capture_option.model.RequestCreateNode;
 import com.disablerouting.curd_operations.model.RequestGetWay;
+import com.disablerouting.curd_operations.model.RequestValidate;
 import com.disablerouting.curd_operations.model.ResponseWay;
 import com.disablerouting.feedback.model.RequestCreateChangeSet;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
@@ -95,6 +96,9 @@ public interface ApiService {
 
 
     @POST("Get/")
-    Call<ResponseWay> getWays(@Body RequestGetWay getWay);
+    Call<ResponseWay> getWays(@Body RequestGetWay requestGetWay);
+
+    @POST("Validate")
+    Call<ResponseWay> validate(@Body RequestValidate requestValidate);
 
 }
