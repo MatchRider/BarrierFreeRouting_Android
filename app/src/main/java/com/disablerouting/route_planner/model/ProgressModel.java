@@ -10,11 +10,13 @@ public class ProgressModel {
     private GeoPoint start;
     private WayCustomModel mWayCustomModel;
     private List<GeoPoint> mGeoPointList;
+    private boolean mValid;
 
-    public ProgressModel(List<GeoPoint> geoPoints, GeoPoint startPoint, WayCustomModel wayCustomModel) {
+    public ProgressModel(List<GeoPoint> geoPoints, GeoPoint startPoint, WayCustomModel wayCustomModel, boolean valid) {
         this.start=startPoint;
         this.mWayCustomModel=wayCustomModel;
         this.mGeoPointList=geoPoints;
+        this.mValid = valid;
     }
 
     public GeoPoint getStart() {
@@ -27,5 +29,9 @@ public class ProgressModel {
 
     public List<GeoPoint> getGeoPointList() {
         return mGeoPointList;
+    }
+
+    public boolean isValid() {
+        return mValid;
     }
 }

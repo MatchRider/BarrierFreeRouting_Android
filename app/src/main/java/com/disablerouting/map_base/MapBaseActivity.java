@@ -799,13 +799,18 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private int colorIndex=0;
 
 
-    public void addPolyLineForWays(List<GeoPoint> geoPoints, GeoPoint startPoint, WayCustomModel wayCustomModel) {
+    public void addPolyLineForWays(List<GeoPoint> geoPoints, GeoPoint startPoint, WayCustomModel wayCustomModel, boolean valid) {
         Polyline line = new Polyline();
         line.setPoints(geoPoints);
         line.setRelatedObject(wayCustomModel.getId());
         line.setWidth(10);
-        line.setColor(getResources().getColor(color[colorIndex]));
-        colorIndex=(colorIndex+1)%4;
+        if(valid){
+            line.setColor(getResources().getColor(R.color.colorGreen));
+        }else {
+            line.setColor(getResources().getColor(R.color.colorRed));
+        }
+        //line.setColor(getResources().getColor(color[colorIndex]));
+        //colorIndex=(colorIndex+1)%4;
         line.setOnClickListener(new Polyline.OnClickListener() {
             @Override
             public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {

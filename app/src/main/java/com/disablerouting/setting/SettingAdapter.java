@@ -63,6 +63,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
             holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
             holder.mCheckBoxVerify.setChecked(true);
             holder.mCheckBoxVerify.setText("Verified");
+            holder.mImageViewEdit.setVisibility(View.GONE);
         }
 
     }

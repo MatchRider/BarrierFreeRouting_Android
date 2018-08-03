@@ -167,7 +167,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     default:
 
                 }
-
             }
         }
     }
