@@ -15,16 +15,6 @@
             android:layout_below="@+id/contentContainer"
             android:layout_height="match_parent"/>
 
-    <android.support.v7.widget.SwitchCompat
-            android:id="@+id/toggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:padding="@dimen/padding_large"
-            android:visibility="gone"
-            android:layout_below="@id/contentContainer"
-            android:layout_gravity="center"
-    />
 
     <RadioGroup
             android:layout_below="@id/contentContainer"

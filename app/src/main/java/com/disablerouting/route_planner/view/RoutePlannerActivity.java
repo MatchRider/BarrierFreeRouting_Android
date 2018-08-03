@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.*;
 import butterknife.BindView;
@@ -25,6 +24,7 @@ import com.disablerouting.route_planner.model.*;
 import com.disablerouting.route_planner.presenter.IRoutePlannerScreenPresenter;
 import com.disablerouting.route_planner.presenter.IRouteView;
 import com.disablerouting.route_planner.presenter.RoutePlannerScreenPresenter;
+import com.disablerouting.setting.SettingActivity;
 import com.disablerouting.utils.Utility;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,9 +60,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @BindView(R.id.btn_go)
     Button mButtonGo;
 
-    @BindView(R.id.toggle)
-    SwitchCompat mButtonToggle;
-
     @BindView(R.id.radioGroup)
     RadioGroup mRadioGroup;
 
@@ -76,6 +73,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     RadioButton mRadioButtonNotValidated;
 
     private int mButtonSelected;
+    private ProgressDialog pDialog;
 
 
     @BindView(R.id.progressBar)
@@ -217,6 +215,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void reCenter() {
         clearItemsFromMap();
         addCurrentLocation();
+        stopRunningMarker();
     }
 
     @Override
@@ -284,17 +283,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
     }
 
-    @OnClick(R.id.toggle)
-    public void onToggle() {
-        if (mButtonToggle.isChecked()) {
-            new PlotWayDataTask().execute();
-
-        } else {
-            clearItemsFromMap();
-            Toast.makeText(this, "NormalMap", Toast.LENGTH_SHORT).show();
-        }
-
-    }
 
     private void convertDataIntoModel(String data) {
         JSONObject jsonObject = Utility.convertXMLtoJSON(data);
@@ -342,15 +330,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         mProgressBar.setVisibility(View.GONE);
     }
 
-    @Override
-    public void onWayDataReceived(ResponseWay responseWay) {
-        Toast.makeText(RoutePlannerActivity.this, "Status is : " + responseWay.isStatus(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onFailure(String error) {
-        Toast.makeText(RoutePlannerActivity.this, "Status is not found: ", Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -398,8 +377,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
         }
     }
-
-    ProgressDialog pDialog;
 
     @SuppressLint("StaticFieldLeak")
     private class PlotWayDataTask extends AsyncTask<Void, ProgressModel, List<WayCustomModel>> {
@@ -495,6 +472,22 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             pDialog.dismiss();
         }
     }
+
+    @Override
+    public void onWayDataReceived(ResponseWay responseWay) {
+        Toast.makeText(RoutePlannerActivity.this, "Status is : " + responseWay.isStatus(), Toast.LENGTH_SHORT).show();
+         Intent intent= new Intent(this,SettingActivity.class);
+
+         intent.putExtra("WayData", responseWay);
+            launchActivity(intent);
+
+    }
+
+    @Override
+    public void onFailure(String error) {
+        Toast.makeText(RoutePlannerActivity.this, "Status is not found: ", Toast.LENGTH_SHORT).show();
+    }
+
 
 
 }

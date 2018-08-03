@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.curd_operations.model.ResponseWay;
 import com.disablerouting.setting.setting_detail.SettingDetailActivity;
 
 import java.util.ArrayList;
@@ -26,6 +26,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     final int OPEN_SETTING_TYPE = 200;
     private SettingAdapter mSettingAdapter;
     private int mPositionClicked = -1;
+    private ResponseWay mResponseWayData;
+    private HashMap<Integer, String> hashMapWay = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,15 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
 
+        if(getIntent().hasExtra("WayData")){
+            mResponseWayData= getIntent().getParcelableExtra("WayData");
+            if(mResponseWayData!=null) {
+                getDataFromWay();
+            }
+        }
+
         setUpRecyclerView();
+
     }
 
     /**
@@ -43,6 +53,11 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         mSettingAdapter = new SettingAdapter(prepareListData(), this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mSettingAdapter);
+        if(hashMapWay!=null){
+            mSettingAdapter.setSelectionMap(hashMapWay);
+            mSettingAdapter.notifyDataSetChanged();
+
+        }
     }
 
     private ArrayList<String> prepareListData() {
@@ -91,32 +106,12 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     public void OnIconCheckBoxOnClick(View v, int position, boolean isChecked) {
         switch (position) {
             case 0:
-                if (isChecked) {
-                    Toast.makeText(this, position + "Verify", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, position + "Unverify", Toast.LENGTH_SHORT).show();
-                }
                 break;
             case 1:
-                if (isChecked) {
-                    Toast.makeText(this, position + "Verify", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, position + "Unverify", Toast.LENGTH_SHORT).show();
-                }
                 break;
             case 2:
-                if (isChecked) {
-                    Toast.makeText(this, position + "Verify", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, position + "Unverify", Toast.LENGTH_SHORT).show();
-                }
                 break;
             case 3:
-                if (isChecked) {
-                    Toast.makeText(this, position + "Verify", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, position + "Unverify", Toast.LENGTH_SHORT).show();
-                }
                 break;
 
         }
@@ -142,6 +137,37 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 hashMap.put(mPositionClicked, dataString);
                 mSettingAdapter.setSelectionMap(hashMap);
                 mSettingAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+
+    private void getDataFromWay(){
+        for (int i=0;i<mResponseWayData.getWayData().size();i++){
+            for (int j=0;j<mResponseWayData.getWayData().get(i).getAttributesList().size();j++){
+                switch (mResponseWayData.getWayData().get(i).getAttributesList()
+                        .get(j).getKey()){
+
+                    case "incline":
+                        hashMapWay.put(2,mResponseWayData.getWayData().get(i).getAttributesList().get(j).getValue());
+                        break;
+
+                    case "footway":
+                        hashMapWay.put(0,mResponseWayData.getWayData().get(i).getAttributesList().get(j).getValue());
+                        break;
+
+                    case "highway":
+                        hashMapWay.put(1,mResponseWayData.getWayData().get(i).getAttributesList().get(j).getValue());
+                        break;
+
+                    case "width":
+                        hashMapWay.put(3,mResponseWayData.getWayData().get(i).getAttributesList().get(j).getValue());
+                        break;
+
+                    default:
+
+                }
+
             }
         }
     }
