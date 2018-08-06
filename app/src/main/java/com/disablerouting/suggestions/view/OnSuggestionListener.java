@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OnSuggestionListener {
 
-    void plotDataOnMap(String encodedString, List<Steps> stepsList);
+    void plotDataOnMap(List<List<Double>> encodedString, List<Steps> stepsList);
 
     void onSourceDestinationSelected(Features featuresSource, Features featuresDestination);
 

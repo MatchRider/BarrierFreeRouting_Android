@@ -8,8 +8,11 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DirectionsResponse {
 
-    @JsonProperty("routes")
-    private List<Routes> mRoutesList;
+    @JsonProperty("features")
+    private List<Features> mFeaturesList;
+
+    @JsonProperty("bbox")
+    private List<Double> bbox = null;
 
     @JsonProperty("info")
     private Info mInfo;
@@ -18,7 +21,11 @@ public class DirectionsResponse {
         return mInfo;
     }
 
-    public List<Routes> getRoutesList() {
-        return mRoutesList;
+    public List<Features> getFeaturesList() {
+        return mFeaturesList;
+    }
+
+    public List<Double> getBbox() {
+        return bbox;
     }
 }

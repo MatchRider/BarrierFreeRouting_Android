@@ -16,6 +16,7 @@ public class DirectionsManager implements ResponseCallback<DirectionsResponse> {
     public void getDestination(IDirectionsResponseReceiver receiver, String coordinates, String profileType, JSONObject jsonObject) {
         this.mIDirectionsResponseReceiver = receiver;
         String jsonString = null;
+        String geoJson = "geojson";
         if (jsonObject != null) {
             try {
                 jsonString = jsonObject.toString();
@@ -23,9 +24,9 @@ public class DirectionsManager implements ResponseCallback<DirectionsResponse> {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            mDirectionsApiCall = RetrofitClient.getApiServiceDirections().getDirections(ApiEndPoint.API_KEY, coordinates, profileType, jsonString);
+            mDirectionsApiCall = RetrofitClient.getApiServiceDirections().getDirections(ApiEndPoint.API_KEY, coordinates, profileType, jsonString, true, geoJson);
         } else {
-            mDirectionsApiCall = RetrofitClient.getApiService().getDirections(ApiEndPoint.API_KEY, coordinates, profileType);
+            mDirectionsApiCall = RetrofitClient.getApiService().getDirections(ApiEndPoint.API_KEY, coordinates, profileType,true, geoJson);
 
         }
         if (mDirectionsApiCall != null)

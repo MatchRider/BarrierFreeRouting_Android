@@ -6,13 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Routes {
+public class Properties {
 
     @JsonProperty("summary")
-    private Summary mSummary;
-
-    @JsonProperty("geometry")
-    private String mGeometry;
+    private List<Summary> mSummary;
 
     @JsonProperty("segments")
     private List<Segment> mSegmentList;
@@ -21,11 +18,7 @@ public class Routes {
         return mSegmentList;
     }
 
-    public Summary getSummary() {
+    public List<Summary> getSummary() {
         return mSummary;
-    }
-
-    public String getGeometry() {
-        return mGeometry;
     }
 }

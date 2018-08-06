@@ -12,11 +12,25 @@ public class Summary {
     @JsonProperty("duration")
     private int mDuration;
 
+    @JsonProperty("ascent")
+    private double mAscent;
+
+    @JsonProperty("descent")
+    private double mDescent;
+
     public double getDistance() {
         return mDistance;
     }
 
     public int getDuration() {
         return mDuration;
+    }
+
+    public double getAscent() {
+        return mAscent;
+    }
+
+    public double getDescent() {
+        return mDescent;
     }
 }

@@ -85,7 +85,7 @@ public class SuggestionsActivity extends MapBaseActivity implements OnSuggestion
     }
 
     @Override
-    public void plotDataOnMap(String encodedString, List<Steps> stepsList) {
+    public void plotDataOnMap(List<List<Double>> encodedString, List<Steps> stepsList) {
         if (encodedString != null && stepsList != null) {
             plotDataOfSourceDestination(encodedString, mSourceAddress, mDestinationAddress, stepsList, false);
         }

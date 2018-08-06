@@ -303,14 +303,14 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @Override
     public void onDirectionDataReceived(DirectionsResponse data) {
-        if (data != null && data.getRoutesList() != null && data.getRoutesList().size() != 0
-                && data.getRoutesList().get(0).getGeometry() != null && data.getRoutesList().get(0).getSegmentList().get(0).getStepsList() != null) {
-            for (int i= 0 ;i< data.getRoutesList().get(0).getSegmentList().size();i++){
-                    mOnSourceDestinationListener.plotDataOnMap(data.getRoutesList().get(0).getGeometry(), data.getRoutesList().get(0).
-                            getSegmentList().get(i).getStepsList());
+        if (data != null && data.getFeaturesList() != null && data.getFeaturesList().size() != 0
+                && data.getFeaturesList().get(0).getGeometry() != null && data.getFeaturesList().get(0).getProperties().getSegmentList().get(0).getStepsList() != null) {
+            for (int i = 0; i< data.getFeaturesList().get(0).getProperties().getSegmentList().size(); i++){
+                    mOnSourceDestinationListener.plotDataOnMap(data.getFeaturesList().get(0).getGeometry().getCoordinates(), data.getFeaturesList().get(0).getProperties()
+                            .getSegmentList().get(0).getStepsList());
 
             }
-            if(data.getRoutesList().get(0).getSegmentList().size()>1 && data.getInfo()!=null && data.getInfo().getQuery()!=null && data.getInfo().getQuery().getCoordinatesList()!=null &&
+            if(data.getFeaturesList().get(0).getProperties().getSegmentList().size()>1 && data.getInfo()!=null && data.getInfo().getQuery()!=null && data.getInfo().getQuery().getCoordinatesList()!=null &&
                     data.getInfo().getQuery().getCoordinatesList().get(1)!=null) {
                 GeoPoint geoPointMid = new GeoPoint(data.getInfo().getQuery().getCoordinatesList().get(1).get(1),
                         data.getInfo().getQuery().getCoordinatesList().get(1).get(0));
@@ -319,9 +319,9 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             }
 
             mLinearLayoutTimeDistance.setVisibility(View.VISIBLE);
-            if (data.getRoutesList().get(0).getSummary() != null) {
-                if (data.getRoutesList().get(0).getSummary().getDuration() != 0) {
-                    int time = data.getRoutesList().get(0).getSummary().getDuration();
+            if (data.getFeaturesList().get(0).getProperties().getSummary() != null) {
+                if (data.getFeaturesList().get(0).getProperties().getSummary().get(0).getDuration() != 0) {
+                    int time = data.getFeaturesList().get(0).getProperties().getSummary().get(0).getDuration();
                     int hours = time / 3600;
                     int minutes = (time % 3600) / 60;
                     if (hours == 0) {
@@ -333,14 +333,29 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 } else {
                     mTextViewTime.setText(String.format("%s%s", "--", getContext().getResources().getString(R.string.min)));
                 }
-                if (data.getRoutesList().get(0).getSummary().getDistance() != 0) {
-                    String distance = String.valueOf(Utility.trimTWoDecimalPlaces(data.getRoutesList().get(0).getSummary().getDistance() / 1000));
+                if (data.getFeaturesList().get(0).getProperties().getSummary().get(0).getDistance() != 0) {
+                    String distance = String.valueOf(Utility.trimTWoDecimalPlaces(data.getFeaturesList().get(0).getProperties().getSummary().get(0).getDistance() / 1000));
                     mTextViewKM.setText(new StringBuilder().append(distance).append(" ").append(getContext().getResources().getString(R.string.km)).toString());
                 } else {
                     mTextViewKM.setText(new StringBuilder().append("--").append(" ").append(getContext().getResources().getString(R.string.km)).toString());
                 }
-                mTextViewAccent.setText("--");
-                mTextViewDecent.setText("--");
+
+                if(data.getFeaturesList().get(0).getProperties().getSummary().get(0).getAscent()!=0){
+                    String ascent = String.valueOf(Utility.trimTWoDecimalPlaces(data.getFeaturesList().get(0).getProperties().getSummary().get(0).getAscent()/100));
+                    mTextViewAccent.setText(new StringBuilder().append(ascent).append(" ").append(getContext().getResources().getString(R.string.meter)).toString());
+
+                }else {
+                    mTextViewAccent.setText(new StringBuilder().append("--").append(" ").append(getContext().getResources().getString(R.string.meter)).toString());
+
+                }
+                if(data.getFeaturesList().get(0).getProperties().getSummary().get(0).getDescent()!=0){
+                    String descent = String.valueOf(Utility.trimTWoDecimalPlaces(data.getFeaturesList().get(0).getProperties().getSummary().get(0).getDescent()/100));
+                    mTextViewDecent.setText(new StringBuilder().append(descent).append(" ").append(getContext().getResources().getString(R.string.meter)).toString());
+
+                }else {
+                    mTextViewDecent.setText(new StringBuilder().append("--").append(" ").append(getContext().getResources().getString(R.string.meter)).toString());
+
+                }
             }
         } else {
             mLinearLayoutTimeDistance.setVisibility(View.GONE);

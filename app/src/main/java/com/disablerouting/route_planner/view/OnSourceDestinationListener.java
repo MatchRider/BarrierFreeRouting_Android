@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface OnSourceDestinationListener {
 
-    void plotDataOnMap(String encodedString, List<Steps> stepsList);
+    void plotDataOnMap(List<List<Double>> geoPointList, List<Steps> stepsList);
 
     void onBackPress();
 

@@ -28,7 +28,6 @@ import com.disablerouting.R;
 import com.disablerouting.application.AppData;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
-import com.disablerouting.common.PolylineDecoder;
 import com.disablerouting.route_planner.model.NodeItem;
 import com.disablerouting.route_planner.model.Steps;
 import com.disablerouting.route_planner.model.WayCustomModel;
@@ -204,14 +203,20 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     /**
      * Add path between two points
      *
-     * @param encodedGeoPoints plot encoded points
+     * @param geoPointList plot encoded points
      * @param stepsList        step list array
      */
-    public void plotDataOfSourceDestination(String encodedGeoPoints, String startAdd, String endAdd, List<Steps> stepsList, boolean showFeedbackDialog) {
+    public void plotDataOfSourceDestination(List<List<Double>> geoPointList, String startAdd, String endAdd, List<Steps> stepsList, boolean showFeedbackDialog) {
         GeoPoint geoPointStart = null, geoPointEnd = null;
         mShowFeedbackDialog = showFeedbackDialog;
-        if (encodedGeoPoints != null) {
-            List<GeoPoint> geoPointArrayList = PolylineDecoder.decodePoly(encodedGeoPoints);
+        if (geoPointList != null) {
+           //List<GeoPoint> geoPointArrayList = PolylineDecoder.decodePoly(encodedGeoPoints);
+            List<GeoPoint> geoPointArrayList= new ArrayList<>();
+            for (int i=0 ;i<geoPointList.size();i++){
+                GeoPoint geoPoint= new GeoPoint(Double.parseDouble(geoPointList.get(i).get(1).toString()),
+                        Double.parseDouble(geoPointList.get(i).get(0).toString()));
+                geoPointArrayList.add(geoPoint);
+            }
             addPolyLine(geoPointArrayList, stepsList);
             if (geoPointArrayList != null && geoPointArrayList.size() != 0) {
                 geoPointStart = geoPointArrayList.get(0);
@@ -825,7 +830,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     }
 
     public void checkForWay(Polyline polyline, String way){
-        //oast.makeText(mMapView.getContext(), "polyline with " + polyline.getPoints().size() + "pts was tapped", Toast.LENGTH_LONG).show();
+        //Toast.makeText(mMapView.getContext(), "polyline with " + polyline.getPoints().size() + "pts was tapped", Toast.LENGTH_LONG).show();
     }
 }
 

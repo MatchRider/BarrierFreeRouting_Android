@@ -396,11 +396,11 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
 
     @Override
     public void onDirectionDataReceived(DirectionsResponse data) {
-        if (data != null && data.getRoutesList() != null && data.getRoutesList().size() != 0
-                && data.getRoutesList().get(0).getGeometry() != null && data.getRoutesList().get(0).getSegmentList().get(0).getStepsList() != null) {
-            for (int i = 0; i < data.getRoutesList().get(0).getSegmentList().size(); i++) {
-                mSuggestionListener.plotDataOnMap(data.getRoutesList().get(0).getGeometry(), data.getRoutesList().get(0).
-                        getSegmentList().get(i).getStepsList());
+        if (data != null && data.getFeaturesList() != null && data.getFeaturesList().size() != 0
+                && data.getFeaturesList().get(0).getGeometry() != null && data.getFeaturesList().get(0).getProperties().getSegmentList().get(0).getStepsList() != null) {
+            for (int i = 0; i < data.getFeaturesList().get(0).getProperties().getSegmentList().size(); i++) {
+                mSuggestionListener.plotDataOnMap(data.getFeaturesList().get(0).getGeometry().getCoordinates(),
+                        data.getFeaturesList().get(0).getProperties().getSegmentList().get(i).getStepsList());
             }
         }
     }

@@ -26,7 +26,8 @@ public interface ApiService {
      */
     @GET("directions")
     Call<DirectionsResponse> getDirections(@Query("api_key") String api_key, @Query("coordinates") String coordinates,
-                                           @Query("profile") String profile, @Query("options") String options);
+                                           @Query("profile") String profile, @Query("options") String options,
+                                           @Query("elevation") boolean elevation , @Query("format") String geojson);
 
     /***
      * Api call for Directions
@@ -38,7 +39,8 @@ public interface ApiService {
      */
     @GET("directions")
     Call<DirectionsResponse> getDirections(@Query("api_key") String api_key, @Query("coordinates") String coordinates,
-                                           @Query("profile") String profile);
+                                           @Query("profile") String profile,@Query("elevation") boolean elevation,
+                                           @Query("format") String geojson);
 
     /**
      * Api call for getting places
