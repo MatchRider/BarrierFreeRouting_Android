@@ -227,7 +227,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             if (mISMapPlotted) {
                 mButtonGo.setVisibility(View.GONE);
                 mButtonGo.setClickable(false);
-                UI_HANDLER.post(updateMarker);
+               // UI_HANDLER.post(updateMarker);
             } else {
                 mButtonGo.setVisibility(View.VISIBLE);
                 mButtonGo.setClickable(true);

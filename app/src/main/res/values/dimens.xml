@@ -4,6 +4,7 @@
     <!-- Text Size -->
     <dimen name="text_smallest">8sp</dimen>
     <dimen name="text_small">9sp</dimen>
+    <dimen name="text_small_X">10sp</dimen>
     <dimen name="text_medium">12sp</dimen>
     <dimen name="text_large">14sp</dimen>
     <dimen name="text_normal">16sp</dimen>

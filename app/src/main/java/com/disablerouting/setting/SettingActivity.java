@@ -1,6 +1,7 @@
 package com.disablerouting.setting;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.manager.UpdateWayManager;
+import com.disablerouting.curd_operations.manager.ValidateWayManager;
 import com.disablerouting.curd_operations.model.*;
 import com.disablerouting.setting.presenter.ISettingScreenPresenter;
 import com.disablerouting.setting.presenter.SettingScreenPresenter;
@@ -32,7 +34,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private SettingAdapter mSettingAdapter;
     private int mPositionClicked = -1;
     private ResponseWay mResponseWayData;
-    private HashMap<Integer, String> hashMapWay = new HashMap<>();
+    @SuppressLint("UseSparseArrays")
+    private HashMap<Integer, String> mHashMapWay = new HashMap<>();
     private ISettingScreenPresenter mISettingScreenPresenter;
 
     @Override
@@ -41,7 +44,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
 
-        mISettingScreenPresenter= new SettingScreenPresenter(this,new UpdateWayManager());
+        mISettingScreenPresenter= new SettingScreenPresenter(this,new UpdateWayManager(), new ValidateWayManager());
         if(getIntent().hasExtra("WayData")){
             mResponseWayData= getIntent().getParcelableExtra("WayData");
             if(mResponseWayData!=null) {
@@ -59,8 +62,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         mSettingAdapter = new SettingAdapter(prepareListData(), this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mSettingAdapter);
-        if(hashMapWay!=null){
-            mSettingAdapter.setSelectionMap(hashMapWay);
+        if(mHashMapWay !=null){
+            mSettingAdapter.setSelectionMap(mHashMapWay);
             mSettingAdapter.notifyDataSetChanged();
 
         }
@@ -143,9 +146,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (requestCode == OPEN_SETTING_TYPE) {
             if (resultCode == RESULT_OK) {
                 String dataString = data.getStringExtra(AppConstant.SETTING_ITEM_SELECTED_RECIEVE);
-                //HashMap<Integer, String> hashMap = new HashMap<>();
-                hashMapWay.put(mPositionClicked, dataString);
-                mSettingAdapter.setSelectionMap(hashMapWay);
+                mHashMapWay.put(mPositionClicked, dataString);
+                mSettingAdapter.setSelectionMap(mHashMapWay);
                 mSettingAdapter.notifyDataSetChanged();
             }
         }
@@ -159,19 +161,19 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         .get(j).getKey()){
 
                     case "incline":
-                        hashMapWay.put(2,mResponseWayData.getWayData().get(i).getAttributesList().get(j).getValue());
+                        mHashMapWay.put(2,mResponseWayData.getWayData().get(i).getAttributesList().get(j).getValue());
                         break;
 
                     case "footway":
-                        hashMapWay.put(0,mResponseWayData.getWayData().get(i).getAttributesList().get(j).getValue());
+                        mHashMapWay.put(0,mResponseWayData.getWayData().get(i).getAttributesList().get(j).getValue());
                         break;
 
                     case "highway":
-                        hashMapWay.put(1,mResponseWayData.getWayData().get(i).getAttributesList().get(j).getValue());
+                        mHashMapWay.put(1,mResponseWayData.getWayData().get(i).getAttributesList().get(j).getValue());
                         break;
 
                     case "width":
-                        hashMapWay.put(3,mResponseWayData.getWayData().get(i).getAttributesList().get(j).getValue());
+                        mHashMapWay.put(3,mResponseWayData.getWayData().get(i).getAttributesList().get(j).getValue());
                         break;
 
                     default:
@@ -187,16 +189,72 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         WayDataValidate wayDataValidate= new WayDataValidate();
         wayDataValidate.setId(mResponseWayData.getWayData().get(0).getId());
         AttributesValidate attributesValidate= new AttributesValidate();
-        attributesValidate.setFootWay(hashMapWay.get(0));
-        attributesValidate.setHighWay(hashMapWay.get(1));
-        attributesValidate.setIncline(hashMapWay.get(2));
-        attributesValidate.setHWidth(hashMapWay.get(3));
+        if(mHashMapWay.get(0)!=null && !mHashMapWay.get(0).isEmpty()) {
+            attributesValidate.setFootWay(mHashMapWay.get(0));
+        }
+        if(mHashMapWay.get(1)!=null && !mHashMapWay.get(1).isEmpty()) {
+            attributesValidate.setHighWay(mHashMapWay.get(1));
+        }
+
+        if(mHashMapWay.get(2)!=null && !mHashMapWay.get(2).isEmpty()) {
+            attributesValidate.setIncline(mHashMapWay.get(2));
+        }
+
+        if(mHashMapWay.get(3)!=null && !mHashMapWay.get(3).isEmpty()) {
+            attributesValidate.setHWidth(mHashMapWay.get(3));
+        }
         wayDataValidate.setAttributesValidate(attributesValidate);
         List<WayDataValidate> listRequestValidate= new ArrayList<>();
         listRequestValidate.add(wayDataValidate);
         RequestValidate requestValidate= new RequestValidate();
         requestValidate.setWayDataValidates(listRequestValidate);
         mISettingScreenPresenter.onUpdate(requestValidate);
+    }
+
+
+
+    private void onValidateWay(){
+        WayDataValidate wayDataValidate= new WayDataValidate();
+        wayDataValidate.setId(mResponseWayData.getWayData().get(0).getId());
+        AttributesValidate attributesValidate= new AttributesValidate();
+        if(mHashMapWay.get(0)!=null && !mHashMapWay.get(0).isEmpty()) {
+            attributesValidate.setFootWay(mHashMapWay.get(0));
+        }
+        if(mHashMapWay.get(1)!=null && !mHashMapWay.get(1).isEmpty()) {
+            attributesValidate.setHighWay(mHashMapWay.get(1));
+        }
+
+        if(mHashMapWay.get(2)!=null && !mHashMapWay.get(2).isEmpty()) {
+            attributesValidate.setIncline(mHashMapWay.get(2));
+        }
+
+        if(mHashMapWay.get(3)!=null && !mHashMapWay.get(3).isEmpty()) {
+            attributesValidate.setHWidth(mHashMapWay.get(3));
+        }
+        wayDataValidate.setAttributesValidate(attributesValidate);
+        List<WayDataValidate> listRequestValidate= new ArrayList<>();
+        listRequestValidate.add(wayDataValidate);
+        RequestValidate requestValidate= new RequestValidate();
+        requestValidate.setWayDataValidates(listRequestValidate);
+        mISettingScreenPresenter.onValidate(requestValidate);
+    }
+    @Override
+    public void onUpdateDataReceived(ResponseUpdate responseUpdate) {
+        Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
+        onValidateWay();
+    }
+
+    @Override
+    public void onValidateDataReceived(ResponseWay responseUpdate) {
+        Toast.makeText(SettingActivity.this, R.string.validated_way_info, Toast.LENGTH_SHORT).show();
+        finish();
+
+    }
+
+    @Override
+    public void onFailure(String error) {
+        Toast.makeText(SettingActivity.this, error, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -207,18 +265,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @Override
     public void hideLoader() {
         hideProgress();
-
-    }
-
-    @Override
-    public void onUpdateDataReceived(ResponseUpdate responseUpdate) {
-        Toast.makeText(SettingActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-        finish();
-    }
-
-    @Override
-    public void onFailure(String error) {
-        Toast.makeText(SettingActivity.this, "Not Updated", Toast.LENGTH_SHORT).show();
 
     }
 }

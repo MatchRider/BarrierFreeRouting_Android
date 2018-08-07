@@ -15,7 +15,7 @@ public class ValidateWayManager implements ResponseCallback<ResponseWay> {
     private Call<ResponseWay> mResponseWayCall;
     private IValidateWayResponseReceiver mIValidateWayResponseReceiver;
 
-    public void getWAy(IValidateWayResponseReceiver receiver, RequestValidate requestValidate) {
+    public void onValidate(IValidateWayResponseReceiver receiver, RequestValidate requestValidate) {
         this.mIValidateWayResponseReceiver = receiver;
         mResponseWayCall = RetrofitClient.getApiServiceCURD().validate(requestValidate);
         mResponseWayCall.enqueue(new ResponseWrapper<ResponseWay>(this));

@@ -121,6 +121,7 @@
     <string name="log_in_with_osm">Log in with OSM</string>
     <string name="validated">Validated</string>
     <string name="not_validated">Not Validated</string>
+    <string name="updated_info">Updated Way Info</string>
 
 
 </resources>
