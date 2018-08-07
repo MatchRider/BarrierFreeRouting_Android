@@ -823,14 +823,10 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             }
         });
         mMapView.getOverlays().add(line);
-//        mMapView.getOverlayManager().add(line);
-
-       // setBoundingBox(startPoint, geoPoints.get(geoPoints.size() - 1));
 
     }
 
     public void checkForWay(Polyline polyline, String way){
-        //Toast.makeText(mMapView.getContext(), "polyline with " + polyline.getPoints().size() + "pts was tapped", Toast.LENGTH_LONG).show();
     }
 }
 
