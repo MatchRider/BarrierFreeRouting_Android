@@ -28,4 +28,8 @@ public interface OnSourceDestinationListener {
 
     void onDestinationClickWhileNavigationRunning();
 
+    void onShowHideClick(boolean clicked);
+
+    void onTabClicked(int position);
+
 }

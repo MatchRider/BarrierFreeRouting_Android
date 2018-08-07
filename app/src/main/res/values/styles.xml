@@ -13,4 +13,10 @@
     <style name="popup_window_animation">
         <item name="android:windowEnterAnimation">@anim/pump</item>
     </style>
+    <style name="SwitchTheme" parent="Theme.AppCompat.Light">
+        <item name="android:textColorPrimaryDisableOnly">#b71c1c</item>
+        <item name="android:colorControlActivated">#148E13</item>
+        <item name="android:colorForeground">#f57f17</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
+    </style>
 </resources>

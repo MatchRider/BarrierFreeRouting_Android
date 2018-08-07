@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ListPopupWindow;
+import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -44,7 +45,7 @@ import org.osmdroid.util.GeoPoint;
 import java.util.List;
 
 public class SourceDestinationFragment extends BaseFragmentImpl implements ISourceDestinationViewFragment,
-        TextView.OnEditorActionListener, AdapterView.OnItemClickListener, OnFeedBackListener {
+        TextView.OnEditorActionListener, AdapterView.OnItemClickListener, OnFeedBackListener , RadioGroup.OnCheckedChangeListener {
 
     @BindView(R.id.edt_source_add)
     CustomAutoCompleteTextView mEditTextSource;
@@ -82,6 +83,32 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @BindView(R.id.txv_decent)
     TextView mTextViewDecent;
+
+    @BindView(R.id.toggle_way)
+    SwitchCompat mToogleWAY;
+
+    @BindView(R.id.ll_source)
+    LinearLayout mLinearLayoutSource;
+
+    @BindView(R.id.ll_dest)
+    LinearLayout mLinearLayoutDestination;
+
+    @BindView(R.id.ll_source_dest)
+    LinearLayout mLinearLayoutSourceDestination;
+
+    @BindView(R.id.ll_buttons)
+    LinearLayout mLinearLayoutButtons;
+
+    @BindView(R.id.radioGroup)
+    RadioGroup mRadioGroup;
+
+    @BindView(R.id.radioButtonValidated)
+    RadioButton mRadioButtonValidated;
+
+    @BindView(R.id.radioButtonNotValidated)
+    RadioButton mRadioButtonNotValidated;
+
+    private int mButtonSelected;
 
     private static final int SEARCH_TEXT_CHANGED = 1000;
     private String mCurrentLocation = null;
@@ -175,6 +202,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         ButterKnife.bind(this, view);
         addFocusChangeListener();
         addListener();
+        mRadioGroup.setOnCheckedChangeListener(this);
+
     }
 
     public void addFocusChangeListener() {
@@ -649,5 +678,53 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @Override
     public void onMapPlotted() {
         //Nothing to do
+    }
+
+
+    @OnClick(R.id.toggle_way)
+    public void toggleView() {
+        if(mToogleWAY.isChecked()){
+            Utility.collapse(mLinearLayoutSourceDestination);
+            Utility.collapse(mLinearLayoutButtons);
+            if(mLinearLayoutTimeDistance.getVisibility()==View.VISIBLE) {
+                Utility.collapse(mLinearLayoutTimeDistance);
+            }
+            mOnSourceDestinationListener.onShowHideClick(true);
+            Utility.expand(mRadioGroup);
+        }else {
+            Utility.expand(mLinearLayoutSourceDestination);
+            Utility.expand(mLinearLayoutButtons);
+            if(mLinearLayoutTimeDistance.getVisibility()==View.VISIBLE) {
+                Utility.expand(mLinearLayoutTimeDistance);
+            }
+            mOnSourceDestinationListener.onShowHideClick(false);
+            Utility.collapse(mRadioGroup);
+
+        }
+
+    }
+
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+        switch (i) {
+            case R.id.radioButtonNotValidated:
+                mButtonSelected = 1;
+                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorWhite));
+                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
+                mOnSourceDestinationListener.onTabClicked(mButtonSelected);
+
+                break;
+
+            case R.id.radioButtonValidated:
+                mButtonSelected = 2;
+                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorWhite));
+                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
+                mOnSourceDestinationListener.onTabClicked(mButtonSelected);
+                break;
+
+            default:
+
+        }
     }
 }

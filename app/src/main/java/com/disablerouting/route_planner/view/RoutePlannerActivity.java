@@ -43,7 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDestinationListener, IRouteView, RadioGroup.OnCheckedChangeListener {
+public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDestinationListener, IRouteView {
 
     private SourceDestinationFragment mSourceDestinationFragment;
     private Features mFeaturesSourceAddress;
@@ -60,32 +60,18 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @BindView(R.id.btn_go)
     Button mButtonGo;
 
-    @BindView(R.id.radioGroup)
-    RadioGroup mRadioGroup;
-
-    @BindView(R.id.radioButtonRoutes)
-    RadioButton mRadioButtonRoutes;
-
-    @BindView(R.id.radioButtonValidated)
-    RadioButton mRadioButtonValidated;
-
-    @BindView(R.id.radioButtonNotValidated)
-    RadioButton mRadioButtonNotValidated;
-
-    private int mButtonSelected;
-    private ProgressDialog pDialog;
-
-
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
 
+
     private boolean mISMapPlotted = false;
     private boolean mIsUpdateAgain = false;
-    private OSMData mOSMData;
     private HashMap<String, Node> mNodeHashMap = new HashMap<>();
     private IRoutePlannerScreenPresenter mIRoutePlannerScreenPresenter;
     private List<Way> mWayListEven= new ArrayList<>();
     private List<Way> mWayListOdd= new ArrayList<>();
+    private int mButtonSelected=1;
+    private ProgressDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +82,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this, new GetWayManager());
         String data = readOSMFile();
         convertDataIntoModel(data);
-        mRadioGroup.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -213,6 +198,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
 
+
+
     @OnClick(R.id.img_re_center)
     public void reCenter() {
         clearItemsFromMap();
@@ -292,15 +279,15 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-            mOSMData = objectMapper.readValue(jsonObject.toString(), OSMData.class);
-            for (int i = 0; i < mOSMData.getOSM().getNode().size(); i++) {
-                mNodeHashMap.put(mOSMData.getOSM().getNode().get(i).getID(), mOSMData.getOSM().getNode().get(i));
+            OSMData OSMData = objectMapper.readValue(jsonObject.toString(), com.disablerouting.route_planner.model.OSMData.class);
+            for (int i = 0; i < OSMData.getOSM().getNode().size(); i++) {
+                mNodeHashMap.put(OSMData.getOSM().getNode().get(i).getID(), OSMData.getOSM().getNode().get(i));
             }
-            for (int i = 0; i < mOSMData.getOSM().getWay().size(); i++) {
+            for (int i = 0; i < OSMData.getOSM().getWay().size(); i++) {
                 if(i%2==0) {
-                    mWayListEven.add(mOSMData.getOSM().getWay().get(i));
+                    mWayListEven.add(OSMData.getOSM().getWay().get(i));
                 }else {
-                    mWayListOdd.add(mOSMData.getOSM().getWay().get(i));
+                    mWayListOdd.add(OSMData.getOSM().getWay().get(i));
                 }
             }
 
@@ -310,7 +297,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
     private String readOSMFile() {
-        InputStream input = null;
+        InputStream input;
         try {
             input = getAssets().open("Befahrung_Incline_Matchrider.osm");
             Reader reader = new InputStreamReader(input);
@@ -340,53 +327,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         mProgressBar.setVisibility(View.GONE);
     }
 
-
-    @Override
-    public void onCheckedChanged(RadioGroup radioGroup, int i) {
-        switch (i) {
-            case R.id.radioButtonRoutes:
-                mButtonSelected = 1;
-                clearItemsFromMap();
-                addCurrentLocation();
-
-                mRadioButtonRoutes.setTextColor(getResources().getColor(R.color.colorWhite));
-                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
-                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
-                break;
-
-            case R.id.radioButtonValidated:
-                mButtonSelected = 2;
-                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorWhite));
-                mRadioButtonRoutes.setTextColor(getResources().getColor(R.color.colorPrimary));
-                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
-
-                clearItemsFromMap();
-                addCurrentLocation();
-                if(mSourceAddress!=null && mDestinationAddress!=null) {
-                    PlotWayDataTask mPlotWayDataTaskValidated = new PlotWayDataTask();
-                    mPlotWayDataTaskValidated.execute();
-                }
-
-                break;
-
-            case R.id.radioButtonNotValidated:
-                mButtonSelected = 3;
-                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorWhite));
-                mRadioButtonRoutes.setTextColor(getResources().getColor(R.color.colorPrimary));
-                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
-
-                clearItemsFromMap();
-                addCurrentLocation();
-                if(mSourceAddress!=null && mDestinationAddress!=null) {
-                    PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
-                    mPlotWayDataTaskNotValidated.execute();
-                }
-                break;
-
-            default:
-
-        }
-    }
 
     @SuppressLint("StaticFieldLeak")
     private class PlotWayDataTask extends AsyncTask<Void, ProgressModel, List<WayCustomModel>> {
@@ -455,7 +395,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     }
                 }
 
-                if(mButtonSelected==3) {
+                if(mButtonSelected==1) {
                     //For Way Data off
                     wayCustomModelList.clear();
 
@@ -522,6 +462,35 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void onFailure(String error) {
         Toast.makeText(RoutePlannerActivity.this, "Status is not found: ", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onShowHideClick(boolean clicked) {
+        if(clicked){
+            mButtonGo.setVisibility(View.GONE);
+            clearItemsFromMap();
+            PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
+            mPlotWayDataTaskNotValidated.execute();
+        }else {
+            clearItemsFromMap();
+            mButtonGo.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    @Override
+    public void onTabClicked(int position) {
+        clearItemsFromMap();
+        addCurrentLocation();
+        if(position==1){
+            mButtonSelected=1;
+            PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
+            mPlotWayDataTaskNotValidated.execute();
+        }else {
+            mButtonSelected=2;
+            PlotWayDataTask mPlotWayDataTaskValidated = new PlotWayDataTask();
+            mPlotWayDataTaskValidated.execute();
+        }
     }
 
 

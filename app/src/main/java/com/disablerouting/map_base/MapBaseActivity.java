@@ -811,10 +811,10 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         if(valid){
             line.setColor(getResources().getColor(R.color.colorGreen));
         }else {
-            line.setColor(getResources().getColor(R.color.colorRed));
+            line.setColor(getResources().getColor(color[colorIndex]));
+            colorIndex=(colorIndex+1)%4;
+            //line.setColor(getResources().getColor(R.color.colorRed));
         }
-        //line.setColor(getResources().getColor(color[colorIndex]));
-        //colorIndex=(colorIndex+1)%4;
         line.setOnClickListener(new Polyline.OnClickListener() {
             @Override
             public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
