@@ -2,6 +2,7 @@ package com.disablerouting.suggestions.view;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,12 +23,16 @@ import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseFragmentImpl;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.curd_operations.manager.GetWayManager;
+import com.disablerouting.curd_operations.model.RequestGetWay;
+import com.disablerouting.curd_operations.model.ResponseWay;
 import com.disablerouting.geo_coding.manager.GeoCodingManager;
 import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
 import com.disablerouting.route_planner.adapter.CustomListAdapter;
 import com.disablerouting.route_planner.manager.DirectionsManager;
 import com.disablerouting.route_planner.model.DirectionsResponse;
+import com.disablerouting.setting.SettingActivity;
 import com.disablerouting.suggestions.presenter.ISuggestionScreenPresenter;
 import com.disablerouting.suggestions.presenter.SuggestionPresenter;
 import com.disablerouting.utils.Utility;
@@ -38,7 +43,7 @@ import org.osmdroid.util.GeoPoint;
 import java.util.List;
 
 public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionFragment,
-        AdapterView.OnItemClickListener ,TextView.OnEditorActionListener{
+        AdapterView.OnItemClickListener ,TextView.OnEditorActionListener , RadioGroup.OnCheckedChangeListener{
 
     @BindView(R.id.edt_source_add)
     CustomAutoCompleteTextView mEditTextSource;
@@ -51,7 +56,6 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
 
     @BindView(R.id.clear_destination_address)
     ImageView mDestinationAddressClear;
-
 
     @BindView(R.id.fetch_current_source_address)
     ImageView mSourceAddressFetch;
@@ -77,6 +81,17 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
     @BindView(R.id.txv_sub_title_yes)
     Button mSubTitleYes;
 
+    @BindView(R.id.radioGroup)
+    RadioGroup mRadioGroup;
+
+    @BindView(R.id.radioButtonValidated)
+    RadioButton mRadioButtonValidated;
+
+    @BindView(R.id.radioButtonNotValidated)
+    RadioButton mRadioButtonNotValidated;
+
+    private int mButtonSelected;
+
     private static final int SEARCH_TEXT_CHANGED = 1000;
     private String mCurrentLocation = null;
     private static OnSuggestionListener mSuggestionListener;
@@ -88,10 +103,7 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
     private List<Features> mFeaturesResultSearch;
     private ListPopupWindow mListPopupWindow;
     private boolean mIsTextInputManually = false;
-
     private ISuggestionScreenPresenter mISuggestionScreenPresenter;
-
-
 
     public static SuggestionFragment newInstance(OnSuggestionListener onSuggestionListener) {
         mSuggestionListener = onSuggestionListener;
@@ -100,6 +112,7 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
         fragment.setArguments(args);
         return fragment;
     }
+
     @SuppressLint("HandlerLeak")
     final Handler handler = new Handler() {
         @Override
@@ -174,7 +187,7 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mISuggestionScreenPresenter = new SuggestionPresenter(this, new DirectionsManager(), new GeoCodingManager());
+        mISuggestionScreenPresenter = new SuggestionPresenter(this, new DirectionsManager(), new GeoCodingManager(), new GetWayManager());
 
     }
 
@@ -195,7 +208,9 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
         ButterKnife.bind(this, view);
         addFocusChangeListener();
         addListener();
+        mRadioGroup.setOnCheckedChangeListener(this);
     }
+
     public void addFocusChangeListener() {
         mEditTextSource.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -465,6 +480,25 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
             showSnackBar(error);
         }
     }
+
+    @Override
+    public void getWays(RequestGetWay requestGetWay) {
+        mISuggestionScreenPresenter.getWays(requestGetWay);
+    }
+
+    @Override
+    public void onWayDataReceived(ResponseWay responseWay) {
+        Toast.makeText(getContext(), "Status is : " + responseWay.isStatus(), Toast.LENGTH_SHORT).show();
+        Intent intent= new Intent(getContext(),SettingActivity.class);
+        intent.putExtra("WayData", responseWay);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onFailure(String error) {
+        Toast.makeText(getContext(), "Status is not found: ", Toast.LENGTH_SHORT).show();
+    }
+
     /**
      * Get current location
      *
@@ -513,5 +547,35 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
             }
         }
     }
+
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+        switch (i) {
+            case R.id.radioButtonNotValidated:
+                mButtonSelected = 1;
+                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorWhite));
+                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
+                mSuggestionListener.onTabClicked(mButtonSelected);
+
+                break;
+
+            case R.id.radioButtonValidated:
+                mButtonSelected = 2;
+                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorWhite));
+                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
+                mSuggestionListener.onTabClicked(mButtonSelected);
+                break;
+
+            default:
+
+        }
+    }
+
+    @OnClick(R.id.img_back_press)
+    public void backPress(){
+        mSuggestionListener.onBackPress();
+    }
+
 
 }

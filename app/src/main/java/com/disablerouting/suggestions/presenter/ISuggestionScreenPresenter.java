@@ -1,6 +1,7 @@
 package com.disablerouting.suggestions.presenter;
 
 
+import com.disablerouting.curd_operations.model.RequestGetWay;
 import org.json.JSONObject;
 
 public interface ISuggestionScreenPresenter {
@@ -12,6 +13,8 @@ public interface ISuggestionScreenPresenter {
     void getGeoCodeDataForward(String query);
 
     void getGeoCodeDataReverse(double latitude, double longitude);
+
+    void getWays(RequestGetWay requestGetWay);
 
 
     void disconnect();

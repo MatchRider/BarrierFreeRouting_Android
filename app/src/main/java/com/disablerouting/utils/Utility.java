@@ -21,6 +21,10 @@ import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.views.overlay.OverlayItem;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -155,6 +159,26 @@ public class Utility {
             }
         });
         mAnimator.start();
+    }
+
+    public static String readOSMFile(Context context) {
+        InputStream input;
+        try {
+            input = context.getAssets().open("Befahrung_Incline_Matchrider.osm");
+            Reader reader = new InputStreamReader(input);
+            StringBuilder sb = new StringBuilder();
+            char buffer[] = new char[16384];  // read 16k blocks
+            int len;
+            while ((len = reader.read(buffer)) > 0) {
+                sb.append(buffer, 0, len);
+            }
+            reader.close();
+            return sb.toString();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
 }

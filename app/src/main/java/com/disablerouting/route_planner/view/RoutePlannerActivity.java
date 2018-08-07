@@ -8,7 +8,9 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -35,9 +37,6 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.Polyline;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,8 +79,9 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
         addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
         mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this, new GetWayManager());
-        String data = readOSMFile();
+        String data = Utility.readOSMFile(this);
         convertDataIntoModel(data);
+
     }
 
     @Override
@@ -296,25 +296,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
     }
 
-    private String readOSMFile() {
-        InputStream input;
-        try {
-            input = getAssets().open("Befahrung_Incline_Matchrider.osm");
-            Reader reader = new InputStreamReader(input);
-            StringBuilder sb = new StringBuilder();
-            char buffer[] = new char[16384];  // read 16k blocks
-            int len;
-            while ((len = reader.read(buffer)) > 0) {
-                sb.append(buffer, 0, len);
-            }
-            reader.close();
-            return sb.toString();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
 
     @Override
     public void showLoader() {

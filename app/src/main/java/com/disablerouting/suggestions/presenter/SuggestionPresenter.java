@@ -4,6 +4,10 @@ package com.disablerouting.suggestions.presenter;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import com.disablerouting.api.ErrorResponse;
+import com.disablerouting.curd_operations.manager.GetWayManager;
+import com.disablerouting.curd_operations.manager.IGetWayResponseReceiver;
+import com.disablerouting.curd_operations.model.RequestGetWay;
+import com.disablerouting.curd_operations.model.ResponseWay;
 import com.disablerouting.geo_coding.manager.GeoCodingManager;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
 import com.disablerouting.geo_coding.presenter.IGeoCodingResponseReceiver;
@@ -14,19 +18,23 @@ import com.disablerouting.suggestions.view.ISuggestionFragment;
 import org.json.JSONObject;
 
 public class SuggestionPresenter implements ISuggestionScreenPresenter, IDirectionsResponseReceiver,
-        IGeoCodingResponseReceiver {
+        IGeoCodingResponseReceiver , IGetWayResponseReceiver {
 
     private ISuggestionFragment mISuggestionFragment;
     private DirectionsManager mDirectionsManager;
     private GeoCodingManager mGeoCodingManager;
+    private GetWayManager mGetWayManager;
+
     private boolean isForCurrentLoc;
 
     public SuggestionPresenter(ISuggestionFragment suggestionFragment,
                                DirectionsManager directionsManager ,
-                               GeoCodingManager geoCodingManager) {
+                               GeoCodingManager geoCodingManager,
+                               GetWayManager getWayManager) {
         mISuggestionFragment = suggestionFragment;
         mDirectionsManager = directionsManager;
         mGeoCodingManager = geoCodingManager;
+        mGetWayManager = getWayManager;
     }
 
     @Override
@@ -62,6 +70,15 @@ public class SuggestionPresenter implements ISuggestionScreenPresenter, IDirecti
             mISuggestionFragment.showLoader();
             mGeoCodingManager.getGeoCodeReverse(this, latitude,longitude);
         }
+    }
+
+    @Override
+    public void getWays(RequestGetWay requestGetWay) {
+        if(mISuggestionFragment!=null){
+            mISuggestionFragment.showLoader();
+            mGetWayManager.getWAy(this,requestGetWay);
+        }
+
     }
 
     @Override
@@ -103,8 +120,26 @@ public class SuggestionPresenter implements ISuggestionScreenPresenter, IDirecti
         if(mGeoCodingManager!=null){
             mGeoCodingManager.cancel();
         }
-
+        if(mGetWayManager!=null){
+            mGetWayManager.cancel();
+        }
     }
 
 
+    @Override
+    public void onSuccessGet(ResponseWay data) {
+        mISuggestionFragment.hideLoader();
+        if(mISuggestionFragment!=null){
+            mISuggestionFragment.onWayDataReceived(data);
+
+        }
+    }
+
+    @Override
+    public void onFailureGet(@NonNull ErrorResponse errorResponse) {
+        mISuggestionFragment.hideLoader();
+        if(mISuggestionFragment!=null){
+            mISuggestionFragment.onFailure(errorResponse.getError());
+        }
+    }
 }

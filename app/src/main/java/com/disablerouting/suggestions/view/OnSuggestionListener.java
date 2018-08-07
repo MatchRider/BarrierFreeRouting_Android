@@ -22,5 +22,7 @@ public interface OnSuggestionListener {
 
     void onNoClickAddLocation();
 
+    void onTabClicked(int position);
+
 
 }
