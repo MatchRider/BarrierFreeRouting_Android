@@ -59,7 +59,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @BindView(R.id.clear_destination_address)
     ImageView mDestinationAddressClear;
 
-
     @BindView(R.id.fetch_current_source_address)
     ImageView mSourceAddressFetch;
 
@@ -710,16 +709,16 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         switch (i) {
             case R.id.radioButtonNotValidated:
                 mButtonSelected = 1;
-                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorWhite));
-                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
+                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
+                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorWhite));
                 mOnSourceDestinationListener.onTabClicked(mButtonSelected);
 
                 break;
 
             case R.id.radioButtonValidated:
                 mButtonSelected = 2;
-                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorWhite));
-                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
+                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
+                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorWhite));
                 mOnSourceDestinationListener.onTabClicked(mButtonSelected);
                 break;
 

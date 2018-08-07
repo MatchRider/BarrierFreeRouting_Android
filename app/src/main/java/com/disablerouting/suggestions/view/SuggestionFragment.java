@@ -554,16 +554,16 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
         switch (i) {
             case R.id.radioButtonNotValidated:
                 mButtonSelected = 1;
-                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorWhite));
-                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
+                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
+                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorWhite));
                 mSuggestionListener.onTabClicked(mButtonSelected);
 
                 break;
 
             case R.id.radioButtonValidated:
                 mButtonSelected = 2;
-                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorWhite));
-                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
+                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
+                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorWhite));
                 mSuggestionListener.onTabClicked(mButtonSelected);
                 break;
 

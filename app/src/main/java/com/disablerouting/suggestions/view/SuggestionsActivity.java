@@ -59,12 +59,8 @@ public class SuggestionsActivity extends MapBaseActivity implements OnSuggestion
         mBtnGo.setVisibility(View.GONE);
         String data = Utility.readOSMFile(this);
         convertDataIntoModel(data);
-
-        PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
-        mPlotWayDataTaskNotValidated.execute();
-
-
     }
+
     private void convertDataIntoModel(String data) {
         JSONObject jsonObject = Utility.convertXMLtoJSON(data);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -110,6 +106,9 @@ public class SuggestionsActivity extends MapBaseActivity implements OnSuggestion
                 plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null, false);
             }
             mIsUpdateAgain=true;
+            PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
+            mPlotWayDataTaskNotValidated.execute();
+
         }
     }
 
