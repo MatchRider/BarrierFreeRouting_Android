@@ -437,7 +437,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onWayDataReceived(ResponseWay responseWay) {
          Toast.makeText(RoutePlannerActivity.this, "Status is : " + responseWay.isStatus(), Toast.LENGTH_SHORT).show();
          Intent intent= new Intent(this,SettingActivity.class);
-         intent.putExtra("WayData", responseWay);
+         intent.putExtra(AppConstant.WAY_DATA, responseWay);
          launchActivity(intent);
     }
 

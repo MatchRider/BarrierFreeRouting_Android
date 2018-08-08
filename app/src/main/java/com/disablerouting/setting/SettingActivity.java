@@ -19,7 +19,6 @@ import com.disablerouting.curd_operations.manager.ValidateWayManager;
 import com.disablerouting.curd_operations.model.*;
 import com.disablerouting.setting.presenter.ISettingScreenPresenter;
 import com.disablerouting.setting.presenter.SettingScreenPresenter;
-import com.disablerouting.setting.setting_detail.SettingDetailActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,8 +44,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         ButterKnife.bind(this);
 
         mISettingScreenPresenter= new SettingScreenPresenter(this,new UpdateWayManager(), new ValidateWayManager());
-        if(getIntent().hasExtra("WayData")){
-            mResponseWayData= getIntent().getParcelableExtra("WayData");
+        if(getIntent().hasExtra(AppConstant.WAY_DATA)){
+            mResponseWayData= getIntent().getParcelableExtra(AppConstant.WAY_DATA);
             if(mResponseWayData!=null) {
                 getDataFromWay();
             }
@@ -59,7 +58,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      * Setup recycler view
      */
     private void setUpRecyclerView() {
-        mSettingAdapter = new SettingAdapter(prepareListData(), this);
+        mSettingAdapter = new SettingAdapter(this,prepareListData(), this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mSettingAdapter);
         if(mHashMapWay !=null){
@@ -80,7 +79,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     @Override
     public void OnIconEditViewOnClick(View v, int position) {
-        Intent intent = new Intent(this, SettingDetailActivity.class);
+       /* Intent intent = new Intent(this, SettingDetailActivity.class);
         switch (position) {
             case 0:
                 intent.putExtra(AppConstant.POSITION_SETTING, position);
@@ -108,7 +107,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 break;
 
         }
-
+*/
     }
 
     @Override
@@ -162,6 +161,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
                     case "incline":
                         mHashMapWay.put(2,mResponseWayData.getWayData().get(i).getAttributesList().get(j).getValue());
+
                         break;
 
                     case "footway":

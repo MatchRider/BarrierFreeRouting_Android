@@ -490,7 +490,7 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
     public void onWayDataReceived(ResponseWay responseWay) {
         Toast.makeText(getContext(), "Status is : " + responseWay.isStatus(), Toast.LENGTH_SHORT).show();
         Intent intent= new Intent(getContext(),SettingActivity.class);
-        intent.putExtra("WayData", responseWay);
+        intent.putExtra(AppConstant.WAY_DATA, responseWay);
         startActivity(intent);
     }
 

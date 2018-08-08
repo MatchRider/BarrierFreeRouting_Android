@@ -28,5 +28,8 @@ public interface AppConstant {
     String SETTING_ITEM_SELECTED_SEND="selected";
 
 
+    String WAY_DATA="WayData";
+
+
 
 }

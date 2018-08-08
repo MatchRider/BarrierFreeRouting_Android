@@ -47,8 +47,9 @@
         <ImageView
                 android:id="@+id/img_edit"
                 android:layout_width="wrap_content"
-                android:src="@android:drawable/ic_menu_edit"
+                android:src="@drawable/ic_edit"
                 android:layout_height="wrap_content"
+                android:clickable="false"
                 android:contentDescription="@string/app_name"/>
     </LinearLayout>
 
@@ -57,15 +58,16 @@
                   android:paddingTop="@dimen/padding_normal"
                   android:paddingBottom="@dimen/padding_normal"
                   android:paddingEnd="@dimen/padding_normal"
+                  android:clickable="false"
                   android:layout_height="wrap_content">
 
         <CheckBox
                 android:id="@+id/chk_verify"
                 android:layout_width="wrap_content"
-                android:src="@android:drawable/ic_delete"
                 android:layout_height="wrap_content"
                 android:text="@string/verify"
-                android:textColor="@color/colorPrimary"
+                android:clickable="false"
+                android:textColor="@color/colorTextGray"
                 android:contentDescription="@string/app_name"/>
     </LinearLayout>
 

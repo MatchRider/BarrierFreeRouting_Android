@@ -1,6 +1,7 @@
 package com.disablerouting.setting;
 
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,12 +18,14 @@ import java.util.List;
 
 public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHolderSetting>{
 
+    private Context mContext;
     private List<String> mStringArrayList;
     private SettingAdapterListener mOnClickListener;
     private HashMap<Integer, String> mSelectionMap = new HashMap<>();
 
 
-    public SettingAdapter(List<String> stringArrayList, SettingAdapterListener settingAdapterListener) {
+    public SettingAdapter(Context context,List<String> stringArrayList, SettingAdapterListener settingAdapterListener) {
+       mContext=context;
         mStringArrayList = stringArrayList;
         mOnClickListener= settingAdapterListener;
 
@@ -62,7 +65,8 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
             holder.mTextViewSubTitle.setText(subTitle);
             holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
             holder.mCheckBoxVerify.setChecked(true);
-            holder.mCheckBoxVerify.setText("Verified");
+            holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.verified));
+            holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
             holder.mImageViewEdit.setVisibility(View.GONE);
         }
 
