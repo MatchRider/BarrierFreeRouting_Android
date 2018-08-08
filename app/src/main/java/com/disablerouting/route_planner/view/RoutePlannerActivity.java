@@ -75,16 +75,27 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private List<Way> mWayListOdd= new ArrayList<>();
     private int mButtonSelected=1;
     private ProgressDialog pDialog;
+    private boolean mISFromSuggestion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+
+       if(getIntent().hasExtra("FromSuggestion")){
+           mISFromSuggestion = getIntent().getBooleanExtra("FromSuggestion",false);
+        }
         mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
         addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
         mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this, new GetWayManager());
         String data = Utility.readOSMFile(this);
         convertDataIntoModel(data);
+
+        if(mISFromSuggestion){
+            mSourceDestinationFragment.OnFromSuggestion();
+            mButtonGo.setVisibility(View.GONE);
+            mSwitchCompatToogle.setVisibility(View.GONE);
+        }
 
     }
 

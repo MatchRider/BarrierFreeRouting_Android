@@ -28,7 +28,6 @@ import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.route_planner.view.RoutePlannerActivity;
 import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
-import com.disablerouting.suggestions.view.SuggestionsActivity;
 import com.disablerouting.utils.PermissionUtils;
 
 public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragmentCallback {
@@ -217,7 +216,9 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
     }
     
     private void redirectToSuggestionScreen(){
-        launchActivity(this, SuggestionsActivity.class);
+        Intent intent= new Intent(this,RoutePlannerActivity.class);
+        intent.putExtra("FromSuggestion",true);
+        launchActivity(intent);
     }
 
     @Override
@@ -228,8 +229,5 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         super.onClick(close);
 
     }
-
-
-
 
 }

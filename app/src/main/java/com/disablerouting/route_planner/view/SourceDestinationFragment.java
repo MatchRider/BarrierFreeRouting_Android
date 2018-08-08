@@ -117,6 +117,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     private boolean mIsTextInputManually = false;
     private JSONObject mJSONObjectFilter;
     private Features mFeaturesRouteVia;
+    private boolean mIsFromSuggestion;
 
     @SuppressLint("HandlerLeak")
     final Handler handler = new Handler() {
@@ -193,6 +194,13 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         ButterKnife.bind(this, view);
         addFocusChangeListener();
         addListener();
+        if(mIsFromSuggestion){
+            mLinearLayoutSourceDestination.setVisibility(View.GONE);
+            mRelativeLayoutToogle.setVisibility(View.VISIBLE);
+            mOnSourceDestinationListener.onToggleClickedBanner(false);
+            mTextViewTitle.setText(getResources().getString(R.string.not_validated));
+
+        }
     }
 
     public void addFocusChangeListener() {
@@ -701,4 +709,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     }
 
+    public void OnFromSuggestion() {
+            mIsFromSuggestion= true;
+    }
 }
