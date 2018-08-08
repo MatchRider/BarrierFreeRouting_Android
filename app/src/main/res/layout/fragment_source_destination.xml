@@ -222,6 +222,7 @@
                     android:text="@string/not_validated"
                     android:textColor="@color/colorWhite"
                     android:layout_gravity="center"
+                    android:paddingEnd="@dimen/margin_xxxx_large"
                     android:layout_centerInParent="true"
                     android:textSize="@dimen/text_xxlarge"
                     android:layout_height="wrap_content"
