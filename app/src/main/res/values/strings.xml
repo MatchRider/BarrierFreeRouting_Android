@@ -157,8 +157,8 @@
     <string name="thirty_five_greater"><![CDATA[> 35.4]]></string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="log_in_with_osm">Log in with OSM</string>
-    <string name="validated">Validated</string>
-    <string name="not_validated">Non Validated</string>
+    <string name="validated">Validated Ways</string>
+    <string name="not_validated">Non Validated Ways</string>
     <string name="updated_info">Updated Way Info</string>
     <string name="validated_way_info">Validated Way Info</string>
 

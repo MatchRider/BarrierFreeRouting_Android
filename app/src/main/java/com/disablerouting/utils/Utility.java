@@ -134,7 +134,7 @@ public class Utility {
     }
 
 
-    public static void collapse(final View view) {
+    public static void   collapse(final View view) {
         int finalHeight = view.getHeight();
         ValueAnimator mAnimator = slideAnimator(finalHeight, 0, view);
         mAnimator.addListener(new Animator.AnimatorListener() {

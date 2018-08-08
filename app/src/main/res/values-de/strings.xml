@@ -120,8 +120,8 @@
     <string name="thirty_five_less"><![CDATA[< 35,4]]></string>
     <string name="thirty_five_greater"><![CDATA[> 35,4]]></string>
     <string name="log_in_with_osm">Log in with OSM</string>
-    <string name="validated">Validated</string>
-    <string name="not_validated">Not Validated</string>
+    <string name="validated">Validated Ways</string>
+    <string name="not_validated">Non Validated Ways</string>
     <string name="updated_info">Updated Way Info</string>
 
 

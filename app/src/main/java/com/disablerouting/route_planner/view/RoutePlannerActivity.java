@@ -71,9 +71,9 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private boolean mIsUpdateAgain = false;
     private HashMap<String, Node> mNodeHashMap = new HashMap<>();
     private IRoutePlannerScreenPresenter mIRoutePlannerScreenPresenter;
-    private List<Way> mWayListEven= new ArrayList<>();
-    private List<Way> mWayListOdd= new ArrayList<>();
-    private int mButtonSelected=1;
+    private List<Way> mWayListEven = new ArrayList<>();
+    private List<Way> mWayListOdd = new ArrayList<>();
+    private int mButtonSelected = 1;
     private ProgressDialog pDialog;
     private boolean mISFromSuggestion;
 
@@ -82,8 +82,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
 
-       if(getIntent().hasExtra("FromSuggestion")){
-           mISFromSuggestion = getIntent().getBooleanExtra("FromSuggestion",false);
+        if (getIntent().hasExtra("FromSuggestion")) {
+            mISFromSuggestion = getIntent().getBooleanExtra("FromSuggestion", false);
         }
         mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
         addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
@@ -91,7 +91,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         String data = Utility.readOSMFile(this);
         convertDataIntoModel(data);
 
-        if(mISFromSuggestion){
+        if (mISFromSuggestion) {
             mSourceDestinationFragment.OnFromSuggestion();
             mButtonGo.setVisibility(View.GONE);
             mSwitchCompatToogle.setVisibility(View.GONE);
@@ -213,8 +213,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
 
-
-
     @OnClick(R.id.img_re_center)
     public void reCenter() {
         clearItemsFromMap();
@@ -231,7 +229,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onMapPlotted() {
-        mButtonGo.setText(R.string.start);
+        // mButtonGo.setText(R.string.start);
         mISMapPlotted = true;
 
     }
@@ -239,19 +237,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @OnClick(R.id.btn_go)
     public void goPlotMap() {
-            if (mISMapPlotted) {
-                mButtonGo.setVisibility(View.GONE);
-                mButtonGo.setClickable(false);
-               // UI_HANDLER.post(updateMarker);
-            } else {
-                mButtonGo.setVisibility(View.VISIBLE);
-                mButtonGo.setClickable(true);
-                mButtonGo.setText(R.string.go);
-                clearItemsFromMap();
-                Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
-                mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
+        // UI_HANDLER.post(updateMarker);
+        clearItemsFromMap();
+        Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
+        mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
 
-            }
     }
 
     @Override
@@ -288,7 +278,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
 
-
     private void convertDataIntoModel(String data) {
         JSONObject jsonObject = Utility.convertXMLtoJSON(data);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -299,18 +288,17 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mNodeHashMap.put(OSMData.getOSM().getNode().get(i).getID(), OSMData.getOSM().getNode().get(i));
             }
             for (int i = 0; i < OSMData.getOSM().getWay().size(); i++) {
-                if(i%2==0) {
+                if (i % 2 == 0) {
                     mWayListEven.add(OSMData.getOSM().getWay().get(i));
-                }else {
+                } else {
                     mWayListOdd.add(OSMData.getOSM().getWay().get(i));
                 }
             }
 
-            } catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 
 
     @Override
@@ -352,7 +340,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         @Override
         protected void onProgressUpdate(ProgressModel... values) {
             ProgressModel model = values[0];
-            addPolyLineForWays(model.getGeoPointList(), model.getStart(), model.getWayCustomModel() ,model.isValid());
+            addPolyLineForWays(model.getGeoPointList(), model.getStart(), model.getWayCustomModel(), model.isValid());
 
         }
 
@@ -362,7 +350,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 GeoPoint start;
                 final List<WayCustomModel> wayCustomModelList = new ArrayList<>();
 
-                if(mButtonSelected==2) {
+                if (mButtonSelected == 2) {
                     wayCustomModelList.clear();
                     //For Way Data even
                     for (int i = 0; i < mWayListEven.size(); i++) {
@@ -387,12 +375,12 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                             start = geoPointArrayList.get(0);
 
                         final GeoPoint finalStart = start;
-                        publishProgress(new ProgressModel(wayCustomModel.getGeoPoint(), finalStart, wayCustomModel,true));
+                        publishProgress(new ProgressModel(wayCustomModel.getGeoPoint(), finalStart, wayCustomModel, true));
 
                     }
                 }
 
-                if(mButtonSelected==1) {
+                if (mButtonSelected == 1) {
                     //For Way Data off
                     wayCustomModelList.clear();
 
@@ -418,7 +406,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                             start = geoPointArrayList.get(0);
 
                         final GeoPoint finalStart = start;
-                        publishProgress(new ProgressModel(wayCustomModel.getGeoPoint(), finalStart, wayCustomModel , false));
+                        publishProgress(new ProgressModel(wayCustomModel.getGeoPoint(), finalStart, wayCustomModel, false));
 
                     }
                 }
@@ -450,10 +438,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onWayDataReceived(ResponseWay responseWay) {
-         Toast.makeText(RoutePlannerActivity.this, "Status is : " + responseWay.isStatus(), Toast.LENGTH_SHORT).show();
-         Intent intent= new Intent(this,SettingActivity.class);
-         intent.putExtra(AppConstant.WAY_DATA, responseWay);
-         launchActivity(intent);
+        Toast.makeText(RoutePlannerActivity.this, "Status is : " + responseWay.isStatus(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, SettingActivity.class);
+        intent.putExtra(AppConstant.WAY_DATA, responseWay);
+        launchActivity(intent);
     }
 
     @Override
@@ -462,17 +450,16 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
 
-
     @Override
     public void onToggleClickedBanner(boolean isChecked) {
         clearItemsFromMap();
         addCurrentLocation();
-        if(!isChecked){
-            mButtonSelected=1;
+        if (!isChecked) {
+            mButtonSelected = 1;
             PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
             mPlotWayDataTaskNotValidated.execute();
-        }else {
-            mButtonSelected=2;
+        } else {
+            mButtonSelected = 2;
             PlotWayDataTask mPlotWayDataTaskValidated = new PlotWayDataTask();
             mPlotWayDataTaskValidated.execute();
         }
@@ -480,16 +467,18 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
 
     @OnClick(R.id.toggle_way)
-    public void toggleViews(){
-        if(mSwitchCompatToogle.isChecked()){
+    public void toggleViews() {
+        if (mSwitchCompatToogle.isChecked()) {
             mSourceDestinationFragment.onToggleView(true);
             mButtonGo.setVisibility(View.GONE);
             clearItemsFromMap();
             PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
             mPlotWayDataTaskNotValidated.execute();
-        }else {
+        } else {
             mSourceDestinationFragment.onToggleView(false);
             clearItemsFromMap();
+            Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
+            mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
             mButtonGo.setVisibility(View.VISIBLE);
         }
     }

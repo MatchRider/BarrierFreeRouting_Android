@@ -118,6 +118,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     private JSONObject mJSONObjectFilter;
     private Features mFeaturesRouteVia;
     private boolean mIsFromSuggestion;
+    private DirectionsResponse mDirectionsResponse=null;
 
     @SuppressLint("HandlerLeak")
     final Handler handler = new Handler() {
@@ -331,6 +332,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     public void onDirectionDataReceived(DirectionsResponse data) {
         if (data != null && data.getFeaturesList() != null && data.getFeaturesList().size() != 0
                 && data.getFeaturesList().get(0).getGeometry() != null && data.getFeaturesList().get(0).getProperties().getSegmentList().get(0).getStepsList() != null) {
+            mDirectionsResponse=data;
             for (int i = 0; i< data.getFeaturesList().get(0).getProperties().getSegmentList().size(); i++){
                     mOnSourceDestinationListener.plotDataOnMap(data.getFeaturesList().get(0).getGeometry().getCoordinates(), data.getFeaturesList().get(0).getProperties()
                             .getSegmentList().get(0).getStepsList());
@@ -684,11 +686,15 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             if(mLinearLayoutTimeDistance.getVisibility()==View.VISIBLE) {
                 Utility.collapse(mLinearLayoutTimeDistance);
             }
+
             Utility.expand(mRelativeLayoutToogle);
+
         }else {
             Utility.expand(mLinearLayoutSourceDestination);
-            if(mLinearLayoutTimeDistance.getVisibility()==View.VISIBLE) {
+            if(mDirectionsResponse!=null) {
                 Utility.expand(mLinearLayoutTimeDistance);
+            }else {
+                Utility.collapse(mLinearLayoutTimeDistance);
             }
             Utility.collapse(mRelativeLayoutToogle);
 
