@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -15,7 +15,7 @@
     </style>
     <style name="SwitchTheme" parent="Theme.AppCompat.Light">
         <item name="android:textColorPrimaryDisableOnly">#b71c1c</item>
-        <item name="android:colorControlActivated">#148E13</item>
+        <item name="android:colorControlActivated" tools:ignore="NewApi">#148E13</item>
         <item name="android:colorForeground">#f57f17</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
     </style>

@@ -693,9 +693,9 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             Utility.expand(mLinearLayoutSourceDestination);
             if(mDirectionsResponse!=null) {
                 Utility.expand(mLinearLayoutTimeDistance);
-            }else {
+            }/*else {
                 Utility.collapse(mLinearLayoutTimeDistance);
-            }
+            }*/
             Utility.collapse(mRelativeLayoutToogle);
 
         }
