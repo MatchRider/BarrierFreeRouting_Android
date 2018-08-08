@@ -45,7 +45,7 @@ import org.osmdroid.util.GeoPoint;
 import java.util.List;
 
 public class SourceDestinationFragment extends BaseFragmentImpl implements ISourceDestinationViewFragment,
-        TextView.OnEditorActionListener, AdapterView.OnItemClickListener, OnFeedBackListener , RadioGroup.OnCheckedChangeListener {
+        TextView.OnEditorActionListener, AdapterView.OnItemClickListener, OnFeedBackListener  {
 
     @BindView(R.id.edt_source_add)
     CustomAutoCompleteTextView mEditTextSource;
@@ -83,8 +83,14 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @BindView(R.id.txv_decent)
     TextView mTextViewDecent;
 
-    @BindView(R.id.toggle_way)
+    @BindView(R.id.toggle_way_sd)
     SwitchCompat mToogleWAY;
+
+    @BindView(R.id.rel_toogle)
+    RelativeLayout mRelativeLayoutToogle;
+
+    @BindView(R.id.txv_title)
+    TextView mTextViewTitle;
 
     @BindView(R.id.ll_source)
     LinearLayout mLinearLayoutSource;
@@ -94,20 +100,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @BindView(R.id.ll_source_dest)
     LinearLayout mLinearLayoutSourceDestination;
-
-    @BindView(R.id.ll_buttons)
-    LinearLayout mLinearLayoutButtons;
-
-    @BindView(R.id.radioGroup)
-    RadioGroup mRadioGroup;
-
-    @BindView(R.id.radioButtonValidated)
-    RadioButton mRadioButtonValidated;
-
-    @BindView(R.id.radioButtonNotValidated)
-    RadioButton mRadioButtonNotValidated;
-
-    private int mButtonSelected;
 
     private static final int SEARCH_TEXT_CHANGED = 1000;
     private String mCurrentLocation = null;
@@ -201,8 +193,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         ButterKnife.bind(this, view);
         addFocusChangeListener();
         addListener();
-        mRadioGroup.setOnCheckedChangeListener(this);
-
     }
 
     public void addFocusChangeListener() {
@@ -680,50 +670,35 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     }
 
 
-    @OnClick(R.id.toggle_way)
-    public void toggleView() {
-        if(mToogleWAY.isChecked()){
+    public void onToggleView(boolean isToggled) {
+        if(isToggled){
             Utility.collapse(mLinearLayoutSourceDestination);
-            Utility.collapse(mLinearLayoutButtons);
             if(mLinearLayoutTimeDistance.getVisibility()==View.VISIBLE) {
                 Utility.collapse(mLinearLayoutTimeDistance);
             }
-            mOnSourceDestinationListener.onShowHideClick(true);
-            Utility.expand(mRadioGroup);
+            Utility.expand(mRelativeLayoutToogle);
         }else {
             Utility.expand(mLinearLayoutSourceDestination);
-            Utility.expand(mLinearLayoutButtons);
             if(mLinearLayoutTimeDistance.getVisibility()==View.VISIBLE) {
                 Utility.expand(mLinearLayoutTimeDistance);
             }
-            mOnSourceDestinationListener.onShowHideClick(false);
-            Utility.collapse(mRadioGroup);
+            Utility.collapse(mRelativeLayoutToogle);
 
         }
 
     }
 
-
-    @Override
-    public void onCheckedChanged(RadioGroup radioGroup, int i) {
-        switch (i) {
-            case R.id.radioButtonNotValidated:
-                mButtonSelected = 1;
-                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
-                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorWhite));
-                mOnSourceDestinationListener.onTabClicked(mButtonSelected);
-
-                break;
-
-            case R.id.radioButtonValidated:
-                mButtonSelected = 2;
-                mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
-                mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorWhite));
-                mOnSourceDestinationListener.onTabClicked(mButtonSelected);
-                break;
-
-            default:
+    @OnClick(R.id.toggle_way_sd)
+    public void onTitleToggleClicked(){
+        if(!mToogleWAY.isChecked()) {
+            mOnSourceDestinationListener.onToggleClickedBanner(false);
+            mTextViewTitle.setText(getResources().getString(R.string.not_validated));
+        }else {
+            mOnSourceDestinationListener.onToggleClickedBanner(true);
+            mTextViewTitle.setText(getResources().getString(R.string.validated));
 
         }
+
     }
+
 }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -62,6 +63,9 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
 
+
+    @BindView(R.id.toggle_way)
+    SwitchCompat mSwitchCompatToogle;
 
     private boolean mISMapPlotted = false;
     private boolean mIsUpdateAgain = false;
@@ -446,25 +450,13 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         Toast.makeText(RoutePlannerActivity.this, "Status is not found: ", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onShowHideClick(boolean clicked) {
-        if(clicked){
-            mButtonGo.setVisibility(View.GONE);
-            clearItemsFromMap();
-            PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
-            mPlotWayDataTaskNotValidated.execute();
-        }else {
-            clearItemsFromMap();
-            mButtonGo.setVisibility(View.VISIBLE);
-        }
 
-    }
 
     @Override
-    public void onTabClicked(int position) {
+    public void onToggleClickedBanner(boolean isChecked) {
         clearItemsFromMap();
         addCurrentLocation();
-        if(position==1){
+        if(!isChecked){
             mButtonSelected=1;
             PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
             mPlotWayDataTaskNotValidated.execute();
@@ -475,5 +467,20 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
     }
 
+
+    @OnClick(R.id.toggle_way)
+    public void toggleViews(){
+        if(mSwitchCompatToogle.isChecked()){
+            mSourceDestinationFragment.onToggleView(true);
+            mButtonGo.setVisibility(View.GONE);
+            clearItemsFromMap();
+            PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
+            mPlotWayDataTaskNotValidated.execute();
+        }else {
+            mSourceDestinationFragment.onToggleView(false);
+            clearItemsFromMap();
+            mButtonGo.setVisibility(View.VISIBLE);
+        }
+    }
 
 }

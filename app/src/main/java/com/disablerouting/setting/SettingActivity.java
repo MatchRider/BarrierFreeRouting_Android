@@ -13,7 +13,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.api.ApiEndPoint;
+import com.disablerouting.application.AppData;
 import com.disablerouting.base.BaseActivityImpl;
+import com.disablerouting.capture_option.model.Node;
+import com.disablerouting.capture_option.model.RequestCreateNode;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.manager.UpdateWayManager;
 import com.disablerouting.curd_operations.manager.ValidateWayManager;
@@ -45,8 +48,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private ISettingScreenPresenter mISettingScreenPresenter;
 
     private String mURLChangeSet= ApiEndPoint.SANDBOX_BASE_URL_OSM+"changeset/create";
+    private String mURLNodeSet= ApiEndPoint.SANDBOX_BASE_URL_OSM+"node/create";
     private AsyncTaskOsmApi asyncTaskOsmApi;
     private String mChangeSetID;
+    List<RequestTag> mRequestTagList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +90,34 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         asyncTaskOsmApi.execute("");
     }
 
+    private void callToSetChangeSet(){
+        if(mChangeSetID!=null) {
+            RequestCreateNode requestCreateNode = new RequestCreateNode();
+            String latitude = String.valueOf(AppData.getNewInstance().getCurrentLoc().latitude);
+            String longitude = String.valueOf(AppData.getNewInstance().getCurrentLoc().longitude);
+            Node node = new Node(mChangeSetID, latitude, longitude);
+
+            RequestTag requestTag = new RequestTag("note", "Just a node");
+            mRequestTagList.add(requestTag);
+            node.setRequestTagList(mRequestTagList);
+            requestCreateNode.setNode(node);
+
+            String stringBuilder = "<osm><node changeset=" + "\""+String.valueOf(mChangeSetID) +"\""+ " "+
+                    "lat=" + "\""+String.valueOf(latitude)+"\"" +" "+
+                    "lon=" +"\""+ String.valueOf(longitude) +"\""+ ">" +
+                    "<tag k=\"note\" v=\"Just a node\"/></node></osm>";
+
+
+            String string="<osm>\n" +
+                    " <node changeset=\"112100\" lat=\"28.584220243018713\" lon=\"77.13020324707031\">\n" +
+                    "   <tag k=\"note\" v=\"Just a node\"/>\n" +
+                    " </node>\n" +
+                    "</osm>";
+
+            OauthData oauthData= new OauthData(Verb.PUT, stringBuilder,mURLNodeSet);
+            new AsyncTaskOsmApi(SettingActivity.this,oauthData,this).execute("");
+        }
+    }
     /**
      * Setup recycler view
      */

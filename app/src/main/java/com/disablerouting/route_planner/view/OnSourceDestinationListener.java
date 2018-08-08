@@ -28,8 +28,6 @@ public interface OnSourceDestinationListener {
 
     void onDestinationClickWhileNavigationRunning();
 
-    void onShowHideClick(boolean clicked);
-
-    void onTabClicked(int position);
+    void onToggleClickedBanner(boolean isChecked);
 
 }
