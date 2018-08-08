@@ -74,7 +74,7 @@ public interface ApiService {
     /**
      * APi call for get changeset id
      *
-     * @param requestCreateChangeSet Request model for rrequesting change set id
+     * @param requestCreateChangeSet Request model for requesting change set id
      * @return return change set id
      */
     //@Headers({"Content-Type: application/xml; charset=utf-8"})
@@ -98,6 +98,8 @@ public interface ApiService {
     Call<NodeResponse> getNodes(@Query("api_key") String apiKey, @Query("bbox") String bbox, @Query("per_page") int perPage);
 
 
+    // Salil's API
+
     @POST("Get/")
     Call<ResponseWay> getWays(@Body RequestGetWay requestGetWay);
 
@@ -106,6 +108,9 @@ public interface ApiService {
 
     @POST("update")
     Call<ResponseUpdate> update(@Body RequestValidate requestValidate);
+
+
+
 
 
 }

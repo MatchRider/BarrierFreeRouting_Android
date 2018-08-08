@@ -12,30 +12,41 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
+import com.disablerouting.api.ApiEndPoint;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.manager.UpdateWayManager;
 import com.disablerouting.curd_operations.manager.ValidateWayManager;
 import com.disablerouting.curd_operations.model.*;
+import com.disablerouting.feedback.model.RequestCreateChangeSet;
+import com.disablerouting.feedback.model.RequestTag;
+import com.disablerouting.login.AsyncTaskOsmApi;
+import com.disablerouting.login.IAysncTaskOsm;
+import com.disablerouting.login.OauthData;
 import com.disablerouting.setting.presenter.ISettingScreenPresenter;
 import com.disablerouting.setting.presenter.SettingScreenPresenter;
+import com.github.scribejava.core.model.Verb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class SettingActivity extends BaseActivityImpl implements SettingAdapterListener , ISettingView {
+public class SettingActivity extends BaseActivityImpl implements SettingAdapterListener , ISettingView ,
+        IAysncTaskOsm {
 
     @BindView(R.id.rcv_setting)
     RecyclerView mRecyclerView;
 
     final int OPEN_SETTING_TYPE = 200;
     private SettingAdapter mSettingAdapter;
-    private int mPositionClicked = -1;
     private ResponseWay mResponseWayData;
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, String> mHashMapWay = new HashMap<>();
     private ISettingScreenPresenter mISettingScreenPresenter;
+
+    private String mURLChangeSet= ApiEndPoint.SANDBOX_BASE_URL_OSM+"changeset/create";
+    private AsyncTaskOsmApi asyncTaskOsmApi;
+    private String mChangeSetID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +61,29 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 getDataFromWay();
             }
         }
+
+        callToGetChangeSet();
         setUpRecyclerView();
+
     }
 
+    /**
+     * Api Call To Create Change Set
+     */
+    private void callToGetChangeSet(){
+        RequestCreateChangeSet requestCreateChangeSet= new RequestCreateChangeSet();
+        List<RequestTag> list = new ArrayList<>();
+        RequestTag requestTag = new RequestTag("created_by","JOSM 1.61");
+        list.add(requestTag);
+        requestTag = new RequestTag("comment","Just adding some streetnames");
+        list.add(requestTag);
+        requestCreateChangeSet.setRequestTag(list);
+
+        String string="<osm><changeset><tag k=\"created_by\" v=\"JOSM 1.61\"/><tag k=\"comment\" v=\"Just adding some streetnames\"/></changeset></osm>";
+        OauthData oauthData= new OauthData(Verb.PUT,string,mURLChangeSet);
+        asyncTaskOsmApi= new AsyncTaskOsmApi(SettingActivity.this,oauthData,this);
+        asyncTaskOsmApi.execute("");
+    }
 
     /**
      * Setup recycler view
@@ -145,7 +176,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (requestCode == OPEN_SETTING_TYPE) {
             if (resultCode == RESULT_OK) {
                 String dataString = data.getStringExtra(AppConstant.SETTING_ITEM_SELECTED_RECIEVE);
-                mHashMapWay.put(mPositionClicked, dataString);
+                int positionClicked = -1;
+                mHashMapWay.put(positionClicked, dataString);
                 mSettingAdapter.setSelectionMap(mHashMapWay);
                 mSettingAdapter.notifyDataSetChanged();
             }
@@ -266,5 +298,27 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     public void hideLoader() {
         hideProgress();
 
+    }
+
+    @Override
+    public void onSuccessAsyncTask(String responseBody) {
+        if(responseBody!=null) {
+            mChangeSetID = responseBody;
+        }
+    }
+
+    @Override
+    public void onFailureAsyncTask(final String errorBody) {
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(SettingActivity.this, errorBody, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        asyncTaskOsmApi.dismissDialog();
     }
 }

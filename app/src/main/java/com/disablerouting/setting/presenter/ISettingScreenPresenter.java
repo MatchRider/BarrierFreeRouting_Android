@@ -11,7 +11,6 @@ public interface ISettingScreenPresenter {
      */
     void onUpdate(RequestValidate requestValidate);
 
-
     /**
      * On validate Request
      * @param requestValidate request validate data
