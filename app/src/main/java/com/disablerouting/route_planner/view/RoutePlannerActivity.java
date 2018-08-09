@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.manager.GetWayManager;
 import com.disablerouting.curd_operations.model.RequestGetWay;
 import com.disablerouting.curd_operations.model.ResponseWay;
+import com.disablerouting.directions.DirectionActivity;
 import com.disablerouting.filter.view.FilterActivity;
 import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.map_base.MapBaseActivity;
@@ -76,6 +78,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private int mButtonSelected = 1;
     private ProgressDialog pDialog;
     private boolean mISFromSuggestion;
+    private List<Steps> mStepsList= new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +132,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void plotDataOnMap(List<List<Double>> geoPointList, List<Steps> stepsList) {
         if (geoPointList != null && stepsList != null) {
+            mStepsList=stepsList;
             plotDataOfSourceDestination(geoPointList, mSourceAddress, mDestinationAddress, stepsList, true);
         }
     }
@@ -483,4 +487,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
     }
 
+
+    @OnClick(R.id.image_info)
+    public void onInfo(){
+        Intent intent= new Intent(this, DirectionActivity.class);
+        intent.putParcelableArrayListExtra(AppConstant.STEP_DATA, (ArrayList<? extends Parcelable>) mStepsList);
+        launchActivity(intent);
+    }
 }

@@ -29,6 +29,7 @@ public interface AppConstant {
 
 
     String WAY_DATA="WayData";
+    String STEP_DATA="StepData";
 
 
 

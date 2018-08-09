@@ -17,6 +17,16 @@
             android:layout_below="@+id/contentContainer"
             android:layout_height="match_parent"/>
 
+    <ImageView
+            android:layout_below="@id/contentContainer"
+            android:id="@+id/image_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_large"
+            android:visibility="gone"
+            android:src="@android:drawable/ic_dialog_info"
+            android:layout_alignParentStart="true"/>
+
     <android.support.v7.widget.SwitchCompat
             android:layout_below="@id/contentContainer"
             android:id="@+id/toggle_way"

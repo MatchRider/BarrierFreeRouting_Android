@@ -114,14 +114,18 @@
                 android:label="@string/title_activity_login"
                 android:launchMode="singleTop"
                 android:theme="@style/AppTheme">
-             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
                 <data
                         android:host="oauth-callback"
-                        android:scheme="disabled-routing" />
+                        android:scheme="disabled-routing"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".directions.DirectionActivity">
         </activity>
     </application>
 

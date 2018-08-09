@@ -161,6 +161,7 @@
     <string name="not_validated">Non Validated Ways</string>
     <string name="updated_info">Updated Way Info</string>
     <string name="validated_way_info">Validated Way Info</string>
+    <string name="instructions_for_route">Instructions for route</string>
 
 
 </resources>
