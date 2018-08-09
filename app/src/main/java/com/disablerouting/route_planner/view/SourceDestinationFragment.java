@@ -9,7 +9,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ListPopupWindow;
-import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -84,7 +83,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     TextView mTextViewDecent;
 
     @BindView(R.id.toggle_way_sd)
-    SwitchCompat mToogleWAY;
+    Switch mToogleWAY;
 
     @BindView(R.id.rel_toogle)
     RelativeLayout mRelativeLayoutToogle;

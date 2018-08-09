@@ -27,14 +27,19 @@
             android:src="@android:drawable/ic_dialog_info"
             android:layout_alignParentStart="true"/>
 
-    <android.support.v7.widget.SwitchCompat
-            android:layout_below="@id/contentContainer"
-            android:id="@+id/toggle_way"
-            app:theme="@style/SwitchTheme"
+    <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_normal"
-            android:layout_alignParentEnd="true"/>
+            android:id="@+id/toggle_way"
+            android:layout_below="@id/contentContainer"
+            android:layout_alignParentEnd="true"
+            android:paddingTop="@dimen/padding_large"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingBottom="@dimen/padding_normal"
+            android:track="@drawable/switch_selector_track"
+            android:thumb="@drawable/switch_selector_thumb" />
+
+
     <ImageView
             android:id="@+id/img_re_center"
             android:layout_width="wrap_content"

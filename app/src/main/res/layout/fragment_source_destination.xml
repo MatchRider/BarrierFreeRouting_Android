@@ -236,14 +236,25 @@
                             android:layout_height="wrap_content"
                             tools:ignore="RelativeOverlap"/>
 
-                    <android.support.v7.widget.SwitchCompat
+                   <!-- <android.support.v7.widget.SwitchCompat
                             android:id="@+id/toggle_way_sd"
                             app:theme="@style/SwitchTheme"
                             android:layout_alignParentEnd="true"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
-                            android:gravity="end"/>
+                            android:gravity="end"/>-->
+                    <Switch
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/toggle_way_sd"
+                            android:layout_below="@id/contentContainer"
+                            android:layout_alignParentEnd="true"
+                            android:layout_gravity="end"
+                            android:track="@drawable/switch_selector_track"
+                            android:thumb="@drawable/switch_selector_thumb" />
+
+
 
                 </RelativeLayout>
 

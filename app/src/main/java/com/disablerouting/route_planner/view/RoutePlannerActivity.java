@@ -8,10 +8,10 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,7 +67,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
 
     @BindView(R.id.toggle_way)
-    SwitchCompat mSwitchCompatToogle;
+    Switch mSwitchCompatToogle;
 
     private boolean mISMapPlotted = false;
     private boolean mIsUpdateAgain = false;
