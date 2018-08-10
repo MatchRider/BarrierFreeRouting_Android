@@ -5,13 +5,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.disablerouting.directions.DirectionActivity">
+        tools:context="com.disablerouting.instructions.InstructionsActivity">
 
     <LinearLayout
             android:id="@+id/ll_top"
             android:layout_width="match_parent"
+            android:orientation="horizontal"
             android:background="@color/colorPrimary"
             android:layout_height="wrap_content">
+
+            <ImageView
+                    android:id="@+id/img_back"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/ic_navigate_back"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/app_name"/>
 
         <TextView android:layout_width="match_parent"
                   android:textColor="@android:color/white"

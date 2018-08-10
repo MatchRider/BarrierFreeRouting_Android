@@ -9,10 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.Switch;
-import android.widget.Toast;
+import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -21,7 +18,7 @@ import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.manager.GetWayManager;
 import com.disablerouting.curd_operations.model.RequestGetWay;
 import com.disablerouting.curd_operations.model.ResponseWay;
-import com.disablerouting.directions.DirectionActivity;
+import com.disablerouting.instructions.InstructionsActivity;
 import com.disablerouting.filter.view.FilterActivity;
 import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.map_base.MapBaseActivity;
@@ -65,9 +62,12 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
 
-
     @BindView(R.id.toggle_way)
     Switch mSwitchCompatToogle;
+
+    @BindView(R.id.image_info)
+    ImageView mImageViewInfo;
+
 
     private boolean mISMapPlotted = false;
     private boolean mIsUpdateAgain = false;
@@ -235,6 +235,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onMapPlotted() {
         // mButtonGo.setText(R.string.start);
         mISMapPlotted = true;
+        if(mISMapPlotted){
+            mImageViewInfo.setVisibility(View.VISIBLE);
+        }else {
+            mImageViewInfo.setVisibility(View.GONE);
+        }
 
     }
 
@@ -475,6 +480,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (mSwitchCompatToogle.isChecked()) {
             mSourceDestinationFragment.onToggleView(true);
             mButtonGo.setVisibility(View.GONE);
+            mImageViewInfo.setVisibility(View.GONE);
             clearItemsFromMap();
             PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
             mPlotWayDataTaskNotValidated.execute();
@@ -484,13 +490,17 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
             mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
             mButtonGo.setVisibility(View.VISIBLE);
+            if(mISMapPlotted) {
+                mImageViewInfo.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 
 
     @OnClick(R.id.image_info)
     public void onInfo(){
-        Intent intent= new Intent(this, DirectionActivity.class);
+        Intent intent= new Intent(this, InstructionsActivity.class);
         intent.putParcelableArrayListExtra(AppConstant.STEP_DATA, (ArrayList<? extends Parcelable>) mStepsList);
         launchActivity(intent);
     }

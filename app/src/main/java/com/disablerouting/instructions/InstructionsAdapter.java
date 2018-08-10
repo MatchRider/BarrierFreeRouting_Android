@@ -1,4 +1,4 @@
-package com.disablerouting.directions;
+package com.disablerouting.instructions;
 
 
 import android.content.Context;
@@ -11,17 +11,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.disablerouting.R;
 import com.disablerouting.route_planner.model.Steps;
+import com.disablerouting.utils.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DirectionAdapter extends RecyclerView.Adapter<DirectionAdapter.StepViewHolder> {
+public class InstructionsAdapter extends RecyclerView.Adapter<InstructionsAdapter.StepViewHolder> {
 
     private Context mContext;
     private List<Steps> mStepsList= new ArrayList<>();
     private OnInstructionsClickListener mOnInstructionsClickListener;
 
-    public DirectionAdapter(Context context, List<Steps> stepsList, OnInstructionsClickListener onInstructionsClickListener) {
+    public InstructionsAdapter(Context context, List<Steps> stepsList, OnInstructionsClickListener onInstructionsClickListener) {
         mContext = context;
         mStepsList = stepsList;
         mOnInstructionsClickListener = onInstructionsClickListener;
@@ -44,6 +45,11 @@ public class DirectionAdapter extends RecyclerView.Adapter<DirectionAdapter.Step
                 holder.textViewDirection.setText(steps.getInstructions());
             } else {
                 holder.textViewDirection.setText("");
+            }
+            if (steps.getDistance() != 0) {
+                holder.textViewDistance.setText(Utility.trimTWoDecimalPlaces(steps.getDistance()/1000)+ mContext.getResources().getString(R.string.km));
+            } else {
+                holder.textViewDistance.setText("");
             }
             if (steps.getType() != -1) {
 
@@ -70,7 +76,7 @@ public class DirectionAdapter extends RecyclerView.Adapter<DirectionAdapter.Step
                     holder.imageViewDirection.setImageDrawable(getImage(mContext, "ic_round"));
                 }
                 if(steps.getType()==10){
-                    holder.imageViewDirection.setImageDrawable(getImage(mContext, "ic_slight_right"));
+                    holder.imageViewDirection.setImageDrawable(getImage(mContext, "ic_slight_left"));
                 }
 
                 //   viewHolder.imageViewDirection.setDrawable(steps.getInstructions());
@@ -98,25 +104,22 @@ public class DirectionAdapter extends RecyclerView.Adapter<DirectionAdapter.Step
 
         ImageView imageViewDirection;
         TextView textViewDirection;
+        TextView textViewDistance;
 
         private StepViewHolder(View view) {
             super(view);
             imageViewDirection = (ImageView)view.findViewById(R.id.img_direction);
             textViewDirection = (TextView) view.findViewById(R.id.txv_direction);
+            textViewDistance = (TextView) view.findViewById(R.id.txv_km);
 
         }
 
     }
 
-    public static Drawable getImage(Context context, String name) {
+    private static Drawable getImage(Context context, String name) {
         return context.getResources().getDrawable(context.getResources().getIdentifier(name, "drawable", context.getPackageName()));
     }
-    public void  getResourceType(){
-        for (int j = 1; j < 6; j++) {
-            Drawable drawable = mContext.getResources().getDrawable(mContext.getResources()
-                    .getIdentifier("d002_p00"+j, "drawable", mContext.getPackageName()));
-        }
-    }
+
     public interface OnInstructionsClickListener{
         void onInstructionClick(Steps steps);
     }

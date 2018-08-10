@@ -125,7 +125,7 @@
                         android:scheme="disabled-routing"/>
             </intent-filter>
         </activity>
-        <activity android:name=".directions.DirectionActivity">
+        <activity android:name=".instructions.InstructionsActivity">
         </activity>
     </application>
 

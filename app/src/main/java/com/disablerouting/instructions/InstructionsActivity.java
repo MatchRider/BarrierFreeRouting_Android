@@ -1,4 +1,4 @@
-package com.disablerouting.directions;
+package com.disablerouting.instructions;
 
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
@@ -14,26 +15,26 @@ import com.disablerouting.route_planner.model.Steps;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DirectionActivity extends BaseActivityImpl  implements DirectionAdapter.OnInstructionsClickListener {
+public class InstructionsActivity extends BaseActivityImpl  implements InstructionsAdapter.OnInstructionsClickListener {
 
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
-    private DirectionAdapter mDirectionAdapter;
+    private InstructionsAdapter mInstructionsAdapter;
     private List<Steps> mStepsList= new ArrayList<Steps>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_direction);
+        setContentView(R.layout.activity_instructions);
         ButterKnife.bind(this);
 
         if(getIntent().hasExtra(AppConstant.STEP_DATA)){
             mStepsList = getIntent().getParcelableArrayListExtra(AppConstant.STEP_DATA);
         }
-        mDirectionAdapter=new DirectionAdapter(this,mStepsList,this);
+        mInstructionsAdapter =new InstructionsAdapter(this,mStepsList,this);
         setUpRecyclerView();
     }
 
@@ -41,13 +42,18 @@ public class DirectionActivity extends BaseActivityImpl  implements DirectionAda
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setAdapter(mDirectionAdapter);
-        mDirectionAdapter.notifyDataSetChanged();
+        mRecyclerView.setAdapter(mInstructionsAdapter);
+        mInstructionsAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onInstructionClick(Steps steps) {
         //TODO
 
+    }
+
+    @OnClick(R.id.img_back)
+    public void onBackClick(){
+        finish();
     }
 }
