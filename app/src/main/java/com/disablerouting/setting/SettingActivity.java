@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,8 +61,25 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         mISettingScreenPresenter= new SettingScreenPresenter(this,new UpdateWayManager(), new ValidateWayManager());
         if(getIntent().hasExtra(AppConstant.WAY_DATA)){
             mResponseWayData= getIntent().getParcelableExtra(AppConstant.WAY_DATA);
+            ResponseWay responseWay= new ResponseWay();
+            responseWay.setWayData(mResponseWayData.getWayData());
             if(mResponseWayData!=null) {
                 getDataFromWay();
+
+               /* Gson gson = new GsonBuilder().create();
+                String json = gson.toJson(responseWay);
+                try {
+                    JSONObject jsonObj = new JSONObject(json);
+                    String jsonString= jsonObj.toString();
+                    JsonToXml jsonToXml = new JsonToXml.Builder(jsonString)
+                            .forceAttribute("/WayData")
+                            .build();
+                    Log.e("XML",jsonToXml.toString());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }*/
+
             }
         }
 
@@ -141,53 +157,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         return stringArrayList;
     }
 
-    @Override
-    public void OnIconEditViewOnClick(View v, int position) {
-       /* Intent intent = new Intent(this, SettingDetailActivity.class);
-        switch (position) {
-            case 0:
-                intent.putExtra(AppConstant.POSITION_SETTING, position);
-                mPositionClicked = position;
-                intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListData().get(position));
-                startActivityForResult(intent, OPEN_SETTING_TYPE);
-                break;
-            case 1:
-                intent.putExtra(AppConstant.POSITION_SETTING, position);
-                mPositionClicked = position;
-                intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListData().get(position));
-                startActivityForResult(intent, OPEN_SETTING_TYPE);
-                break;
-            case 2:
-                intent.putExtra(AppConstant.POSITION_SETTING, position);
-                mPositionClicked = position;
-                intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListData().get(position));
-                startActivityForResult(intent, OPEN_SETTING_TYPE);
-                break;
-            case 3:
-                intent.putExtra(AppConstant.POSITION_SETTING, position);
-                mPositionClicked = position;
-                intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListData().get(position));
-                startActivityForResult(intent, OPEN_SETTING_TYPE);
-                break;
-
-        }
-*/
-    }
-
-    @Override
-    public void OnIconCheckBoxOnClick(View v, int position, boolean isChecked) {
-        switch (position) {
-            case 0:
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-
-        }
-    }
 
     @OnClick(R.id.img_back)
     public void onBackClick() {

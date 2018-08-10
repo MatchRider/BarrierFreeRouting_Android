@@ -125,7 +125,9 @@
                         android:scheme="disabled-routing"/>
             </intent-filter>
         </activity>
-        <activity android:name=".instructions.InstructionsActivity">
+        <activity android:name=".instructions.InstructionsActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/AppTheme">
         </activity>
     </application>
 

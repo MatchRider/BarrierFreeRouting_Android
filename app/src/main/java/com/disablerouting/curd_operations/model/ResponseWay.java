@@ -65,4 +65,8 @@ public class ResponseWay implements Parcelable {
     public String getError() {
         return mError;
     }
+
+    public void setWayData(List<WayData> wayData) {
+        mWayData = wayData;
+    }
 }

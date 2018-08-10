@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
     implementation 'com.github.scribejava:scribejava-apis:5.4.0'
     implementation 'com.github.smart-fun:XmlToJson:1.4.4'
+    implementation 'com.google.code.gson:gson:2.8.5'
 
 
 }

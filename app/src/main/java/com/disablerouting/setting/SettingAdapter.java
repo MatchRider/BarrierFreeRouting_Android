@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.disablerouting.R;
@@ -44,7 +43,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
         if(data!=null){
             holder.mTextViewTitle.setText(data);
         }
-        holder.mImageViewEdit.setOnClickListener(new View.OnClickListener() {
+       /* holder.mImageViewEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mOnClickListener.OnIconEditViewOnClick(view,position);
@@ -56,7 +55,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     mOnClickListener.OnIconCheckBoxOnClick(compoundButton,position,b);
 
             }
-        });
+        });*/
         String subTitle = null;
         if (mSelectionMap.containsKey(position)) {
             subTitle = mSelectionMap.get(position);
