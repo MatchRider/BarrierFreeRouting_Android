@@ -52,34 +52,8 @@ public class InstructionsAdapter extends RecyclerView.Adapter<InstructionsAdapte
                 holder.textViewDistance.setText("");
             }
             if (steps.getType() != -1) {
+                holder.imageViewDirection.setImageDrawable(DirectionInstruction.getEnumDrawable(mContext,steps.getType()));
 
-                if(steps.getType()==0){
-                    holder.imageViewDirection.setImageDrawable(getImage(mContext, "ic_left"));
-                }
-                if(steps.getType()==1){
-                    holder.imageViewDirection.setImageDrawable(getImage(mContext, "ic_right"));
-
-                }
-                if(steps.getType()==2){
-                    holder.imageViewDirection.setImageDrawable(getImage(mContext, "ic_left"));
-                }
-                if(steps.getType()==4){
-                    holder.imageViewDirection.setImageDrawable(getImage(mContext, "ic_slight_left"));
-                }
-                if(steps.getType()==5){
-                    holder.imageViewDirection.setImageDrawable(getImage(mContext, "ic_slight_right"));
-                }
-                if(steps.getType()==6){
-                    holder.imageViewDirection.setImageDrawable(getImage(mContext, "ic_up"));
-                }
-                if(steps.getType()==7){
-                    holder.imageViewDirection.setImageDrawable(getImage(mContext, "ic_round"));
-                }
-                if(steps.getType()==10){
-                    holder.imageViewDirection.setImageDrawable(getImage(mContext, "ic_slight_left"));
-                }
-
-                //   viewHolder.imageViewDirection.setDrawable(steps.getInstructions());
             } else {
                   holder.imageViewDirection.setImageDrawable(
                           mContext.getResources().getDrawable(R.drawable.ic_menu_compass));
