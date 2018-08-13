@@ -275,7 +275,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                         jsonObjectProfileParams.put("restrictions", restrictions);
                         mJsonObjectFilter.put("profile_params", jsonObjectProfileParams);
 
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
