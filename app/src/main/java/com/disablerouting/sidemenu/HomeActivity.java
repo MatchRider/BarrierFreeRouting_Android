@@ -27,6 +27,8 @@ import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.login.LoginActivity;
+import com.disablerouting.login.UserPreferences;
 import com.disablerouting.route_planner.view.RoutePlannerActivity;
 import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
 import com.disablerouting.utils.PermissionUtils;
@@ -192,6 +194,11 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
                 mSideMenuFragment.onLogin();
             }
         }
+        if (requestCode == AppConstant.REQUEST_CODE_LOGIN) {
+            if (resultCode == Activity.RESULT_OK) {
+                mSideMenuFragment.onLogin();
+            }
+        }
     }
 
     private void showSuggestionDialog() {
@@ -223,10 +230,14 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
     }
     
     private void redirectToSuggestionScreen(){
-        Intent intent= new Intent(this,RoutePlannerActivity.class);
-        intent.putExtra("FromSuggestion",true);
-        startActivityForResult(intent,AppConstant.REQUEST_CODE_SCREEN);
-        //launchActivity(intent);
+        if (UserPreferences.getInstance(this).getAccessToken() == null) {
+            Intent intentLogin = new Intent(this, LoginActivity.class);
+            startActivityForResult(intentLogin, AppConstant.REQUEST_CODE_LOGIN);
+        }else {
+            Intent intent = new Intent(this, RoutePlannerActivity.class);
+            intent.putExtra("FromSuggestion", true);
+            startActivity(intent);
+        }
     }
 
     @Override
