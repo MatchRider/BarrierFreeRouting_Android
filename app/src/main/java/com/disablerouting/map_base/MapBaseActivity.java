@@ -270,7 +270,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                         @Override
                         public boolean onClick(final Polyline polyline, MapView mapView, GeoPoint eventPos) {
                             updatePolylineUI(polyline);
-                            showFeedbackDialog(eventPos.getLongitude(), eventPos.getLatitude());
+                           // showFeedbackDialog(eventPos.getLongitude(), eventPos.getLatitude());
 
                             return false;
                         }
