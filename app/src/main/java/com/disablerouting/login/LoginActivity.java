@@ -1,6 +1,7 @@
 package com.disablerouting.login;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,7 +11,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
-import com.disablerouting.sidemenu.HomeActivity;
 import com.disablerouting.utils.Utility;
 import com.github.scribejava.core.model.OAuth1AccessToken;
 import com.github.scribejava.core.model.OAuth1RequestToken;
@@ -53,9 +53,10 @@ public class LoginActivity extends BaseActivityImpl  {
                 String accessToken = oAuth1AccessToken.getToken(); // Oauth Token
                 String accessTokenSecret = oAuth1AccessToken.getTokenSecret(); // Oauth Token Secret
                 UserPreferences.getInstance(this).saveToken(accessToken+","+accessTokenSecret);
-                Intent intentHome= new Intent(this, HomeActivity.class);
-                startActivity(intentHome);
 
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_OK,returnIntent);
+                finish();
 
             } catch (IOException e) {
                 e.printStackTrace();

@@ -13,8 +13,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
-import com.disablerouting.login.LoginActivity;
-import com.disablerouting.login.UserPreferences;
 import com.disablerouting.sidemenu.HomeActivity;
 
 public class TutorialActivity extends BaseActivityImpl implements ViewPager.OnPageChangeListener {
@@ -128,12 +126,7 @@ public class TutorialActivity extends BaseActivityImpl implements ViewPager.OnPa
      */
     private void launchHomeScreen() {
         mTutorialPrefManager.setFirstTimeLaunch(false);
-        if(UserPreferences.getInstance(this).getAccessToken()==null) {
-            launchActivity(this, LoginActivity.class);
-            finish();
-        }else {
-            launchActivity(this, HomeActivity.class);
-        }
+        launchActivity(this,HomeActivity.class);
     }
 
 

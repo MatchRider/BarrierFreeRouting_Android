@@ -1,5 +1,6 @@
 package com.disablerouting.sidemenu;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -112,7 +113,8 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
 
     @OnClick(R.id.btn_route_planner)
     void redirectRoutePlanner() {
-        launchActivity(this, RoutePlannerActivity.class);
+        Intent intent= new Intent(this, RoutePlannerActivity.class);
+        startActivityForResult(intent,AppConstant.REQUEST_CODE_SCREEN);
     }
 
     @OnClick(R.id.btn_suggestion)
@@ -185,6 +187,11 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         if (requestCode == AppConstant.SETTING_REQUEST_CODE) {
             checkLocationStatus();
         }
+        if(requestCode== AppConstant.REQUEST_CODE_SCREEN){
+            if (resultCode == Activity.RESULT_OK) {
+                mSideMenuFragment.onLogin();
+            }
+        }
     }
 
     private void showSuggestionDialog() {
@@ -218,7 +225,8 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
     private void redirectToSuggestionScreen(){
         Intent intent= new Intent(this,RoutePlannerActivity.class);
         intent.putExtra("FromSuggestion",true);
-        launchActivity(intent);
+        startActivityForResult(intent,AppConstant.REQUEST_CODE_SCREEN);
+        //launchActivity(intent);
     }
 
     @Override

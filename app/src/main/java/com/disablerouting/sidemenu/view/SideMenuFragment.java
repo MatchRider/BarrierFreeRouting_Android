@@ -19,7 +19,6 @@ import com.disablerouting.common.AppConstant;
 import com.disablerouting.contact.ContactActivity;
 import com.disablerouting.disclaimer.DisclaimerActivity;
 import com.disablerouting.legal.LegalActivity;
-import com.disablerouting.login.LoginActivity;
 import com.disablerouting.login.UserPreferences;
 import com.disablerouting.sidemenu.adapter.SideMenuAdapter;
 import com.disablerouting.sidemenu.model.SideMenuData;
@@ -134,10 +133,6 @@ public class SideMenuFragment extends Fragment implements ISideMenuView,
                                 Toast.makeText(getContext(),"Logout Clicked",Toast.LENGTH_SHORT).show();
                                 mSideMenuAdapter.remove(SideMenuData.LOGOUT);
                                 mSideMenuAdapter.notifyDataSetChanged();
-                                Intent intent= new Intent(getContext(), LoginActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-
                             }
                         })
                         .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -150,6 +145,11 @@ public class SideMenuFragment extends Fragment implements ISideMenuView,
                 break;
 
         }
+    }
+
+    public void onLogin(){
+        mSideMenuAdapter.add(SideMenuData.LOGOUT);
+        mSideMenuAdapter.notifyDataSetChanged();
     }
 
 }

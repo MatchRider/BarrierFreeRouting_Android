@@ -18,9 +18,11 @@ import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.manager.GetWayManager;
 import com.disablerouting.curd_operations.model.RequestGetWay;
 import com.disablerouting.curd_operations.model.ResponseWay;
-import com.disablerouting.instructions.InstructionsActivity;
 import com.disablerouting.filter.view.FilterActivity;
 import com.disablerouting.geo_coding.model.Features;
+import com.disablerouting.instructions.InstructionsActivity;
+import com.disablerouting.login.LoginActivity;
+import com.disablerouting.login.UserPreferences;
 import com.disablerouting.map_base.MapBaseActivity;
 import com.disablerouting.route_planner.model.*;
 import com.disablerouting.route_planner.presenter.IRoutePlannerScreenPresenter;
@@ -79,6 +81,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private ProgressDialog pDialog;
     private boolean mISFromSuggestion;
     private List<Steps> mStepsList= new ArrayList<>();
+    private boolean mISLogin= false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +102,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mButtonGo.setVisibility(View.GONE);
             mSwitchCompatToogle.setVisibility(View.GONE);
         }
-
     }
 
     @Override
@@ -283,6 +285,14 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 }
             }
         }
+        if (requestCode == AppConstant.REQUEST_CODE_LOGIN) {
+            if (resultCode == Activity.RESULT_OK) {
+                mISLogin= true;
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_OK,returnIntent);
+
+            }
+        }
     }
 
 
@@ -319,6 +329,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void hideLoader() {
         mProgressBar.setVisibility(View.GONE);
     }
+
+
 
 
     @SuppressLint("StaticFieldLeak")
@@ -476,24 +488,34 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @OnClick(R.id.toggle_way)
     public void toggleViews() {
-        if (mSwitchCompatToogle.isChecked()) {
-            mSourceDestinationFragment.onToggleView(true);
-            mButtonGo.setVisibility(View.GONE);
-            mImageViewInfo.setVisibility(View.GONE);
-            clearItemsFromMap();
-            PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
-            mPlotWayDataTaskNotValidated.execute();
-        } else {
-            mSourceDestinationFragment.onToggleView(false);
-            clearItemsFromMap();
-            Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
-            mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
-            mButtonGo.setVisibility(View.VISIBLE);
-            if(mISMapPlotted) {
-                mImageViewInfo.setVisibility(View.VISIBLE);
-            }
+            if (UserPreferences.getInstance(this).getAccessToken() == null) {
+                Intent intentLogin= new Intent(this, LoginActivity.class);
+                startActivityForResult(intentLogin,AppConstant.REQUEST_CODE_LOGIN);
+
+                mSwitchCompatToogle.setChecked(false);
+
+            } else {
+                if (mSwitchCompatToogle.isChecked()) {
+                    mSourceDestinationFragment.onToggleView(true);
+                    mButtonGo.setVisibility(View.GONE);
+                    mImageViewInfo.setVisibility(View.GONE);
+                    clearItemsFromMap();
+                    PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
+                    mPlotWayDataTaskNotValidated.execute();
+                } else {
+                    mSourceDestinationFragment.onToggleView(false);
+                    clearItemsFromMap();
+                    Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
+                    mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
+                    mButtonGo.setVisibility(View.VISIBLE);
+                    if (mISMapPlotted) {
+                        mImageViewInfo.setVisibility(View.VISIBLE);
+                    }
+
+                }
 
         }
+
     }
 
 
@@ -503,4 +525,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         intent.putParcelableArrayListExtra(AppConstant.STEP_DATA, (ArrayList<? extends Parcelable>) mStepsList);
         launchActivity(intent);
     }
+
+
+
+
 }
