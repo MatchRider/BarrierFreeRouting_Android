@@ -25,7 +25,7 @@ public class GeoCodingManager implements ResponseCallback<GeoCodingResponse> {
             double latitude= AppData.getNewInstance().getCurrentLoc().latitude; //49.4056438,8.5435314
             double longitude= AppData.getNewInstance().getCurrentLoc().longitude;
              String countryISO= "DEU"; // ALPHA 3 CODE GERMANY CODE
-            // String countryISO= "IND"; // ALPHA 3 CODE GERMANY CODE
+            // String countryISO= "IND"; // ALPHA 3 CODE India CODE
             String layers="venue,address";
             mGeoCodingResponseCall = RetrofitClient.getApiService().getGeoCodeForward(ApiEndPoint.API_KEY, queryString,
                     latitude,longitude,layers,countryISO);

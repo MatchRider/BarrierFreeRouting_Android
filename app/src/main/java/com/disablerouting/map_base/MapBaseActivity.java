@@ -120,7 +120,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                     }
                 }
                 if (mPolylineIndex < mPolylineArrayListViaMidPoints.size() && mPolylineIndex != -1 && mGeoPointIndex != -1) {
-                    updatePolylineUI(mPolylineArrayListViaMidPoints.get(mPolylineIndex));
+                    updatePolylineUI(mPolylineArrayListViaMidPoints.get(mPolylineIndex)); // hiding as change update polyline method
                     addRunningMarker(mPolylineArrayListViaMidPoints.get(mPolylineIndex).getPoints().get(mGeoPointIndex));
                     UI_HANDLER.postDelayed(updateMarker, 1000);
                 } else {
@@ -285,17 +285,31 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         }
     }
 
-    private void updatePolylineUI(Polyline polyline) {
+    private void updatePolylineUI(Polyline polyline ) {
+
         if (mPreviousPolyline != null) {
             mPreviousPolyline.setColor(getResources().getColor(R.color.colorPrimary));
             mPreviousPolyline.setWidth(20);
         }
-        polyline.setColor(getResources().getColor(R.color.colorGreen));
+        polyline.setColor(getResources().getColor(R.color.colorBlack));
         polyline.setWidth(30);
         mPreviousPolyline = polyline;
         mMapView.invalidate();
     }
-
+    private void updatePolylineUIWays(Polyline polyline , int colorIndex, boolean valid) {
+        if (mPreviousPolyline != null) {
+            if(valid){
+                mPreviousPolyline.setColor(getResources().getColor(R.color.colorGreen));
+            }else {
+                mPreviousPolyline.setColor(getResources().getColor(color[colorIndex]));
+            }
+            mPreviousPolyline.setWidth(10);
+        }
+        polyline.setColor(getResources().getColor(R.color.colorBlack));
+        polyline.setWidth(30);
+        mPreviousPolyline = polyline;
+        mMapView.invalidate();
+    }
     private void resetRunningMarker() {
         UI_HANDLER.removeCallbacks(updateMarker);
         mPolylineIndex = -1;
@@ -802,27 +816,29 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private int[] color = {R.color.colorTextGray,R.color.colorGreen,R.color.colorRed,android.R.color.holo_blue_bright};
     private int colorIndex=0;
 
+    private ArrayList<Polyline> mPolylineArrayListWays = new ArrayList<>();
 
-    public void addPolyLineForWays(List<GeoPoint> geoPoints, GeoPoint startPoint, WayCustomModel wayCustomModel, boolean valid) {
-        Polyline line = new Polyline();
-        line.setPoints(geoPoints);
-        line.setRelatedObject(wayCustomModel.getId());
-        line.setWidth(10);
+    public void addPolyLineForWays(List<GeoPoint> geoPoints, GeoPoint startPoint, WayCustomModel wayCustomModel, final boolean valid) {
+        Polyline polylineWays = new Polyline();
+        polylineWays.setPoints(geoPoints);
+        polylineWays.setRelatedObject(wayCustomModel.getId());
+        polylineWays.setWidth(10);
         if(valid){
-            line.setColor(getResources().getColor(R.color.colorGreen));
+            polylineWays.setColor(getResources().getColor(R.color.colorGreen));
         }else {
-            line.setColor(getResources().getColor(color[colorIndex]));
+            polylineWays.setColor(getResources().getColor(color[colorIndex]));
             colorIndex=(colorIndex+1)%4;
             //line.setColor(getResources().getColor(R.color.colorRed));
         }
-        line.setOnClickListener(new Polyline.OnClickListener() {
+        polylineWays.setOnClickListener(new Polyline.OnClickListener() {
             @Override
             public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
+                updatePolylineUIWays(polyline,colorIndex,valid);
                 checkForWay(polyline,polyline.getRelatedObject().toString());
                 return false;
             }
         });
-        mMapView.getOverlays().add(line);
+        mMapView.getOverlays().add(polylineWays);
 
     }
 
