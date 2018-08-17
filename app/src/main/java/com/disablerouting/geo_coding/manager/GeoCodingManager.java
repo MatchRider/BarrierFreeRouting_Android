@@ -3,8 +3,9 @@ package com.disablerouting.geo_coding.manager;
 
 import android.support.annotation.NonNull;
 import com.disablerouting.api.*;
-import com.disablerouting.geo_coding.presenter.IGeoCodingResponseReceiver;
+import com.disablerouting.application.AppData;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
+import com.disablerouting.geo_coding.presenter.IGeoCodingResponseReceiver;
 import retrofit2.Call;
 
 public class GeoCodingManager implements ResponseCallback<GeoCodingResponse> {
@@ -20,7 +21,15 @@ public class GeoCodingManager implements ResponseCallback<GeoCodingResponse> {
 
     public void getGeoCodeForward(IGeoCodingResponseReceiver receiver, String queryString) {
         this.mIGeoCodingResponseReceiver = receiver;
-        mGeoCodingResponseCall = RetrofitClient.getApiService().getGeoCode(ApiEndPoint.API_KEY,queryString);
+        if(AppData.getNewInstance()!=null && AppData.getNewInstance().getCurrentLoc()!=null) {
+            double latitude= AppData.getNewInstance().getCurrentLoc().latitude; //49.4056438,8.5435314
+            double longitude= AppData.getNewInstance().getCurrentLoc().longitude;
+            String countryISO= "DEU"; // ALPHA 3 CODE GERMANY CODE
+            // String countryISO= "IND"; // ALPHA 3 CODE GERMANY CODE
+            String layers="venue,address";
+            mGeoCodingResponseCall = RetrofitClient.getApiService().getGeoCodeForward(ApiEndPoint.API_KEY, queryString,
+                    latitude,longitude,layers);
+        }
         mGeoCodingResponseCall.enqueue(new ResponseWrapper<GeoCodingResponse>(this));
     }
 

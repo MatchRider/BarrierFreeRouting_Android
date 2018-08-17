@@ -59,12 +59,17 @@ public interface ApiService {
     //Its a Forward Geo Code search
     /**
      *
-     * @param api_key  Insert your API Key here.
-     * @param query    String to search
-     * @return return address of places
+     * @param api_key api key
+     * @param query text string
+     * @param latitude latitude
+     * @param longitude longitude
+     * @param layers layers.
+     * @return
      */
     @GET("geocode/search")
-    Call<GeoCodingResponse> getGeoCode(@Query("api_key") String api_key, @Query("text") String query);
+    Call<GeoCodingResponse> getGeoCodeForward(@Query("api_key") String api_key, @Query("text") String query,
+                                              @Query("focus.point.lat") double latitude,@Query("focus.point.lon") double longitude,
+                                              @Query("layers") String layers);
 
 
     @GET("geocode/reverse")

@@ -9,25 +9,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Properties implements Parcelable {
 
     @JsonProperty("country")
-    private String mCountry=" ";
+    private String mCountry="";
 
     @JsonProperty("country_code")
-    private String mCountry_code=" ";
+    private String mCountry_code="";
 
     @JsonProperty("region")
-    private String mRegion=" ";
+    private String mRegion="";
 
     @JsonProperty("locality")
-    private String mLocality=" ";
+    private String mLocality="";
 
     @JsonProperty("street")
-    private String mStreet=" ";
+    private String mStreet="";
 
     @JsonProperty("name")
-    private String mName=" ";
+    private String mName="";
 
     @JsonProperty("house_number")
-    private String mHouseNumber=" ";
+    private String mHouseNumber="";
 
     @JsonProperty("place_type")
     private String mPlaceType="";
@@ -109,7 +109,22 @@ public class Properties implements Parcelable {
 
     @Override
     public String toString() {
-        return mName + mHouseNumber + mStreet + mLocality + mRegion + mCountry ;
+        StringBuilder strBuilder = new StringBuilder();
+        if(mName!=null && !mName.isEmpty()) {
+            strBuilder.append(mName);}
+        if(mHouseNumber!=null && !mHouseNumber.isEmpty()) {
+            strBuilder.append(" "+mHouseNumber);}
+        if(mStreet!=null && !mStreet.isEmpty()) {
+            strBuilder.append(" "+mStreet);}
+        if(mLocality!=null && !mLocality.isEmpty()) {
+            strBuilder.append(" "+mLocality);}
+        if(mRegion!=null && !mRegion.isEmpty()) {
+            strBuilder.append(" "+mRegion);
+        }if(mCountry!=null && !mCountry.isEmpty()) {
+            strBuilder.append(" "+mCountry);
+        }
+       // return mName + mHouseNumber + mStreet + mLocality + mRegion + mCountry ;
+        return strBuilder.toString();
     }
 
     public String getCountry() {
