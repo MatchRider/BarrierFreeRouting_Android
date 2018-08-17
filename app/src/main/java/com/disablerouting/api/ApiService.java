@@ -64,12 +64,13 @@ public interface ApiService {
      * @param latitude latitude
      * @param longitude longitude
      * @param layers layers.
+     * @param country iso 3 of country https://en.wikipedia.org/wiki/ISO_3166-1
      * @return
      */
     @GET("geocode/search")
     Call<GeoCodingResponse> getGeoCodeForward(@Query("api_key") String api_key, @Query("text") String query,
                                               @Query("focus.point.lat") double latitude,@Query("focus.point.lon") double longitude,
-                                              @Query("layers") String layers);
+                                              @Query("layers") String layers,@Query("boundary.country") String country);
 
 
     @GET("geocode/reverse")
