@@ -305,7 +305,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             }
             mPreviousPolyline.setWidth(10);
         }
-        polyline.setColor(getResources().getColor(R.color.colorBlack));
+        polyline.setColor(getResources().getColor(R.color.colorBrown));
         polyline.setWidth(30);
         mPreviousPolyline = polyline;
         mMapView.invalidate();
@@ -816,8 +816,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private int[] color = {R.color.colorTextGray,R.color.colorGreen,R.color.colorRed,android.R.color.holo_blue_bright};
     private int colorIndex=0;
 
-    private ArrayList<Polyline> mPolylineArrayListWays = new ArrayList<>();
-
     public void addPolyLineForWays(List<GeoPoint> geoPoints, GeoPoint startPoint, WayCustomModel wayCustomModel, final boolean valid) {
         Polyline polylineWays = new Polyline();
         polylineWays.setPoints(geoPoints);
@@ -828,7 +826,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         }else {
             polylineWays.setColor(getResources().getColor(color[colorIndex]));
             colorIndex=(colorIndex+1)%4;
-            //line.setColor(getResources().getColor(R.color.colorRed));
         }
         polylineWays.setOnClickListener(new Polyline.OnClickListener() {
             @Override
