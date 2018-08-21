@@ -57,9 +57,9 @@ public class DirectionInstruction {
         case SHARP_RIGHT:
           return getImage(context,"ic_right");
         case SLIGHT_LEFT:
-          return getImage(context,"slight_left");
+          return getImage(context,"ic_slight_left_turn");
         case SLIGHT_RIGHT:
-          return getImage(context,"slight_right");
+          return getImage(context,"ic_slight_right_turn");
         case STRAIGHT:
           return getImage(context,"ic_up");
         case ENTER_ROUND_ABOUT:

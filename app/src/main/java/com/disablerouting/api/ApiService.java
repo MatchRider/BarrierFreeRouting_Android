@@ -100,7 +100,7 @@ public interface ApiService {
 
 
     @GET("nodes")
-        //, @Query("wheelchair") String wheelChair not using
+        //@Query("wheelchair") String wheelChair not using
     Call<NodeResponse> getNodes(@Query("api_key") String apiKey, @Query("bbox") String bbox, @Query("per_page") int perPage);
 
 

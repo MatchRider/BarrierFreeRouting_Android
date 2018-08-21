@@ -6,8 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -19,11 +17,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import com.disablerouting.R;
 import com.disablerouting.application.AppData;
 import com.disablerouting.base.BaseActivityImpl;
@@ -31,7 +24,6 @@ import com.disablerouting.common.AppConstant;
 import com.disablerouting.route_planner.model.NodeItem;
 import com.disablerouting.route_planner.model.Steps;
 import com.disablerouting.route_planner.model.WayCustomModel;
-import com.disablerouting.setting.SettingActivity;
 import com.disablerouting.utils.PermissionUtils;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -84,55 +76,14 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private boolean mShowFeedbackDialog;
     private ArrayList<Polyline> mPolylineArrayList = new ArrayList<>();
     private ArrayList<Polyline> mPolylineArrayListViaMidPoints = new ArrayList<>();
-    private Dialog mAlertDialogFeedback = null;
-    private Dialog mAlertDialogEnhance = null;
-    private Dialog mAlertDialogSorry = null;
-    private Dialog mAlertDialogCloserLook = null;
     protected Handler UI_HANDLER = new Handler();
+    private int[] color = {R.color.colorTextGray,R.color.colorGreen,
+            R.color.colorRed, android.R.color.holo_blue_bright};
+    private int colorIndex=0;
 
     //Runnable marker data
-    private int mPolylineIndex = -1;
-    private int mGeoPointIndex = -1;
-
-    protected Runnable updateMarker = new Runnable() {
-        @Override
-        public void run() {
-            if (mPolylineArrayListViaMidPoints.size() > 0) {
-                if (mPolylineIndex == -1) {
-                    //Update polyline index to 0;
-                    mPolylineIndex = 0;
-                    mGeoPointIndex = 0;
-                } else if (mPolylineIndex < mPolylineArrayListViaMidPoints.size()) {
-                    if ((mGeoPointIndex + 1) < mPolylineArrayListViaMidPoints.get(mPolylineIndex).getPoints().size()) {
-                        //update GeoPint to next for current polyline
-                        mGeoPointIndex++;
-                    } else {
-                        showEnhanceDialog();
-                        //Switch to next polyline
-                        mPolylineIndex++;
-                        mGeoPointIndex = 0;
-                        if (mPolylineIndex < mPolylineArrayListViaMidPoints.size()) {
-                            GeoPoint start = mPolylineArrayListViaMidPoints.get(mPolylineIndex).getPoints().get(0);
-                            GeoPoint end = mPolylineArrayListViaMidPoints.get(mPolylineIndex).getPoints().
-                                    get(mPolylineArrayListViaMidPoints.get(mPolylineIndex).getPoints().size() - 1);
-                            setBoundingBox(start, end);
-                        }
-                    }
-                }
-                if (mPolylineIndex < mPolylineArrayListViaMidPoints.size() && mPolylineIndex != -1 && mGeoPointIndex != -1) {
-                    updatePolylineUI(mPolylineArrayListViaMidPoints.get(mPolylineIndex)); // hiding as change update polyline method
-                    addRunningMarker(mPolylineArrayListViaMidPoints.get(mPolylineIndex).getPoints().get(mGeoPointIndex));
-                    UI_HANDLER.postDelayed(updateMarker, 1000);
-                } else {
-                    stopRunningMarker();
-                    GeoPoint start = mPolylineArrayListViaMidPoints.get(0).getPoints().get(0);
-                    GeoPoint end = mPolylineArrayListViaMidPoints.get(mPolylineArrayListViaMidPoints.size() - 1).getPoints().get(mPolylineArrayListViaMidPoints.get(mPolylineArrayListViaMidPoints.size() - 1).getPoints().size() - 1);
-                    setBoundingBox(start, end);
-                }
-            }
-        }
-    };
-
+    //private int mPolylineIndex = -1;
+    //private int mGeoPointIndex = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +99,10 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     }
 
+    /**
+     * Listener for Map
+     * @param feedBackListener Feed back Listener
+     */
     public void setOnFeedBackListener(OnFeedBackListener feedBackListener) {
         mFeedBackListener = feedBackListener;
     }
@@ -163,6 +118,9 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         }
     }
 
+    /**
+     * Map Initialize
+     */
     protected void initializeMap() {
         mMapView = findViewById(com.disablerouting.R.id.map_view);
         mMapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
@@ -172,14 +130,13 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getApplicationContext()), mMapView);
         mLocationOverlay.enableMyLocation();
         mMapView.getOverlays().add(this.mLocationOverlay);
-        //Add Scale Bar
+
         ScaleBarOverlay myScaleBarOverlay = new ScaleBarOverlay(mMapView);
         myScaleBarOverlay.setCentred(true);
         mMapView.getOverlays().add(myScaleBarOverlay);
         setProvider();
 
         mMapView.getOverlays().clear();
-
         mStartMarker = new Marker(mMapView);
         mEndMarker = new Marker(mMapView);
         mMidMarker = new Marker(mMapView);
@@ -188,6 +145,9 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     }
 
+    /**
+     * Set Provider
+     */
     private void setProvider() {
         if (mMapView != null) {
             GpsMyLocationProvider gpsMyLocationProvider = new GpsMyLocationProvider(getApplicationContext());
@@ -200,11 +160,13 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         }
     }
 
-    /**
-     * Add path between two points
-     *
-     * @param geoPointList plot encoded points
-     * @param stepsList        step list array
+    /***
+     * Plot source to destination
+     * @param geoPointList list of geo points
+     * @param startAdd start address string
+     * @param endAdd end address string
+     * @param stepsList steplist ways points
+     * @param showFeedbackDialog show dialog on click polyline
      */
     public void plotDataOfSourceDestination(List<List<Double>> geoPointList, String startAdd, String endAdd, List<Steps> stepsList, boolean showFeedbackDialog) {
         GeoPoint geoPointStart = null, geoPointEnd = null;
@@ -234,6 +196,11 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     }
 
 
+    /**
+     * Set bounding box between source and destinations
+     * @param geoPointStart geo point start
+     * @param geoPointEnd geo point end.
+     */
     public void setBoundingBox(GeoPoint geoPointStart, GeoPoint geoPointEnd) {
         if (geoPointStart != null && geoPointEnd != null) {
             BoundingBox boundingBox = new BoundingBox(geoPointStart.getLatitude(), geoPointStart.getLongitude(),
@@ -245,12 +212,11 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     /**
      * Add geo points to map
-     *
      * @param geoPointList list of geo points
      * @param stepsList    way points index
      */
     private void addPolyLine(final List<GeoPoint> geoPointList, final List<Steps> stepsList) {
-        resetRunningMarker();
+        //resetRunningMarker();
         mPolylineArrayList.clear();
         if (geoPointList.size() > 1 && stepsList != null && stepsList.size() > 2) {
             for (int i = 0; i < stepsList.size(); i++) {
@@ -271,7 +237,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                         public boolean onClick(final Polyline polyline, MapView mapView, GeoPoint eventPos) {
                            // updatePolylineUI(polyline);
                            // showFeedbackDialog(eventPos.getLongitude(), eventPos.getLatitude());
-
                             return false;
                         }
                     });
@@ -296,6 +261,13 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         mPreviousPolyline = polyline;
         mMapView.invalidate();
     }
+
+    /**
+     * Update Polyline of ways
+     * @param polyline polyline
+     * @param colorIndex index color
+     * @param valid valid data or not
+     */
     private void updatePolylineUIWays(Polyline polyline , int colorIndex, boolean valid) {
         if (mPreviousPolyline != null) {
             if(valid){
@@ -310,11 +282,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         mPreviousPolyline = polyline;
         mMapView.invalidate();
     }
-    private void resetRunningMarker() {
-        UI_HANDLER.removeCallbacks(updateMarker);
-        mPolylineIndex = -1;
-        mGeoPointIndex = -1;
-    }
+
 
     /**
      * Add current location
@@ -547,43 +515,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         }
     }
 
-    /**
-     * Sho feed back dialog
-     *
-     * @param longitude double longitude
-     * @param latitude  double latitude
-     */
-    private void showFeedbackDialog(final double longitude, final double latitude) {
-        String description = String.valueOf((latitude + " " + longitude));
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View customView = layoutInflater.inflate(R.layout.feedback_pop_up, null);
-        TextView textViewDescription = (TextView) customView.findViewById(R.id.txv_description);
-        Button btnFeedback = (Button) customView.findViewById(R.id.btn_feedback);
-        Button btnCancel = (Button) customView.findViewById(R.id.btn_cancel);
-        textViewDescription.setText(description);
-        builder.setView(customView);
-        if (mAlertDialogFeedback == null) {
-            mAlertDialogFeedback = builder.create();
-        }
-        if (!mAlertDialogFeedback.isShowing()) {
-            mAlertDialogFeedback.show();
-        }
-        mAlertDialogFeedback.setCanceledOnTouchOutside(true);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAlertDialogFeedback.dismiss();
-            }
-        });
-        btnFeedback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mFeedBackListener.onFeedBackClick(longitude, latitude);
-                mAlertDialogFeedback.dismiss();
-            }
-        });
-    }
 
     /**
      * Clear Items from map
@@ -695,128 +626,29 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         }
     }
 
-    public void stopRunningMarker() {
+    /*public void stopRunningMarker() {
         if (mRunningMarker != null && mMapView != null) {
             mMapView.getOverlays().remove(mRunningMarker);
             mMapView.invalidate();
             UI_HANDLER.removeCallbacks(updateMarker);
         }
-    }
+    }*/
 
-    /**
-     * Show enhance feedback dialog
-     */
-    private void showEnhanceDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View customView = layoutInflater.inflate(R.layout.enchance_feedback_pop_up, null);
-        Button btnSorryNo = (Button) customView.findViewById(R.id.btn_sorry_no);
-        Button btnOk = (Button) customView.findViewById(R.id.btn_ok);
-        builder.setView(customView);
-        if (mAlertDialogEnhance == null) {
-            mAlertDialogEnhance = builder.create();
-        }
-        if (mAlertDialogEnhance.isShowing()) {
-            mAlertDialogEnhance.dismiss();
-            showEnhanceDialog();
-        } else {
-            mAlertDialogEnhance.show();
-
-        }
-        mAlertDialogEnhance.setCanceledOnTouchOutside(true);
-        mAlertDialogEnhance.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        mAlertDialogEnhance.getWindow().setGravity(Gravity.BOTTOM);
-
-        btnSorryNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAlertDialogEnhance.dismiss();
-                showSorryDialog();
-            }
-        });
-        btnOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAlertDialogEnhance.dismiss();
-                showCloserLookDialog();
-            }
-        });
-    }
-
-    /**
-     * Show sorry feedback dialog
-     */
-    private void showSorryDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View customView = layoutInflater.inflate(R.layout.on_sorry_click_dialog, null);
-        Button btnOk = (Button) customView.findViewById(R.id.btn_ok);
-        builder.setView(customView);
-        if (mAlertDialogSorry == null) {
-            mAlertDialogSorry = builder.create();
-        }
-        if (mAlertDialogSorry.isShowing()) {
-            mAlertDialogSorry.dismiss();
-        } else {
-            if (mAlertDialogEnhance != null && !mAlertDialogEnhance.isShowing()) {
-                mAlertDialogSorry.show();
-            }
-        }
-        mAlertDialogSorry.setCanceledOnTouchOutside(true);
-        mAlertDialogSorry.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        mAlertDialogSorry.getWindow().setGravity(Gravity.BOTTOM);
-
-        btnOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAlertDialogSorry.dismiss();
-            }
-        });
-    }
-
-    /**
-     * Take closer look dialog
-     */
-    private void showCloserLookDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View customView = layoutInflater.inflate(R.layout.take_closer_look_dialog, null);
-        Button btnOk = (Button) customView.findViewById(R.id.btn_ok);
-        builder.setView(customView);
-        if (mAlertDialogCloserLook == null) {
-            mAlertDialogCloserLook = builder.create();
-        }
-        if (mAlertDialogCloserLook.isShowing()) {
-            mAlertDialogCloserLook.dismiss();
-        } else {
-            if (mAlertDialogEnhance != null && !mAlertDialogEnhance.isShowing()) {
-                mAlertDialogCloserLook.show();
-            }
-        }
-        mAlertDialogCloserLook.setCanceledOnTouchOutside(true);
-        mAlertDialogCloserLook.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        mAlertDialogCloserLook.getWindow().setGravity(Gravity.BOTTOM);
-
-        btnOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAlertDialogCloserLook.dismiss();
-                launchActivity(MapBaseActivity.this, SettingActivity.class);
-            }
-        });
-    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        UI_HANDLER.removeCallbacks(updateMarker);
+       // UI_HANDLER.removeCallbacks(updateMarker);
     }
 
 
-    private int[] color = {R.color.colorTextGray,R.color.colorGreen,R.color.colorRed,android.R.color.holo_blue_bright};
-    private int colorIndex=0;
-
-    public void addPolyLineForWays(List<GeoPoint> geoPoints, GeoPoint startPoint, WayCustomModel wayCustomModel, final boolean valid) {
+    /**
+     * Add polyline for validate / non validate data
+     * @param geoPoints points geo
+     * @param wayCustomModel custom model to send furture  request
+     * @param valid valid data or not
+     */
+    public void addPolyLineForWays(List<GeoPoint> geoPoints, WayCustomModel wayCustomModel, final boolean valid) {
         Polyline polylineWays = new Polyline();
         polylineWays.setPoints(geoPoints);
         polylineWays.setRelatedObject(wayCustomModel.getId());
@@ -841,6 +673,53 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     public void checkForWay(Polyline polyline, String way){
     }
+        /*protected Runnable updateMarker = new Runnable() {
+        @Override
+        public void run() {
+            if (mPolylineArrayListViaMidPoints.size() > 0) {
+                if (mPolylineIndex == -1) {
+                    //Update polyline index to 0;
+                    mPolylineIndex = 0;
+                    mGeoPointIndex = 0;
+                } else if (mPolylineIndex < mPolylineArrayListViaMidPoints.size()) {
+                    if ((mGeoPointIndex + 1) < mPolylineArrayListViaMidPoints.get(mPolylineIndex).getPoints().size()) {
+                        //update GeoPint to next for current polyline
+                        mGeoPointIndex++;
+                    } else {
+                        showEnhanceDialog();
+                        //Switch to next polyline
+                        mPolylineIndex++;
+                        mGeoPointIndex = 0;
+                        if (mPolylineIndex < mPolylineArrayListViaMidPoints.size()) {
+                            GeoPoint start = mPolylineArrayListViaMidPoints.get(mPolylineIndex).getPoints().get(0);
+                            GeoPoint end = mPolylineArrayListViaMidPoints.get(mPolylineIndex).getPoints().
+                                    get(mPolylineArrayListViaMidPoints.get(mPolylineIndex).getPoints().size() - 1);
+                            setBoundingBox(start, end);
+                        }
+                    }
+                }
+                if (mPolylineIndex < mPolylineArrayListViaMidPoints.size() && mPolylineIndex != -1 && mGeoPointIndex != -1) {
+                    updatePolylineUI(mPolylineArrayListViaMidPoints.get(mPolylineIndex)); // hiding as change update polyline method
+                    addRunningMarker(mPolylineArrayListViaMidPoints.get(mPolylineIndex).getPoints().get(mGeoPointIndex));
+                    UI_HANDLER.postDelayed(updateMarker, 1000);
+                } else {
+                    stopRunningMarker();
+                    GeoPoint start = mPolylineArrayListViaMidPoints.get(0).getPoints().get(0);
+                    GeoPoint end = mPolylineArrayListViaMidPoints.get(mPolylineArrayListViaMidPoints.size() - 1).getPoints().get(mPolylineArrayListViaMidPoints.get(mPolylineArrayListViaMidPoints.size() - 1).getPoints().size() - 1);
+                    setBoundingBox(start, end);
+                }
+            }
+        }
+    };
+*/
+
+          /*private void resetRunningMarker() {
+        UI_HANDLER.removeCallbacks(updateMarker);
+        mPolylineIndex = -1;
+        mGeoPointIndex = -1;
+    }*/
+
+
 }
 
 

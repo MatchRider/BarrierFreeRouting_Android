@@ -81,7 +81,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private ProgressDialog pDialog;
     private boolean mISFromSuggestion;
     private List<Steps> mStepsList= new ArrayList<>();
-    private boolean mISLogin= false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,7 +202,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mButtonGo.setVisibility(View.VISIBLE);
             mButtonGo.setClickable(true);
             mButtonGo.setText(R.string.go);
-            stopRunningMarker();
         }
     }
 
@@ -214,7 +212,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mButtonGo.setVisibility(View.VISIBLE);
             mButtonGo.setClickable(true);
             mButtonGo.setText(R.string.go);
-            stopRunningMarker();
         }
     }
 
@@ -223,7 +220,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void reCenter() {
         clearItemsFromMap();
         addCurrentLocation();
-        stopRunningMarker();
     }
 
     @Override
@@ -287,7 +283,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
         if (requestCode == AppConstant.REQUEST_CODE_LOGIN) {
             if (resultCode == Activity.RESULT_OK) {
-                mISLogin= true;
                 Intent returnIntent = new Intent();
                 setResult(Activity.RESULT_OK,returnIntent);
 
@@ -360,7 +355,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         @Override
         protected void onProgressUpdate(ProgressModel... values) {
             ProgressModel model = values[0];
-            addPolyLineForWays(model.getGeoPointList(), model.getStart(), model.getWayCustomModel(), model.isValid());
+            addPolyLineForWays(model.getGeoPointList(), model.getWayCustomModel(), model.isValid());
 
         }
 

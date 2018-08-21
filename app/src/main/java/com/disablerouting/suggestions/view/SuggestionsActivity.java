@@ -216,7 +216,7 @@ public class SuggestionsActivity extends MapBaseActivity implements OnSuggestion
         @Override
         protected void onProgressUpdate(ProgressModel... values) {
             ProgressModel model = values[0];
-            addPolyLineForWays(model.getGeoPointList(), model.getStart(), model.getWayCustomModel() ,model.isValid());
+            addPolyLineForWays(model.getGeoPointList(), model.getWayCustomModel() ,model.isValid());
 
         }
 
@@ -318,7 +318,5 @@ public class SuggestionsActivity extends MapBaseActivity implements OnSuggestion
         mSuggestionFragment.getWays(requestGetWay);
 
     }
-
-
 
 }
