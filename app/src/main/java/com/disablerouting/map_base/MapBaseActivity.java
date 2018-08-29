@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -80,6 +81,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private int[] color = {R.color.colorTextGray,R.color.colorGreen,
             R.color.colorRed, android.R.color.holo_blue_bright};
     private int colorIndex=0;
+    private int previousColor=0;
 
     //Runnable marker data
     //private int mPolylineIndex = -1;
@@ -265,18 +267,18 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     /**
      * Update Polyline of ways
      * @param polyline polyline
-     * @param colorIndex index color
      * @param valid valid data or not
      */
-    private void updatePolylineUIWays(Polyline polyline , int colorIndex, boolean valid) {
+    private void updatePolylineUIWays(Polyline polyline , boolean valid) {
         if (mPreviousPolyline != null) {
             if(valid){
                 mPreviousPolyline.setColor(getResources().getColor(R.color.colorGreen));
             }else {
-                mPreviousPolyline.setColor(getResources().getColor(color[colorIndex]));
+                mPreviousPolyline.setColor(previousColor);
             }
             mPreviousPolyline.setWidth(10);
         }
+        previousColor =polyline.getColor();
         polyline.setColor(getResources().getColor(R.color.colorBrown));
         polyline.setWidth(30);
         mPreviousPolyline = polyline;
@@ -653,16 +655,18 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         polylineWays.setPoints(geoPoints);
         polylineWays.setRelatedObject(wayCustomModel.getId());
         polylineWays.setWidth(10);
+        String colorValue=null;
         if(valid){
             polylineWays.setColor(getResources().getColor(R.color.colorGreen));
         }else {
-            polylineWays.setColor(getResources().getColor(color[colorIndex]));
-            colorIndex=(colorIndex+1)%4;
+            colorValue= wayCustomModel.getColor();
+            polylineWays.setColor(Color.parseColor(colorValue));
+            //colorIndex=(colorIndex+1)%4;
         }
         polylineWays.setOnClickListener(new Polyline.OnClickListener() {
             @Override
             public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                updatePolylineUIWays(polyline,colorIndex,valid);
+                updatePolylineUIWays(polyline,valid);
                 checkForWay(polyline,polyline.getRelatedObject().toString());
                 return false;
             }

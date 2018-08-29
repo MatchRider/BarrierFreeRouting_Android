@@ -7,18 +7,10 @@ import java.util.List;
 
 public class WayCustomModel {
 
-    List<Node> mNode;
-    String mId;
-    List<GeoPoint> mGeoPoint;
-    List<Tag> mTag;
+    private String mId;
+    private List<GeoPoint> mGeoPoint;
+    private String mColor;
 
-    public List<Node> getNode() {
-        return mNode;
-    }
-
-    public void setNode(List<Node> node) {
-        mNode = node;
-    }
 
     public String getId() {
         return mId;
@@ -36,11 +28,11 @@ public class WayCustomModel {
         mGeoPoint = geoPoint;
     }
 
-    public List<Tag> getTag() {
-        return mTag;
+    public String getColor() {
+        return mColor;
     }
 
-    public void setTag(List<Tag> tag) {
-        mTag = tag;
+    public void setColor(String color) {
+        this.mColor = color;
     }
 }

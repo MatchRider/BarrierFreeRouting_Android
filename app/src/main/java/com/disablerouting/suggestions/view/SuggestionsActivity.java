@@ -208,7 +208,9 @@ public class SuggestionsActivity extends MapBaseActivity implements OnSuggestion
         @Override
         protected void onPostExecute(List<WayCustomModel> aVoid) {
             super.onPostExecute(aVoid);
-            setBoundingBox(aVoid.get(0).getGeoPoint().get(0), aVoid.get(aVoid.size() - 1).getGeoPoint().get(0));
+            if(aVoid!=null && aVoid.size()>0) {
+                setBoundingBox(aVoid.get(0).getGeoPoint().get(0), aVoid.get(aVoid.size() - 1).getGeoPoint().get(0));
+            }
             pDialog.dismiss();
 
         }
@@ -242,8 +244,8 @@ public class SuggestionsActivity extends MapBaseActivity implements OnSuggestion
 
                         }
                         wayCustomModel.setId(mWayListEven.get(i).getID());
-                        wayCustomModel.setTag(mWayListEven.get(i).getTagList());
-                        wayCustomModel.setNode(nodeList);
+                       // wayCustomModel.setTag(mWayListEven.get(i).getTagList());
+                       // wayCustomModel.setNode(nodeList);
                         wayCustomModel.setGeoPoint(geoPointArrayList);
                         wayCustomModelList.add(wayCustomModel);
                         start = null;
@@ -273,8 +275,8 @@ public class SuggestionsActivity extends MapBaseActivity implements OnSuggestion
 
                         }
                         wayCustomModel.setId(mWayListOdd.get(i).getID());
-                        wayCustomModel.setTag(mWayListOdd.get(i).getTagList());
-                        wayCustomModel.setNode(nodeList);
+                       // wayCustomModel.setTag(mWayListOdd.get(i).getTagList());
+                        //wayCustomModel.setNode(nodeList);
                         wayCustomModel.setGeoPoint(geoPointArrayList);
                         wayCustomModelList.add(wayCustomModel);
                         start = null;

@@ -1,10 +1,7 @@
 package com.disablerouting.api;
 
 import com.disablerouting.capture_option.model.RequestCreateNode;
-import com.disablerouting.curd_operations.model.RequestGetWay;
-import com.disablerouting.curd_operations.model.RequestValidate;
-import com.disablerouting.curd_operations.model.ResponseUpdate;
-import com.disablerouting.curd_operations.model.ResponseWay;
+import com.disablerouting.curd_operations.model.*;
 import com.disablerouting.feedback.model.RequestCreateChangeSet;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
 import com.disablerouting.route_planner.model.DirectionsResponse;
@@ -115,8 +112,7 @@ public interface ApiService {
     @POST("update")
     Call<ResponseUpdate> update(@Body RequestValidate requestValidate);
 
-
-
-
+    @GET("List")
+    Call<ResponseListWay> getList();
 
 }

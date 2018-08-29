@@ -12,7 +12,6 @@ public class Attributes implements Parcelable {
     @JsonProperty("Key")
     String mKey;
 
-
     @JsonProperty("Value")
     String mValue;
 
