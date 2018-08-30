@@ -99,6 +99,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
         mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this, new GetWayManager());
         if (mISFromSuggestion) {
+            addCurrentPosition();
             mSourceDestinationFragment.OnFromSuggestion();
             mButtonGo.setVisibility(View.GONE);
             mSwitchCompatToogle.setVisibility(View.GONE);
@@ -128,7 +129,9 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                         mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
                 //mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination);
             } else {
-                plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null, true);
+                if(!mISFromSuggestion) {
+                    plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null, true);
+                }
             }
             mIsUpdateAgain = true;
         }
