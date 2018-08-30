@@ -21,19 +21,30 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.curd_operations.manager.ListGetWayManager;
+import com.disablerouting.curd_operations.model.DataHolder;
+import com.disablerouting.curd_operations.model.ListWayData;
+import com.disablerouting.curd_operations.model.ResponseListWay;
+import com.disablerouting.home.presenter.HomeScreenPresenter;
+import com.disablerouting.home.presenter.IHomeScreenPresenter;
+import com.disablerouting.home.presenter.IHomeView;
 import com.disablerouting.login.LoginActivity;
 import com.disablerouting.login.UserPreferences;
 import com.disablerouting.route_planner.view.RoutePlannerActivity;
 import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
 import com.disablerouting.utils.PermissionUtils;
 
-public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragmentCallback {
+import java.util.ArrayList;
+import java.util.List;
+
+public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragmentCallback, IHomeView {
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -44,8 +55,10 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
     @BindView(R.id.navigation_btn)
     ImageButton mImageButtonNavigationMenu;
 
-
+    private IHomeScreenPresenter mIHomeScreenPresenter;
     private boolean slideState = false;
+    private List<ListWayData> mWayListEvenData = new ArrayList<>();
+    private List<ListWayData> mWayListOddData = new ArrayList<>();
 
     final String[] locationPermissions = new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
             android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -57,9 +70,11 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
 
+        mIHomeScreenPresenter= new HomeScreenPresenter(this,new ListGetWayManager());
         addNavigationMenu(navigationDrawerLayout, this);
         addListener();
         checkLocationStatus();
+        getWayListData();
 
     }
 
@@ -217,8 +232,6 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
             public void onClick(View view) {
                 alertDialog.dismiss();
                 redirectToSuggestionScreen();
-
-
             }
         });
         btnNo.setOnClickListener(new View.OnClickListener() {
@@ -246,7 +259,41 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
             mDrawerLayout.closeDrawer(Gravity.START);
         }
         super.onClick(close);
+    }
+
+    private void getWayListData(){
+        mIHomeScreenPresenter.getListWays();
+    }
+
+    @Override
+    public void onListWayReceived(ResponseListWay responseWay) {
+        if(responseWay!=null) {
+            for (int i = 0; i < responseWay.getWayData().size(); i++) {
+                if (i % 2 == 0) {
+                    mWayListEvenData.add(responseWay.getWayData().get(i));
+                } else {
+                    mWayListOddData.add(responseWay.getWayData().get(i));
+                }
+            }
+        }
+        DataHolder.setDataValidate(mWayListEvenData);
+        DataHolder.setDataNotValidate(mWayListOddData);
 
     }
 
+    @Override
+    public void onFailure(String error) {
+        Toast.makeText(HomeActivity.this, R.string.unable_to_get_data, Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void showLoader() {
+        showProgress();
+    }
+
+    @Override
+    public void hideLoader() {
+      hideProgress();
+    }
 }

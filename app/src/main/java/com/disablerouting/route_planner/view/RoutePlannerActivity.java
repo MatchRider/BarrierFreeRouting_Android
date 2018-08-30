@@ -16,29 +16,30 @@ import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.manager.GetWayManager;
-import com.disablerouting.curd_operations.manager.ListGetWayManager;
-import com.disablerouting.curd_operations.model.*;
+import com.disablerouting.curd_operations.model.DataHolder;
+import com.disablerouting.curd_operations.model.ListWayData;
+import com.disablerouting.curd_operations.model.RequestGetWay;
+import com.disablerouting.curd_operations.model.ResponseWay;
 import com.disablerouting.filter.view.FilterActivity;
 import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.instructions.InstructionsActivity;
 import com.disablerouting.login.LoginActivity;
 import com.disablerouting.login.UserPreferences;
 import com.disablerouting.map_base.MapBaseActivity;
-import com.disablerouting.route_planner.model.*;
+import com.disablerouting.route_planner.model.NodeItem;
+import com.disablerouting.route_planner.model.ProgressModel;
+import com.disablerouting.route_planner.model.Steps;
+import com.disablerouting.route_planner.model.WayCustomModel;
 import com.disablerouting.route_planner.presenter.IRoutePlannerScreenPresenter;
 import com.disablerouting.route_planner.presenter.IRouteView;
 import com.disablerouting.route_planner.presenter.RoutePlannerScreenPresenter;
 import com.disablerouting.setting.SettingActivity;
-import com.disablerouting.utils.Utility;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.Polyline;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,12 +71,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @BindView(R.id.image_info)
     ImageView mImageViewInfo;
 
-
     private boolean mISMapPlotted = false;
     private boolean mIsUpdateAgain = false;
-    private HashMap<String, Node> mNodeHashMap = new HashMap<>();
-    private List<Way> mWayListEven = new ArrayList<>();
-    private List<Way> mWayListOdd = new ArrayList<>();
     private IRoutePlannerScreenPresenter mIRoutePlannerScreenPresenter;
     private List<ListWayData> mWayListEvenData = new ArrayList<>();
     private List<ListWayData> mWayListOddData = new ArrayList<>();
@@ -92,19 +89,24 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (getIntent().hasExtra("FromSuggestion")) {
             mISFromSuggestion = getIntent().getBooleanExtra("FromSuggestion", false);
         }
+        if(DataHolder.hasDataValidate()){
+            mWayListEvenData = DataHolder.getDataValidate();
+        }
+        if(DataHolder.hasDataNotValidate()){
+            mWayListOddData = DataHolder.getDataNotValidate();
+        }
         mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
         addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
-        mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this, new GetWayManager(), new ListGetWayManager());
-        mIRoutePlannerScreenPresenter.getListWays();
-
-        // String data = Utility.readOSMFile(this);
-        //convertDataIntoModel(data);
-
+        mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this, new GetWayManager());
         if (mISFromSuggestion) {
             mSourceDestinationFragment.OnFromSuggestion();
             mButtonGo.setVisibility(View.GONE);
             mSwitchCompatToogle.setVisibility(View.GONE);
         }
+
+        // String data = Utility.readOSMFile(this);
+        //convertDataIntoModel(data);
+
     }
 
     @Override
@@ -133,6 +135,9 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     }
 
+    public void addCurrentPosition(){
+        addCurrentLocation();
+    }
 
     @Override
     public void plotDataOnMap(List<List<Double>> geoPointList, List<Steps> stepsList) {
@@ -235,7 +240,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onMapPlotted() {
-        // mButtonGo.setText(R.string.start);
         mISMapPlotted = true;
         if(mISMapPlotted){
             mImageViewInfo.setVisibility(View.VISIBLE);
@@ -295,7 +299,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
 
-    private void convertDataIntoModel(String data) {
+    /*private void convertDataIntoModel(String data) {
         JSONObject jsonObject = Utility.convertXMLtoJSON(data);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -316,7 +320,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             e.printStackTrace();
         }
     }
-
+*/
 
     @Override
     public void showLoader() {
@@ -328,8 +332,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void hideLoader() {
         mProgressBar.setVisibility(View.GONE);
     }
-
-
 
 
     @SuppressLint("StaticFieldLeak")
@@ -371,10 +373,9 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 GeoPoint start;
                 final List<WayCustomModel> wayCustomModelList = new ArrayList<>();
                 if (mButtonSelected == 2) {
-                    wayCustomModelList.clear();
                     //For Way Data even
+                    wayCustomModelList.clear();
                     for (int i = 0; i < mWayListEvenData.size(); i++) {
-                       // List<Node> nodeList = new ArrayList<>();
                         List<GeoPoint> geoPointArrayList = new ArrayList<>();
                         final WayCustomModel wayCustomModel = new WayCustomModel();
                         for (int j = 0; j < mWayListEvenData.get(i).getCoordinates().size(); j++) {
@@ -463,21 +464,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         launchActivity(intent);
     }
 
-    @Override
-    public void onListWayReceived(ResponseListWay responseWay) {
-        if(responseWay!=null) {
-            for (int i = 0; i < responseWay.getWayData().size(); i++) {
-                if (i % 2 == 0) {
-                    mWayListEvenData.add(responseWay.getWayData().get(i));
-                } else {
-                    mWayListOddData.add(responseWay.getWayData().get(i));
-                }
-            }
-        }
-        if(mISFromSuggestion){
-          onToggleClickedBanner(false);
-        }
-    }
 
     @Override
     public void onFailure(String error) {
@@ -527,7 +513,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     }
 
                 }
-
         }
 
     }

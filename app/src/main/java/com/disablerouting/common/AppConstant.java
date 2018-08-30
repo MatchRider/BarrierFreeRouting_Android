@@ -33,7 +33,8 @@ public interface AppConstant {
 
     String WAY_DATA="WayData";
     String STEP_DATA="StepData";
-
+    String WAY_DATA_VALIDATE="WayDataValidate";
+    String WAY_DATA_NOT_VALIDATE="WayDataNotValidate";
 
 
 }

@@ -556,7 +556,7 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
                 mButtonSelected = 1;
                 mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
                 mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorWhite));
-                mSuggestionListener.onTabClicked(mButtonSelected);
+               // mSuggestionListener.onTabClicked(mButtonSelected);
 
                 break;
 
@@ -564,7 +564,7 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
                 mButtonSelected = 2;
                 mRadioButtonValidated.setTextColor(getResources().getColor(R.color.colorPrimary));
                 mRadioButtonNotValidated.setTextColor(getResources().getColor(R.color.colorWhite));
-                mSuggestionListener.onTabClicked(mButtonSelected);
+               // mSuggestionListener.onTabClicked(mButtonSelected);
                 break;
 
             default:

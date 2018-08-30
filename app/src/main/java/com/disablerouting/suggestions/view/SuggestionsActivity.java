@@ -1,10 +1,7 @@
 package com.disablerouting.suggestions.view;
 
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,18 +14,12 @@ import com.disablerouting.curd_operations.model.RequestGetWay;
 import com.disablerouting.feedback.view.FeedbackActivity;
 import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.map_base.MapBaseActivity;
-import com.disablerouting.route_planner.model.*;
-import com.disablerouting.utils.Utility;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.disablerouting.route_planner.model.FeedBackModel;
+import com.disablerouting.route_planner.model.Steps;
 import com.google.android.gms.maps.model.LatLng;
-import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.Polyline;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class SuggestionsActivity extends MapBaseActivity implements OnSuggestionListener {
@@ -38,16 +29,10 @@ public class SuggestionsActivity extends MapBaseActivity implements OnSuggestion
     private Features mFeaturesDestinationAddress;
     private String mSourceAddress;
     private String mDestinationAddress;
+    private boolean mIsUpdateAgain = false;
 
     @BindView(R.id.btn_go)
     Button mBtnGo;
-
-    private boolean mIsUpdateAgain = false;
-    private List<Way> mWayListEven= new ArrayList<>();
-    private List<Way> mWayListOdd= new ArrayList<>();
-    private HashMap<String, Node> mNodeHashMap = new HashMap<>();
-    private int mButtonSelected=1;
-    private ProgressDialog pDialog;
 
 
     @Override
@@ -57,30 +42,7 @@ public class SuggestionsActivity extends MapBaseActivity implements OnSuggestion
         mSuggestionFragment = SuggestionFragment.newInstance(this);
         addFragment(R.id.contentContainer, mSuggestionFragment, "");
         mBtnGo.setVisibility(View.GONE);
-        String data = Utility.readOSMFile(this);
-        convertDataIntoModel(data);
-    }
 
-    private void convertDataIntoModel(String data) {
-        JSONObject jsonObject = Utility.convertXMLtoJSON(data);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-            OSMData OSMData = objectMapper.readValue(jsonObject.toString(), com.disablerouting.route_planner.model.OSMData.class);
-            for (int i = 0; i < OSMData.getOSM().getNode().size(); i++) {
-                mNodeHashMap.put(OSMData.getOSM().getNode().get(i).getID(), OSMData.getOSM().getNode().get(i));
-            }
-            for (int i = 0; i < OSMData.getOSM().getWay().size(); i++) {
-                if(i%2==0) {
-                    mWayListEven.add(OSMData.getOSM().getWay().get(i));
-                }else {
-                    mWayListOdd.add(OSMData.getOSM().getWay().get(i));
-                }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -106,8 +68,6 @@ public class SuggestionsActivity extends MapBaseActivity implements OnSuggestion
                 plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null, false);
             }
             mIsUpdateAgain=true;
-            PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
-            mPlotWayDataTaskNotValidated.execute();
 
         }
     }
@@ -189,128 +149,6 @@ public class SuggestionsActivity extends MapBaseActivity implements OnSuggestion
         startActivity(intentFeedback);
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private class PlotWayDataTask extends AsyncTask<Void, ProgressModel, List<WayCustomModel>> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(SuggestionsActivity.this);
-            pDialog.setMessage("Please Wait...");
-            pDialog.setCancelable(false);
-            if (pDialog.isShowing()) {
-                pDialog.dismiss();
-            } else {
-                pDialog.show();
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<WayCustomModel> aVoid) {
-            super.onPostExecute(aVoid);
-            if(aVoid!=null && aVoid.size()>0) {
-                setBoundingBox(aVoid.get(0).getGeoPoint().get(0), aVoid.get(aVoid.size() - 1).getGeoPoint().get(0));
-            }
-            pDialog.dismiss();
-
-        }
-
-        @Override
-        protected void onProgressUpdate(ProgressModel... values) {
-            ProgressModel model = values[0];
-            addPolyLineForWays(model.getGeoPointList(), model.getWayCustomModel() ,model.isValid());
-
-        }
-
-        @Override
-        protected List<WayCustomModel> doInBackground(Void... params) {
-            try {
-                GeoPoint start;
-                final List<WayCustomModel> wayCustomModelList = new ArrayList<>();
-
-                if(mButtonSelected==2) {
-                    wayCustomModelList.clear();
-                    //For Way Data even
-                    for (int i = 0; i < mWayListEven.size(); i++) {
-                        List<Node> nodeList = new ArrayList<>();
-                        List<GeoPoint> geoPointArrayList = new ArrayList<>();
-                        final WayCustomModel wayCustomModel = new WayCustomModel();
-                        for (int j = 0; j < mWayListEven.get(i).getNdList().size(); j++) {
-                            String refNode = mWayListEven.get(i).getNdList().get(j).getRef();
-                            nodeList.add(mNodeHashMap.get(refNode));
-                            geoPointArrayList.add(new GeoPoint(Double.parseDouble(mNodeHashMap.get(refNode).getLatitude()),
-                                    Double.parseDouble(mNodeHashMap.get(refNode).getLongitude())));
-                            wayCustomModel.setGeoPoint(geoPointArrayList);
-
-                        }
-                        wayCustomModel.setId(mWayListEven.get(i).getID());
-                       // wayCustomModel.setTag(mWayListEven.get(i).getTagList());
-                       // wayCustomModel.setNode(nodeList);
-                        wayCustomModel.setGeoPoint(geoPointArrayList);
-                        wayCustomModelList.add(wayCustomModel);
-                        start = null;
-                        if (i == 0)
-                            start = geoPointArrayList.get(0);
-
-                        final GeoPoint finalStart = start;
-                        publishProgress(new ProgressModel(wayCustomModel.getGeoPoint(), finalStart, wayCustomModel,true));
-
-                    }
-                }
-
-                if(mButtonSelected==1) {
-                    //For Way Data off
-                    wayCustomModelList.clear();
-
-                    for (int i = 0; i < mWayListOdd.size(); i++) {
-                        List<Node> nodeList = new ArrayList<>();
-                        List<GeoPoint> geoPointArrayList = new ArrayList<>();
-                        final WayCustomModel wayCustomModel = new WayCustomModel();
-                        for (int j = 0; j < mWayListOdd.get(i).getNdList().size(); j++) {
-                            String refNode = mWayListOdd.get(i).getNdList().get(j).getRef();
-                            nodeList.add(mNodeHashMap.get(refNode));
-                            geoPointArrayList.add(new GeoPoint(Double.parseDouble(mNodeHashMap.get(refNode).getLatitude()),
-                                    Double.parseDouble(mNodeHashMap.get(refNode).getLongitude())));
-                            wayCustomModel.setGeoPoint(geoPointArrayList);
-
-                        }
-                        wayCustomModel.setId(mWayListOdd.get(i).getID());
-                       // wayCustomModel.setTag(mWayListOdd.get(i).getTagList());
-                        //wayCustomModel.setNode(nodeList);
-                        wayCustomModel.setGeoPoint(geoPointArrayList);
-                        wayCustomModelList.add(wayCustomModel);
-                        start = null;
-                        if (i == 0)
-                            start = geoPointArrayList.get(0);
-
-                        final GeoPoint finalStart = start;
-                        publishProgress(new ProgressModel(wayCustomModel.getGeoPoint(), finalStart, wayCustomModel , false));
-
-                    }
-                }
-                return wayCustomModelList;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
-
-    @Override
-    public void onTabClicked(int position) {
-        clearItemsFromMap();
-        addCurrentLocation();
-        if(position==1){
-            mButtonSelected=1;
-            PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
-            mPlotWayDataTaskNotValidated.execute();
-        }else {
-            mButtonSelected=2;
-            PlotWayDataTask mPlotWayDataTaskValidated = new PlotWayDataTask();
-            mPlotWayDataTaskValidated.execute();
-        }
-    }
 
     @Override
     public void checkForWay(Polyline polyline, String way) {

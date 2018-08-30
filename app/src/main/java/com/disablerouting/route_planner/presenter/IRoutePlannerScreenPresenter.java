@@ -7,9 +7,6 @@ public interface IRoutePlannerScreenPresenter {
 
     void getWays(RequestGetWay requestGetWay);
 
-
-    void getListWays();
-
     /**
      * Disconnect ongoing calls on network
      */

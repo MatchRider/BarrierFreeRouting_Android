@@ -21,7 +21,7 @@ public class ListWayData implements Parcelable{
 
     @JsonProperty("Coordinates")
     private
-    List<List<String>> mCoordinates;
+    List<ParcelableArrayList> mCoordinates;
 
     @JsonProperty("Color")
     private
@@ -36,15 +36,32 @@ public class ListWayData implements Parcelable{
     List<Attributes> mAttributesList;
 
     public ListWayData() {
+
     }
 
 
     protected ListWayData(Parcel in) {
         mId = in.readString();
         mProjectId = in.readString();
+        mCoordinates = in.createTypedArrayList(ParcelableArrayList.CREATOR);
         mColor = in.readString();
         mIsValid = in.readString();
         mAttributesList = in.createTypedArrayList(Attributes.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mId);
+        dest.writeString(mProjectId);
+        dest.writeTypedList(mCoordinates);
+        dest.writeString(mColor);
+        dest.writeString(mIsValid);
+        dest.writeTypedList(mAttributesList);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<ListWayData> CREATOR = new Creator<ListWayData>() {
@@ -58,20 +75,6 @@ public class ListWayData implements Parcelable{
             return new ListWayData[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mId);
-        dest.writeString(mProjectId);
-        dest.writeString(mColor);
-        dest.writeString(mIsValid);
-        dest.writeTypedList(mAttributesList);
-    }
 
     public String getId() {
         return mId;
@@ -89,13 +92,7 @@ public class ListWayData implements Parcelable{
         mProjectId = projectId;
     }
 
-    public List<List<String>> getCoordinates() {
-        return mCoordinates;
-    }
 
-    public void setCoordinates(List<List<String>> coordinates) {
-        mCoordinates = coordinates;
-    }
 
     public String getColor() {
         return mColor;
@@ -123,5 +120,13 @@ public class ListWayData implements Parcelable{
 
     public static Creator<ListWayData> getCREATOR() {
         return CREATOR;
+    }
+
+    public List<ParcelableArrayList> getCoordinates() {
+        return mCoordinates;
+    }
+
+    public void setCoordinates(List<ParcelableArrayList> coordinates) {
+        mCoordinates = coordinates;
     }
 }
