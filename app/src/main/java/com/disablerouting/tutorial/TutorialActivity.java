@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
-import com.disablerouting.sidemenu.HomeActivity;
+import com.disablerouting.home.HomeActivity;
 
 public class TutorialActivity extends BaseActivityImpl implements ViewPager.OnPageChangeListener {
 
