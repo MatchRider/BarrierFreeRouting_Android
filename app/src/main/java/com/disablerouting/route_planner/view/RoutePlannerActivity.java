@@ -377,20 +377,15 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                        // List<Node> nodeList = new ArrayList<>();
                         List<GeoPoint> geoPointArrayList = new ArrayList<>();
                         final WayCustomModel wayCustomModel = new WayCustomModel();
-                        for (int j = 0; j < mWayListEvenData.get(i).getCoordinates().size()-1; j+=2) {
-                            String lat=null;
-                            if(mWayListOddData.get(i).getCoordinates().size() > j ) {
-                                lat = mWayListOddData.get(i).getCoordinates().get(j);
+                        for (int j = 0; j < mWayListEvenData.get(i).getCoordinates().size(); j++) {
+                            if(mWayListEvenData.get(i).getCoordinates().get(j)!=null) {
+                                String lat = mWayListEvenData.get(i).getCoordinates().get(j).get(0);
+                                String lon = mWayListEvenData.get(i).getCoordinates().get(j).get(1);
+                                if (lat != null && lon != null) {
+                                    geoPointArrayList.add(new GeoPoint(Double.parseDouble(lat), Double.parseDouble((lon))));
+                                    wayCustomModel.setGeoPoint(geoPointArrayList);
+                                }
                             }
-                            String lon=null;
-                            if(mWayListOddData.get(i).getCoordinates().size() > j + 1){
-                                lon = mWayListOddData.get(i).getCoordinates().get(j+1);
-                            }
-                            if(lat!=null && lon!=null) {
-                                geoPointArrayList.add(new GeoPoint(Double.parseDouble(lat), Double.parseDouble((lon))));
-                                wayCustomModel.setGeoPoint(geoPointArrayList);
-                            }
-
                         }
                         wayCustomModel.setId(mWayListEvenData.get(i).getId());
                         wayCustomModel.setGeoPoint(geoPointArrayList);
@@ -411,21 +406,15 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     for (int i = 0; i < mWayListOddData.size(); i++) {
                         List<GeoPoint> geoPointArrayList = new ArrayList<>();
                         final WayCustomModel wayCustomModel = new WayCustomModel();
-                        for (int j = 0; j < mWayListOddData.get(i).getCoordinates().size()-1; j+=2) {
-                            String lat=null;
-                            if(mWayListOddData.get(i).getCoordinates().size() > j ) {
-                                lat = mWayListOddData.get(i).getCoordinates().get(j);
+                        for (int j = 0; j < mWayListOddData.get(i).getCoordinates().size(); j++) {
+                            if(mWayListOddData.get(i).getCoordinates().get(j)!=null) {
+                                String lat = mWayListOddData.get(i).getCoordinates().get(j).get(0);
+                                String lon = mWayListOddData.get(i).getCoordinates().get(j).get(1);
+                                if (lat != null && lon != null) {
+                                    geoPointArrayList.add(new GeoPoint(Double.parseDouble(lat), Double.parseDouble((lon))));
+                                    wayCustomModel.setGeoPoint(geoPointArrayList);
+                                }
                             }
-                            String lon=null;
-                            if(mWayListOddData.get(i).getCoordinates().size() > j + 1){
-                                lon = mWayListOddData.get(i).getCoordinates().get(j+1); //Change here
-                            }
-
-                            if(lat!=null && lon!=null) {
-                                geoPointArrayList.add(new GeoPoint(Double.parseDouble(lat), Double.parseDouble((lon))));
-                                wayCustomModel.setGeoPoint(geoPointArrayList);
-                            }
-
                         }
                         wayCustomModel.setId(mWayListOddData.get(i).getId());
                         wayCustomModel.setGeoPoint(geoPointArrayList);

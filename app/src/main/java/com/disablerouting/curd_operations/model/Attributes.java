@@ -10,12 +10,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Attributes implements Parcelable {
 
     @JsonProperty("Key")
+    private
     String mKey;
 
     @JsonProperty("Value")
+    private
     String mValue;
 
     @JsonProperty("IsValid")
+    private
     boolean mIsValid;
 
     public Attributes() {

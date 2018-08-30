@@ -655,7 +655,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         polylineWays.setPoints(geoPoints);
         polylineWays.setRelatedObject(wayCustomModel.getId());
         polylineWays.setWidth(10);
-        String colorValue=null;
+        String colorValue;
         if(valid){
             polylineWays.setColor(getResources().getColor(R.color.colorGreen));
         }else {
