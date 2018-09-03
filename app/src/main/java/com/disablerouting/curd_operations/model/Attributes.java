@@ -65,4 +65,16 @@ public class Attributes implements Parcelable {
     public boolean isValid() {
         return mIsValid;
     }
+
+    public void setKey(String key) {
+        mKey = key;
+    }
+
+    public void setValue(String value) {
+        mValue = value;
+    }
+
+    public void setValid(boolean valid) {
+        mIsValid = valid;
+    }
 }

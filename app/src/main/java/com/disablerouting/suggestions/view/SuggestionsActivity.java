@@ -10,12 +10,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.common.AppConstant;
-import com.disablerouting.curd_operations.model.RequestGetWay;
 import com.disablerouting.feedback.view.FeedbackActivity;
 import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.map_base.MapBaseActivity;
 import com.disablerouting.route_planner.model.FeedBackModel;
 import com.disablerouting.route_planner.model.Steps;
+import com.disablerouting.route_planner.model.WayCustomModel;
 import com.google.android.gms.maps.model.LatLng;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.Polyline;
@@ -151,12 +151,12 @@ public class SuggestionsActivity extends MapBaseActivity implements OnSuggestion
 
 
     @Override
-    public void checkForWay(Polyline polyline, String way) {
-        super.checkForWay(polyline, way);
-        RequestGetWay requestGetWay = new RequestGetWay();
+    public void checkForWay(Polyline polyline, WayCustomModel way, boolean valid) {
+        super.checkForWay(polyline, way, valid);
+       /* RequestGetWay requestGetWay = new RequestGetWay();
         requestGetWay.setStringWay(way);
         mSuggestionFragment.getWays(requestGetWay);
-
+*/
     }
 
 }

@@ -6,7 +6,7 @@ import com.disablerouting.api.ErrorResponse;
 import com.disablerouting.api.ResponseCallback;
 import com.disablerouting.api.ResponseWrapper;
 import com.disablerouting.api.RetrofitClient;
-import com.disablerouting.curd_operations.model.RequestValidate;
+import com.disablerouting.curd_operations.model.RequestWayInfo;
 import com.disablerouting.curd_operations.model.ResponseWay;
 import retrofit2.Call;
 
@@ -15,9 +15,9 @@ public class ValidateWayManager implements ResponseCallback<ResponseWay> {
     private Call<ResponseWay> mResponseWayCall;
     private IValidateWayResponseReceiver mIValidateWayResponseReceiver;
 
-    public void onValidate(IValidateWayResponseReceiver receiver, RequestValidate requestValidate) {
+    public void onValidate(IValidateWayResponseReceiver receiver, RequestWayInfo requestWayInfo) {
         this.mIValidateWayResponseReceiver = receiver;
-        mResponseWayCall = RetrofitClient.getApiServiceCURD().validate(requestValidate);
+        mResponseWayCall = RetrofitClient.getApiServiceCURD().validate(requestWayInfo);
         mResponseWayCall.enqueue(new ResponseWrapper<ResponseWay>(this));
     }
 

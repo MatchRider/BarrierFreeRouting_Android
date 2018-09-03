@@ -107,10 +107,10 @@ public interface ApiService {
     Call<ResponseWay> getWays(@Body RequestGetWay requestGetWay);
 
     @POST("Validate")
-    Call<ResponseWay> validate(@Body RequestValidate requestValidate);
+    Call<ResponseWay> validate(@Body RequestWayInfo requestWayInfo);
 
     @POST("update")
-    Call<ResponseUpdate> update(@Body RequestValidate requestValidate);
+    Call<ResponseUpdate> update(@Body RequestWayInfo requestWayInfo);
 
     @GET("List")
     Call<ResponseListWay> getList();

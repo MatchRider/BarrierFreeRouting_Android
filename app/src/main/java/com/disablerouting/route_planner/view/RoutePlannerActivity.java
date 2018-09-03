@@ -18,7 +18,6 @@ import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.manager.GetWayManager;
 import com.disablerouting.curd_operations.model.DataHolder;
 import com.disablerouting.curd_operations.model.ListWayData;
-import com.disablerouting.curd_operations.model.RequestGetWay;
 import com.disablerouting.curd_operations.model.ResponseWay;
 import com.disablerouting.filter.view.FilterActivity;
 import com.disablerouting.geo_coding.model.Features;
@@ -79,7 +78,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private int mButtonSelected = 1;
     private ProgressDialog pDialog;
     private boolean mISFromSuggestion;
-    private List<Steps> mStepsList= new ArrayList<>();
+    private List<Steps> mStepsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,10 +88,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (getIntent().hasExtra("FromSuggestion")) {
             mISFromSuggestion = getIntent().getBooleanExtra("FromSuggestion", false);
         }
-        if(DataHolder.hasDataValidate()){
+        if (DataHolder.hasDataValidate()) {
             mWayListEvenData = DataHolder.getDataValidate();
         }
-        if(DataHolder.hasDataNotValidate()){
+        if (DataHolder.hasDataNotValidate()) {
             mWayListOddData = DataHolder.getDataNotValidate();
         }
         mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
@@ -129,7 +128,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                         mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
                 //mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination);
             } else {
-                if(!mISFromSuggestion) {
+                if (!mISFromSuggestion) {
                     plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null, true);
                 }
             }
@@ -138,14 +137,14 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     }
 
-    public void addCurrentPosition(){
+    public void addCurrentPosition() {
         addCurrentLocation();
     }
 
     @Override
     public void plotDataOnMap(List<List<Double>> geoPointList, List<Steps> stepsList) {
         if (geoPointList != null && stepsList != null) {
-            mStepsList=stepsList;
+            mStepsList = stepsList;
             plotDataOfSourceDestination(geoPointList, mSourceAddress, mDestinationAddress, stepsList, true);
         }
     }
@@ -244,9 +243,9 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void onMapPlotted() {
         mISMapPlotted = true;
-        if(mISMapPlotted){
+        if (mISMapPlotted) {
             mImageViewInfo.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             mImageViewInfo.setVisibility(View.GONE);
         }
 
@@ -295,7 +294,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (requestCode == AppConstant.REQUEST_CODE_LOGIN) {
             if (resultCode == Activity.RESULT_OK) {
                 Intent returnIntent = new Intent();
-                setResult(Activity.RESULT_OK,returnIntent);
+                setResult(Activity.RESULT_OK, returnIntent);
 
             }
         }
@@ -356,7 +355,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         @Override
         protected void onPostExecute(List<WayCustomModel> aVoid) {
             super.onPostExecute(aVoid);
-            if(aVoid!=null && aVoid.size()>0) {
+            if (aVoid != null && aVoid.size() > 0) {
                 setBoundingBox(aVoid.get(0).getGeoPoint().get(0), aVoid.get(aVoid.size() - 1).getGeoPoint().get(0));
             }
             pDialog.dismiss();
@@ -382,7 +381,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                         List<GeoPoint> geoPointArrayList = new ArrayList<>();
                         final WayCustomModel wayCustomModel = new WayCustomModel();
                         for (int j = 0; j < mWayListEvenData.get(i).getCoordinates().size(); j++) {
-                            if(mWayListEvenData.get(i).getCoordinates().get(j)!=null) {
+                            if (mWayListEvenData.get(i).getCoordinates().get(j) != null) {
                                 String lat = mWayListEvenData.get(i).getCoordinates().get(j).get(0);
                                 String lon = mWayListEvenData.get(i).getCoordinates().get(j).get(1);
                                 if (lat != null && lon != null) {
@@ -392,8 +391,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                             }
                         }
                         wayCustomModel.setId(mWayListEvenData.get(i).getId());
+                        wayCustomModel.setProjectId(mWayListEvenData.get(i).getProjectId());
                         wayCustomModel.setGeoPoint(geoPointArrayList);
                         wayCustomModel.setColor(mWayListEvenData.get(i).getColor());
+                        wayCustomModel.setStatus(mWayListEvenData.get(i).getIsValid());
+                        wayCustomModel.setAttributesList(mWayListEvenData.get(i).getAttributesList());
                         wayCustomModelList.add(wayCustomModel);
                         start = null;
                         if (i == 0)
@@ -411,7 +413,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                         List<GeoPoint> geoPointArrayList = new ArrayList<>();
                         final WayCustomModel wayCustomModel = new WayCustomModel();
                         for (int j = 0; j < mWayListOddData.get(i).getCoordinates().size(); j++) {
-                            if(mWayListOddData.get(i).getCoordinates().get(j)!=null) {
+                            if (mWayListOddData.get(i).getCoordinates().get(j) != null) {
                                 String lat = mWayListOddData.get(i).getCoordinates().get(j).get(0);
                                 String lon = mWayListOddData.get(i).getCoordinates().get(j).get(1);
                                 if (lat != null && lon != null) {
@@ -421,8 +423,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                             }
                         }
                         wayCustomModel.setId(mWayListOddData.get(i).getId());
+                        wayCustomModel.setProjectId(mWayListOddData.get(i).getProjectId());
                         wayCustomModel.setGeoPoint(geoPointArrayList);
                         wayCustomModel.setColor(mWayListOddData.get(i).getColor());
+                        wayCustomModel.setStatus(mWayListOddData.get(i).getIsValid());
+                        wayCustomModel.setAttributesList(mWayListOddData.get(i).getAttributesList());
                         wayCustomModelList.add(wayCustomModel);
                         start = null;
                         if (i == 0)
@@ -443,12 +448,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
     @Override
-    public void checkForWay(Polyline polyline, String way) {
-        super.checkForWay(polyline, way);
-        RequestGetWay requestGetWay = new RequestGetWay();
-        requestGetWay.setStringWay(way);
-        mIRoutePlannerScreenPresenter.getWays(requestGetWay);
-
+    public void checkForWay(Polyline polyline, WayCustomModel way, boolean valid) {
+       // super.checkForWay(polyline, way, valid);
+        Intent intent = new Intent(this, SettingActivity.class);
+        intent.putExtra(AppConstant.WAY_DATA,way);
+        launchActivity(intent);
     }
 
     @Override
@@ -477,53 +481,53 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void onToggleClickedBanner(boolean isChecked) {
         clearItemsFromMap();
-            if (!isChecked) {
-                mButtonSelected = 1;
-                PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
-                mPlotWayDataTaskNotValidated.execute();
-            } else {
-                mButtonSelected = 2;
-                PlotWayDataTask mPlotWayDataTaskValidated = new PlotWayDataTask();
-                mPlotWayDataTaskValidated.execute();
-            }
+        if (!isChecked) {
+            mButtonSelected = 1;
+            PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
+            mPlotWayDataTaskNotValidated.execute();
+        } else {
+            mButtonSelected = 2;
+            PlotWayDataTask mPlotWayDataTaskValidated = new PlotWayDataTask();
+            mPlotWayDataTaskValidated.execute();
+        }
 
     }
 
 
     @OnClick(R.id.toggle_way)
     public void toggleViews() {
-            if (UserPreferences.getInstance(this).getAccessToken() == null) {
-                Intent intentLogin= new Intent(this, LoginActivity.class);
-                startActivityForResult(intentLogin,AppConstant.REQUEST_CODE_LOGIN);
-                mSwitchCompatToogle.setChecked(false);
+        if (UserPreferences.getInstance(this).getAccessToken() == null) {
+            Intent intentLogin = new Intent(this, LoginActivity.class);
+            startActivityForResult(intentLogin, AppConstant.REQUEST_CODE_LOGIN);
+            mSwitchCompatToogle.setChecked(false);
 
+        } else {
+            if (mSwitchCompatToogle.isChecked()) {
+                mSourceDestinationFragment.onToggleView(true);
+                mButtonGo.setVisibility(View.GONE);
+                mImageViewInfo.setVisibility(View.GONE);
+                clearItemsFromMap();
+                PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
+                mPlotWayDataTaskNotValidated.execute();
             } else {
-                if (mSwitchCompatToogle.isChecked()) {
-                    mSourceDestinationFragment.onToggleView(true);
-                    mButtonGo.setVisibility(View.GONE);
-                    mImageViewInfo.setVisibility(View.GONE);
-                    clearItemsFromMap();
-                    PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
-                    mPlotWayDataTaskNotValidated.execute();
-                } else {
-                    mSourceDestinationFragment.onToggleView(false);
-                    clearItemsFromMap();
-                    Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
-                    mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
-                    mButtonGo.setVisibility(View.VISIBLE);
-                    if (mISMapPlotted) {
-                        mImageViewInfo.setVisibility(View.VISIBLE);
-                    }
-
+                mSourceDestinationFragment.onToggleView(false);
+                clearItemsFromMap();
+                Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
+                mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
+                mButtonGo.setVisibility(View.VISIBLE);
+                if (mISMapPlotted) {
+                    mImageViewInfo.setVisibility(View.VISIBLE);
                 }
+
+            }
         }
 
     }
 
 
     @OnClick(R.id.image_info)
-    public void onInfo(){
-        Intent intent= new Intent(this, InstructionsActivity.class);
+    public void onInfo() {
+        Intent intent = new Intent(this, InstructionsActivity.class);
         intent.putParcelableArrayListExtra(AppConstant.STEP_DATA, (ArrayList<? extends Parcelable>) mStepsList);
         launchActivity(intent);
     }

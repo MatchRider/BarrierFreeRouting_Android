@@ -1,21 +1,21 @@
 package com.disablerouting.setting.presenter;
 
-import com.disablerouting.curd_operations.model.RequestValidate;
+import com.disablerouting.curd_operations.model.RequestWayInfo;
 
 public interface ISettingScreenPresenter {
 
 
     /**
      * On Update Request
-     * @param requestValidate request update data
+     * @param requestWayInfo request update data
      */
-    void onUpdate(RequestValidate requestValidate);
+    void onUpdate(RequestWayInfo requestWayInfo);
 
     /**
      * On validate Request
-     * @param requestValidate request validate data
+     * @param requestWayInfo request validate data
      */
-    void onValidate(RequestValidate requestValidate);
+    void onValidate(RequestWayInfo requestWayInfo);
 
     /**
      * Disconnect ongoing calls on network

@@ -6,23 +6,23 @@ import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponseUpdate implements Parcelable {
 
 
     @JsonProperty("Status")
+    private
     boolean mStatus;
 
     @JsonProperty("Error")
+    private
     String mError;
 
 
     public ResponseUpdate() {
     }
 
-    protected ResponseUpdate(Parcel in) {
+    private ResponseUpdate(Parcel in) {
         mStatus = in.readByte() != 0;
         mError = in.readString();
     }

@@ -121,7 +121,7 @@
         following leg.
     </string>
     <string name="verified">Verified</string>
-    <string name="verify">Not Verified</string>
+    <string name="not_verify">Not Verified</string>
     <string name="is_the_following_correct">Is the following correct ?</string>
     <string name="what_information_do_you_have_for_community">What information do you have for the
         community ?

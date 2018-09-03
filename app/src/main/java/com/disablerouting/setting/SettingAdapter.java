@@ -3,30 +3,32 @@ package com.disablerouting.setting;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.disablerouting.R;
+import com.disablerouting.curd_operations.model.Attributes;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHolderSetting>{
+public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHolderSetting> {
 
     private Context mContext;
     private List<String> mStringArrayList;
     private SettingAdapterListener mOnClickListener;
-    private HashMap<Integer, String> mSelectionMap = new HashMap<>();
+    private HashMap<Integer, Attributes> mSelectionMap = new HashMap<>();
+    private boolean mIsValidChoosed;
 
 
-    public SettingAdapter(Context context,List<String> stringArrayList, SettingAdapterListener settingAdapterListener) {
-       mContext=context;
+    public SettingAdapter(Context context, List<String> stringArrayList, SettingAdapterListener settingAdapterListener) {
+        mContext = context;
         mStringArrayList = stringArrayList;
-        mOnClickListener= settingAdapterListener;
+        mOnClickListener = settingAdapterListener;
 
     }
 
@@ -40,33 +42,64 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolderSetting holder, final int position) {
         String data = mStringArrayList.get(position);
-        if(data!=null){
+        if (data != null) {
             holder.mTextViewTitle.setText(data);
         }
-       /* holder.mImageViewEdit.setOnClickListener(new View.OnClickListener() {
+        holder.mImageViewEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnClickListener.OnIconEditViewOnClick(view,position);
+                mOnClickListener.OnIconEditViewOnClick(view, position);
             }
         });
         holder.mCheckBoxVerify.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    mOnClickListener.OnIconCheckBoxOnClick(compoundButton,position,b);
+                mOnClickListener.OnIconCheckBoxOnClick(compoundButton, position, b);
 
             }
-        });*/
+        });
         String subTitle = null;
+        boolean isValid = false;
         if (mSelectionMap.containsKey(position)) {
-            subTitle = mSelectionMap.get(position);
+            subTitle = mSelectionMap.get(position).getValue();
+            isValid = mSelectionMap.get(position).isValid();
         }
-        if (!TextUtils.isEmpty(subTitle)) {
+        if (!mIsValidChoosed) {
             holder.mTextViewSubTitle.setText(subTitle);
             holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
-            holder.mCheckBoxVerify.setChecked(true);
-            holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.verified));
-            holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
-            holder.mImageViewEdit.setVisibility(View.GONE);
+            if(isValid) {
+                holder.mCheckBoxVerify.setChecked(true);
+                holder.mCheckBoxVerify.setClickable(false);
+                holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.verified));
+                holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+                holder.mImageViewEdit.setVisibility(View.GONE);
+            }else {
+                holder.mCheckBoxVerify.setChecked(false);
+                holder.mCheckBoxVerify.setClickable(true);
+                holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
+                holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorTextGray));
+                holder.mImageViewEdit.setVisibility(View.VISIBLE);
+            }
+
+        } else {
+            if(isValid) {
+                holder.mTextViewSubTitle.setText(subTitle);
+                holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
+                holder.mCheckBoxVerify.setChecked(true);
+                holder.mCheckBoxVerify.setClickable(true);
+                holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.verified));
+                holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+                holder.mImageViewEdit.setVisibility(View.VISIBLE);
+            }else {
+                holder.mTextViewSubTitle.setText(subTitle);
+                holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
+                holder.mCheckBoxVerify.setChecked(false);
+                holder.mCheckBoxVerify.setClickable(true);
+                holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
+                holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorTextGray));
+                holder.mImageViewEdit.setVisibility(View.VISIBLE);
+            }
+
         }
 
     }
@@ -76,27 +109,29 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
         return mStringArrayList.size();
     }
 
-    public class ViewHolderSetting extends RecyclerView.ViewHolder{
+    class ViewHolderSetting extends RecyclerView.ViewHolder {
 
         TextView mTextViewTitle;
         TextView mTextViewSubTitle;
         ImageView mImageViewEdit;
         CheckBox mCheckBoxVerify;
 
-        public ViewHolderSetting(View itemView) {
+        ViewHolderSetting(View itemView) {
             super(itemView);
-            mTextViewTitle = (TextView)itemView.findViewById(R.id.txv_list_header);
-            mTextViewSubTitle = (TextView)itemView.findViewById(R.id.txv_list_sub_title);
+            mTextViewTitle = (TextView) itemView.findViewById(R.id.txv_list_header);
+            mTextViewSubTitle = (TextView) itemView.findViewById(R.id.txv_list_sub_title);
             mImageViewEdit = (ImageView) itemView.findViewById(R.id.img_edit);
             mCheckBoxVerify = (CheckBox) itemView.findViewById(R.id.chk_verify);
         }
+
     }
 
-    public void setSelectionMap(HashMap<Integer, String> selectionMap) {
+    public void setSelectionMap(HashMap<Integer, Attributes> selectionMap, boolean isValidChoosed) {
         mSelectionMap = selectionMap;
+        mIsValidChoosed = isValidChoosed;
     }
 
-    public HashMap<Integer, String> getSelectionMap() {
+    public HashMap<Integer, Attributes> getSelectionMap() {
         return mSelectionMap;
     }
 }

@@ -167,7 +167,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      * @param geoPointList list of geo points
      * @param startAdd start address string
      * @param endAdd end address string
-     * @param stepsList steplist ways points
+     * @param stepsList step list ways points
      * @param showFeedbackDialog show dialog on click polyline
      */
     public void plotDataOfSourceDestination(List<List<Double>> geoPointList, String startAdd, String endAdd, List<Steps> stepsList, boolean showFeedbackDialog) {
@@ -653,7 +653,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     public void addPolyLineForWays(List<GeoPoint> geoPoints, WayCustomModel wayCustomModel, final boolean valid) {
         Polyline polylineWays = new Polyline();
         polylineWays.setPoints(geoPoints);
-        polylineWays.setRelatedObject(wayCustomModel.getId());
+        polylineWays.setRelatedObject(wayCustomModel);
         polylineWays.setWidth(10);
         String colorValue;
         if(valid){
@@ -667,7 +667,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             @Override
             public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
                 updatePolylineUIWays(polyline,valid);
-                checkForWay(polyline,polyline.getRelatedObject().toString());
+                WayCustomModel wayCustomModel= (WayCustomModel) polyline.getRelatedObject();
+                checkForWay(polyline,wayCustomModel, valid);
                 return false;
             }
         });
@@ -675,7 +676,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     }
 
-    public void checkForWay(Polyline polyline, String way){
+    public void checkForWay(Polyline polyline, WayCustomModel way, boolean valid){
     }
         /*protected Runnable updateMarker = new Runnable() {
         @Override

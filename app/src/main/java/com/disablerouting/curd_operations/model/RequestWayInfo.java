@@ -4,19 +4,18 @@ package com.disablerouting.curd_operations.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RequestValidate {
+public class RequestWayInfo {
 
     @JsonProperty("WayData")
-    List<WayDataValidate> mWayDataValidates;
+    private
+    RequestWayData mWayDataValidates;
 
-    public List<WayDataValidate> getWayDataValidates() {
+    public RequestWayData getWayDataValidates() {
         return mWayDataValidates;
     }
 
-    public void setWayDataValidates(List<WayDataValidate> wayDataValidates) {
+    public void setWayDataValidates(RequestWayData wayDataValidates) {
         mWayDataValidates = wayDataValidates;
     }
 }

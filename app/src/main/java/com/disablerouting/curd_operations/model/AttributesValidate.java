@@ -7,50 +7,39 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AttributesValidate {
 
-    @JsonProperty("footway")
-    String mFootWay;
+    @JsonProperty("Key")
+    private
+    String mKey;
 
+    @JsonProperty("Value")
+    private
+    String mValue;
 
-    @JsonProperty("highway")
-    String mHighWay;
+    @JsonProperty("IsValid")
+    private
+    boolean mIsValid;
 
-
-    @JsonProperty("incline")
-    String mIncline;
-
-    @JsonProperty("width")
-    String mHWidth;
-
-
-    public String getFootWay() {
-        return mFootWay;
+    public String getKey() {
+        return mKey;
     }
 
-    public String getHighWay() {
-        return mHighWay;
+    public void setKey(String key) {
+        mKey = key;
     }
 
-    public void setFootWay(String footWay) {
-        mFootWay = footWay;
+    public String getValue() {
+        return mValue;
     }
 
-    public void setHighWay(String highWay) {
-        mHighWay = highWay;
+    public void setValue(String value) {
+        mValue = value;
     }
 
-    public String getIncline() {
-        return mIncline;
+    public boolean isValid() {
+        return mIsValid;
     }
 
-    public void setIncline(String incline) {
-        mIncline = incline;
-    }
-
-    public String getHWidth() {
-        return mHWidth;
-    }
-
-    public void setHWidth(String HWidth) {
-        mHWidth = HWidth;
+    public void setValid(boolean valid) {
+        mIsValid = valid;
     }
 }
