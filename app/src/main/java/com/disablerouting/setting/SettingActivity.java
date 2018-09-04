@@ -158,7 +158,14 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @OnClick(R.id.btn_done)
     public void onDoneClick() {
         if (mWayCustomModel != null) {
-            onUpdateWay();
+            for (int i=0;i<mWayCustomModel.getAttributesList().size();i++) {
+                boolean isValid= mWayCustomModel.getAttributesList().get(i).isValid();
+                if(!isValid){
+                    onUpdateWay();
+                    return;
+                }
+            }
+            finish();
         } else {
             finish();
         }
@@ -294,6 +301,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @Override
     public void onUpdateDataReceived(ResponseUpdate responseUpdate) {
         Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
+        finish();
         //onValidateWay();
     }
 

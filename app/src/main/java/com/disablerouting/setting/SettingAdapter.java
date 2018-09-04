@@ -1,7 +1,10 @@
 package com.disablerouting.setting;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
     private Context mContext;
     private List<String> mStringArrayList;
     private SettingAdapterListener mOnClickListener;
+    @SuppressLint("UseSparseArrays")
     private HashMap<Integer, Attributes> mSelectionMap = new HashMap<>();
     private boolean mIsValidChoosed;
 
@@ -39,6 +43,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
         return new ViewHolderSetting(itemView);
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public void onBindViewHolder(ViewHolderSetting holder, final int position) {
         String data = mStringArrayList.get(position);
@@ -63,6 +68,10 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
         if (mSelectionMap.containsKey(position)) {
             subTitle = mSelectionMap.get(position).getValue();
             isValid = mSelectionMap.get(position).isValid();
+
+            setCheckBoxColor(holder.mCheckBoxVerify,mContext.getResources().getColor(R.color.colorAccent),
+                    mContext.getResources().getColor(R.color.colorBlack));
+
             if (!mIsValidChoosed) {
                 holder.mTextViewSubTitle.setText(subTitle);
                 holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
@@ -78,6 +87,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
                     holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorTextGray));
                     holder.mImageViewEdit.setVisibility(View.VISIBLE);
+                    holder.mImageViewEdit.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_edit_black));
                     holder.mImageViewEdit.setClickable(true);
 
                 }
@@ -91,6 +101,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.verified));
                     holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                     holder.mImageViewEdit.setVisibility(View.VISIBLE);
+                    holder.mImageViewEdit.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_edit_black));
                     holder.mImageViewEdit.setClickable(true);
 
                 }else {
@@ -101,6 +112,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
                     holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorTextGray));
                     holder.mImageViewEdit.setVisibility(View.VISIBLE);
+                    holder.mImageViewEdit.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_edit_black));
                     holder.mImageViewEdit.setClickable(true);
                 }
 
@@ -115,6 +127,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
             holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
             holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorTextGray));
             holder.mImageViewEdit.setVisibility(View.VISIBLE);
+            holder.mImageViewEdit.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_edit));
             holder.mImageViewEdit.setClickable(false);
         }
 
@@ -150,4 +163,13 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
     public HashMap<Integer, Attributes> getSelectionMap() {
         return mSelectionMap;
     }
+
+    private void setCheckBoxColor(CheckBox checkBox, int checkedColor, int uncheckedColor) {
+        int states[][] = {{android.R.attr.state_checked}, {}};
+        int colors[] = {checkedColor, uncheckedColor};
+        CompoundButtonCompat.setButtonTintList(checkBox, new
+                ColorStateList(states, colors));
+    }
+
+
 }

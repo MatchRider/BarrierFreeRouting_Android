@@ -59,7 +59,8 @@
                   android:paddingTop="@dimen/padding_normal"
                   android:paddingBottom="@dimen/padding_normal"
                   android:paddingEnd="@dimen/padding_normal"
-                  android:layout_height="wrap_content">
+                  android:layout_height="wrap_content"
+                  tools:ignore="RtlSymmetry">
 
         <CheckBox
                 android:id="@+id/chk_verify"
