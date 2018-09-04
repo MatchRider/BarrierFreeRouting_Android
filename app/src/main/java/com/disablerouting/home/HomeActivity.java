@@ -57,8 +57,8 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
 
     private IHomeScreenPresenter mIHomeScreenPresenter;
     private boolean slideState = false;
-    private List<ListWayData> mWayListEvenData = new ArrayList<>();
-    private List<ListWayData> mWayListOddData = new ArrayList<>();
+    private List<ListWayData> mWayListValidatedData = new ArrayList<>();
+    private List<ListWayData> mWayListNotValidatedData = new ArrayList<>();
 
     final String[] locationPermissions = new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
             android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -269,15 +269,16 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
     public void onListWayReceived(ResponseListWay responseWay) {
         if(responseWay!=null) {
             for (int i = 0; i < responseWay.getWayData().size(); i++) {
-                if (i % 2 == 0) {
-                    mWayListEvenData.add(responseWay.getWayData().get(i));
+                boolean isValidWay= Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
+                if (isValidWay) {
+                    mWayListValidatedData.add(responseWay.getWayData().get(i));
                 } else {
-                    mWayListOddData.add(responseWay.getWayData().get(i));
+                    mWayListNotValidatedData.add(responseWay.getWayData().get(i));
                 }
             }
         }
-        DataHolder.setDataValidate(mWayListEvenData);
-        DataHolder.setDataNotValidate(mWayListOddData);
+        DataHolder.setDataValidate(mWayListValidatedData);
+        DataHolder.setDataNotValidate(mWayListNotValidatedData);
 
     }
 

@@ -63,43 +63,59 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
         if (mSelectionMap.containsKey(position)) {
             subTitle = mSelectionMap.get(position).getValue();
             isValid = mSelectionMap.get(position).isValid();
-        }
-        if (!mIsValidChoosed) {
+            if (!mIsValidChoosed) {
+                holder.mTextViewSubTitle.setText(subTitle);
+                holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
+                if(isValid) {
+                    holder.mCheckBoxVerify.setChecked(true);
+                    holder.mCheckBoxVerify.setClickable(false);
+                    holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.verified));
+                    holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+                    holder.mImageViewEdit.setVisibility(View.GONE);
+                }else {
+                    holder.mCheckBoxVerify.setChecked(false);
+                    holder.mCheckBoxVerify.setClickable(true);
+                    holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
+                    holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorTextGray));
+                    holder.mImageViewEdit.setVisibility(View.VISIBLE);
+                    holder.mImageViewEdit.setClickable(true);
+
+                }
+
+            } else {
+                if(isValid) {
+                    holder.mTextViewSubTitle.setText(subTitle);
+                    holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
+                    holder.mCheckBoxVerify.setChecked(true);
+                    holder.mCheckBoxVerify.setClickable(true);
+                    holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.verified));
+                    holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+                    holder.mImageViewEdit.setVisibility(View.VISIBLE);
+                    holder.mImageViewEdit.setClickable(true);
+
+                }else {
+                    holder.mTextViewSubTitle.setText(subTitle);
+                    holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
+                    holder.mCheckBoxVerify.setChecked(false);
+                    holder.mCheckBoxVerify.setClickable(true);
+                    holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
+                    holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorTextGray));
+                    holder.mImageViewEdit.setVisibility(View.VISIBLE);
+                    holder.mImageViewEdit.setClickable(true);
+                }
+
+            }
+
+        }else {
+            holder.mTextViewTitle.setTextColor(mContext.getResources().getColor(R.color.colorTextGray));
             holder.mTextViewSubTitle.setText(subTitle);
             holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
-            if(isValid) {
-                holder.mCheckBoxVerify.setChecked(true);
-                holder.mCheckBoxVerify.setClickable(false);
-                holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.verified));
-                holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
-                holder.mImageViewEdit.setVisibility(View.GONE);
-            }else {
-                holder.mCheckBoxVerify.setChecked(false);
-                holder.mCheckBoxVerify.setClickable(true);
-                holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
-                holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorTextGray));
-                holder.mImageViewEdit.setVisibility(View.VISIBLE);
-            }
-
-        } else {
-            if(isValid) {
-                holder.mTextViewSubTitle.setText(subTitle);
-                holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
-                holder.mCheckBoxVerify.setChecked(true);
-                holder.mCheckBoxVerify.setClickable(true);
-                holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.verified));
-                holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
-                holder.mImageViewEdit.setVisibility(View.VISIBLE);
-            }else {
-                holder.mTextViewSubTitle.setText(subTitle);
-                holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
-                holder.mCheckBoxVerify.setChecked(false);
-                holder.mCheckBoxVerify.setClickable(true);
-                holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
-                holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorTextGray));
-                holder.mImageViewEdit.setVisibility(View.VISIBLE);
-            }
-
+            holder.mCheckBoxVerify.setChecked(false);
+            holder.mCheckBoxVerify.setClickable(false);
+            holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
+            holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorTextGray));
+            holder.mImageViewEdit.setVisibility(View.VISIBLE);
+            holder.mImageViewEdit.setClickable(false);
         }
 
     }

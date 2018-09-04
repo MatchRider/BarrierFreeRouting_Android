@@ -50,7 +50,8 @@
                 android:src="@drawable/ic_edit"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:contentDescription="@string/app_name"/>
+                android:contentDescription="@string/app_name"
+                android:focusable="true"/>
     </LinearLayout>
 
     <LinearLayout android:layout_width="wrap_content"
@@ -67,7 +68,8 @@
                 android:text="@string/not_verify"
                 android:clickable="true"
                 android:textColor="@color/colorTextGray"
-                android:contentDescription="@string/app_name"/>
+                android:contentDescription="@string/app_name"
+                android:focusable="true"/>
     </LinearLayout>
 
 </LinearLayout>

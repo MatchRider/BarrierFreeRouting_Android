@@ -81,6 +81,7 @@
         <activity
                 android:name=".setting.SettingActivity"
                 android:screenOrientation="portrait"
+                android:launchMode="singleInstance"
                 android:theme="@style/AppTheme">
         </activity>
         <activity

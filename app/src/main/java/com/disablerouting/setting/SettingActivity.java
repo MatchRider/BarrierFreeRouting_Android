@@ -57,6 +57,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private String mChangeSetID;
     private List<RequestTag> mRequestTagList = new ArrayList<>();
     private int mPositionClicked = -1;
+    private final static String KEY_FOOT_WAY="footway";
+    private final static String KEY_INCLINE="incline";
+    private final static String KEY_WIDTH="width";
+    private final static String KEY_HIGH_WAY="highway";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +73,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             mWayCustomModel = getIntent().getParcelableExtra(AppConstant.WAY_DATA);
             if (mWayCustomModel != null) {
                 getDataFromWay();
+                setUpRecyclerView();
             }
         }
-
-        callToGetChangeSet();
-        setUpRecyclerView();
-
+        //callToGetChangeSet();
     }
 
     /**
@@ -183,19 +185,19 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private void getDataFromWay() {
         for (int i = 0; i < mWayCustomModel.getAttributesList().size(); i++) {
             switch (mWayCustomModel.getAttributesList().get(i).getKey()) {
-                case "incline":
+                case KEY_INCLINE:
                     mHashMapWay.put(2, mWayCustomModel.getAttributesList().get(i));
                     break;
 
-                case "footway":
+                case KEY_FOOT_WAY:
                     mHashMapWay.put(0, mWayCustomModel.getAttributesList().get(i));
                     break;
 
-                case "highway":
+                case KEY_HIGH_WAY:
                     mHashMapWay.put(1, mWayCustomModel.getAttributesList().get(i));
                     break;
 
-                case "width":
+                case KEY_WIDTH:
                     mHashMapWay.put(3, mWayCustomModel.getAttributesList().get(i));
                     break;
 
@@ -216,28 +218,28 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         AttributesValidate attributesValidate = null;
         if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
-            attributesValidate.setKey("footway");
+            attributesValidate.setKey(KEY_FOOT_WAY);
             attributesValidate.setValue(mHashMapWay.get(0).getValue());
             attributesValidate.setValid(mHashMapWay.get(0).isValid());
             attributesValidateList.add(attributesValidate);
         }
         if (mHashMapWay.get(1) != null && !mHashMapWay.get(1).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
-            attributesValidate.setKey("highway");
+            attributesValidate.setKey(KEY_HIGH_WAY);
             attributesValidate.setValue(mHashMapWay.get(1).getValue());
             attributesValidate.setValid(mHashMapWay.get(1).isValid());
             attributesValidateList.add(attributesValidate);
         }
         if (mHashMapWay.get(2) != null && !mHashMapWay.get(2).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
-            attributesValidate.setKey("incline");
+            attributesValidate.setKey(KEY_INCLINE);
             attributesValidate.setValue(mHashMapWay.get(2).getValue());
             attributesValidate.setValid(mHashMapWay.get(2).isValid());
             attributesValidateList.add(attributesValidate);
         }
         if (mHashMapWay.get(3) != null && !mHashMapWay.get(3).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
-            attributesValidate.setKey("width");
+            attributesValidate.setKey(KEY_WIDTH);
             attributesValidate.setValue(mHashMapWay.get(3).getValue());
             attributesValidate.setValid(mHashMapWay.get(3).isValid());
             attributesValidateList.add(attributesValidate);
@@ -258,28 +260,28 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         AttributesValidate attributesValidate = null;
         if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
-            attributesValidate.setKey("footway");
+            attributesValidate.setKey(KEY_FOOT_WAY);
             attributesValidate.setValue(mHashMapWay.get(0).getValue());
             attributesValidate.setValid(mHashMapWay.get(0).isValid());
             attributesValidateList.add(attributesValidate);
         }
         if (mHashMapWay.get(1) != null && !mHashMapWay.get(1).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
-            attributesValidate.setKey("highway");
+            attributesValidate.setKey(KEY_HIGH_WAY);
             attributesValidate.setValue(mHashMapWay.get(1).getValue());
             attributesValidate.setValid(mHashMapWay.get(1).isValid());
             attributesValidateList.add(attributesValidate);
         }
         if (mHashMapWay.get(2) != null && !mHashMapWay.get(2).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
-            attributesValidate.setKey("incline");
+            attributesValidate.setKey(KEY_INCLINE);
             attributesValidate.setValue(mHashMapWay.get(2).getValue());
             attributesValidate.setValid(mHashMapWay.get(2).isValid());
             attributesValidateList.add(attributesValidate);
         }
         if (mHashMapWay.get(3) != null && !mHashMapWay.get(3).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
-            attributesValidate.setKey("width");
+            attributesValidate.setKey(KEY_WIDTH);
             attributesValidate.setValue(mHashMapWay.get(3).getValue());
             attributesValidate.setValid(mHashMapWay.get(3).isValid());
             attributesValidateList.add(attributesValidate);
@@ -292,8 +294,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @Override
     public void onUpdateDataReceived(ResponseUpdate responseUpdate) {
         Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
-
-        onValidateWay();
+        //onValidateWay();
     }
 
     @Override
@@ -339,7 +340,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @Override
     public void onDestroy() {
         super.onDestroy();
-        asyncTaskOsmApi.dismissDialog();
+      //  asyncTaskOsmApi.dismissDialog();
     }
 
     @Override
@@ -393,6 +394,11 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         }
     }
 
+    /**
+     * Change Check Box click
+     * @param isChecked weather true or false
+     * @param v view
+     */
     private void changeCheckBox(boolean isChecked, View v){
         if(isChecked){
             ((CheckBox)v).setText(getResources().getString(R.string.verified));
