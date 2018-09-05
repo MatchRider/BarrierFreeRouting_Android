@@ -281,14 +281,10 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
                 }
             }
         }
-        //DataHolder.setDataValidate(mWayListValidatedData);
         if(WayDataPreference.getInstance(this)!=null) {
             WayDataPreference.getInstance(this).saveValidateWayData(mWayListValidatedData);
-
-            // DataHolder.setDataNotValidate(mWayListNotValidatedData);
             WayDataPreference.getInstance(this).saveNotValidatedWayData(mWayListNotValidatedData);
         }
-
 
     }
 

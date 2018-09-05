@@ -25,6 +25,10 @@ public class ListWayData implements Parcelable{
     private
     List<ParcelableArrayList> mCoordinates;
 
+    @JsonProperty("NodeReference")
+    private
+    List<String> mNodeReference;
+
     @JsonProperty("Color")
     private
     String mColor;
@@ -46,6 +50,7 @@ public class ListWayData implements Parcelable{
         mId = in.readString();
         mProjectId = in.readString();
         mCoordinates = in.createTypedArrayList(ParcelableArrayList.CREATOR);
+        mNodeReference = in.createStringArrayList();
         mColor = in.readString();
         mIsValid = in.readString();
         mAttributesList = in.createTypedArrayList(Attributes.CREATOR);
@@ -56,27 +61,11 @@ public class ListWayData implements Parcelable{
         dest.writeString(mId);
         dest.writeString(mProjectId);
         dest.writeTypedList(mCoordinates);
+        dest.writeStringList(mNodeReference);
         dest.writeString(mColor);
         dest.writeString(mIsValid);
         dest.writeTypedList(mAttributesList);
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<ListWayData> CREATOR = new Creator<ListWayData>() {
-        @Override
-        public ListWayData createFromParcel(Parcel in) {
-            return new ListWayData(in);
-        }
-
-        @Override
-        public ListWayData[] newArray(int size) {
-            return new ListWayData[size];
-        }
-    };
 
     public String getId() {
         return mId;
@@ -92,6 +81,22 @@ public class ListWayData implements Parcelable{
 
     public void setProjectId(String projectId) {
         mProjectId = projectId;
+    }
+
+    public List<ParcelableArrayList> getCoordinates() {
+        return mCoordinates;
+    }
+
+    public void setCoordinates(List<ParcelableArrayList> coordinates) {
+        mCoordinates = coordinates;
+    }
+
+    public List<String> getNodeReference() {
+        return mNodeReference;
+    }
+
+    public void setNodeReference(List<String> nodeReference) {
+        mNodeReference = nodeReference;
     }
 
     public String getColor() {
@@ -122,13 +127,22 @@ public class ListWayData implements Parcelable{
         return CREATOR;
     }
 
-    public List<ParcelableArrayList> getCoordinates() {
-        return mCoordinates;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setCoordinates(List<ParcelableArrayList> coordinates) {
-        mCoordinates = coordinates;
-    }
+    public static final Creator<ListWayData> CREATOR = new Creator<ListWayData>() {
+        @Override
+        public ListWayData createFromParcel(Parcel in) {
+            return new ListWayData(in);
+        }
+
+        @Override
+        public ListWayData[] newArray(int size) {
+            return new ListWayData[size];
+        }
+    };
 
     public List<GeoPoint> getGeoPoints(){
         ArrayList<GeoPoint> geoPointArrayList = new ArrayList<>();
