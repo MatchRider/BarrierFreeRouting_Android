@@ -59,7 +59,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
         holder.mCheckBoxVerify.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                mOnClickListener.OnIconCheckBoxOnClick(compoundButton, position, b);
+                mOnClickListener.OnIconCheckBoxOnClick(compoundButton, position, b, getSelectionMap().get(position));
 
             }
         });
@@ -160,7 +160,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
         mIsValidChoosed = isValidChoosed;
     }
 
-    public HashMap<Integer, Attributes> getSelectionMap() {
+    private HashMap<Integer, Attributes> getSelectionMap() {
         return mSelectionMap;
     }
 

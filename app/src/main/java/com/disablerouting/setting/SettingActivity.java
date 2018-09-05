@@ -27,7 +27,6 @@ import com.disablerouting.feedback.model.RequestTag;
 import com.disablerouting.login.AsyncTaskOsmApi;
 import com.disablerouting.login.IAysncTaskOsm;
 import com.disablerouting.login.OauthData;
-import com.disablerouting.route_planner.model.WayCustomModel;
 import com.disablerouting.setting.presenter.ISettingScreenPresenter;
 import com.disablerouting.setting.presenter.SettingScreenPresenter;
 import com.disablerouting.setting.setting_detail.SettingDetailActivity;
@@ -45,7 +44,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     final int OPEN_SETTING_TYPE = 200;
     private SettingAdapter mSettingAdapter;
-    private WayCustomModel mWayCustomModel;
+    private ListWayData mListWayData;
 
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, Attributes> mHashMapWay = new HashMap<>();
@@ -70,8 +69,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
         mISettingScreenPresenter = new SettingScreenPresenter(this, new UpdateWayManager(), new ValidateWayManager());
         if (getIntent().hasExtra(AppConstant.WAY_DATA)) {
-            mWayCustomModel = getIntent().getParcelableExtra(AppConstant.WAY_DATA);
-            if (mWayCustomModel != null) {
+            mListWayData = getIntent().getParcelableExtra(AppConstant.WAY_DATA);
+            if (mListWayData != null) {
                 getDataFromWay();
                 setUpRecyclerView();
             }
@@ -155,11 +154,11 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         finish();
     }
 
-    @OnClick(R.id.btn_done)
-    public void onDoneClick() {
-        if (mWayCustomModel != null) {
-            for (int i=0;i<mWayCustomModel.getAttributesList().size();i++) {
-                boolean isValid= mWayCustomModel.getAttributesList().get(i).isValid();
+    @OnClick(R.id.btn_finish)
+    public void onFinishClick() {
+        if (mListWayData != null) {
+            for (int i = 0; i< mListWayData.getAttributesList().size(); i++) {
+                boolean isValid= mListWayData.getAttributesList().get(i).isValid();
                 if(!isValid){
                     onUpdateWay();
                     return;
@@ -190,22 +189,22 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
 
     private void getDataFromWay() {
-        for (int i = 0; i < mWayCustomModel.getAttributesList().size(); i++) {
-            switch (mWayCustomModel.getAttributesList().get(i).getKey()) {
+        for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
+            switch (mListWayData.getAttributesList().get(i).getKey()) {
                 case KEY_INCLINE:
-                    mHashMapWay.put(2, mWayCustomModel.getAttributesList().get(i));
+                    mHashMapWay.put(2, mListWayData.getAttributesList().get(i));
                     break;
 
                 case KEY_FOOT_WAY:
-                    mHashMapWay.put(0, mWayCustomModel.getAttributesList().get(i));
+                    mHashMapWay.put(0, mListWayData.getAttributesList().get(i));
                     break;
 
                 case KEY_HIGH_WAY:
-                    mHashMapWay.put(1, mWayCustomModel.getAttributesList().get(i));
+                    mHashMapWay.put(1, mListWayData.getAttributesList().get(i));
                     break;
 
                 case KEY_WIDTH:
-                    mHashMapWay.put(3, mWayCustomModel.getAttributesList().get(i));
+                    mHashMapWay.put(3, mListWayData.getAttributesList().get(i));
                     break;
 
                 default:
@@ -218,9 +217,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private void onUpdateWay() {
         RequestWayInfo requestWayInfo = new RequestWayInfo();
         RequestWayData wayDataValidate = new RequestWayData();
-        wayDataValidate.setId(mWayCustomModel.getId());
-        wayDataValidate.setProjectId(mWayCustomModel.getProjectId());
-        wayDataValidate.setValid(mWayCustomModel.getStatus());
+        wayDataValidate.setId(mListWayData.getId());
+        wayDataValidate.setProjectId(mListWayData.getProjectId());
+        wayDataValidate.setValid(mListWayData.getIsValid());
         List<AttributesValidate> attributesValidateList = new ArrayList<>();
         AttributesValidate attributesValidate = null;
         if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
@@ -260,9 +259,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private void onValidateWay() {
         RequestWayInfo requestWayInfo = new RequestWayInfo();
         RequestWayData wayDataValidate = new RequestWayData();
-        wayDataValidate.setId(mWayCustomModel.getId());
-        wayDataValidate.setProjectId(mWayCustomModel.getProjectId());
-        wayDataValidate.setValid(mWayCustomModel.getStatus());
+        wayDataValidate.setId(mListWayData.getId());
+        wayDataValidate.setProjectId(mListWayData.getProjectId());
+        wayDataValidate.setValid(mListWayData.getIsValid());
         List<AttributesValidate> attributesValidateList = new ArrayList<>();
         AttributesValidate attributesValidate = null;
         if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
@@ -384,19 +383,19 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     }
 
     @Override
-    public void OnIconCheckBoxOnClick(View v, int position, boolean isChecked) {
+    public void OnIconCheckBoxOnClick(View v, int position, boolean isChecked, Attributes attributes) {
         switch (position) {
             case 0:
-                changeCheckBox(isChecked,v);
+                changeCheckBox(v,isChecked,position,attributes);
                 break;
             case 1:
-                changeCheckBox(isChecked,v);
+                changeCheckBox(v,isChecked,position,attributes);
                 break;
             case 2:
-                changeCheckBox(isChecked,v);
+                changeCheckBox(v,isChecked,position,attributes);
                 break;
             case 3:
-                changeCheckBox(isChecked,v);
+                changeCheckBox(v,isChecked,position,attributes);
                 break;
 
         }
@@ -407,14 +406,17 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      * @param isChecked weather true or false
      * @param v view
      */
-    private void changeCheckBox(boolean isChecked, View v){
+    private void changeCheckBox(View v,boolean isChecked,int positionClicked, Attributes attributes){
         if(isChecked){
             ((CheckBox)v).setText(getResources().getString(R.string.verified));
             ((CheckBox)v).setTextColor(getResources().getColor(R.color.colorPrimary));
-
+            attributes.setValid(true);
+            mHashMapWay.put(positionClicked,attributes);
         }else {
             ((CheckBox)v).setText(getResources().getString(R.string.not_verify));
             ((CheckBox)v).setTextColor(getResources().getColor(R.color.colorTextGray));
+            attributes.setValid(false);
+            mHashMapWay.put(positionClicked,attributes);
         }
     }
 }

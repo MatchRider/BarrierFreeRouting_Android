@@ -22,9 +22,9 @@ import com.disablerouting.R;
 import com.disablerouting.application.AppData;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.curd_operations.model.ListWayData;
 import com.disablerouting.route_planner.model.NodeItem;
 import com.disablerouting.route_planner.model.Steps;
-import com.disablerouting.route_planner.model.WayCustomModel;
 import com.disablerouting.utils.PermissionUtils;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -646,20 +646,19 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     /**
      * Add polyline for validate / non validate data
-     * @param geoPoints points geo
-     * @param wayCustomModel custom model to send furture  request
+     * @param listWayData custom model to send furture  request
      * @param valid valid data or not
      */
-    public void addPolyLineForWays(List<GeoPoint> geoPoints, WayCustomModel wayCustomModel, final boolean valid) {
+    public void addPolyLineForWays(ListWayData listWayData, final boolean valid) {
         Polyline polylineWays = new Polyline();
-        polylineWays.setPoints(geoPoints);
-        polylineWays.setRelatedObject(wayCustomModel);
+        polylineWays.setPoints(listWayData.getGeoPoints());
+        polylineWays.setRelatedObject(listWayData);
         polylineWays.setWidth(15);
         String colorValue;
         if(valid){
             polylineWays.setColor(getResources().getColor(R.color.colorGreen));
         }else {
-            colorValue= wayCustomModel.getColor();
+            colorValue= listWayData.getColor();
             polylineWays.setColor(Color.parseColor(colorValue));
             //colorIndex=(colorIndex+1)%4;
         }
@@ -667,8 +666,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             @Override
             public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
                 updatePolylineUIWays(polyline,valid);
-                WayCustomModel wayCustomModel= (WayCustomModel) polyline.getRelatedObject();
-                checkForWay(polyline,wayCustomModel, valid);
+                ListWayData relatedObject= (ListWayData) polyline.getRelatedObject();
+                checkForWay(polyline,relatedObject, valid);
                 return false;
             }
         });
@@ -676,7 +675,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     }
 
-    public void checkForWay(Polyline polyline, WayCustomModel way, boolean valid){
+    public void checkForWay(Polyline polyline, ListWayData way, boolean valid){
     }
         /*protected Runnable updateMarker = new Runnable() {
         @Override

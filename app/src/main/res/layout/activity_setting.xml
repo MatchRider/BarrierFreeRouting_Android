@@ -71,7 +71,7 @@
             android:layout_height="0dp"
     android:layout_weight="1"/>
     <Button
-            android:id="@+id/btn_done"
+            android:id="@+id/btn_finish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"

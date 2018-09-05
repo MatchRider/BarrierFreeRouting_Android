@@ -28,7 +28,6 @@ import com.disablerouting.map_base.MapBaseActivity;
 import com.disablerouting.route_planner.model.NodeItem;
 import com.disablerouting.route_planner.model.ProgressModel;
 import com.disablerouting.route_planner.model.Steps;
-import com.disablerouting.route_planner.model.WayCustomModel;
 import com.disablerouting.route_planner.presenter.IRoutePlannerScreenPresenter;
 import com.disablerouting.route_planner.presenter.IRouteView;
 import com.disablerouting.route_planner.presenter.RoutePlannerScreenPresenter;
@@ -336,7 +335,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
 
     @SuppressLint("StaticFieldLeak")
-    private class PlotWayDataTask extends AsyncTask<Void, ProgressModel, List<WayCustomModel>> {
+    private class PlotWayDataTask extends AsyncTask<Void, ProgressModel, List<ListWayData>> {
 
         @Override
         protected void onPreExecute() {
@@ -352,10 +351,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
 
         @Override
-        protected void onPostExecute(List<WayCustomModel> aVoid) {
+        protected void onPostExecute(List<ListWayData> aVoid) {
             super.onPostExecute(aVoid);
             if (aVoid != null && aVoid.size() > 0) {
-                setBoundingBox(aVoid.get(0).getGeoPoint().get(0), aVoid.get(aVoid.size() - 1).getGeoPoint().get(0));
+                setBoundingBox(aVoid.get(0).getGeoPoints().get(0), aVoid.get(aVoid.size() - 1).getGeoPoints().get(0));
             }
             pDialog.dismiss();
 
@@ -364,80 +363,48 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         @Override
         protected void onProgressUpdate(ProgressModel... values) {
             ProgressModel model = values[0];
-            addPolyLineForWays(model.getGeoPointList(), model.getWayCustomModel(), model.isValid());
+            addPolyLineForWays(model.getListWayData(), model.isValid());
 
         }
 
         @Override
-        protected List<WayCustomModel> doInBackground(Void... params) {
+        protected List<ListWayData> doInBackground(Void... params) {
             try {
                 GeoPoint start;
-                final List<WayCustomModel> wayCustomModelList = new ArrayList<>();
+                List<ListWayData> listWayData = new ArrayList<>();
                 if (mButtonSelected == 2) {
                     //For Way Data even
-                    wayCustomModelList.clear();
+                    listWayData.clear();
+                    listWayData= mWayListValidatedData;
                     for (int i = 0; i < mWayListValidatedData.size(); i++) {
-                        List<GeoPoint> geoPointArrayList = new ArrayList<>();
-                        final WayCustomModel wayCustomModel = new WayCustomModel();
-                        for (int j = 0; j < mWayListValidatedData.get(i).getCoordinates().size(); j++) {
-                            if (mWayListValidatedData.get(i).getCoordinates().get(j) != null) {
-                                String lat = mWayListValidatedData.get(i).getCoordinates().get(j).get(0);
-                                String lon = mWayListValidatedData.get(i).getCoordinates().get(j).get(1);
-                                if (lat != null && lon != null) {
-                                    geoPointArrayList.add(new GeoPoint(Double.parseDouble(lat), Double.parseDouble((lon))));
-                                    wayCustomModel.setGeoPoint(geoPointArrayList);
-                                }
-                            }
-                        }
-                        wayCustomModel.setId(mWayListValidatedData.get(i).getId());
-                        wayCustomModel.setProjectId(mWayListValidatedData.get(i).getProjectId());
-                        wayCustomModel.setGeoPoint(geoPointArrayList);
-                        wayCustomModel.setColor(mWayListValidatedData.get(i).getColor());
-                        wayCustomModel.setStatus(mWayListValidatedData.get(i).getIsValid());
-                        wayCustomModel.setAttributesList(mWayListValidatedData.get(i).getAttributesList());
-                        wayCustomModelList.add(wayCustomModel);
+                        List<GeoPoint> geoPointArrayList = mWayListValidatedData.get(i).getGeoPoints();
                         start = null;
                         if (i == 0)
                             start = geoPointArrayList.get(0);
 
                         final GeoPoint finalStart = start;
-                        publishProgress(new ProgressModel(wayCustomModel.getGeoPoint(), finalStart, wayCustomModel, true));
+                        publishProgress(new ProgressModel(finalStart,
+                                mWayListValidatedData.get(i), true));
 
                     }
                 }
                 if (mButtonSelected == 1) {
                     //For Way Data odd
-                    wayCustomModelList.clear();
+                    listWayData.clear();
+                    listWayData= mWayListNotValidatedData;
                     for (int i = 0; i < mWayListNotValidatedData.size(); i++) {
-                        List<GeoPoint> geoPointArrayList = new ArrayList<>();
-                        final WayCustomModel wayCustomModel = new WayCustomModel();
-                        for (int j = 0; j < mWayListNotValidatedData.get(i).getCoordinates().size(); j++) {
-                            if (mWayListNotValidatedData.get(i).getCoordinates().get(j) != null) {
-                                String lat = mWayListNotValidatedData.get(i).getCoordinates().get(j).get(0);
-                                String lon = mWayListNotValidatedData.get(i).getCoordinates().get(j).get(1);
-                                if (lat != null && lon != null) {
-                                    geoPointArrayList.add(new GeoPoint(Double.parseDouble(lat), Double.parseDouble((lon))));
-                                    wayCustomModel.setGeoPoint(geoPointArrayList);
-                                }
-                            }
-                        }
-                        wayCustomModel.setId(mWayListNotValidatedData.get(i).getId());
-                        wayCustomModel.setProjectId(mWayListNotValidatedData.get(i).getProjectId());
-                        wayCustomModel.setGeoPoint(geoPointArrayList);
-                        wayCustomModel.setColor(mWayListNotValidatedData.get(i).getColor());
-                        wayCustomModel.setStatus(mWayListNotValidatedData.get(i).getIsValid());
-                        wayCustomModel.setAttributesList(mWayListNotValidatedData.get(i).getAttributesList());
-                        wayCustomModelList.add(wayCustomModel);
+                        List<GeoPoint> geoPointArrayList = mWayListNotValidatedData.get(i).getGeoPoints();
                         start = null;
                         if (i == 0)
                             start = geoPointArrayList.get(0);
 
                         final GeoPoint finalStart = start;
-                        publishProgress(new ProgressModel(wayCustomModel.getGeoPoint(), finalStart, wayCustomModel, false));
+                        publishProgress(new ProgressModel(finalStart,
+                                mWayListNotValidatedData.get(i), false));
 
                     }
                 }
-                return wayCustomModelList;
+                return listWayData;
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -447,7 +414,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
     @Override
-    public void checkForWay(Polyline polyline, WayCustomModel way, boolean valid) {
+    public void checkForWay(Polyline polyline, ListWayData way, boolean valid) {
        // super.checkForWay(polyline, way, valid);
         Intent intent = new Intent(this, SettingActivity.class);
         intent.putExtra(AppConstant.WAY_DATA,way);

@@ -5,7 +5,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.osmdroid.util.GeoPoint;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -92,8 +94,6 @@ public class ListWayData implements Parcelable{
         mProjectId = projectId;
     }
 
-
-
     public String getColor() {
         return mColor;
     }
@@ -129,4 +129,19 @@ public class ListWayData implements Parcelable{
     public void setCoordinates(List<ParcelableArrayList> coordinates) {
         mCoordinates = coordinates;
     }
+
+    public List<GeoPoint> getGeoPoints(){
+        ArrayList<GeoPoint> geoPointArrayList = new ArrayList<>();
+        if (getCoordinates() != null) {
+            for (int j = 0; j < getCoordinates().size(); j++) {
+                String lat = getCoordinates().get(j).get(0);
+                String lon = getCoordinates().get(j).get(1);
+                if (lat != null && lon != null) {
+                    geoPointArrayList.add(new GeoPoint(Double.parseDouble(lat), Double.parseDouble((lon))));
+                }
+            }
+        }
+        return geoPointArrayList;
+    }
+
 }
