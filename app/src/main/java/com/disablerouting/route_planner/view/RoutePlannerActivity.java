@@ -102,7 +102,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
         // String data = Utility.readOSMFile(this);
         //convertDataIntoModel(data);
-
     }
 
     @Override

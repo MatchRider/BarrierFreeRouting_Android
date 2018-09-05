@@ -299,25 +299,23 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     @Override
     public void onUpdateDataReceived(ResponseUpdate responseUpdate) {
-        Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
-
+      //  showLoader();
         boolean isAllValid=true;
-        String listWayDataFound;
-        int index;
         List<ListWayData> listWayDataList = WayDataPreference.getInstance(this).getNotValidatedWayData();
         for (int i = 0; i < listWayDataList.size(); i++) {
             if (mListWayData.getId().equals(listWayDataList.get(i).getId())) {
-                listWayDataFound =mListWayData.getId();
-                index = i;
                 List<Attributes> attributesList = listWayDataList.get(i).getAttributesList();
                 for (int j = 0; j < attributesList.size(); j++) {
+
                     for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
-                        Attributes attributes = pair.getValue();
-                        if (attributesList.get(j).getKey().equalsIgnoreCase(attributes.getKey())
-                                && attributes.isValid()) {
-                            attributesList.get(j).setValid(true);
+                        Attributes attributesUpdated = pair.getValue();
+                        if (attributesList.get(j).getKey().equalsIgnoreCase(attributesUpdated.getKey())) {
+                            attributesList.get(j).setKey(attributesUpdated.getKey());
+                            attributesList.get(j).setValue(attributesUpdated.getValue());
+                            attributesList.get(j).setValid(attributesUpdated.isValid());
                         }
                     }
+
                     if(!attributesList.get(j).isValid()){
                         isAllValid = false;
                     }
@@ -338,7 +336,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         WayDataPreference.getInstance(this).saveNotValidatedWayData(listWayDataList);
 
         setResult(RESULT_OK);
+        Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
+        //hideLoader();
         finish();
+
     }
 
     @Override

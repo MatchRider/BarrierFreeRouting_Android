@@ -53,10 +53,9 @@ public class SettingScreenPresenter implements IUpdateWayResponseReceiver, ISett
 
     @Override
     public void onSuccessUpdate(ResponseUpdate data) {
-        mISettingView.hideLoader();
         if(mISettingView!=null){
             mISettingView.onUpdateDataReceived(data);
-
+            mISettingView.hideLoader();
         }
     }
 

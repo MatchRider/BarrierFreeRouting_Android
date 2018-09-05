@@ -74,9 +74,8 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         addNavigationMenu(navigationDrawerLayout, this);
         addListener();
         checkLocationStatus();
-        if(UserPreferences.getInstance(this).isUserLoggedIn()) {
-            getWayListData();
-        }
+        getWayListData();
+
 
     }
 
