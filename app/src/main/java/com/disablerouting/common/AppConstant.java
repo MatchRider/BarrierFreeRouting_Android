@@ -7,6 +7,7 @@ public interface AppConstant {
     int REQUEST_CODE_CAPTURE = 202;
     int REQUEST_CODE_LOGIN = 203;
     int REQUEST_CODE_SCREEN = 204;
+    int REQUEST_CODE_UPDATE_MAP_DATA = 205;
 
 
     String ERROR_LOCATION_NOT_FOUND = "Location not found";

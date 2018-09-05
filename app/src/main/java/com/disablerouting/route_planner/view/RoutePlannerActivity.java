@@ -15,8 +15,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.curd_operations.WayDataPreference;
 import com.disablerouting.curd_operations.manager.GetWayManager;
-import com.disablerouting.curd_operations.model.DataHolder;
 import com.disablerouting.curd_operations.model.ListWayData;
 import com.disablerouting.curd_operations.model.ResponseWay;
 import com.disablerouting.filter.view.FilterActivity;
@@ -86,11 +86,9 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (getIntent().hasExtra("FromSuggestion")) {
             mISFromSuggestion = getIntent().getBooleanExtra("FromSuggestion", false);
         }
-        if (DataHolder.hasDataValidate()) {
-            mWayListValidatedData = DataHolder.getDataValidate();
-        }
-        if (DataHolder.hasDataNotValidate()) {
-            mWayListNotValidatedData = DataHolder.getDataNotValidate();
+        if (WayDataPreference.getInstance(this)!=null) {
+            mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayData();
+            mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayData();
         }
         mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
         addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
@@ -293,7 +291,17 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             if (resultCode == Activity.RESULT_OK) {
                 Intent returnIntent = new Intent();
                 setResult(Activity.RESULT_OK, returnIntent);
-
+            }
+        }
+        if (requestCode == AppConstant.REQUEST_CODE_UPDATE_MAP_DATA) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (WayDataPreference.getInstance(this)!=null) {
+                    mWayListNotValidatedData.clear();
+                    mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayData();
+                    mWayListValidatedData.clear();
+                    mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayData();
+                    onToggleClickedBanner(false);
+                }
             }
         }
     }
@@ -357,7 +365,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 setBoundingBox(aVoid.get(0).getGeoPoints().get(0), aVoid.get(aVoid.size() - 1).getGeoPoints().get(0));
             }
             pDialog.dismiss();
-
         }
 
         @Override
@@ -373,7 +380,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 GeoPoint start;
                 List<ListWayData> listWayData = new ArrayList<>();
                 if (mButtonSelected == 2) {
-                    //For Way Data even
+                    //For Way Data Validated
                     listWayData.clear();
                     listWayData= mWayListValidatedData;
                     for (int i = 0; i < mWayListValidatedData.size(); i++) {
@@ -389,7 +396,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     }
                 }
                 if (mButtonSelected == 1) {
-                    //For Way Data odd
+                    //For Way Data Not validated
                     listWayData.clear();
                     listWayData= mWayListNotValidatedData;
                     for (int i = 0; i < mWayListNotValidatedData.size(); i++) {
@@ -415,10 +422,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void checkForWay(Polyline polyline, ListWayData way, boolean valid) {
-       // super.checkForWay(polyline, way, valid);
         Intent intent = new Intent(this, SettingActivity.class);
         intent.putExtra(AppConstant.WAY_DATA,way);
-        launchActivity(intent);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivityForResult(intent,AppConstant.REQUEST_CODE_UPDATE_MAP_DATA);
     }
 
     @Override
@@ -433,6 +440,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onWayDataReceived(ResponseWay responseWay) {
         Toast.makeText(RoutePlannerActivity.this, "Status is : " + responseWay.isStatus(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, SettingActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_HISTORY);
         intent.putExtra(AppConstant.WAY_DATA, responseWay);
         launchActivity(intent);
     }

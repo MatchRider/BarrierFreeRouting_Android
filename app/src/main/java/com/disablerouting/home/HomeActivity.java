@@ -28,8 +28,8 @@ import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.curd_operations.WayDataPreference;
 import com.disablerouting.curd_operations.manager.ListGetWayManager;
-import com.disablerouting.curd_operations.model.DataHolder;
 import com.disablerouting.curd_operations.model.ListWayData;
 import com.disablerouting.curd_operations.model.ResponseListWay;
 import com.disablerouting.home.presenter.HomeScreenPresenter;
@@ -74,7 +74,9 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         addNavigationMenu(navigationDrawerLayout, this);
         addListener();
         checkLocationStatus();
-        getWayListData();
+        if(UserPreferences.getInstance(this).isUserLoggedIn()) {
+            getWayListData();
+        }
 
     }
 
@@ -212,6 +214,9 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         if (requestCode == AppConstant.REQUEST_CODE_LOGIN) {
             if (resultCode == Activity.RESULT_OK) {
                 mSideMenuFragment.onLogin();
+                if(UserPreferences.getInstance(this).isUserLoggedIn()) {
+                    getWayListData();
+                }
             }
         }
     }
@@ -277,8 +282,14 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
                 }
             }
         }
-        DataHolder.setDataValidate(mWayListValidatedData);
-        DataHolder.setDataNotValidate(mWayListNotValidatedData);
+        //DataHolder.setDataValidate(mWayListValidatedData);
+        if(WayDataPreference.getInstance(this)!=null) {
+            WayDataPreference.getInstance(this).saveValidateWayData(mWayListValidatedData);
+
+            // DataHolder.setDataNotValidate(mWayListNotValidatedData);
+            WayDataPreference.getInstance(this).saveNotValidatedWayData(mWayListNotValidatedData);
+        }
+
 
     }
 

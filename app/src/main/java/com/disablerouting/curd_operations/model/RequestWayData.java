@@ -17,7 +17,7 @@ public class RequestWayData {
     private
     String mProjectId;
 
-    @JsonProperty("ProjecIsValidtId")
+    @JsonProperty("IsValid")
     private
     String mIsValid;
 

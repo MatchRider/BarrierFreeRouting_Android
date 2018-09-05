@@ -19,6 +19,7 @@ import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.capture_option.model.Node;
 import com.disablerouting.capture_option.model.RequestCreateNode;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.curd_operations.WayDataPreference;
 import com.disablerouting.curd_operations.manager.UpdateWayManager;
 import com.disablerouting.curd_operations.manager.ValidateWayManager;
 import com.disablerouting.curd_operations.model.*;
@@ -35,6 +36,7 @@ import com.github.scribejava.core.model.Verb;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SettingActivity extends BaseActivityImpl implements SettingAdapterListener, ISettingView,
         IAysncTaskOsm {
@@ -56,10 +58,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private String mChangeSetID;
     private List<RequestTag> mRequestTagList = new ArrayList<>();
     private int mPositionClicked = -1;
-    private final static String KEY_FOOT_WAY="footway";
-    private final static String KEY_INCLINE="incline";
-    private final static String KEY_WIDTH="width";
-    private final static String KEY_HIGH_WAY="highway";
+    private final static String KEY_FOOT_WAY = "footway";
+    private final static String KEY_INCLINE = "incline";
+    private final static String KEY_WIDTH = "width";
+    private final static String KEY_HIGH_WAY = "highway";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +135,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mSettingAdapter);
         if (mHashMapWay != null) {
-            mSettingAdapter.setSelectionMap(mHashMapWay,false);
+            mSettingAdapter.setSelectionMap(mHashMapWay, false);
             mSettingAdapter.notifyDataSetChanged();
 
         }
@@ -157,14 +159,12 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @OnClick(R.id.btn_finish)
     public void onFinishClick() {
         if (mListWayData != null) {
-            for (int i = 0; i< mListWayData.getAttributesList().size(); i++) {
-                boolean isValid= mListWayData.getAttributesList().get(i).isValid();
-                if(!isValid){
-                    onUpdateWay();
-                    return;
-                }
+            boolean isValid = Boolean.parseBoolean(mListWayData.getIsValid());
+            if (!isValid) {
+                onUpdateWay();
+            } else {
+                finish();
             }
-            finish();
         } else {
             finish();
         }
@@ -181,7 +181,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 attributes.setValue(dataString);
                 attributes.setValid(true);
                 mHashMapWay.put(mPositionClicked, attributes);
-                mSettingAdapter.setSelectionMap(mHashMapWay,true);
+                mSettingAdapter.setSelectionMap(mHashMapWay, true);
                 mSettingAdapter.notifyDataSetChanged();
             }
         }
@@ -300,8 +300,45 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @Override
     public void onUpdateDataReceived(ResponseUpdate responseUpdate) {
         Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
+
+        boolean isAllValid=true;
+        String listWayDataFound;
+        int index;
+        List<ListWayData> listWayDataList = WayDataPreference.getInstance(this).getNotValidatedWayData();
+        for (int i = 0; i < listWayDataList.size(); i++) {
+            if (mListWayData.getId().equals(listWayDataList.get(i).getId())) {
+                listWayDataFound =mListWayData.getId();
+                index = i;
+                List<Attributes> attributesList = listWayDataList.get(i).getAttributesList();
+                for (int j = 0; j < attributesList.size(); j++) {
+                    for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
+                        Attributes attributes = pair.getValue();
+                        if (attributesList.get(j).getKey().equalsIgnoreCase(attributes.getKey())
+                                && attributes.isValid()) {
+                            attributesList.get(j).setValid(true);
+                        }
+                    }
+                    if(!attributesList.get(j).isValid()){
+                        isAllValid = false;
+                    }
+                }
+                listWayDataList.get(i).setAttributesList(attributesList);
+                if (!isAllValid) {
+                    listWayDataList.get(i).setIsValid("false");
+                } else {
+                    listWayDataList.get(i).setIsValid("true");
+                    //Remove from not validated data and put in validated list
+                    List<ListWayData> listWayDataValidated= WayDataPreference.getInstance(this).getValidateWayData();
+                    listWayDataValidated.add(listWayDataList.get(i));
+                    WayDataPreference.getInstance(this).saveValidateWayData(listWayDataValidated);
+                    listWayDataList.remove(i);
+                }
+            }
+        }
+        WayDataPreference.getInstance(this).saveNotValidatedWayData(listWayDataList);
+
+        setResult(RESULT_OK);
         finish();
-        //onValidateWay();
     }
 
     @Override
@@ -347,7 +384,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @Override
     public void onDestroy() {
         super.onDestroy();
-      //  asyncTaskOsmApi.dismissDialog();
+        //  asyncTaskOsmApi.dismissDialog();
     }
 
     @Override
@@ -386,16 +423,16 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     public void OnIconCheckBoxOnClick(View v, int position, boolean isChecked, Attributes attributes) {
         switch (position) {
             case 0:
-                changeCheckBox(v,isChecked,position,attributes);
+                changeCheckBox(v, isChecked, position, attributes);
                 break;
             case 1:
-                changeCheckBox(v,isChecked,position,attributes);
+                changeCheckBox(v, isChecked, position, attributes);
                 break;
             case 2:
-                changeCheckBox(v,isChecked,position,attributes);
+                changeCheckBox(v, isChecked, position, attributes);
                 break;
             case 3:
-                changeCheckBox(v,isChecked,position,attributes);
+                changeCheckBox(v, isChecked, position, attributes);
                 break;
 
         }
@@ -403,20 +440,21 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     /**
      * Change Check Box click
+     *
      * @param isChecked weather true or false
-     * @param v view
+     * @param v         view
      */
-    private void changeCheckBox(View v,boolean isChecked,int positionClicked, Attributes attributes){
-        if(isChecked){
-            ((CheckBox)v).setText(getResources().getString(R.string.verified));
-            ((CheckBox)v).setTextColor(getResources().getColor(R.color.colorPrimary));
+    private void changeCheckBox(View v, boolean isChecked, int positionClicked, Attributes attributes) {
+        if (isChecked) {
+            ((CheckBox) v).setText(getResources().getString(R.string.verified));
+            ((CheckBox) v).setTextColor(getResources().getColor(R.color.colorPrimary));
             attributes.setValid(true);
-            mHashMapWay.put(positionClicked,attributes);
-        }else {
-            ((CheckBox)v).setText(getResources().getString(R.string.not_verify));
-            ((CheckBox)v).setTextColor(getResources().getColor(R.color.colorTextGray));
+            mHashMapWay.put(positionClicked, attributes);
+        } else {
+            ((CheckBox) v).setText(getResources().getString(R.string.not_verify));
+            ((CheckBox) v).setTextColor(getResources().getColor(R.color.colorTextGray));
             attributes.setValid(false);
-            mHashMapWay.put(positionClicked,attributes);
+            mHashMapWay.put(positionClicked, attributes);
         }
     }
 }
