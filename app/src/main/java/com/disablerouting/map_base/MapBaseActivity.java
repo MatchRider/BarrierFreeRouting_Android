@@ -566,7 +566,15 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     }
 
-    private void addMarkerNode(GeoPoint geoPoint, String category, String wheelChairAccessible) {
+    private void addMarkerNode(GeoPoint geoPoint, String category, String wheelChair) {
+        String wheelChairAccessible=wheelChair;
+        if(wheelChair.equalsIgnoreCase("Yes")){
+            wheelChairAccessible = getResources().getString(R.string.wheelchair_accessible_yes); }
+        else if(wheelChair.equalsIgnoreCase("No")){
+            wheelChairAccessible = getResources().getString(R.string.wheelchair_accessible_no);
+        }else {
+            wheelChairAccessible = getResources().getString(R.string.wheelchair_accessible_limited);
+        }
         Marker nodeMarker = new Marker(mMapView);
         GeoPoint nodePoints = new GeoPoint(geoPoint.getLatitude(), geoPoint.getLongitude());
         switch (category) {

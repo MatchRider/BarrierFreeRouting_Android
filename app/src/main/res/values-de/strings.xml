@@ -86,11 +86,16 @@
     <string name="no">Nein</string>
     <string name="clear">Eingabe löschen</string>
     <string name="apply">Übernehmen</string>
-    <string name="wheelchair_accessible">Wheelchair Accessible :</string>
+    <string name="wheelchair_accessible">-</string>
+    <string name="wheelchair_accessible_yes">barrierefrei</string>
+    <string name="wheelchair_accessible_no">nicht barrierefrei</string>
+    <string name="wheelchair_accessible_limited">teilweise barrierefre</string>
+    <string name="wheelchair_accessible_unknown">unbekannte</string>
 
-    <string name="tram_stop_title">Straßenbahnhaltestelle - barrierefrei</string>
-    <string name="toilets_title">Öffentliches WC – barrierefrei</string>
-    <string name="bus_stop_title">Bushaltestelle - barrierefrei</string>
+
+    <string name="tram_stop_title">Straßenbahnhaltestelle</string>
+    <string name="toilets_title">Öffentliches WC</string>
+    <string name="bus_stop_title">Bushaltestelle</string>
     <string name="home">Zurück zum Routing</string>
     <string name="no_address_found">Keine Adresse gefunden.</string>
     <string name="hint_routing_via">Bitte Ort eingeben</string>

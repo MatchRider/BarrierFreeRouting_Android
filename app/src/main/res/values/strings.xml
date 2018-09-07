@@ -98,10 +98,14 @@
     <string name="clear">Clear</string>
     <string name="apply">Apply</string>
     <string name="wheelchair_accessible">Wheelchair Accessible :</string>
+    <string name="wheelchair_accessible_yes">Yes</string>
+    <string name="wheelchair_accessible_no">No</string>
+    <string name="wheelchair_accessible_limited">Limited</string>
+    <string name="wheelchair_accessible_unknown">Unknown</string>
 
 
     <string name="tram_stop_title">Tram Stop</string>
-    <string name="toilets_title">Public toilet – barrier-free</string>
+    <string name="toilets_title">Public toilet</string>
     <string name="bus_stop_title">Bus Stop</string>
     <string name="home">Home</string>
     <string name="no_address_found">No address found.</string>
