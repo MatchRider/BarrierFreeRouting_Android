@@ -20,7 +20,7 @@
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginEnd="@dimen/margin_normal"
             android:fontFamily="@font/frutiger_light"
-            android:text="@string/message_give_feedback"
+            android:text="@string/please_take_a_closer_look_at_the_following_leg"
             android:layout_height="wrap_content"/>
 
     <LinearLayout android:layout_width="match_parent"

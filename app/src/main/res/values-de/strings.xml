@@ -109,8 +109,8 @@
     <string name="sorry_no">leider nein!</string>
     <string name="that_s_a_pity_maybe_next_time">Schade, vielleicht beim nächsten Mal!?</string>
     <string name="please_take_a_closer_look_at_the_following_leg">Es geht um folgenden Abschnitt.</string>
-    <string name="verified">Verified</string>
-    <string name="not_verify">Not Verified</string>
+    <string name="verified">Validiert</string>
+    <string name="not_verify">Nicht validiert</string>
     <string name="is_the_following_correct">Stimmen folgende Informationen?</string>
     <string name="what_information_do_you_have_for_community">Welche Informationen möchtest du für die Community eingeben?</string>
     <string name="done">Fertig!</string>
@@ -125,12 +125,14 @@
     <string name="thirty_five_less"><![CDATA[< 35,4]]></string>
     <string name="thirty_five_greater"><![CDATA[> 35,4]]></string>
     <string name="log_in_with_osm">Log in with OSM</string>
-    <string name="validated">Validated Ways</string>
-    <string name="not_validated">Non Validated Ways</string>
-    <string name="updated_info">Updated Way Info</string>
-    <string name="instructions_for_route">Instructions for route</string>
-    <string name="unable_to_get_data">Unable to get data</string>
+    <string name="validated">Validierte Wege</string>
+    <string name="not_validated">Nicht validierte Wege</string>
+    <string name="updated_info">Daten aktualisiert</string>
+    <string name="instructions_for_route">Wegführung</string>
+    <string name="unable_to_get_data">Daten können nicht abgerufen werden</string>
     <string name="message_give_feedback">Do you want to enhance this way info ?</string>
+    <string name="options">Optionen</string>
+    <string name="please_wait">Bitte warten…</string>
 
 
 </resources>

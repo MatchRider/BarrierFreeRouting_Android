@@ -125,7 +125,7 @@
         following leg.
     </string>
     <string name="verified">Verified</string>
-    <string name="not_verify">Not Verified</string>
+    <string name="not_verify">Verified</string>
     <string name="is_the_following_correct">Is the following correct ?</string>
     <string name="what_information_do_you_have_for_community">What information do you have for the
         community ?
@@ -168,5 +168,7 @@
     <string name="instructions_for_route">Instructions for route</string>
     <string name="unable_to_get_data">Unable to get data</string>
     <string name="message_give_feedback">Do you want to enhance this way info ?</string>
+    <string name="options">Options</string>
+    <string name="please_wait">Please Wait…</string>
 
 </resources>

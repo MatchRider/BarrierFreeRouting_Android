@@ -173,7 +173,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView, I
         surfaceTypeData.add(new DataModelExpandableList("concrete_plates"));
         surfaceTypeData.add(new DataModelExpandableList("paving_stones"));
         surfaceTypeData.add(new DataModelExpandableList("cobblestone"));
-        surfaceTypeData.add(new DataModelExpandableList("grass_pavers"));
+        //surfaceTypeData.add(new DataModelExpandableList("grass_pavers"));
         surfaceTypeData.add(new DataModelExpandableList("gravel"));
 
         /*surfaceTypeData.add("paved","");
@@ -244,7 +244,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView, I
         surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.concrete)));
         surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.paving_stones)));
         surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.cobblestone)));
-        surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.grass_paver)));
+        //surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.grass_paver)));
         surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.gravel)));
 
         List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<DataModelExpandableList>();

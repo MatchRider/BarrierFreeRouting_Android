@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import com.disablerouting.R;
 import com.disablerouting.utils.Utility;
 import com.github.scribejava.core.model.OAuth1AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -40,7 +41,7 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
         super.onPreExecute();
 
         pDialog = new ProgressDialog(mContext);
-        pDialog.setMessage("Please Wait...");
+        pDialog.setMessage(mContext.getResources().getString(R.string.please_wait));
         pDialog.setCancelable(false);
         if(pDialog.isShowing()) {
             pDialog.dismiss();

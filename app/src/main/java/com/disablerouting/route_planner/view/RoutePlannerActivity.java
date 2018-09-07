@@ -348,7 +348,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(RoutePlannerActivity.this);
-            pDialog.setMessage("Please Wait...");
+            pDialog.setMessage(getResources().getString(R.string.please_wait));
             pDialog.setCancelable(false);
             if (pDialog.isShowing()) {
                 pDialog.dismiss();
