@@ -17,6 +17,10 @@ public class RequestWayData {
     private
     String mProjectId;
 
+    @JsonProperty("Version")
+    private
+    String mVersion;
+
     @JsonProperty("IsValid")
     private
     String mIsValid;
@@ -63,5 +67,13 @@ public class RequestWayData {
 
     public void setAttributesValidate(List<AttributesValidate> attributesValidate) {
         mAttributesValidate = attributesValidate;
+    }
+
+    public String getVersion() {
+        return mVersion;
+    }
+
+    public void setVersion(String version) {
+        mVersion = version;
     }
 }

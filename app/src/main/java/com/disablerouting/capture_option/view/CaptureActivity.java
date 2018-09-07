@@ -101,7 +101,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView, I
            // mCaptureScreenPresenter.setChangeSet(requestCreateNode, this);
 
             OauthData oauthData= new OauthData(Verb.PUT, stringBuilder,mURL);
-            new AsyncTaskOsmApi(CaptureActivity.this,oauthData,this).execute("");
+            new AsyncTaskOsmApi(CaptureActivity.this,oauthData,this,false, AppConstant.API_TYPE_CREATE_CHANGE_SET).execute("");
         }
     }
     private void onExpandListeners() {
@@ -317,7 +317,7 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView, I
 
 
     @Override
-    public void onSuccessAsyncTask(final String responseBody) {
+    public void onSuccessAsyncTask(final String responseBody, String API_TYPE) {
 
         this.runOnUiThread(new Runnable() {
             public void run() {
@@ -336,9 +336,13 @@ public class CaptureActivity extends BaseActivityImpl implements ICaptureView, I
     public void onFailureAsyncTask(final String errorBody) {
         this.runOnUiThread(new Runnable() {
             public void run() {
-
                 Toast.makeText(CaptureActivity.this, errorBody, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onSuccessAsyncTaskForGetWay(String responseBody) {
+
     }
 }

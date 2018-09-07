@@ -11,17 +11,9 @@ import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.capture_option.view.CaptureActivity;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.feedback.manager.CreateChangeSetManager;
-import com.disablerouting.feedback.model.RequestCreateChangeSet;
-import com.disablerouting.feedback.model.RequestTag;
 import com.disablerouting.feedback.presenter.FeedBackScreenPresenter;
-import com.disablerouting.login.AsyncTaskOsmApi;
 import com.disablerouting.login.IAysncTaskOsm;
-import com.disablerouting.login.OauthData;
 import com.disablerouting.route_planner.model.FeedBackModel;
-import com.github.scribejava.core.model.Verb;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView, IAysncTaskOsm {
 
@@ -29,8 +21,8 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView,
     private String mChangeSetID;
     private FeedBackModel mFeedBackModel;
     private boolean mISStartedFromSuggestion;
-    private String mURL="https://master.apis.dev.openstreetmap.org/api/0.6/changeset/create";
-    private AsyncTaskOsmApi asyncTaskOsmApi;
+    //private String mURL="https://master.apis.dev.openstreetmap.org/api/0.6/changeset/create";
+    //private AsyncTaskOsmApi asyncTaskOsmApi;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,19 +38,19 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView,
     }
 
     private void callToGetChangeSet(){
-        RequestCreateChangeSet requestCreateChangeSet= new RequestCreateChangeSet();
+        /*RequestCreateChangeSet requestCreateChangeSet= new RequestCreateChangeSet();
         List<RequestTag> list = new ArrayList<>();
         RequestTag requestTag = new RequestTag("created_by","JOSM 1.61");
         list.add(requestTag);
         requestTag = new RequestTag("comment","Just adding some streetnames");
         list.add(requestTag);
-        requestCreateChangeSet.setRequestTag(list);
+        requestCreateChangeSet.setRequestTag(list);*/
         //mFeedBackScreenPresenter.createChangeSet(requestCreateChangeSet,this);
 
         String string="<osm><changeset><tag k=\"created_by\" v=\"JOSM 1.61\"/><tag k=\"comment\" v=\"Just adding some streetnames\"/></changeset></osm>";
-        OauthData oauthData= new OauthData(Verb.PUT,string,mURL);
-        asyncTaskOsmApi= new AsyncTaskOsmApi(FeedbackActivity.this,oauthData,this);
-        asyncTaskOsmApi.execute("");
+        //OauthData oauthData= new OauthData(Verb.PUT,string,mURL);
+       // asyncTaskOsmApi= new AsyncTaskOsmApi(FeedbackActivity.this,oauthData,this,false);
+        //asyncTaskOsmApi.execute("");
     }
 
 
@@ -104,7 +96,7 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView,
     }
 
     @Override
-    public void onSuccessAsyncTask(String responseBody) {
+    public void onSuccessAsyncTask(String responseBody, String API_TYPE) {
         if(responseBody!=null) {
             mChangeSetID = responseBody;
         }
@@ -120,8 +112,13 @@ public class FeedbackActivity extends BaseActivityImpl implements IFeedbackView,
     }
 
     @Override
+    public void onSuccessAsyncTaskForGetWay(String responseBody) {
+
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        asyncTaskOsmApi.dismissDialog();
+       // asyncTaskOsmApi.dismissDialog();
     }
 }

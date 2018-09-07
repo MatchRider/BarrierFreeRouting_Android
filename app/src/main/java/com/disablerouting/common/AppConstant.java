@@ -37,5 +37,7 @@ public interface AppConstant {
     String WAY_DATA_VALIDATE="WayDataValidate";
     String WAY_DATA_NOT_VALIDATE="WayDataNotValidate";
 
+     String API_TYPE_CREATE_CHANGE_SET="createChangeSet";
+     String API_TYPE_CREATE_PUT_WAY="wayUpdate";
 
 }

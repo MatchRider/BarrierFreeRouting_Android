@@ -37,6 +37,10 @@ public class ListWayData implements Parcelable{
     private
     String mIsValid;
 
+    @JsonProperty("Version")
+    private
+    String mVersion;
+
     @JsonProperty("Attributes")
     private
     List<Attributes> mAttributesList;
@@ -53,6 +57,7 @@ public class ListWayData implements Parcelable{
         mNodeReference = in.createStringArrayList();
         mColor = in.readString();
         mIsValid = in.readString();
+        mVersion = in.readString();
         mAttributesList = in.createTypedArrayList(Attributes.CREATOR);
     }
 
@@ -64,6 +69,7 @@ public class ListWayData implements Parcelable{
         dest.writeStringList(mNodeReference);
         dest.writeString(mColor);
         dest.writeString(mIsValid);
+        dest.writeString(mVersion);
         dest.writeTypedList(mAttributesList);
     }
 
@@ -115,6 +121,15 @@ public class ListWayData implements Parcelable{
         mIsValid = isValid;
     }
 
+
+    public String getVersion() {
+        return mVersion;
+    }
+
+    public void setVersion(String version) {
+        mVersion = version;
+    }
+
     public List<Attributes> getAttributesList() {
         return mAttributesList;
     }
@@ -122,6 +137,7 @@ public class ListWayData implements Parcelable{
     public void setAttributesList(List<Attributes> attributesList) {
         mAttributesList = attributesList;
     }
+
 
     public static Creator<ListWayData> getCREATOR() {
         return CREATOR;
@@ -143,6 +159,7 @@ public class ListWayData implements Parcelable{
             return new ListWayData[size];
         }
     };
+
 
     public List<GeoPoint> getGeoPoints(){
         ArrayList<GeoPoint> geoPointArrayList = new ArrayList<>();

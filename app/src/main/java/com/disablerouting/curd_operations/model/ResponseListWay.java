@@ -13,33 +13,25 @@ public class ResponseListWay implements Parcelable {
 
 
     @JsonProperty("WayData")
+    private
     List<ListWayData> mWayData;
 
     @JsonProperty("Status")
+    private
     boolean mStatus;
 
     @JsonProperty("Error")
-    String mError;
+    private
+    List<Error> mError;
 
     public ResponseListWay() {
     }
 
+
     protected ResponseListWay(Parcel in) {
         mWayData = in.createTypedArrayList(ListWayData.CREATOR);
         mStatus = in.readByte() != 0;
-        mError = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeTypedList(mWayData);
-        dest.writeByte((byte) (mStatus ? 1 : 0));
-        dest.writeString(mError);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+        mError = in.createTypedArrayList(Error.CREATOR);
     }
 
     public static final Creator<ResponseListWay> CREATOR = new Creator<ResponseListWay>() {
@@ -62,11 +54,20 @@ public class ResponseListWay implements Parcelable {
         return mStatus;
     }
 
-    public String getError() {
+
+    public List<Error> getError() {
         return mError;
     }
 
-    public void setWayData(List<ListWayData> wayData) {
-        mWayData = wayData;
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeTypedList(mWayData);
+        dest.writeByte((byte) (mStatus ? 1 : 0));
+        dest.writeTypedList(mError);
     }
 }

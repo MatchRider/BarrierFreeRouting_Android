@@ -21,11 +21,18 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
     private OauthData mOauthData;
     private ProgressDialog pDialog;
     private IAysncTaskOsm mIAysncTaskOsm;
+    private boolean mIsForGet;
+    private String API_TYPE="api_type";
 
-    public AsyncTaskOsmApi(Context context, OauthData oauthData, IAysncTaskOsm aysncTaskOsm){
+
+    public AsyncTaskOsmApi(Context context, OauthData oauthData, IAysncTaskOsm aysncTaskOsm,
+                           boolean isForGet,String api){
         mContext=context;
         mOauthData=oauthData;
         mIAysncTaskOsm=aysncTaskOsm;
+        mIsForGet= isForGet;
+        API_TYPE=api;
+
     }
 
     @Override
@@ -49,11 +56,14 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
         final OAuthRequest request = new OAuthRequest(mOauthData.getMethodType(), mOauthData.getStringUrl());
         request.addHeader("Content-Type", "application/xml;charset=UTF-8");
         request.addHeader("Accept", "application/xml;versions=1");
-        request.setPayload(mOauthData.getRequestBody());
+        if(!mOauthData.getRequestBody().isEmpty()) {
+            request.setPayload(mOauthData.getRequestBody());
+        }
         String[] tokens=null;
         if(UserPreferences.getInstance(mContext)!=null) {
             tokens = UserPreferences.getInstance(mContext).getAccessToken().split(",", -1);
         }
+        assert tokens != null;
         OAuth1AccessToken oAuth1AccessToken = new OAuth1AccessToken(tokens[0],tokens[1]);
         service.signRequest(oAuth1AccessToken, request);
         Response response;
@@ -63,7 +73,11 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
                 pDialog.dismiss();
             }
             if(response.isSuccessful()){
-                mIAysncTaskOsm.onSuccessAsyncTask(response.getBody());
+                if(mIsForGet){
+                    mIAysncTaskOsm.onSuccessAsyncTaskForGetWay(response.getBody());
+                }else {
+                    mIAysncTaskOsm.onSuccessAsyncTask(response.getBody(),API_TYPE);
+                }
             }
             else {
                 if(response.getCode()==409){

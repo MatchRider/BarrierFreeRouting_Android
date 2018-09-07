@@ -27,4 +27,7 @@ public class OauthData {
     public String getStringUrl() {
         return mStringUrl;
     }
+
+
+
 }

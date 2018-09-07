@@ -265,6 +265,9 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         super.onClick(close);
     }
 
+    /**
+     * API CALL TO GET LIST OF WAY DATA
+     */
     private void getWayListData(){
         mIHomeScreenPresenter.getListWays();
     }
@@ -272,20 +275,27 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
     @Override
     public void onListWayReceived(ResponseListWay responseWay) {
         if(responseWay!=null) {
-            for (int i = 0; i < responseWay.getWayData().size(); i++) {
-                boolean isValidWay= Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
-                if (isValidWay) {
-                    mWayListValidatedData.add(responseWay.getWayData().get(i));
-                } else {
-                    mWayListNotValidatedData.add(responseWay.getWayData().get(i));
+            if (responseWay.isStatus()) {
+                for (int i = 0; i < responseWay.getWayData().size(); i++) {
+                    boolean isValidWay = Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
+                    if (isValidWay) {
+                        mWayListValidatedData.add(responseWay.getWayData().get(i));
+                    } else {
+                        mWayListNotValidatedData.add(responseWay.getWayData().get(i));
+                    }
+                }
+                if (WayDataPreference.getInstance(this) != null) {
+                    WayDataPreference.getInstance(this).saveValidateWayData(mWayListValidatedData);
+                    WayDataPreference.getInstance(this).saveNotValidatedWayData(mWayListNotValidatedData);
+                }
+            }
+            else {
+                if(responseWay.getError()!=null && responseWay.getError().get(0)!=null &&
+                        responseWay.getError().get(0).getMessage()!=null) {
+                    Toast.makeText(this, responseWay.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         }
-        if(WayDataPreference.getInstance(this)!=null) {
-            WayDataPreference.getInstance(this).saveValidateWayData(mWayListValidatedData);
-            WayDataPreference.getInstance(this).saveNotValidatedWayData(mWayListNotValidatedData);
-        }
-
     }
 
     @Override
