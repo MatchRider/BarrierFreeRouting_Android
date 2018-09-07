@@ -71,7 +71,6 @@ public class SettingScreenPresenter implements IUpdateWayResponseReceiver, ISett
     public void onSuccessValidate(ResponseWay data) {
         mISettingView.hideLoader();
         if(mISettingView!=null){
-            mISettingView.onValidateDataReceived(data);
 
         }
     }

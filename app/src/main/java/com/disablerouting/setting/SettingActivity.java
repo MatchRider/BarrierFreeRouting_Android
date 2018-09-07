@@ -153,6 +153,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         }
     }
 
+    /**
+     * Prepare items of attributes
+     * @return list
+     */
     private ArrayList<String> prepareListData() {
         ArrayList<String> stringArrayList = new ArrayList<>();
         stringArrayList.add(getString(R.string.surface_type));
@@ -200,6 +204,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     }
 
 
+    /**
+     * Get Data from intent and set  values to attributes
+     */
     private void getDataFromWay() {
         for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
             switch (mListWayData.getAttributesList().get(i).getKey()) {
@@ -225,7 +232,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         }
     }
 
-
+    /**
+     * API CALL FOR UPDATE DATA
+     * @param versionString version updated
+     */
     private void onUpdateWay(String versionString) {
         RequestWayInfo requestWayInfo = new RequestWayInfo();
         RequestWayData wayDataValidate = new RequestWayData();
@@ -266,48 +276,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         wayDataValidate.setAttributesValidate(attributesValidateList);
         requestWayInfo.setWayDataValidates(wayDataValidate);
         mISettingScreenPresenter.onUpdate(requestWayInfo);
-    }
-
-
-    private void onValidateWay() {
-        RequestWayInfo requestWayInfo = new RequestWayInfo();
-        RequestWayData wayDataValidate = new RequestWayData();
-        wayDataValidate.setId(mListWayData.getId());
-        wayDataValidate.setProjectId(mListWayData.getProjectId());
-        wayDataValidate.setValid(mListWayData.getIsValid());
-        List<AttributesValidate> attributesValidateList = new ArrayList<>();
-        AttributesValidate attributesValidate = null;
-        if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
-            attributesValidate = new AttributesValidate();
-            attributesValidate.setKey(KEY_FOOT_WAY);
-            attributesValidate.setValue(mHashMapWay.get(0).getValue());
-            attributesValidate.setValid(mHashMapWay.get(0).isValid());
-            attributesValidateList.add(attributesValidate);
-        }
-        if (mHashMapWay.get(1) != null && !mHashMapWay.get(1).getKey().isEmpty()) {
-            attributesValidate = new AttributesValidate();
-            attributesValidate.setKey(KEY_HIGH_WAY);
-            attributesValidate.setValue(mHashMapWay.get(1).getValue());
-            attributesValidate.setValid(mHashMapWay.get(1).isValid());
-            attributesValidateList.add(attributesValidate);
-        }
-        if (mHashMapWay.get(2) != null && !mHashMapWay.get(2).getKey().isEmpty()) {
-            attributesValidate = new AttributesValidate();
-            attributesValidate.setKey(KEY_INCLINE);
-            attributesValidate.setValue(mHashMapWay.get(2).getValue());
-            attributesValidate.setValid(mHashMapWay.get(2).isValid());
-            attributesValidateList.add(attributesValidate);
-        }
-        if (mHashMapWay.get(3) != null && !mHashMapWay.get(3).getKey().isEmpty()) {
-            attributesValidate = new AttributesValidate();
-            attributesValidate.setKey(KEY_WIDTH);
-            attributesValidate.setValue(mHashMapWay.get(3).getValue());
-            attributesValidate.setValid(mHashMapWay.get(3).isValid());
-            attributesValidateList.add(attributesValidate);
-        }
-        wayDataValidate.setAttributesValidate(attributesValidateList);
-        requestWayInfo.setWayDataValidates(wayDataValidate);
-        mISettingScreenPresenter.onValidate(requestWayInfo);
     }
 
     @Override
@@ -357,12 +325,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     }
 
-    @Override
-    public void onValidateDataReceived(ResponseWay responseUpdate) {
-        Toast.makeText(SettingActivity.this, R.string.validated_way_info, Toast.LENGTH_SHORT).show();
-        finish();
-
-    }
 
     @Override
     public void onFailure(String error) {
