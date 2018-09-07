@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.disablerouting.R;
 import com.disablerouting.curd_operations.model.Attributes;
+import com.disablerouting.utils.Utility;
 
 import java.util.HashMap;
 import java.util.List;
@@ -66,22 +67,27 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
         String subTitle = null;
         boolean isValid = false;
         if (mSelectionMap.containsKey(position)) {
-            subTitle = mSelectionMap.get(position).getValue();
+            if (position == 3) {
+                subTitle = Utility.trimTWoDecimalPlaces(Double.parseDouble(mSelectionMap.get(position).getValue()));
+            } else {
+                subTitle = mSelectionMap.get(position).getValue();
+
+            }
             isValid = mSelectionMap.get(position).isValid();
 
-            setCheckBoxColor(holder.mCheckBoxVerify,mContext.getResources().getColor(R.color.colorAccent),
+            setCheckBoxColor(holder.mCheckBoxVerify, mContext.getResources().getColor(R.color.colorAccent),
                     mContext.getResources().getColor(R.color.colorBlack));
 
             if (!mIsValidChoosed) {
                 holder.mTextViewSubTitle.setText(subTitle);
                 holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
-                if(isValid) {
+                if (isValid) {
                     holder.mCheckBoxVerify.setChecked(true);
                     holder.mCheckBoxVerify.setClickable(false);
                     holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.verified));
                     holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                     holder.mImageViewEdit.setVisibility(View.GONE);
-                }else {
+                } else {
                     holder.mCheckBoxVerify.setChecked(false);
                     holder.mCheckBoxVerify.setClickable(true);
                     holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
@@ -91,9 +97,8 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     holder.mImageViewEdit.setClickable(true);
 
                 }
-
             } else {
-                if(isValid) {
+                if (isValid) {
                     holder.mTextViewSubTitle.setText(subTitle);
                     holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
                     holder.mCheckBoxVerify.setChecked(true);
@@ -104,13 +109,13 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     holder.mImageViewEdit.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_edit_black));
                     holder.mImageViewEdit.setClickable(true);
 
-                }else {
+                } else {
                     holder.mTextViewSubTitle.setText(subTitle);
                     holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
                     holder.mCheckBoxVerify.setChecked(false);
                     holder.mCheckBoxVerify.setClickable(true);
                     holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
-                    holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorBlack ));
+                    holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorBlack));
                     holder.mImageViewEdit.setVisibility(View.VISIBLE);
                     holder.mImageViewEdit.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_edit_black));
                     holder.mImageViewEdit.setClickable(true);
@@ -118,7 +123,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
 
             }
 
-        }else {
+        } else {
             holder.mTextViewTitle.setTextColor(mContext.getResources().getColor(R.color.colorTextGray));
             holder.mTextViewSubTitle.setText(subTitle);
             holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
