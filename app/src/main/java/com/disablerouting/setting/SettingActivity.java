@@ -464,7 +464,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             mHashMapWay.put(positionClicked, attributes);
         } else {
             ((CheckBox) v).setText(getResources().getString(R.string.not_verify));
-            ((CheckBox) v).setTextColor(getResources().getColor(R.color.colorTextGray));
+            ((CheckBox) v).setTextColor(getResources().getColor(R.color.colorBlack));
             attributes.setValid(false);
             mHashMapWay.put(positionClicked, attributes);
         }

@@ -290,7 +290,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         }
         previousColor = polyline.getColor();
         polyline.setColor(getResources().getColor(R.color.colorBrown));
-        polyline.setWidth(40);
+        polyline.setWidth(50);
         mPreviousPolyline = polyline;
         mMapView.invalidate();
     }
@@ -754,15 +754,22 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         Button btnNo = (Button) customView.findViewById(R.id.btn_no);
         Button btnYes = (Button) customView.findViewById(R.id.btn_yes);
         builder.setView(customView);
-        if (mAlertDialogEnhance == null) {
-            mAlertDialogEnhance = builder.create();
+
+        if(mAlertDialogEnhance!=null && mAlertDialogEnhance.isShowing()){
+            mAlertDialogEnhance.dismiss();
         }
-        if (mAlertDialogEnhance.isShowing()) {
+        mAlertDialogEnhance = builder.create();
+        mAlertDialogEnhance.show();
+         /*if (mAlertDialogEnhance == null) {
+            mAlertDialogEnhance = builder.create();
+        }*/
+        /*if (mAlertDialogEnhance.isShowing()) {
+            mAlertDialogEnhance.cancel();
             mAlertDialogEnhance.dismiss();
             showEnhanceDialog(polyline, valid, listWayData);
         } else {
             mAlertDialogEnhance.show();
-        }
+        }*/
         mAlertDialogEnhance.setCanceledOnTouchOutside(true);
         mAlertDialogEnhance.getWindow().setDimAmount(0.0f);
         mAlertDialogEnhance.getWindow().setBackgroundDrawable(new

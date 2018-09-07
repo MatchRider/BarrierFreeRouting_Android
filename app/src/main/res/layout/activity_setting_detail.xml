@@ -36,7 +36,7 @@
                           android:textSize="@dimen/text_xxlarge"
                           android:gravity="center_horizontal"
                           android:background="@color/colorPrimary"
-                          android:text="@string/you_want_to_enhance_the_routing"
+                          android:text="@string/options"
                           android:layout_height="wrap_content"
                           android:fontFamily="@font/frutiger_lt_bold"
                 />
@@ -59,6 +59,7 @@
                   android:textSize="@dimen/text_xxlarge"
                   android:gravity="start"
                   android:padding="@dimen/padding_normal"
+                  android:visibility="gone"
                   android:text="@string/what_information_do_you_have_for_community"
                   android:layout_height="wrap_content"
                   android:fontFamily="@font/frutiger_lt_bold"

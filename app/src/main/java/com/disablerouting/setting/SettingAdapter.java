@@ -85,7 +85,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     holder.mCheckBoxVerify.setChecked(false);
                     holder.mCheckBoxVerify.setClickable(true);
                     holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
-                    holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorTextGray));
+                    holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorBlack));
                     holder.mImageViewEdit.setVisibility(View.VISIBLE);
                     holder.mImageViewEdit.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_edit_black));
                     holder.mImageViewEdit.setClickable(true);
@@ -110,7 +110,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     holder.mCheckBoxVerify.setChecked(false);
                     holder.mCheckBoxVerify.setClickable(true);
                     holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
-                    holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorTextGray));
+                    holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorBlack ));
                     holder.mImageViewEdit.setVisibility(View.VISIBLE);
                     holder.mImageViewEdit.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_edit_black));
                     holder.mImageViewEdit.setClickable(true);
