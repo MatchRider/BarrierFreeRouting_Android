@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -18,6 +19,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import com.disablerouting.R;
 import com.disablerouting.application.AppData;
 import com.disablerouting.base.BaseActivityImpl;
@@ -78,10 +83,11 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private ArrayList<Polyline> mPolylineArrayList = new ArrayList<>();
     private ArrayList<Polyline> mPolylineArrayListViaMidPoints = new ArrayList<>();
     protected Handler UI_HANDLER = new Handler();
-    private int[] color = {R.color.colorTextGray,R.color.colorGreen,
+    private int[] color = {R.color.colorTextGray, R.color.colorGreen,
             R.color.colorRed, android.R.color.holo_blue_bright};
-    private int colorIndex=0;
-    private int previousColor=0;
+    private int colorIndex = 0;
+    private int previousColor = 0;
+    private AlertDialog mAlertDialogEnhance;
 
     //Runnable marker data
     //private int mPolylineIndex = -1;
@@ -103,6 +109,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     /**
      * Listener for Map
+     *
      * @param feedBackListener Feed back Listener
      */
     public void setOnFeedBackListener(OnFeedBackListener feedBackListener) {
@@ -174,10 +181,10 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         GeoPoint geoPointStart = null, geoPointEnd = null;
         mShowFeedbackDialog = showFeedbackDialog;
         if (geoPointList != null) {
-           //List<GeoPoint> geoPointArrayList = PolylineDecoder.decodePoly(encodedGeoPoints);
-            List<GeoPoint> geoPointArrayList= new ArrayList<>();
-            for (int i=0 ;i<geoPointList.size();i++){
-                GeoPoint geoPoint= new GeoPoint(Double.parseDouble(geoPointList.get(i).get(1).toString()),
+            //List<GeoPoint> geoPointArrayList = PolylineDecoder.decodePoly(encodedGeoPoints);
+            List<GeoPoint> geoPointArrayList = new ArrayList<>();
+            for (int i = 0; i < geoPointList.size(); i++) {
+                GeoPoint geoPoint = new GeoPoint(Double.parseDouble(geoPointList.get(i).get(1).toString()),
                         Double.parseDouble(geoPointList.get(i).get(0).toString()));
                 geoPointArrayList.add(geoPoint);
             }
@@ -200,8 +207,9 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     /**
      * Set bounding box between source and destinations
+     *
      * @param geoPointStart geo point start
-     * @param geoPointEnd geo point end.
+     * @param geoPointEnd   geo point end.
      */
     public void setBoundingBox(GeoPoint geoPointStart, GeoPoint geoPointEnd) {
         if (geoPointStart != null && geoPointEnd != null) {
@@ -214,6 +222,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     /**
      * Add geo points to map
+     *
      * @param geoPointList list of geo points
      * @param stepsList    way points index
      */
@@ -237,8 +246,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                     mPolyline.setOnClickListener(new Polyline.OnClickListener() {
                         @Override
                         public boolean onClick(final Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                           // updatePolylineUI(polyline);
-                           // showFeedbackDialog(eventPos.getLongitude(), eventPos.getLatitude());
+                            // updatePolylineUI(polyline);
+                            // showFeedbackDialog(eventPos.getLongitude(), eventPos.getLatitude());
                             return false;
                         }
                     });
@@ -252,7 +261,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         }
     }
 
-    private void updatePolylineUI(Polyline polyline ) {
+    private void updatePolylineUI(Polyline polyline) {
 
         if (mPreviousPolyline != null) {
             mPreviousPolyline.setColor(getResources().getColor(R.color.colorPrimary));
@@ -266,21 +275,22 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     /**
      * Update Polyline of ways
+     *
      * @param polyline polyline
-     * @param valid valid data or not
+     * @param valid    valid data or not
      */
-    private void updatePolylineUIWays(Polyline polyline , boolean valid) {
+    private void updatePolylineUIWays(Polyline polyline, boolean valid) {
         if (mPreviousPolyline != null) {
-            if(valid){
+            if (valid) {
                 mPreviousPolyline.setColor(getResources().getColor(R.color.colorGreen));
-            }else {
+            } else {
                 mPreviousPolyline.setColor(previousColor);
             }
             mPreviousPolyline.setWidth(10);
         }
-        previousColor =polyline.getColor();
+        previousColor = polyline.getColor();
         polyline.setColor(getResources().getColor(R.color.colorBrown));
-        polyline.setWidth(30);
+        polyline.setWidth(40);
         mPreviousPolyline = polyline;
         mMapView.invalidate();
     }
@@ -640,34 +650,37 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     @Override
     public void onDestroy() {
         super.onDestroy();
-       // UI_HANDLER.removeCallbacks(updateMarker);
+        // UI_HANDLER.removeCallbacks(updateMarker);
     }
 
 
     /**
      * Add polyline for validate / non validate data
+     *
      * @param listWayData custom model to send furture  request
-     * @param valid valid data or not
+     * @param valid       valid data or not
      */
-    public void addPolyLineForWays(ListWayData listWayData, final boolean valid) {
+    public void addPolyLineForWays(final ListWayData listWayData, final boolean valid) {
         Polyline polylineWays = new Polyline();
         polylineWays.setPoints(listWayData.getGeoPoints());
         polylineWays.setRelatedObject(listWayData);
-        polylineWays.setWidth(15);
+        polylineWays.setWidth(20);
         String colorValue;
-        if(valid){
+        if (valid) {
             polylineWays.setColor(getResources().getColor(R.color.colorGreen));
-        }else {
-            colorValue= listWayData.getColor();
+        } else {
+            colorValue = listWayData.getColor();
             polylineWays.setColor(Color.parseColor(colorValue));
             //colorIndex=(colorIndex+1)%4;
         }
         polylineWays.setOnClickListener(new Polyline.OnClickListener() {
             @Override
             public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                updatePolylineUIWays(polyline,valid);
-                ListWayData relatedObject= (ListWayData) polyline.getRelatedObject();
-                checkForWay(polyline,relatedObject, valid);
+                setBoundingBox(listWayData.getGeoPoints().get(0), listWayData.getGeoPoints().get(listWayData.getGeoPoints().size() - 1));
+                ListWayData relatedObject = (ListWayData) polyline.getRelatedObject();
+                updatePolylineUIWays(polyline, valid);
+                showEnhanceDialog(polyline, valid, relatedObject);
+
                 return false;
             }
         });
@@ -675,7 +688,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     }
 
-    public void checkForWay(Polyline polyline, ListWayData way, boolean valid){
+    public void checkForWay(Polyline polyline, ListWayData way, boolean valid) {
     }
         /*protected Runnable updateMarker = new Runnable() {
         @Override
@@ -723,6 +736,44 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         mGeoPointIndex = -1;
     }*/
 
+
+    private void showEnhanceDialog(final Polyline polyline, final boolean valid, final ListWayData listWayData) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View customView = layoutInflater.inflate(R.layout.enchance_feedback_pop_up, null);
+        Button btnNo = (Button) customView.findViewById(R.id.btn_no);
+        Button btnYes = (Button) customView.findViewById(R.id.btn_yes);
+        builder.setView(customView);
+        if (mAlertDialogEnhance == null) {
+            mAlertDialogEnhance = builder.create();
+        }
+        if (mAlertDialogEnhance.isShowing()) {
+            mAlertDialogEnhance.dismiss();
+            showEnhanceDialog(polyline, valid, listWayData);
+        } else {
+            mAlertDialogEnhance.show();
+        }
+        mAlertDialogEnhance.setCanceledOnTouchOutside(true);
+        mAlertDialogEnhance.getWindow().setDimAmount(0.0f);
+        mAlertDialogEnhance.getWindow().setBackgroundDrawable(new
+                ColorDrawable(android.graphics.Color.argb(1, 200, 200, 200)));
+        mAlertDialogEnhance.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mAlertDialogEnhance.getWindow().setGravity(Gravity.BOTTOM);
+
+        btnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAlertDialogEnhance.dismiss();
+            }
+        });
+        btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkForWay(polyline, listWayData, valid);
+                mAlertDialogEnhance.dismiss();
+            }
+        });
+    }
 
 }
 

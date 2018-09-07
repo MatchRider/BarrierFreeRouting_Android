@@ -163,6 +163,6 @@
     <string name="validated_way_info">Validated Way Info</string>
     <string name="instructions_for_route">Instructions for route</string>
     <string name="unable_to_get_data">Unable to get data</string>
-
+    <string name="message_give_feedback">Do you want to enhance this way info ?</string>
 
 </resources>
