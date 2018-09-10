@@ -20,7 +20,8 @@ public class ResponseWrapper<T> implements Callback<T> {
 
     private final ResponseCallback<T> mResponseCallback;
 
-    private String OPS_SOMETHING_WENT_WRONG ="Ops Something went wrong. Please try again after sometime.";
+    //private String OPS_SOMETHING_WENT_WRONG ="Ops Something went wrong. Please try again after sometime.";
+    private String OPS_SOMETHING_WENT_WRONG ="Ops Etwas ging schief. Bitte versuchen Sie es später erneut.";
     /**
      * Creates an instance without the error mapper,
      * in case of all errors we would get the default response.

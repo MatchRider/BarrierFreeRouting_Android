@@ -69,7 +69,15 @@ public interface ApiService {
                                               @Query("focus.point.lat") double latitude,@Query("focus.point.lon") double longitude,
                                               @Query("layers") String layers,@Query("boundary.country") String country);
 
-
+    //Its a Reverse Geo Code search for gtting address of lat and lon
+    /**
+     *
+     * @param api_key api key passed
+     * @param latitude longitude
+     * @param longitude latitude
+     * @param size max size data
+     * @return address string
+     */
     @GET("geocode/reverse")
     Call<GeoCodingResponse> getGeoCodeReverse(@Query("api_key") String api_key, @Query("point.lat") double latitude,
                                               @Query("point.lon") double longitude,@Query("size") int size);
@@ -96,23 +104,49 @@ public interface ApiService {
     Call<ResponseBody> setChangeSet(@Path("type") String type, @Body RequestCreateNode requestCreateNode);
 
 
+    /**
+     * Api for  plotting nodes over map path
+     * @param apiKey api key passed
+     * @param bbox bounding box over a lat and lon
+     * @param perPage per page result
+     * @param wheelchair wheelchair  related data
+     * @return nodes
+     */
     @GET("nodes")
-        //@Query("wheelchair") String wheelChair not using
     Call<NodeResponse> getNodes(@Query("api_key") String apiKey, @Query("bbox") String bbox, @Query("per_page") int perPage,
                                 @Query("wheelchair") String wheelchair);
 
 
     // Salil's API
 
+    /**
+     * Api call for get way
+     * @param requestGetWay Request get way bodey
+     * @return way
+     */
     @POST("Get/")
     Call<ResponseWay> getWays(@Body RequestGetWay requestGetWay);
 
+    /**
+     * Api call for vallidate way
+     * @param requestWayInfo Request Way info
+     * @return way
+     */
     @POST("Validate")
     Call<ResponseWay> validate(@Body RequestWayInfo requestWayInfo);
 
+    /**
+     * Api call for update way
+     * @param requestWayInfo Request Way info
+     * @return way updated
+     */
     @POST("update")
     Call<ResponseUpdate> update(@Body RequestWayInfo requestWayInfo);
 
+    /**
+     * Api call for get list data
+     * @return list of ways
+     */
     @GET("List")
     Call<ResponseListWay> getList();
 
