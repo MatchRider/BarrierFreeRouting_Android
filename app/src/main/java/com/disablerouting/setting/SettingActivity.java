@@ -195,7 +195,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 Attributes attributes = new Attributes();
                 attributes.setKey(mHashMapWay.get(mPositionClicked).getKey());
                 attributes.setValue(dataString);
-                attributes.setValid(true);
+                //attributes.setValid(true);
                 mHashMapWay.put(mPositionClicked, attributes);
                 mSettingAdapter.setSelectionMap(mHashMapWay, true);
                 mSettingAdapter.notifyDataSetChanged();
