@@ -248,7 +248,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 }else {
                     coordinates = mGeoPointSource + "|" + mGeoPointDestination;
                 }
-                String profileType = AppConstant.PROFILE_DRIVING_CAR;
+                String profileType = AppConstant.PROFILE_WHEEL_CHAIR;
                 mISourceDestinationScreenPresenter.getDestinationsData(coordinates, profileType, jsonObject);
             }
             handler.removeMessages(SEARCH_TEXT_CHANGED);

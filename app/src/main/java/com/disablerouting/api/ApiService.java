@@ -62,7 +62,7 @@ public interface ApiService {
      * @param longitude longitude
      * @param layers layers.
      * @param country iso 3 of country https://en.wikipedia.org/wiki/ISO_3166-1
-     * @return
+     * @return address
      */
     @GET("geocode/search")
     Call<GeoCodingResponse> getGeoCodeForward(@Query("api_key") String api_key, @Query("text") String query,
@@ -98,7 +98,8 @@ public interface ApiService {
 
     @GET("nodes")
         //@Query("wheelchair") String wheelChair not using
-    Call<NodeResponse> getNodes(@Query("api_key") String apiKey, @Query("bbox") String bbox, @Query("per_page") int perPage);
+    Call<NodeResponse> getNodes(@Query("api_key") String apiKey, @Query("bbox") String bbox, @Query("per_page") int perPage,
+                                @Query("wheelchair") String wheelchair);
 
 
     // Salil's API

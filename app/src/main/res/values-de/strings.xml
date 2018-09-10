@@ -89,7 +89,7 @@
     <string name="wheelchair_accessible">-</string>
     <string name="wheelchair_accessible_yes">barrierefrei</string>
     <string name="wheelchair_accessible_no">nicht barrierefrei</string>
-    <string name="wheelchair_accessible_limited">teilweise barrierefre</string>
+    <string name="wheelchair_accessible_limited">teilweise barrierefrei</string>
     <string name="wheelchair_accessible_unknown">unbekannte</string>
 
 
@@ -124,7 +124,7 @@
     <string name="send">Absenden</string>
     <string name="thirty_five_less"><![CDATA[< 35,4]]></string>
     <string name="thirty_five_greater"><![CDATA[> 35,4]]></string>
-    <string name="log_in_with_osm">Log in with OSM</string>
+    <string name="log_in_with_osm">Bei OpenStreetMap einloggen</string>
     <string name="validated">Validierte Wege</string>
     <string name="not_validated">Nicht validierte Wege</string>
     <string name="updated_info">Daten aktualisiert</string>

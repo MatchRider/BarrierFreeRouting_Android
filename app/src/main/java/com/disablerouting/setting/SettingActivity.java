@@ -63,9 +63,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private List<RequestTag> mRequestTagList = new ArrayList<>();
     private int mPositionClicked = -1;
     private final static String KEY_FOOT_WAY = "footway";
+    private final static String KEY_HIGH_WAY = "highway";
     private final static String KEY_INCLINE = "incline";
     private final static String KEY_WIDTH = "width";
-    private final static String KEY_HIGH_WAY = "highway";
     private List<String> mNodeList;
 
     @Override

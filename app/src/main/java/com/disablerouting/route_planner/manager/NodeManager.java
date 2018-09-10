@@ -14,7 +14,7 @@ public class NodeManager implements ResponseCallback<NodeResponse> {
 
     public void getNodes(INodesResponseReceiver receiver, String bBox) {
         this.mINodesResponseReceiver = receiver;
-        mNodeApiCall = RetrofitClient.getApiServiceWheelChair().getNodes(ApiEndPoint.API_KEY_WHEEL_MAP, bBox, 1000);
+        mNodeApiCall = RetrofitClient.getApiServiceWheelChair().getNodes(ApiEndPoint.API_KEY_WHEEL_MAP, bBox, 1000,"yes");
         mNodeApiCall.enqueue(new ResponseWrapper<NodeResponse>(this));
     }
 

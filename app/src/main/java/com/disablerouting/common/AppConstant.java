@@ -24,6 +24,7 @@ public interface AppConstant {
     String publicBusStop= "bus_stop";
 
     String PROFILE_DRIVING_CAR="driving-car";
+    String PROFILE_WHEEL_CHAIR="wheelchair";
 
     String STARTED_FROM_SUGGESTION = "startedFromSuggestion";
     String POSITION_SETTING="position";

@@ -402,7 +402,7 @@ public class SuggestionFragment extends BaseFragmentImpl implements ISuggestionF
                 mGeoPointSource.getLongitude() != mGeoPointDestination.getLongitude()) {
             if (!mEditTextSource.getText().toString().isEmpty() && !mEditTextDestination.getText().toString().isEmpty()) {
                 String coordinates = mGeoPointSource + "|" + mGeoPointDestination;
-                String profileType = AppConstant.PROFILE_DRIVING_CAR;
+                String profileType = AppConstant.PROFILE_WHEEL_CHAIR;
                 mISuggestionScreenPresenter.getDestinationsData(coordinates, profileType, jsonObject);
             }
             handler.removeMessages(SEARCH_TEXT_CHANGED);
