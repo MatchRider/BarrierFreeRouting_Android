@@ -35,10 +35,14 @@ public interface AppConstant {
 
     String WAY_DATA="WayData";
     String STEP_DATA="StepData";
-    String WAY_DATA_VALIDATE="WayDataValidate";
-    String WAY_DATA_NOT_VALIDATE="WayDataNotValidate";
 
      String API_TYPE_CREATE_CHANGE_SET="createChangeSet";
      String API_TYPE_CREATE_PUT_WAY="wayUpdate";
+
+     String KEY_FOOT_WAY = "footway"; //surface
+     String KEY_HIGH_WAY = "highway"; //kerb
+     String KEY_INCLINE = "incline";
+     String KEY_WIDTH = "width";
+
 
 }

@@ -66,16 +66,17 @@
     <string name="error_source_destination_same">Please select different source and destination
     </string>
     <string name="surface_type">Surface Type</string>
-    <string name="maximum_sloped">Maximum Sloped Curb (inches)</string>
-    <string name="maximum_incline">Maximum Incline (Slope in %)</string>
-    <string name="sidewalk_width">Sidewalk width (inches)</string>
+    <string name="maximum_sloped">Maximum Sloped Curb (inch)</string>
+    <string name="maximum_incline">Maximum Incline (%)</string>
+    <string name="sidewalk_width">Walkway width (inch)</string>
     <string name="permanent_obstacle">Permanent Obstacle</string>
     <string name="routing_via" tools:ignore="TypographyEllipsis">Routing Via...</string>
 
     <string name="asphalt">Asphalt</string>
     <string name="concrete">Concrete</string>
-    <string name="paving_stones">Paving Stones(Pavers)</string>
+    <string name="paving_stones">Paving Stones</string>
     <string name="cobblestone">Cobblestone</string>
+    <string name="compacted">Compacted</string>
     <string name="grass_paver">Grass Paver</string>
     <string name="gravel">Gravel</string>
 
@@ -88,10 +89,18 @@
     <string name="all_filter">All traversable surfaces</string>
 
 
+    <string name="zero">0</string>
     <string name="up_to_three">Up to 3</string>
     <string name="up_to_six">Up to 6</string>
     <string name="up_to_ten">Up to 10</string>
+    <string name="greater_ten"><![CDATA[> 10]]></string>
 
+    <string name="string_one_point_two">1.2</string>
+    <string name="string_two_point_four">2.4</string>
+    <string name="string_two_point_four_greater"><![CDATA[> 2.4]]></string>
+
+    <string name="string_less_width"><![CDATA[< 35.4]]></string>
+    <string name="string_greater_width"><![CDATA[> 35.4]]></string>
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -149,10 +158,7 @@
         der European Union Public Licence (EUPL).\n\n
         Der Programm-Code ist via www.github.com/MatchRider/Routing abrufbar.
     </string>
-    <string name="string_one_point_two">1.2</string>
-    <string name="string_two_point_four">2.4</string>
-    <string name="string_two_point_four_greater"><![CDATA[> 2.4]]></string>
-    <string name="please_choose">(Please Choose)</string>
+    <string name="please_choose">Please Choose</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="text">Text</string>

@@ -38,7 +38,7 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
             String titleToBeSet = getIntent().getStringExtra(AppConstant.SETTING_ITEM_SELECTED_SEND);
             mPositionOfTitle = getIntent().getIntExtra(AppConstant.POSITION_SETTING, -1);
             mTxvTitle.setVisibility(View.VISIBLE);
-            mTxvTitle.setText(String.format("%s%s", titleToBeSet, getString(R.string.please_choose)));
+            mTxvTitle.setText(String.format("%s%s", titleToBeSet+"\n", getString(R.string.please_choose)));
         }
         setUpRecyclerView(mPositionOfTitle);
     }
@@ -79,14 +79,15 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
         stringArrayList.add(getString(R.string.concrete));
         stringArrayList.add(getString(R.string.paving_stones));
         stringArrayList.add(getString(R.string.cobblestone));
+        stringArrayList.add(getString(R.string.compacted));
         //stringArrayList.add(getString(R.string.grass_paver));
-        stringArrayList.add(getString(R.string.gravel));
+        //stringArrayList.add(getString(R.string.gravel));
         return stringArrayList;
     }
 
     private ArrayList<String> prepareListDataMaxSlope() {
         ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add("0");
+        stringArrayList.add(getString(R.string.zero));
         stringArrayList.add(getString(R.string.string_one_point_two));
         stringArrayList.add(getString(R.string.string_two_point_four));
         stringArrayList.add(getString(R.string.string_two_point_four_greater));
@@ -95,19 +96,18 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
 
     private ArrayList<String> prepareListDataMaxIncline() {
         ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add("0");
+        stringArrayList.add(getString(R.string.zero));
         stringArrayList.add(getString(R.string.up_to_three));
         stringArrayList.add(getString(R.string.up_to_six));
         stringArrayList.add(getString(R.string.up_to_ten));
-        stringArrayList.add(">10");
+        stringArrayList.add(getString(R.string.greater_ten));
         return stringArrayList;
     }
 
     private ArrayList<String> prepareListDataSideWalk() {
         ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add("<90");
-        stringArrayList.add("90-120");
-        stringArrayList.add(">120");
+        stringArrayList.add(getString(R.string.string_less_width));
+        stringArrayList.add(getString(R.string.string_greater_width));
         return stringArrayList;
     }
 
@@ -141,6 +141,5 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
                 break;
 
         }
-
     }
 }

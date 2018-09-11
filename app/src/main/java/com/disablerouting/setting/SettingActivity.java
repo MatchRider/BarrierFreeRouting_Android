@@ -61,10 +61,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     private AsyncTaskOsmApi asyncTaskOsmApi;
     private int mPositionClicked = -1;
-    private final static String KEY_FOOT_WAY = "footway";
-    private final static String KEY_HIGH_WAY = "highway";
-    private final static String KEY_INCLINE = "incline";
-    private final static String KEY_WIDTH = "width";
     private List<String> mNodeList;
 
     @Override
@@ -209,19 +205,19 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private void getDataFromWay() {
         for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
             switch (mListWayData.getAttributesList().get(i).getKey()) {
-                case KEY_INCLINE:
+                case AppConstant.KEY_INCLINE:
                     mHashMapWay.put(2, mListWayData.getAttributesList().get(i));
                     break;
 
-                case KEY_FOOT_WAY:
+                case AppConstant.KEY_FOOT_WAY:
                     mHashMapWay.put(0, mListWayData.getAttributesList().get(i));
                     break;
 
-                case KEY_HIGH_WAY:
+                case AppConstant.KEY_HIGH_WAY:
                     mHashMapWay.put(1, mListWayData.getAttributesList().get(i));
                     break;
 
-                case KEY_WIDTH:
+                case AppConstant.KEY_WIDTH:
                     mHashMapWay.put(3, mListWayData.getAttributesList().get(i));
                     break;
 
@@ -246,28 +242,28 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         AttributesValidate attributesValidate = null;
         if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
-            attributesValidate.setKey(KEY_FOOT_WAY);
+            attributesValidate.setKey(AppConstant.KEY_FOOT_WAY);
             attributesValidate.setValue(mHashMapWay.get(0).getValue());
             attributesValidate.setValid(mHashMapWay.get(0).isValid());
             attributesValidateList.add(attributesValidate);
         }
         if (mHashMapWay.get(1) != null && !mHashMapWay.get(1).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
-            attributesValidate.setKey(KEY_HIGH_WAY);
+            attributesValidate.setKey(AppConstant.KEY_HIGH_WAY);
             attributesValidate.setValue(mHashMapWay.get(1).getValue());
             attributesValidate.setValid(mHashMapWay.get(1).isValid());
             attributesValidateList.add(attributesValidate);
         }
         if (mHashMapWay.get(2) != null && !mHashMapWay.get(2).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
-            attributesValidate.setKey(KEY_INCLINE);
+            attributesValidate.setKey(AppConstant.KEY_INCLINE);
             attributesValidate.setValue(mHashMapWay.get(2).getValue());
             attributesValidate.setValid(mHashMapWay.get(2).isValid());
             attributesValidateList.add(attributesValidate);
         }
         if (mHashMapWay.get(3) != null && !mHashMapWay.get(3).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
-            attributesValidate.setKey(KEY_WIDTH);
+            attributesValidate.setKey(AppConstant.KEY_WIDTH);
             attributesValidate.setValue(mHashMapWay.get(3).getValue());
             attributesValidate.setValid(mHashMapWay.get(3).isValid());
             attributesValidateList.add(attributesValidate);

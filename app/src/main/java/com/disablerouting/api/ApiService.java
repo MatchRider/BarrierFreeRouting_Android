@@ -128,7 +128,7 @@ public interface ApiService {
     Call<ResponseWay> getWays(@Body RequestGetWay requestGetWay);
 
     /**
-     * Api call for vallidate way
+     * Api call for validate way
      * @param requestWayInfo Request Way info
      * @return way
      */
