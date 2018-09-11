@@ -209,11 +209,11 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     mHashMapWay.put(2, mListWayData.getAttributesList().get(i));
                     break;
 
-                case AppConstant.KEY_FOOT_WAY:
+                case AppConstant.KEY_SURFACE:
                     mHashMapWay.put(0, mListWayData.getAttributesList().get(i));
                     break;
 
-                case AppConstant.KEY_HIGH_WAY:
+                case AppConstant.KEY_KERB:
                     mHashMapWay.put(1, mListWayData.getAttributesList().get(i));
                     break;
 
@@ -242,14 +242,14 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         AttributesValidate attributesValidate = null;
         if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
-            attributesValidate.setKey(AppConstant.KEY_FOOT_WAY);
+            attributesValidate.setKey(AppConstant.KEY_SURFACE);
             attributesValidate.setValue(mHashMapWay.get(0).getValue());
             attributesValidate.setValid(mHashMapWay.get(0).isValid());
             attributesValidateList.add(attributesValidate);
         }
         if (mHashMapWay.get(1) != null && !mHashMapWay.get(1).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
-            attributesValidate.setKey(AppConstant.KEY_HIGH_WAY);
+            attributesValidate.setKey(AppConstant.KEY_KERB);
             attributesValidate.setValue(mHashMapWay.get(1).getValue());
             attributesValidate.setValid(mHashMapWay.get(1).isValid());
             attributesValidateList.add(attributesValidate);

@@ -17,6 +17,8 @@ public class SettingDetailAdapter extends RecyclerView.Adapter<SettingDetailAdap
     private List<String> mStringArrayList;
     private SettingDetailAdapterListener mOnClickListener;
     private boolean mImgVisible;
+    int[] mSurfaceType = new int[]{R.drawable.ic_asphalt, R.drawable.ic_concrete,R.drawable.ic_paving,
+            R.drawable.ic_cobblestones,R.drawable.ic_compacted};
 
 
     public SettingDetailAdapter(List<String> stringArrayList, SettingDetailAdapterListener settingAdapterListener, boolean imageVisibility) {
@@ -40,6 +42,7 @@ public class SettingDetailAdapter extends RecyclerView.Adapter<SettingDetailAdap
             holder.mTextViewTitle.setText(data);
         }
         if(mImgVisible){
+            holder.mImageView.setImageResource(mSurfaceType[position]);
             holder.mImageView.setVisibility(View.VISIBLE);
         }else {
             holder.mImageView.setVisibility(View.GONE);
@@ -73,5 +76,7 @@ public class SettingDetailAdapter extends RecyclerView.Adapter<SettingDetailAdap
             mLinearLayout = (LinearLayout) itemView.findViewById(R.id.ll_setting_detail_item);
         }
     }
+
+
 
 }
