@@ -60,7 +60,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private String mURLNodeSet = ApiEndPoint.SANDBOX_BASE_URL_OSM + "node/create";
 
     private AsyncTaskOsmApi asyncTaskOsmApi;
-    private List<RequestTag> mRequestTagList = new ArrayList<>();
     private int mPositionClicked = -1;
     private final static String KEY_FOOT_WAY = "footway";
     private final static String KEY_HIGH_WAY = "highway";

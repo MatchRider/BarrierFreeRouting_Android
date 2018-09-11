@@ -181,5 +181,13 @@ public class Utility {
         }
         return "";
     }
+    public static boolean isParsableAsDouble(final String s) {
+        try {
+            Double.valueOf(s);
+            return true;
+        } catch (NumberFormatException numberFormatException) {
+            return false;
+        }
+    }
 
 }

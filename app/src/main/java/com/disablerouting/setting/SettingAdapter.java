@@ -68,7 +68,11 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
         boolean isValid = false;
         if (mSelectionMap.containsKey(position)) {
             if (position == 3) {
-                subTitle = Utility.trimTWoDecimalPlaces(Double.parseDouble(mSelectionMap.get(position).getValue()));
+                if(Utility.isParsableAsDouble(mSelectionMap.get(position).getValue())) {
+                    subTitle = Utility.trimTWoDecimalPlaces(Double.parseDouble(mSelectionMap.get(position).getValue()));
+                }else {
+                    subTitle = mSelectionMap.get(position).getValue();
+                }
             } else {
                 subTitle = mSelectionMap.get(position).getValue();
 
