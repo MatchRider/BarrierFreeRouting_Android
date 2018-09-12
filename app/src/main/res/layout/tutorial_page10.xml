@@ -3,9 +3,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
     <ImageView android:layout_width="match_parent"
-               android:src="@drawable/tut02"
+               android:src="@drawable/tut10"
                android:scaleType="fitXY"
                android:layout_height="match_parent"/>
+
+    <View android:layout_width="100dp"
+          android:id="@+id/view"
+          android:layout_alignParentBottom="true"
+          android:layout_alignParentRight="true"
+          android:layout_height="100dp"/>
 </RelativeLayout>
 
 

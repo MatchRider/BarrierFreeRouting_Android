@@ -65,7 +65,11 @@ public class TutorialActivity extends BaseActivityImpl implements ViewPager.OnPa
                 R.layout.tutorial_page3,
                 R.layout.tutorial_page4,
                 R.layout.tutorial_page5,
-                R.layout.tutorial_page6};
+                R.layout.tutorial_page6,
+                R.layout.tutorial_page7,
+                R.layout.tutorial_page8,
+                R.layout.tutorial_page9,
+                R.layout.tutorial_page10};
     }
 
 
@@ -111,9 +115,7 @@ public class TutorialActivity extends BaseActivityImpl implements ViewPager.OnPa
         for (int i = 0; i < dotsCount; i++) {
             mDots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem_dot));
         }
-
         mDots[position].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem_dot));
-
     }
 
     @Override
@@ -135,6 +137,9 @@ public class TutorialActivity extends BaseActivityImpl implements ViewPager.OnPa
         launchHomeScreen();
         finish();
     }
+
+
+
 }
 
 

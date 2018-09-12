@@ -47,7 +47,7 @@
     <dimen name="margin_xxx_large">25dp</dimen>
     <dimen name="margin_xxxx_large">28dp</dimen>
     <dimen name="margin_35dp">35dp</dimen>
-    <dimen name="margin_45dp">45dp</dimen>
+    <dimen name="margin_45dp">55dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="switch_track_width">30dp</dimen>

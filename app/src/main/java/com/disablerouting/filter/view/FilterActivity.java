@@ -281,11 +281,11 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_two_point_four_greater)));
 
         List<DataModelExpandableList> maxInclineData = new ArrayList<>();
-        maxInclineData.add(new DataModelExpandableList(getString(R.string.zero)));
-        maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_three)));
-        maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_six)));
-        maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_ten)));
-        maxInclineData.add(new DataModelExpandableList(getString(R.string.greater_ten)));
+        maxInclineData.add(new DataModelExpandableList("0"));
+        maxInclineData.add(new DataModelExpandableList("3"));
+        maxInclineData.add(new DataModelExpandableList("6"));
+        maxInclineData.add(new DataModelExpandableList("10"));
+        maxInclineData.add(new DataModelExpandableList(">10"));
 
         List<DataModelExpandableList> sideWalkWidthData = new ArrayList<>();
         sideWalkWidthData.add(new DataModelExpandableList(getString(R.string.thirty_five_less)));

@@ -20,7 +20,7 @@ public class HomeScreenPresenter implements IHomeScreenPresenter, IListGetWayRes
     @Override
     public void getListWays() {
         if(mIHomeView !=null){
-            mIHomeView.showLoader();
+           // mIHomeView.showLoader();
             mListGetWayManager.getListWay(this);
         }
     }
@@ -35,7 +35,7 @@ public class HomeScreenPresenter implements IHomeScreenPresenter, IListGetWayRes
 
     @Override
     public void onSuccessGetList(ResponseListWay data) {
-        mIHomeView.hideLoader();
+       // mIHomeView.hideLoader();
         if(mIHomeView !=null){
            mIHomeView.onListWayReceived(data);
         }
@@ -43,7 +43,7 @@ public class HomeScreenPresenter implements IHomeScreenPresenter, IListGetWayRes
 
     @Override
     public void onFailureGetList(@NonNull ErrorResponse errorResponse) {
-        mIHomeView.hideLoader();
+       // mIHomeView.hideLoader();
         if(mIHomeView !=null){
             mIHomeView.onFailure(errorResponse.getError());
         }

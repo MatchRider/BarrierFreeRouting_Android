@@ -301,7 +301,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      */
     public void addCurrentLocation() {
         if (mMapView != null) {
-            GeoPoint currentGeoPoints = new GeoPoint(mLatitude, mLongitude);
+            GeoPoint currentGeoPoints = new GeoPoint(mLatitude, mLongitude); //49.3988,8.6724
             mCurrentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
             mCurrentMarker.setPosition(currentGeoPoints);
             mMapView.getOverlays().add(mCurrentMarker);

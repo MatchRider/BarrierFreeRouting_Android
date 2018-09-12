@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Hürdenlose Navigation</string>
+    <string name="app_name">Hurdloss Navigation</string>
 
     <!-- Font file name for Blue theme -->
     <string name="frutiger_bold_font">FrutigerLTBold.ttf</string>
@@ -12,7 +12,7 @@
     <string name="settings">die Einstellungen</string>
 
     <!-- MENU ITEMS -->
-    <string name="ACKNOWLEDGEMENTS">Impressum/Danksagung</string>
+    <string name="ACKNOWLEDGEMENTS">Impressum</string>
     //<string name="FEEDBACK">Feedback</string>
     <string name="CONTACT">Kontakt</string>
     <string name="DISCLAIMER">Haftungsausschluss</string>

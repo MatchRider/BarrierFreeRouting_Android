@@ -224,7 +224,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @OnClick(R.id.img_re_center)
     public void reCenter() {
-        clearItemsFromMap();
+       // clearItemsFromMap();
         addCurrentLocation();
     }
 
