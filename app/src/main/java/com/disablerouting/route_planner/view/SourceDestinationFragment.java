@@ -2,7 +2,6 @@ package com.disablerouting.route_planner.view;
 
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,7 +22,6 @@ import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseFragmentImpl;
 import com.disablerouting.common.AppConstant;
-import com.disablerouting.feedback.view.FeedbackActivity;
 import com.disablerouting.geo_coding.manager.GeoCodingManager;
 import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
@@ -32,7 +30,6 @@ import com.disablerouting.route_planner.adapter.CustomListAdapter;
 import com.disablerouting.route_planner.manager.DirectionsManager;
 import com.disablerouting.route_planner.manager.NodeManager;
 import com.disablerouting.route_planner.model.DirectionsResponse;
-import com.disablerouting.route_planner.model.FeedBackModel;
 import com.disablerouting.route_planner.model.NodeResponse;
 import com.disablerouting.route_planner.presenter.ISourceDestinationScreenPresenter;
 import com.disablerouting.route_planner.presenter.SourceDestinationScreenPresenter;
@@ -667,10 +664,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @Override
     public void onFeedBackClick(double longitude, double latitude) {
-        FeedBackModel feedBackModel = new FeedBackModel(latitude, longitude);
-        Intent intentFeedback = new Intent(getContext(), FeedbackActivity.class);
-        intentFeedback.putExtra(AppConstant.FEED_BACK_MODEL, feedBackModel);
-        startActivity(intentFeedback);
+
     }
 
     @Override

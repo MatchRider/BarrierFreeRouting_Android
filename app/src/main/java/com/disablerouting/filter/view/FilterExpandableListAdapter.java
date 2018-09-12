@@ -10,7 +10,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.disablerouting.R;
-import com.disablerouting.capture_option.model.DataModelExpandableList;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

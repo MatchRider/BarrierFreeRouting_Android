@@ -1,11 +1,10 @@
 package com.disablerouting.api;
 
-import com.disablerouting.capture_option.model.RequestCreateNode;
 import com.disablerouting.curd_operations.model.*;
-import com.disablerouting.feedback.model.RequestCreateChangeSet;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
 import com.disablerouting.route_planner.model.DirectionsResponse;
 import com.disablerouting.route_planner.model.NodeResponse;
+import com.disablerouting.setting.model.RequestCreateChangeSet;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.*;
@@ -92,16 +91,6 @@ public interface ApiService {
     @PUT("changeset/create")
     Call<ResponseBody> createChangeSet(@Body RequestCreateChangeSet requestCreateChangeSet);
 
-
-    /**
-     * Api call for creating node
-     *
-     * @param type              can be of three type (Nodes, Ways and Relations)
-     * @param requestCreateNode Request model for create node
-     * @return return change set id if successful
-     */
-    @PUT("{type}/create")
-    Call<ResponseBody> setChangeSet(@Path("type") String type, @Body RequestCreateNode requestCreateNode);
 
 
     /**

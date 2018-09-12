@@ -1,4 +1,4 @@
-package com.disablerouting.feedback.presenter;
+package com.disablerouting.setting.manager;
 
 import android.support.annotation.NonNull;
 import com.disablerouting.api.ErrorResponse;

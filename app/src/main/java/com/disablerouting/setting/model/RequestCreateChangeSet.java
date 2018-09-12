@@ -1,4 +1,4 @@
-package com.disablerouting.feedback.model;
+package com.disablerouting.setting.model;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;

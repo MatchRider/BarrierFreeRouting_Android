@@ -20,10 +20,6 @@ import com.disablerouting.curd_operations.WayDataPreference;
 import com.disablerouting.curd_operations.manager.UpdateWayManager;
 import com.disablerouting.curd_operations.manager.ValidateWayManager;
 import com.disablerouting.curd_operations.model.*;
-import com.disablerouting.feedback.model.RequestCreateChangeSet;
-import com.disablerouting.feedback.model.RequestNode;
-import com.disablerouting.feedback.model.RequestTag;
-import com.disablerouting.feedback.model.Way;
 import com.disablerouting.login.AsyncTaskOsmApi;
 import com.disablerouting.login.IAysncTaskOsm;
 import com.disablerouting.login.OauthData;
@@ -107,21 +103,21 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      * Api Call To UPDATE WAY DATA ON OSM SERVER
      */
     private void callToUpdateWayDataOnServer() {
-        RequestCreateChangeSet requestCreateChangeSet = new RequestCreateChangeSet();
-        List<RequestTag> tagList = new ArrayList<>();
+       /* RequestCreateChangeSet requestCreateChangeSet = new RequestCreateChangeSet();
+        List<RequestTag> tagList = new ArrayList<>();*/
         StringBuilder tags=new StringBuilder();
         for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
             Attributes attributes = pair.getValue();
              tags.append("<tag k=\""+ attributes.getKey()+ "\" v=\""+attributes.getValue()+"\"/>\n");
         }
 
-        List<RequestNode> nodesList = new ArrayList<>();
+       // List<RequestNode> nodesList = new ArrayList<>();
         StringBuilder nodes=new StringBuilder();
         for (int i=0;i<mNodeList.size();i++){
              nodes.append("<nd ref=\""+mNodeList.get(i)+"\"/>\n");
         }
-        Way way= new Way(mWayID,mChangeSetID,mVersionNumber,tagList,nodesList);
-        requestCreateChangeSet.setWay(way);
+        /*Way way= new Way(mWayID,mChangeSetID,mVersionNumber,tagList,nodesList);
+        requestCreateChangeSet.setWay(way);*/
         String requestString = "<osm>\n" +
                 " <way  id=\""+mWayID+"\" changeset=\""+ mChangeSetID+"\" version=\""+mVersionNumber+"\" >\n" +
                 nodes+

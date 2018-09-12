@@ -52,27 +52,6 @@
                 android:windowSoftInputMode="stateHidden">
         </activity>
         <activity
-                android:name=".suggestions.view.SuggestionsActivity"
-                android:launchMode="singleTask"
-                android:screenOrientation="portrait"
-                android:theme="@style/AppTheme">
-        </activity>
-        <activity
-                android:name=".feedback.view.FeedbackActivity"
-                android:screenOrientation="portrait"
-                android:theme="@style/AppTheme">
-        </activity>
-        <activity
-                android:name=".capture_option.view.CaptureActivity"
-                android:screenOrientation="portrait"
-                android:theme="@style/AppTheme">
-        </activity>
-        <activity
-                android:name=".success_screen.SuccessActivity"
-                android:screenOrientation="portrait"
-                android:theme="@style/AppTheme">
-        </activity>
-        <activity
                 android:name=".filter.view.FilterActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme"

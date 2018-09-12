@@ -17,7 +17,6 @@ import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.application.AppData;
 import com.disablerouting.base.BaseActivityImpl;
-import com.disablerouting.capture_option.model.DataModelExpandableList;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.filter.presenter.FilterScreenPresenter;
 import com.disablerouting.filter.presenter.IFilterScreenPresenter;

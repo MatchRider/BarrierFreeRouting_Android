@@ -1,4 +1,4 @@
-package com.disablerouting.feedback.manager;
+package com.disablerouting.setting.manager;
 
 
 import android.content.Context;
@@ -7,8 +7,7 @@ import com.disablerouting.api.ErrorResponse;
 import com.disablerouting.api.ResponseCallback;
 import com.disablerouting.api.ResponseWrapperOsm;
 import com.disablerouting.api.RetrofitClient;
-import com.disablerouting.feedback.model.RequestCreateChangeSet;
-import com.disablerouting.feedback.presenter.IChangeSetResponseReceiver;
+import com.disablerouting.setting.model.RequestCreateChangeSet;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 
