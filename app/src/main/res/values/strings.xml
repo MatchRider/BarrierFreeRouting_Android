@@ -173,6 +173,9 @@
     <string name="send">Send</string>
     <string name="thirty_five_less"><![CDATA[< 35.4]]></string>
     <string name="thirty_five_greater"><![CDATA[> 35.4]]></string>
+    <string name="ninty_less"><![CDATA[< 90]]></string>
+    <string name="ninty_greater"><![CDATA[> 90]]></string>
+
     <string name="title_activity_login">LoginActivity</string>
     <string name="log_in_with_osm">Log in with OSM</string>
     <string name="validated">Validated Ways</string>

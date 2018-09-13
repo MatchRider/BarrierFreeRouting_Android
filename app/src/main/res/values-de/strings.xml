@@ -57,9 +57,9 @@
     <string name="error_source_destination_same">Bitte wählen Sie eine andere Quelle und ein anderes Ziel</string>
 
     <string name="surface_type">Oberflächentyp</string>
-    <string name="maximum_sloped">Bordsteinkantenhöhe (cm)</string>
+    <string name="maximum_sloped">Bordsteinkantenhöhe (m)</string>
     <string name="maximum_incline">Maximale Steigung (%)</string>
-    <string name="sidewalk_width">Bürgersteigbreite (cm)</string>
+    <string name="sidewalk_width">Bürgersteigbreite (m)</string>
     <string name="permanent_obstacle">Hindernis liegt vor</string>
     <string name="routing_via" tools:ignore="TypographyEllipsis">Routing über...</string>
 
@@ -155,6 +155,9 @@
     <string name="send">Absenden</string>
     <string name="thirty_five_less"><![CDATA[< 35,4]]></string>
     <string name="thirty_five_greater"><![CDATA[> 35,4]]></string>
+    <string name="ninty_less"><![CDATA[< 90]]></string>
+    <string name="ninty_greater"><![CDATA[> 90]]></string>
+
     <string name="log_in_with_osm">Bei OpenStreetMap einloggen</string>
     <string name="validated">Validierte Wege</string>
     <string name="not_validated">Nicht validierte Wege</string>
