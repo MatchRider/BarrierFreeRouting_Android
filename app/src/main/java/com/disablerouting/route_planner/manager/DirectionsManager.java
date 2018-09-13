@@ -24,9 +24,11 @@ public class DirectionsManager implements ResponseCallback<DirectionsResponse> {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            mDirectionsApiCall = RetrofitClient.getApiServiceDirections().getDirections(ApiEndPoint.API_KEY, coordinates, profileType, jsonString, true, geoJson);
+            mDirectionsApiCall = RetrofitClient.getApiServiceDirections().getDirections(ApiEndPoint.API_KEY, coordinates, profileType, jsonString,
+                    true, geoJson,"de");
         } else {
-            mDirectionsApiCall = RetrofitClient.getApiService().getDirections(ApiEndPoint.API_KEY, coordinates, profileType,true, geoJson);
+            mDirectionsApiCall = RetrofitClient.getApiService().getDirections(ApiEndPoint.API_KEY, coordinates, profileType,
+                    true, geoJson,"de");
 
         }
         if (mDirectionsApiCall != null)

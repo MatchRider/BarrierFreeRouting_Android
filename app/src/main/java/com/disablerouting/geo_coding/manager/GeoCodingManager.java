@@ -24,11 +24,14 @@ public class GeoCodingManager implements ResponseCallback<GeoCodingResponse> {
         if(AppData.getNewInstance()!=null && AppData.getNewInstance().getCurrentLoc()!=null) {
             double latitude= AppData.getNewInstance().getCurrentLoc().latitude; //49.4056438,8.5435314
             double longitude= AppData.getNewInstance().getCurrentLoc().longitude;
-              String countryISO= "DEU"; // ALPHA 3 CODE GERMANY CODE
+            String countryISO= "DEU"; // ALPHA 3 CODE GERMANY CODE
             //String countryISO= "IND"; // ALPHA 3 CODE India CODE
             String layers="venue,address";
+            int radius=10;
+            double static_latitude =  49.4100344; // Galeria Kaufhauf
+            double static_longitude = 8.6612393;
             mGeoCodingResponseCall = RetrofitClient.getApiService().getGeoCodeForward(ApiEndPoint.API_KEY, queryString,
-                    latitude,longitude,layers,countryISO);
+                    static_latitude,static_longitude,layers,countryISO,radius);
         }
         mGeoCodingResponseCall.enqueue(new ResponseWrapper<GeoCodingResponse>(this));
     }

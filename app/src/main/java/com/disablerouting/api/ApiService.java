@@ -23,7 +23,8 @@ public interface ApiService {
     @GET("directions")
     Call<DirectionsResponse> getDirections(@Query("api_key") String api_key, @Query("coordinates") String coordinates,
                                            @Query("profile") String profile, @Query("options") String options,
-                                           @Query("elevation") boolean elevation , @Query("format") String geojson);
+                                           @Query("elevation") boolean elevation , @Query("format") String geojson,
+                                           @Query("language") String language);
 
     /***
      * Api call for Directions
@@ -36,7 +37,7 @@ public interface ApiService {
     @GET("directions")
     Call<DirectionsResponse> getDirections(@Query("api_key") String api_key, @Query("coordinates") String coordinates,
                                            @Query("profile") String profile,@Query("elevation") boolean elevation,
-                                           @Query("format") String geojson);
+                                           @Query("format") String geojson,@Query("language") String language);
 
     /**
      * Api call for getting places
@@ -65,8 +66,9 @@ public interface ApiService {
      */
     @GET("geocode/search")
     Call<GeoCodingResponse> getGeoCodeForward(@Query("api_key") String api_key, @Query("text") String query,
-                                              @Query("focus.point.lat") double latitude,@Query("focus.point.lon") double longitude,
-                                              @Query("layers") String layers,@Query("boundary.country") String country);
+                                              @Query("boundary.circle.lat") double latitude,@Query("boundary.circle.lon") double longitude,
+                                              @Query("layers") String layers,@Query("boundary.country") String country,
+                                              @Query("boundary.circle.radius") int radius);
 
     //Its a Reverse Geo Code search for gtting address of lat and lon
     /**

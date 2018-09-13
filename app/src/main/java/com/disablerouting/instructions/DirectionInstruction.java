@@ -69,9 +69,9 @@ public class DirectionInstruction {
         case UTURN:
           return getImage(context,"ic_uturn");
         case GOAL:
-          return getImage(context,"ic_location_destination");
+          return getImage(context,"ic_dest_b");
         case DEPART:
-          return getImage(context,"ic_location_source");
+          return getImage(context,"ic_source_a");
         case KEEPLEFT:
           return getImage(context,"ic_keep_left");
         case KEEPRIGHT:
