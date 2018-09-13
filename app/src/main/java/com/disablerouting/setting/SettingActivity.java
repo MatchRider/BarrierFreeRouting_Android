@@ -108,7 +108,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         StringBuilder tags=new StringBuilder();
         for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
             Attributes attributes = pair.getValue();
-             tags.append("<tag k=\""+ attributes.getKey()+ "\" v=\""+attributes.getValue()+"\"/>\n");
+            if(attributes!=null && attributes.getKey()!=null && attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)||
+                    attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
+                tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + attributes.getValue() + "\"/>\n");
+            }
         }
 
        // List<RequestNode> nodesList = new ArrayList<>();
@@ -205,12 +208,16 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     mHashMapWay.put(2, mListWayData.getAttributesList().get(i));
                     break;
 
-                case AppConstant.KEY_SURFACE:
-                    mHashMapWay.put(0, mListWayData.getAttributesList().get(i));
+                case AppConstant.KEY_FOOTWAY:
+                    Attributes attributesFootway= new Attributes();
+                    attributesFootway.setKey(AppConstant.KEY_FOOTWAY);
+                    mHashMapWay.put(0, attributesFootway);
                     break;
 
-                case AppConstant.KEY_KERB:
-                    mHashMapWay.put(1, mListWayData.getAttributesList().get(i));
+                case AppConstant.KEY_HIGHWAY:
+                    Attributes attributesHighway= new Attributes();
+                    attributesHighway.setKey(AppConstant.KEY_HIGHWAY);
+                    mHashMapWay.put(1, attributesHighway);
                     break;
 
                 case AppConstant.KEY_WIDTH:
@@ -236,20 +243,20 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         wayDataValidate.setVersion(versionString);
         List<AttributesValidate> attributesValidateList = new ArrayList<>();
         AttributesValidate attributesValidate = null;
-        if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
+        /*if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
-            attributesValidate.setKey(AppConstant.KEY_SURFACE);
+            attributesValidate.setKey(AppConstant.KEY_FOOTWAY);
             attributesValidate.setValue(mHashMapWay.get(0).getValue());
             attributesValidate.setValid(mHashMapWay.get(0).isValid());
             attributesValidateList.add(attributesValidate);
         }
         if (mHashMapWay.get(1) != null && !mHashMapWay.get(1).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
-            attributesValidate.setKey(AppConstant.KEY_KERB);
+            attributesValidate.setKey(AppConstant.KEY_HIGHWAY);
             attributesValidate.setValue(mHashMapWay.get(1).getValue());
             attributesValidate.setValid(mHashMapWay.get(1).isValid());
             attributesValidateList.add(attributesValidate);
-        }
+        }*/
         if (mHashMapWay.get(2) != null && !mHashMapWay.get(2).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_INCLINE);

@@ -64,7 +64,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
 
             }
         });
-        String subTitle = null;
+        String subTitle = "";
         boolean isValid = false;
         if (mSelectionMap.containsKey(position)) {
             if (position == 3) {
@@ -74,14 +74,13 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     subTitle = mSelectionMap.get(position).getValue();
                 }
             } else {
-                subTitle = mSelectionMap.get(position).getValue();
-
+                if(mSelectionMap.get(position)!=null && mSelectionMap.get(position).getValue()!=null && !mSelectionMap.get(position).getValue().isEmpty()){
+                    subTitle = mSelectionMap.get(position).getValue();
+                }
             }
             isValid = mSelectionMap.get(position).isValid();
-
             setCheckBoxColor(holder.mCheckBoxVerify, mContext.getResources().getColor(R.color.colorAccent),
                     mContext.getResources().getColor(R.color.colorBlack));
-
             if (!mIsValidChoosed) {
                 holder.mTextViewSubTitle.setText(subTitle);
                 holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
