@@ -20,7 +20,7 @@
     <string name="LOGOUT">Ausloggen</string>
 
     <string name="route_planner">Routenplaner</string>
-    <string name="suggestions">Vorschläge</string>
+    <string name="suggestions">Dateneingabe</string>
 
 
     <!--Expected Error Codes-->
