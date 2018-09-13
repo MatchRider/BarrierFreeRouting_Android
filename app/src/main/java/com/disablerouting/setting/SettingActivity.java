@@ -205,6 +205,17 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
             switch (mListWayData.getAttributesList().get(i).getKey()) {
                 case AppConstant.KEY_INCLINE:
+                    Attributes attributesIncline= new Attributes();
+                    attributesIncline.setKey(mListWayData.getAttributesList().get(i).getKey());
+                    String value;
+                    if(mListWayData.getAttributesList().get(i).getValue() !=null && mListWayData.getAttributesList().get(i).getValue().contains("&lt")){
+                        value = mListWayData.getAttributesList().get(i).getValue().replace("&lt",">");
+                    }else {
+                        value = mListWayData.getAttributesList().get(i).getValue();
+                    }
+                    attributesIncline.setValue(value);
+                    attributesIncline.setValid(mListWayData.getAttributesList().get(i).isValid());
+
                     mHashMapWay.put(2, mListWayData.getAttributesList().get(i));
                     break;
 
@@ -243,20 +254,28 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         wayDataValidate.setVersion(versionString);
         List<AttributesValidate> attributesValidateList = new ArrayList<>();
         AttributesValidate attributesValidate = null;
-        /*if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
+        if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_FOOTWAY);
-            attributesValidate.setValue(mHashMapWay.get(0).getValue());
-            attributesValidate.setValid(mHashMapWay.get(0).isValid());
+            if(mHashMapWay.get(0)!=null && mHashMapWay.get(0).getValue()!=null) {
+                attributesValidate.setValue(mHashMapWay.get(0).getValue());
+            }
+            if(mHashMapWay.get(0)!=null && mHashMapWay.get(0).getKey()!=null) {
+                attributesValidate.setValid(false);
+            }
             attributesValidateList.add(attributesValidate);
         }
         if (mHashMapWay.get(1) != null && !mHashMapWay.get(1).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_HIGHWAY);
-            attributesValidate.setValue(mHashMapWay.get(1).getValue());
-            attributesValidate.setValid(mHashMapWay.get(1).isValid());
+            if(mHashMapWay.get(1)!=null && mHashMapWay.get(1).getValue()!=null) {
+                attributesValidate.setValue(mHashMapWay.get(1).getValue());
+            }
+            if(mHashMapWay.get(1)!=null && mHashMapWay.get(1).getKey()!=null) {
+                attributesValidate.setValid(false);
+            }
             attributesValidateList.add(attributesValidate);
-        }*/
+        }
         if (mHashMapWay.get(2) != null && !mHashMapWay.get(2).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_INCLINE);
