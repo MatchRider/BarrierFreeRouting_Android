@@ -46,7 +46,6 @@ public class AcknowledgementActivity extends BaseActivityImpl {
         if (getIntent().hasExtra(AppConstant.TITLE_TEXT)) {
             mTitle = getIntent().getStringExtra(AppConstant.TITLE_TEXT);
         }
-
         setData();
     }
 
@@ -58,10 +57,10 @@ public class AcknowledgementActivity extends BaseActivityImpl {
         mTextViewData2.setText(getString(R.string.acknowledgement_data2));
         mTextViewData3.setText(getString(R.string.acknowledgement_data3));
         mTextViewData4.setText(getString(R.string.acknowledgement_data4));
-        mTextViewData1.setLinkTextColor(Color.BLUE);
-        mTextViewData2.setLinkTextColor(Color.BLUE);
-        mTextViewData3.setLinkTextColor(Color.BLUE);
-        mTextViewData4.setLinkTextColor(Color.BLUE);
+        mTextViewData1.setLinkTextColor(getResources().getColor(R.color.colorWhite));
+        mTextViewData2.setLinkTextColor(getResources().getColor(R.color.colorWhite));
+        mTextViewData3.setLinkTextColor(getResources().getColor(R.color.colorWhite));
+        mTextViewData4.setLinkTextColor(getResources().getColor(R.color.colorWhite));
         makeLinks(mTextViewData1, new String[]{"https://www.heidelberg.de"}, new ClickableSpan[]{
                 normalLinkClickSpan1
         });
