@@ -334,7 +334,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mStartMarker.setPosition(startPoint);
                 mStartMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mMapView.getOverlays().add(mStartMarker);
-                mStartMarker.setIcon(getResources().getDrawable(R.drawable.ic_location_source));
+                mStartMarker.setIcon(getResources().getDrawable(R.drawable.ic_source_a));
                 mStartMarker.setTitle(startAdd);
             }
             if (end != null) {
@@ -342,7 +342,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mEndMarker.setPosition(endPoint);
                 mEndMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mMapView.getOverlays().add(mEndMarker);
-                mEndMarker.setIcon(getResources().getDrawable(R.drawable.ic_location_destination));
+                mEndMarker.setIcon(getResources().getDrawable(R.drawable.ic_dest_b));
                 mEndMarker.setTitle(endAdd);
             }
         }

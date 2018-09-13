@@ -29,6 +29,7 @@ public class TutorialActivity extends BaseActivityImpl implements ViewPager.OnPa
     private int dotsCount;
     private TutorialPagerAdapter mTutorialPagerAdapter;
     private TutorialPrefManager mTutorialPrefManager;
+    private int mPositionScreen=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +117,7 @@ public class TutorialActivity extends BaseActivityImpl implements ViewPager.OnPa
             mDots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem_dot));
         }
         mDots[position].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem_dot));
+        mPositionScreen=position;
     }
 
     @Override
@@ -132,13 +134,13 @@ public class TutorialActivity extends BaseActivityImpl implements ViewPager.OnPa
     }
 
 
-    @OnClick(R.id.btn_skip)
+    @OnClick(R.id.view_skip)
     public void onClickSkip() {
-        launchHomeScreen();
-        finish();
+        if(mPositionScreen==0 || mPositionScreen==9){
+            launchHomeScreen();
+            finish();
+        }
     }
-
-
 
 }
 
