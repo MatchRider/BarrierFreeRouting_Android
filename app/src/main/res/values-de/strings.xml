@@ -12,7 +12,7 @@
     <string name="settings">die Einstellungen</string>
 
     <!-- MENU ITEMS -->
-    <string name="ACKNOWLEDGEMENTS">Impressum</string>
+    <string name="ACKNOWLEDGEMENTS">Impressum/Danksagung</string>
     //<string name="FEEDBACK">Feedback</string>
     <string name="CONTACT">Kontakt</string>
     <string name="DISCLAIMER">Haftungsausschluss</string>
@@ -73,11 +73,11 @@
 
     <string name="walk_way_width">Gehwegbreite (inches)</string>
 
-    <string name="asphalt_filter">Asphaltiert/Beton</string>
-    <string name="paving_stones_filter">Pflastersteine/besser</string>
-    <string name="cobblestone_filter">Kopfsteinpflaster/besser</string>
-    <string name="grass_paver_filter">Compacted</string>
-    <string name="all_filter">All traversable surfaces</string>
+    <string name="asphalt_filter">Asphaltiert oder Beton</string>
+    <string name="paving_stones_filter">Pflastersteine oder besser</string>
+    <string name="cobblestone_filter">Kopfsteinpflaster oder besser</string>
+    <string name="grass_paver_filter">Shotter oder besser</string>
+    <string name="all_filter">Alle Oberflachen</string>
 
     <string name="zero">0</string>
     <string name="up_to_three">bis 3</string>
@@ -127,6 +127,28 @@
     <string name="is_the_following_correct">Stimmen folgende Informationen?</string>
     <string name="what_information_do_you_have_for_community">Welche Informationen möchtest du für die Community eingeben?</string>
     <string name="done">Fertig!</string>
+    <string name="acknowledgement_data">"Impressum\nStadt Heidelberg\nMarktplatz 10\n69117 Heidelberg\n
+        Danksagun
+        Projekt wurde realisiert im Rahmen\n „Städte und Gemeinde 4.0 –
+        Future Communities“\ndurch eine Förderung des Ministerium für\nInneres,\n Digitales und Migration
+        BadenWürttemberg.
+    </string>
+    <string name="acknowledgement_data1">
+        Projektinitiatoren\n
+        Stadt Heidelberg\n (https://www.heidelberg.de)\n
+    </string>
+    <string name="acknowledgement_data2">
+        Universität Heidelberg – GIScience\n
+        (https://openrouteservice.org)\n
+    </string>
+    <string name="acknowledgement_data3">
+        App-Entwicklung\n
+        Match Rider UG, Heidelberg\n (https://www.matchrider.de)\n
+    </string>
+    <string name="acknowledgement_data4">
+        Sensorische Datenerfassunge
+        Streetguard GmbH\n (https://www.wolfert-gmbh.de)"
+    </string>
     <string name="please_choose">bitte auswählen</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
