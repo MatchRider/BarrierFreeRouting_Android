@@ -2,12 +2,8 @@ package com.disablerouting.acknowledement;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.TextView;
@@ -17,6 +13,7 @@ import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.utils.Utility;
 
 public class AcknowledgementActivity extends BaseActivityImpl {
 
@@ -61,16 +58,16 @@ public class AcknowledgementActivity extends BaseActivityImpl {
         mTextViewData2.setLinkTextColor(getResources().getColor(R.color.colorWhite));
         mTextViewData3.setLinkTextColor(getResources().getColor(R.color.colorWhite));
         mTextViewData4.setLinkTextColor(getResources().getColor(R.color.colorWhite));
-        makeLinks(mTextViewData1, new String[]{"https://www.heidelberg.de"}, new ClickableSpan[]{
+        Utility.makeLinks(mTextViewData1, new String[]{"https://www.heidelberg.de"}, new ClickableSpan[]{
                 normalLinkClickSpan1
         });
-        makeLinks(mTextViewData2, new String[]{"https://openrouteservice.org"}, new ClickableSpan[]{
+        Utility.makeLinks(mTextViewData2, new String[]{"https://openrouteservice.org"}, new ClickableSpan[]{
                 normalLinkClickSpan2
         });
-        makeLinks(mTextViewData3, new String[]{"https://www.matchrider.de"}, new ClickableSpan[]{
+        Utility.makeLinks(mTextViewData3, new String[]{"https://www.matchrider.de"}, new ClickableSpan[]{
                 normalLinkClickSpan3
         });
-        makeLinks(mTextViewData4, new String[]{"https://www.wolfert-gmbh.de"}, new ClickableSpan[]{
+        Utility.makeLinks(mTextViewData4, new String[]{"https://www.wolfert-gmbh.de"}, new ClickableSpan[]{
                 normalLinkClickSpan4
         });
 
@@ -122,20 +119,6 @@ public class AcknowledgementActivity extends BaseActivityImpl {
         finish();
     }
 
-    public void makeLinks(TextView textView, String[] links, ClickableSpan[] clickableSpans) {
-        SpannableString spannableString = new SpannableString(textView.getText());
-        for (int i = 0; i < links.length; i++) {
-            ClickableSpan clickableSpan = clickableSpans[i];
-            String link = links[i];
 
-            int startIndexOfLink = textView.getText().toString().indexOf(link);
-            spannableString.setSpan(clickableSpan, startIndexOfLink,
-                    startIndexOfLink + link.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        textView.setHighlightColor(
-                Color.TRANSPARENT); // prevent TextView change background when highlight
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
-        textView.setText(spannableString, TextView.BufferType.SPANNABLE);
-    }
 
 }
