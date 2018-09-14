@@ -222,12 +222,13 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     String value;
                     if(mListWayData.getAttributesList().get(i).getValue() !=null && mListWayData.getAttributesList().get(i).getValue().contains("&lt")){
                         value = mListWayData.getAttributesList().get(i).getValue().replace("&lt;",">");
-                    }else {
+                    } else if(mListWayData.getAttributesList().get(i).getValue() !=null && mListWayData.getAttributesList().get(i).getValue().contains("Up to")){
+                        value = mListWayData.getAttributesList().get(i).getValue().replace("Up to","Bis zu");
+                    }else  {
                         value = mListWayData.getAttributesList().get(i).getValue();
                     }
                     attributesIncline.setValue(value);
                     attributesIncline.setValid(mListWayData.getAttributesList().get(i).isValid());
-
                     mHashMapWay.put(2, attributesIncline);
                     break;
 
@@ -246,7 +247,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 case AppConstant.KEY_WIDTH:
                     Attributes attributesWidth= new Attributes();
                     attributesWidth.setKey(mListWayData.getAttributesList().get(i).getKey());
-                    attributesWidth.setValue(mListWayData.getAttributesList().get(i).getValue()+" (m)");
+                    attributesWidth.setValue(mListWayData.getAttributesList().get(i).getValue());
                     attributesWidth.setValid(mListWayData.getAttributesList().get(i).isValid());
                     mHashMapWay.put(3, attributesWidth);
                     break;
@@ -254,7 +255,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 default:
 
             }
+
         }
+
     }
 
     /**
@@ -305,7 +308,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (mHashMapWay.get(3) != null && !mHashMapWay.get(3).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_WIDTH);
-            attributesValidate.setValue(mHashMapWay.get(3).getValue().replace(" (m)",""));
+            attributesValidate.setValue(mHashMapWay.get(3).getValue());
             attributesValidate.setValid(mHashMapWay.get(3).isValid());
             attributesValidateList.add(attributesValidate);
         }
