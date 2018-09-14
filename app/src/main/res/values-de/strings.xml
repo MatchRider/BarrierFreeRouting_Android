@@ -127,10 +127,10 @@
     <string name="is_the_following_correct">Stimmen folgende Informationen?</string>
     <string name="what_information_do_you_have_for_community">Welche Informationen möchtest du für die Community eingeben?</string>
     <string name="done">Fertig!</string>
-    <string name="acknowledgement_data">"Impressum\nStadt Heidelberg\nMarktplatz 10\n69117 Heidelberg\n\nDanksagun
+    <string name="acknowledgement_data">"Impressum\nStadt Heidelberg\nMarktplatz 10\n69117 Heidelberg\n\nDanksagung
         Projekt wurde realisiert im Rahmen\n „Städte und Gemeinde 4.0 –
         Future Communities“\ndurch eine Förderung des Ministerium für\nInneres,\n Digitales und Migration
-        BadenWürttemberg.
+        Baden-Württemberg.
     </string>
     <string name="acknowledgement_data1">
         Projektinitiatoren\n
@@ -145,7 +145,7 @@
         Match Rider UG, Heidelberg\n (https://www.matchrider.de)\n
     </string>
     <string name="acknowledgement_data4">
-        Sensorische Datenerfassunge
+        Sensorische Datenerfassung
         Streetguard GmbH\n (https://www.wolfert-gmbh.de)"
     </string>
     <string name="legal_data">\n\nDer Programm-Code der gesamten\n Anwendung und Funktion unterliegt

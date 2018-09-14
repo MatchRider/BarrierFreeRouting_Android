@@ -9,7 +9,7 @@
                   android:orientation="horizontal"
                   android:id="@+id/ll"
                   android:layout_height="wrap_content"
-                  tools:ignore="UselessParent">
+                  tools:ignore="UseCompoundDrawables,UselessParent">
         <ImageView
                 android:id="@+id/img_back"
                 android:paddingEnd="@dimen/padding_xlarge"
@@ -54,6 +54,11 @@
                       android:background="@color/colorPrimary"
                       android:layout_height="wrap_content"
                       android:fontFamily="@font/frutiger_lt_bold"/>
+
+            <ImageView android:layout_width="match_parent"
+                       android:layout_gravity="center"
+                       android:src="@drawable/image_company"
+                       android:layout_height="50dp"/>
             <TextView android:layout_width="match_parent"
                       android:id="@+id/txv_data_side_menu1"
                       android:textColor="@android:color/white"
@@ -65,10 +70,7 @@
                       android:layout_height="wrap_content"
                       android:fontFamily="@font/frutiger_lt_bold"
             />
-            <ImageView android:layout_width="match_parent"
-                       android:layout_gravity="center"
-                       android:src="@drawable/image_company"
-                       android:layout_height="50dp"/>
+
 
             <TextView android:layout_width="match_parent"
                       android:id="@+id/txv_data_side_menu2"
@@ -81,10 +83,10 @@
                       android:layout_height="wrap_content"
                       android:fontFamily="@font/frutiger_lt_bold"
             />
-            <ImageView android:layout_width="match_parent"
+            <ImageView android:layout_width="150dp"
                        android:layout_gravity="center"
-                       android:src="@drawable/image_company"
-                       android:layout_height="50dp"/>
+                       android:background="@drawable/ic_image_placeholder"
+                       android:layout_height="80dp"/>
 
             <TextView android:layout_width="match_parent"
                       android:id="@+id/txv_data_side_menu3"
@@ -97,10 +99,10 @@
                       android:layout_height="wrap_content"
                       android:fontFamily="@font/frutiger_lt_bold"
             />
-            <ImageView android:layout_width="match_parent"
+            <ImageView android:layout_width="150dp"
                        android:layout_gravity="center"
-                       android:src="@drawable/image_company"
-                       android:layout_height="50dp"/>
+                       android:background="@drawable/ic_image_placeholder"
+                       android:layout_height="80dp"/>
 
             <TextView android:layout_width="match_parent"
                       android:id="@+id/txv_data_side_menu4"
@@ -113,10 +115,10 @@
                       android:layout_height="wrap_content"
                       android:fontFamily="@font/frutiger_lt_bold"
             />
-            <ImageView android:layout_width="match_parent"
+            <ImageView android:layout_width="150dp"
                        android:layout_gravity="center"
-                       android:src="@drawable/image_company"
-                       android:layout_height="50dp"/>
+                       android:background="@drawable/ic_image_placeholder"
+                       android:layout_height="80dp"/>
 
         </LinearLayout>
     </ScrollView>
