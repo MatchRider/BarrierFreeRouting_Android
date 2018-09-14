@@ -14,7 +14,7 @@
     <string name="settings">Settings</string>
 
     <!-- MENU ITEMS -->
-    <string name="ACKNOWLEDGEMENTS">Imprint And Acknowledgement</string>
+    <string name="ACKNOWLEDGEMENTS">Imprint/Acknowledgement</string>
     //
     <string name="FEEDBACK">Feedback</string>
     <string name="CONTACT">Contact Us</string>

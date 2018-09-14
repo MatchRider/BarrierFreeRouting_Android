@@ -30,7 +30,7 @@
                   android:textSize="@dimen/text_xxlarge"
                   android:gravity="center"
                   android:layout_gravity="center"
-                  tools:text="@string/LEGAL"
+                  tools:text="@string/ACKNOWLEDGEMENTS"
                   android:layout_marginEnd="@dimen/margin_xxx_large"
                   android:background="@color/colorPrimary"
                   android:layout_height="wrap_content"
