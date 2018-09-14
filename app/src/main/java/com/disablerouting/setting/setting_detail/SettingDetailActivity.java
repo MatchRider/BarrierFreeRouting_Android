@@ -93,7 +93,14 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
         stringArrayList.add(getString(R.string.string_two_point_four_greater));
         return stringArrayList;
     }
-
+    private ArrayList<String> prepareValueListDataMaxSlope() {
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        stringArrayList.add(getString(R.string.zero));
+        stringArrayList.add(getString(R.string.value_string_one_point_two));
+        stringArrayList.add(getString(R.string.value_string_two_point_four));
+        stringArrayList.add(getString(R.string.value_string_two_point_four_greater));
+        return stringArrayList;
+    }
     private ArrayList<String> prepareListDataMaxIncline() {
         ArrayList<String> stringArrayList = new ArrayList<>();
         stringArrayList.add(getString(R.string.zero));

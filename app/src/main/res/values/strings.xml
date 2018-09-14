@@ -99,6 +99,10 @@
     <string name="string_two_point_four">6</string>
     <string name="string_two_point_four_greater"><![CDATA[> 6]]></string>
 
+    <string name="value_string_one_point_two">0.03</string>
+    <string name="value_string_two_point_four">0.06</string>
+    <string name="value_string_two_point_four_greater"><![CDATA[> 0.06]]></string>
+
     <string name="string_less_width"><![CDATA[< 35.4]]></string>
     <string name="string_greater_width"><![CDATA[> 35.4]]></string>
 

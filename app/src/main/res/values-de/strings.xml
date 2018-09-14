@@ -57,7 +57,7 @@
     <string name="error_source_destination_same">Bitte wählen Sie eine andere Quelle und ein anderes Ziel</string>
 
     <string name="surface_type">Oberflächentyp</string>
-    <string name="maximum_sloped">Bordsteinkantenhöhe (m)</string>
+    <string name="maximum_sloped">Bordsteinkantenhöhe (cm)</string>
     <string name="maximum_incline">Maximale Steigung (%)</string>
     <string name="sidewalk_width">Bürgersteigbreite (m)</string>
     <string name="permanent_obstacle">Hindernis liegt vor</string>
@@ -86,13 +86,16 @@
     <string name="greater_ten"><![CDATA[> 10]]></string>
 
 
-    <string name="string_one_point_two">0.3</string>
-    <string name="string_two_point_four">0.6</string>
-    <string name="string_two_point_four_greater"><![CDATA[> 0.6]]></string>
+    <string name="string_one_point_two">3</string>
+    <string name="string_two_point_four">6</string>
+    <string name="string_two_point_four_greater"><![CDATA[> 6]]></string>
 
+    <string name="value_string_one_point_two">0.03</string>
+    <string name="value_string_two_point_four">0.06</string>
+    <string name="value_string_two_point_four_greater"><![CDATA[> 0.06]]></string>
 
-    <string name="string_less_width"><![CDATA[< 0.9]]></string>
-    <string name="string_greater_width"><![CDATA[> 0.9]]></string>
+    <string name="string_less_width"><![CDATA[< 0,9]]></string>
+    <string name="string_greater_width"><![CDATA[> 0,9]]></string>
 
 
     <string name="yes">Ja</string>
@@ -160,8 +163,8 @@
     <string name="send">Absenden</string>
     <string name="thirty_five_less"><![CDATA[< 35,4]]></string>
     <string name="thirty_five_greater"><![CDATA[> 35,4]]></string>
-    <string name="ninty_less"><![CDATA[< 0.9]]></string>
-    <string name="ninty_greater"><![CDATA[> 0.9]]></string>
+    <string name="ninty_less"><![CDATA[< 0,9]]></string>
+    <string name="ninty_greater"><![CDATA[> 0,9]]></string>
 
     <string name="log_in_with_osm">Bei OpenStreetMap einloggen</string>
     <string name="validated">Validierte Wege</string>
