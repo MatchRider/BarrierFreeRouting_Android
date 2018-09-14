@@ -57,9 +57,9 @@
     <string name="error_source_destination_same">Bitte wählen Sie eine andere Quelle und ein anderes Ziel</string>
 
     <string name="surface_type">Oberflächentyp</string>
-    <string name="maximum_sloped">Bordsteinkantenhöhe (m)</string>
+    <string name="maximum_sloped">Bordsteinkantenhöhe (cm)</string>
     <string name="maximum_incline">Maximale Steigung (%)</string>
-    <string name="sidewalk_width">Bürgersteigbreite (m)</string>
+    <string name="sidewalk_width">Bürgersteigbreite (cm)</string>
     <string name="permanent_obstacle">Hindernis liegt vor</string>
     <string name="routing_via" tools:ignore="TypographyEllipsis">Routing über...</string>
 
@@ -172,6 +172,8 @@
     <string name="message_give_feedback">Do you want to enhance this way info ?</string>
     <string name="options">Optionen</string>
     <string name="please_wait">Bitte warten…</string>
+    <string name="logout">Ausloggen</string>
+    <string name="confirm_logout_message">Möchten Sie sich wirklich abmelden?</string>
 
 
 </resources>

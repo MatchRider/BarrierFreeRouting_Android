@@ -285,7 +285,7 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         maxInclineData.add(new DataModelExpandableList("3"));
         maxInclineData.add(new DataModelExpandableList("6"));
         maxInclineData.add(new DataModelExpandableList("10"));
-        maxInclineData.add(new DataModelExpandableList(">10"));
+        maxInclineData.add(new DataModelExpandableList("10"));
 
         List<DataModelExpandableList> sideWalkWidthData = new ArrayList<>();
         sideWalkWidthData.add(new DataModelExpandableList(getString(R.string.thirty_five_less)));

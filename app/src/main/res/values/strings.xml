@@ -188,5 +188,7 @@
     <string name="message_give_feedback">Do you want to enhance this way info ?</string>
     <string name="options">Options</string>
     <string name="please_wait">Please Wait…</string>
+    <string name="logout">Logout</string>
+    <string name="confirm_logout_message">Are you sure you want to logout?</string>
 
 </resources>

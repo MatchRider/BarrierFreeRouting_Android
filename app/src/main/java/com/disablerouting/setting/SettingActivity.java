@@ -110,7 +110,11 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             Attributes attributes = pair.getValue();
             if(attributes!=null && attributes.getKey()!=null && attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)||
                     attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
-                tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + attributes.getValue() + "\"/>\n");
+                if(!attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)) {
+                    tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + attributes.getValue() + "\"/>\n");
+                }else {
+                    tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + attributes.getValue().replace(">","") + "\"/>\n");
+                }
             }
         }
 
@@ -202,6 +206,14 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      * Get Data from intent and set  values to attributes
      */
     private void getDataFromWay() {
+        Attributes attributesFootway= new Attributes();
+        attributesFootway.setKey(AppConstant.KEY_FOOTWAY);
+        mHashMapWay.put(0, attributesFootway);
+
+        Attributes attributesHighway= new Attributes();
+        attributesHighway.setKey(AppConstant.KEY_HIGHWAY);
+        mHashMapWay.put(1, attributesHighway);
+
         for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
             switch (mListWayData.getAttributesList().get(i).getKey()) {
                 case AppConstant.KEY_INCLINE:
@@ -209,17 +221,17 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     attributesIncline.setKey(mListWayData.getAttributesList().get(i).getKey());
                     String value;
                     if(mListWayData.getAttributesList().get(i).getValue() !=null && mListWayData.getAttributesList().get(i).getValue().contains("&lt")){
-                        value = mListWayData.getAttributesList().get(i).getValue().replace("&lt",">");
+                        value = mListWayData.getAttributesList().get(i).getValue().replace("&lt;",">");
                     }else {
                         value = mListWayData.getAttributesList().get(i).getValue();
                     }
                     attributesIncline.setValue(value);
                     attributesIncline.setValid(mListWayData.getAttributesList().get(i).isValid());
 
-                    mHashMapWay.put(2, mListWayData.getAttributesList().get(i));
+                    mHashMapWay.put(2, attributesIncline);
                     break;
 
-                case AppConstant.KEY_FOOTWAY:
+               /* case AppConstant.KEY_FOOTWAY:
                     Attributes attributesFootway= new Attributes();
                     attributesFootway.setKey(AppConstant.KEY_FOOTWAY);
                     mHashMapWay.put(0, attributesFootway);
@@ -229,10 +241,14 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     Attributes attributesHighway= new Attributes();
                     attributesHighway.setKey(AppConstant.KEY_HIGHWAY);
                     mHashMapWay.put(1, attributesHighway);
-                    break;
+                    break;*/
 
                 case AppConstant.KEY_WIDTH:
-                    mHashMapWay.put(3, mListWayData.getAttributesList().get(i));
+                    Attributes attributesWidth= new Attributes();
+                    attributesWidth.setKey(mListWayData.getAttributesList().get(i).getKey());
+                    attributesWidth.setValue(mListWayData.getAttributesList().get(i).getValue()+" (m)");
+                    attributesWidth.setValid(mListWayData.getAttributesList().get(i).isValid());
+                    mHashMapWay.put(3, attributesWidth);
                     break;
 
                 default:
@@ -271,22 +287,25 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             if(mHashMapWay.get(1)!=null && mHashMapWay.get(1).getValue()!=null) {
                 attributesValidate.setValue(mHashMapWay.get(1).getValue());
             }
-            if(mHashMapWay.get(1)!=null && mHashMapWay.get(1).getKey()!=null) {
-                attributesValidate.setValid(false);
-            }
+            attributesValidate.setValid(false);
             attributesValidateList.add(attributesValidate);
         }
         if (mHashMapWay.get(2) != null && !mHashMapWay.get(2).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_INCLINE);
-            attributesValidate.setValue(mHashMapWay.get(2).getValue());
+            if(mHashMapWay.get(2).getValue()!=null && mHashMapWay.get(2).getValue().contains(">")){
+                attributesValidate.setValue(mHashMapWay.get(2).getValue().replace(">",""));
+
+            }else{
+                attributesValidate.setValue(mHashMapWay.get(2).getValue());
+            }
             attributesValidate.setValid(mHashMapWay.get(2).isValid());
             attributesValidateList.add(attributesValidate);
         }
         if (mHashMapWay.get(3) != null && !mHashMapWay.get(3).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_WIDTH);
-            attributesValidate.setValue(mHashMapWay.get(3).getValue());
+            attributesValidate.setValue(mHashMapWay.get(3).getValue().replace(" (m)",""));
             attributesValidate.setValid(mHashMapWay.get(3).isValid());
             attributesValidateList.add(attributesValidate);
         }

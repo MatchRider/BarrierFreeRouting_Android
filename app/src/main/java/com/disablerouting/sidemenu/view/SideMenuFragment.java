@@ -125,12 +125,12 @@ public class SideMenuFragment extends Fragment implements ISideMenuView,
                 break;
             case R.string.LOGOUT:
                 new AlertDialog.Builder(getContext())
-                        .setTitle("Logout")
-                        .setMessage("Are you sure you want to logout?")
+                        .setTitle(R.string.logout)
+                        .setMessage(R.string.confirm_logout_message)
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 UserPreferences.getInstance(getContext()).destroySession();
-                                Toast.makeText(getContext(),"Logout Clicked",Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getContext(),"Logout Clicked",Toast.LENGTH_SHORT).show();
                                 mSideMenuAdapter.remove(SideMenuData.LOGOUT);
                                 mSideMenuAdapter.notifyDataSetChanged();
                             }

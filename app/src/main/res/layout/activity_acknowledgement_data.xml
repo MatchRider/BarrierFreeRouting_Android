@@ -70,6 +70,10 @@
                       android:layout_height="wrap_content"
                       android:fontFamily="@font/frutiger_lt_bold"
             />
+            <ImageView android:layout_width="150dp"
+                       android:layout_gravity="center"
+                       android:background="@drawable/placeholder"
+                       android:layout_height="80dp"/>
 
 
             <TextView android:layout_width="match_parent"
@@ -85,7 +89,7 @@
             />
             <ImageView android:layout_width="150dp"
                        android:layout_gravity="center"
-                       android:background="@drawable/ic_image_placeholder"
+                       android:background="@drawable/placeholder"
                        android:layout_height="80dp"/>
 
             <TextView android:layout_width="match_parent"
@@ -101,7 +105,7 @@
             />
             <ImageView android:layout_width="150dp"
                        android:layout_gravity="center"
-                       android:background="@drawable/ic_image_placeholder"
+                       android:background="@drawable/placeholder"
                        android:layout_height="80dp"/>
 
             <TextView android:layout_width="match_parent"
@@ -117,7 +121,7 @@
             />
             <ImageView android:layout_width="150dp"
                        android:layout_gravity="center"
-                       android:background="@drawable/ic_image_placeholder"
+                       android:background="@drawable/placeholder"
                        android:layout_height="80dp"/>
 
         </LinearLayout>
