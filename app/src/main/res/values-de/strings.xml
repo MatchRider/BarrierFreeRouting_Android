@@ -98,6 +98,9 @@
     <string name="string_greater_width"><![CDATA[> 0,9]]></string>
 
 
+    <string name="value_string_less_width"><![CDATA[0.9]]></string>
+    <string name="value_string_greater_width"><![CDATA[0.9]]></string>
+
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="clear">Eingabe löschen</string>

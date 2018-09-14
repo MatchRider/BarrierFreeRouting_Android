@@ -49,7 +49,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, Attributes> mHashMapWay = new HashMap<>();
     private ISettingScreenPresenter mISettingScreenPresenter;
-    private String mChangeSetID="";
+    private String mChangeSetID = "";
     private String mVersionNumber;
     private String mUpdateVersionNumber;
     private String mWayID;
@@ -70,8 +70,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (getIntent().hasExtra(AppConstant.WAY_DATA)) {
             mListWayData = getIntent().getParcelableExtra(AppConstant.WAY_DATA);
             if (mListWayData != null) {
-                mWayID=mListWayData.getId();
-                mNodeList=mListWayData.getNodeReference();
+                mWayID = mListWayData.getId();
+                mNodeList = mListWayData.getNodeReference();
                 getDataFromWay();
                 setUpRecyclerView();
             }
@@ -85,7 +85,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         String string = "<osm><changeset><tag k=\"created_by\" v=\"JOSM 1.61\"/><tag k=\"comment\" v=\"Just adding some streetnames\"/></changeset></osm>";
         String URLChangeSet = ApiEndPoint.SANDBOX_BASE_URL_OSM + "changeset/create";
         OauthData oauthData = new OauthData(Verb.PUT, string, URLChangeSet);
-        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this ,false,AppConstant.API_TYPE_CREATE_CHANGE_SET);
+        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this, false, AppConstant.API_TYPE_CREATE_CHANGE_SET);
         asyncTaskOsmApi.execute("");
     }
 
@@ -95,7 +95,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private void callToGetWay() {
         String URLWayGet = ApiEndPoint.SANDBOX_BASE_URL_OSM + "way/" + mWayID;
         OauthData oauthData = new OauthData(Verb.GET, "", URLWayGet);
-        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,true,"");
+        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this, true, "");
         asyncTaskOsmApi.execute("");
     }
 
@@ -103,37 +103,43 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      * Api Call To UPDATE WAY DATA ON OSM SERVER
      */
     private void callToUpdateWayDataOnServer() {
-       /* RequestCreateChangeSet requestCreateChangeSet = new RequestCreateChangeSet();
-        List<RequestTag> tagList = new ArrayList<>();*/
-        StringBuilder tags=new StringBuilder();
+        StringBuilder tags = new StringBuilder();
         for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
             Attributes attributes = pair.getValue();
-            if(attributes!=null && attributes.getKey()!=null && attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)||
-                    attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
-                if(!attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)) {
-                    tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + attributes.getValue() + "\"/>\n");
-                }else {
-                    tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + attributes.getValue().replace(">","") + "\"/>\n");
+            if (attributes != null && attributes.getKey() != null && attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)
+                    || attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
+                if (!attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)) {
+                    if(attributes.getValue().contains(">")){
+                        tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + attributes.getValue().replace(">", "") + "\"/>\n");
+                    }
+                    else if(attributes.getValue().contains("<")){
+                        tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + attributes.getValue().replace("<", "") + "\"/>\n");
+                    }
+                    else {
+                        tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + attributes.getValue() + "\"/>\n");
+                    }
+                } else {
+                    tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + attributes.getValue().replace(">", "") + "\"/>\n");
                 }
             }
         }
 
-       // List<RequestNode> nodesList = new ArrayList<>();
-        StringBuilder nodes=new StringBuilder();
-        for (int i=0;i<mNodeList.size();i++){
-             nodes.append("<nd ref=\""+mNodeList.get(i)+"\"/>\n");
+        // List<RequestNode> nodesList = new ArrayList<>();
+        StringBuilder nodes = new StringBuilder();
+        for (int i = 0; i < mNodeList.size(); i++) {
+            nodes.append("<nd ref=\"" + mNodeList.get(i) + "\"/>\n");
         }
         /*Way way= new Way(mWayID,mChangeSetID,mVersionNumber,tagList,nodesList);
         requestCreateChangeSet.setWay(way);*/
         String requestString = "<osm>\n" +
-                " <way  id=\""+mWayID+"\" changeset=\""+ mChangeSetID+"\" version=\""+mVersionNumber+"\" >\n" +
-                nodes+
+                " <way  id=\"" + mWayID + "\" changeset=\"" + mChangeSetID + "\" version=\"" + mVersionNumber + "\" >\n" +
+                nodes +
                 tags +
                 " </way>\n" +
                 "</osm>";
         String URLWayPUT = ApiEndPoint.SANDBOX_BASE_URL_OSM + "way/" + mWayID;
         OauthData oauthData = new OauthData(Verb.PUT, requestString, URLWayPUT);
-        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,false,AppConstant.API_TYPE_CREATE_PUT_WAY);
+        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this, false, AppConstant.API_TYPE_CREATE_PUT_WAY);
         asyncTaskOsmApi.execute("");
     }
 
@@ -153,6 +159,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     /**
      * Prepare items of attributes
+     *
      * @return list
      */
     private ArrayList<String> prepareListData() {
@@ -206,25 +213,25 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      * Get Data from intent and set  values to attributes
      */
     private void getDataFromWay() {
-        Attributes attributesFootway= new Attributes();
+        Attributes attributesFootway = new Attributes();
         attributesFootway.setKey(AppConstant.KEY_FOOTWAY);
         mHashMapWay.put(0, attributesFootway);
 
-        Attributes attributesHighway= new Attributes();
+        Attributes attributesHighway = new Attributes();
         attributesHighway.setKey(AppConstant.KEY_HIGHWAY);
         mHashMapWay.put(1, attributesHighway);
 
         for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
             switch (mListWayData.getAttributesList().get(i).getKey()) {
                 case AppConstant.KEY_INCLINE:
-                    Attributes attributesIncline= new Attributes();
+                    Attributes attributesIncline = new Attributes();
                     attributesIncline.setKey(mListWayData.getAttributesList().get(i).getKey());
                     String value;
-                    if(mListWayData.getAttributesList().get(i).getValue() !=null && mListWayData.getAttributesList().get(i).getValue().contains("&lt")){
-                        value = mListWayData.getAttributesList().get(i).getValue().replace("&lt;",">");
-                    } else if(mListWayData.getAttributesList().get(i).getValue() !=null && mListWayData.getAttributesList().get(i).getValue().contains("Up to")){
-                        value = mListWayData.getAttributesList().get(i).getValue().replace("Up to","Bis zu");
-                    }else  {
+                    if (mListWayData.getAttributesList().get(i).getValue() != null && mListWayData.getAttributesList().get(i).getValue().contains("&lt")) {
+                        value = mListWayData.getAttributesList().get(i).getValue().replace("&lt;", ">");
+                    } else if (mListWayData.getAttributesList().get(i).getValue() != null && mListWayData.getAttributesList().get(i).getValue().contains("Up to")) {
+                        value = mListWayData.getAttributesList().get(i).getValue().replace("Up to", "Bis zu");
+                    } else {
                         value = mListWayData.getAttributesList().get(i).getValue();
                     }
                     attributesIncline.setValue(value);
@@ -245,7 +252,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     break;*/
 
                 case AppConstant.KEY_WIDTH:
-                    Attributes attributesWidth= new Attributes();
+                    Attributes attributesWidth = new Attributes();
                     attributesWidth.setKey(mListWayData.getAttributesList().get(i).getKey());
                     attributesWidth.setValue(mListWayData.getAttributesList().get(i).getValue());
                     attributesWidth.setValid(mListWayData.getAttributesList().get(i).isValid());
@@ -262,6 +269,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     /**
      * API CALL FOR UPDATE DATA
+     *
      * @param versionString version updated
      */
     private void onUpdateWay(String versionString) {
@@ -276,10 +284,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_FOOTWAY);
-            if(mHashMapWay.get(0)!=null && mHashMapWay.get(0).getValue()!=null) {
+            if (mHashMapWay.get(0) != null && mHashMapWay.get(0).getValue() != null) {
                 attributesValidate.setValue(mHashMapWay.get(0).getValue());
             }
-            if(mHashMapWay.get(0)!=null && mHashMapWay.get(0).getKey()!=null) {
+            if (mHashMapWay.get(0) != null && mHashMapWay.get(0).getKey() != null) {
                 attributesValidate.setValid(false);
             }
             attributesValidateList.add(attributesValidate);
@@ -287,7 +295,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (mHashMapWay.get(1) != null && !mHashMapWay.get(1).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_HIGHWAY);
-            if(mHashMapWay.get(1)!=null && mHashMapWay.get(1).getValue()!=null) {
+            if (mHashMapWay.get(1) != null && mHashMapWay.get(1).getValue() != null) {
                 attributesValidate.setValue(mHashMapWay.get(1).getValue());
             }
             attributesValidate.setValid(false);
@@ -296,10 +304,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (mHashMapWay.get(2) != null && !mHashMapWay.get(2).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_INCLINE);
-            if(mHashMapWay.get(2).getValue()!=null && mHashMapWay.get(2).getValue().contains(">")){
-                attributesValidate.setValue(mHashMapWay.get(2).getValue().replace(">",""));
+            if (mHashMapWay.get(2).getValue() != null && mHashMapWay.get(2).getValue().contains(">")) {
+                attributesValidate.setValue(mHashMapWay.get(2).getValue().replace(">", ""));
 
-            }else{
+            } else {
                 attributesValidate.setValue(mHashMapWay.get(2).getValue());
             }
             attributesValidate.setValid(mHashMapWay.get(2).isValid());
@@ -308,7 +316,14 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (mHashMapWay.get(3) != null && !mHashMapWay.get(3).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_WIDTH);
-            attributesValidate.setValue(mHashMapWay.get(3).getValue());
+            if (mHashMapWay.get(3).getValue() != null && mHashMapWay.get(3).getValue().contains(">")) {
+                attributesValidate.setValue(mHashMapWay.get(3).getValue().replace(">", ""));
+
+            } else if (mHashMapWay.get(3).getValue() != null && mHashMapWay.get(3).getValue().contains("<")) {
+                attributesValidate.setValue(mHashMapWay.get(3).getValue().replace("<", ""));
+            } else {
+                attributesValidate.setValue(mHashMapWay.get(3).getValue());
+            }
             attributesValidate.setValid(mHashMapWay.get(3).isValid());
             attributesValidateList.add(attributesValidate);
         }
@@ -319,7 +334,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     @Override
     public void onUpdateDataReceived(ResponseUpdate responseUpdate) {
-        if(responseUpdate.isStatus()) {
+        if (responseUpdate.isStatus()) {
             boolean isAllValid = true;
             List<ListWayData> listWayDataList = WayDataPreference.getInstance(this).getNotValidatedWayData();
             for (int i = 0; i < listWayDataList.size(); i++) {
@@ -355,9 +370,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             setResult(RESULT_OK);
             Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
             finish();
-        }else {
-            if(responseUpdate.getError()!=null && responseUpdate.getError().get(0)!=null &&
-                    responseUpdate.getError().get(0).getMessage()!=null) {
+        } else {
+            if (responseUpdate.getError() != null && responseUpdate.getError().get(0) != null &&
+                    responseUpdate.getError().get(0).getMessage() != null) {
                 Toast.makeText(this, responseUpdate.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
@@ -385,11 +400,11 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @Override
     public void onSuccessAsyncTask(String responseBody, String API_TYPE) {
         if (responseBody != null) {
-            if(API_TYPE.equalsIgnoreCase(AppConstant.API_TYPE_CREATE_CHANGE_SET)){
+            if (API_TYPE.equalsIgnoreCase(AppConstant.API_TYPE_CREATE_CHANGE_SET)) {
                 mChangeSetID = responseBody;
             }
-            if(API_TYPE.equalsIgnoreCase(AppConstant.API_TYPE_CREATE_PUT_WAY)){
-                mUpdateVersionNumber=responseBody;
+            if (API_TYPE.equalsIgnoreCase(AppConstant.API_TYPE_CREATE_PUT_WAY)) {
+                mUpdateVersionNumber = responseBody;
                 this.runOnUiThread(new Runnable() {
                     public void run() {
                         onUpdateWay(mUpdateVersionNumber);
@@ -411,12 +426,12 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     @Override
     public void onSuccessAsyncTaskForGetWay(String responseBody) {
-        if(responseBody!=null) {
-           JSONObject jsonObject = Utility.convertXMLtoJSON(responseBody);
+        if (responseBody != null) {
+            JSONObject jsonObject = Utility.convertXMLtoJSON(responseBody);
             try {
-                JSONObject jsonObjectOSM= jsonObject.getJSONObject("osm");
-                JSONObject jsonObjectWAY= jsonObjectOSM.getJSONObject("way");
-                mVersionNumber= jsonObjectWAY.optString("version");
+                JSONObject jsonObjectOSM = jsonObject.getJSONObject("osm");
+                JSONObject jsonObjectWAY = jsonObjectOSM.getJSONObject("way");
+                mVersionNumber = jsonObjectWAY.optString("version");
 
             } catch (JSONException e) {
                 e.printStackTrace();
