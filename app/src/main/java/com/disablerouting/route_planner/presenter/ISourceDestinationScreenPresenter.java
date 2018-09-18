@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 public interface ISourceDestinationScreenPresenter {
 
-    void getDestinationsData(String coordinates, String profile , JSONObject jsonObject);
+    void getDirectionsData(String coordinates, String profile , JSONObject jsonObject);
 
     void getCoordinatesData(String query, String location, int limit);
 

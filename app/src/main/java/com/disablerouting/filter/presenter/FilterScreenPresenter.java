@@ -34,7 +34,7 @@ public class FilterScreenPresenter implements IFilterScreenPresenter , IGeoCodin
     public void getGeoCodeDataForward(String query) {
         isForCurrentLoc=false;
         if (mIFilterView != null) {
-            mIFilterView.showLoader();
+           // mIFilterView.showLoader();
             mGeoCodingManager.getGeoCodeForward(this, query);
         }
     }
@@ -43,7 +43,7 @@ public class FilterScreenPresenter implements IFilterScreenPresenter , IGeoCodin
     public void getGeoCodeDataReverse(double latitude, double longitude) {
         isForCurrentLoc=true;
         if (mIFilterView != null) {
-            mIFilterView.showLoader();
+          //  mIFilterView.showLoader();
             mGeoCodingManager.getGeoCodeReverse(this, latitude, longitude);
         }
     }
@@ -58,7 +58,7 @@ public class FilterScreenPresenter implements IFilterScreenPresenter , IGeoCodin
     @Override
     public void onSuccessGeoCoding(GeoCodingResponse data) {
         if (mIFilterView != null) {
-            mIFilterView.hideLoader();
+          //  mIFilterView.hideLoader();
             mIFilterView.onGeoDataDataReceived(data,isForCurrentLoc);
         }
 
@@ -67,7 +67,7 @@ public class FilterScreenPresenter implements IFilterScreenPresenter , IGeoCodin
     @Override
     public void onFailureGeoCoding(@NonNull ErrorResponse errorResponse) {
         if (mIFilterView != null) {
-            mIFilterView.hideLoader();
+           // mIFilterView.hideLoader();
             mIFilterView.onFailureGeoCoding(errorResponse.getErrorMessage());
         }
     }

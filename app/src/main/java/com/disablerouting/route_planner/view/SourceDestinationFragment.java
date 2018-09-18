@@ -246,7 +246,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                     coordinates = mGeoPointSource + "|" + mGeoPointDestination;
                 }
                 String profileType = AppConstant.PROFILE_WHEEL_CHAIR;
-                mISourceDestinationScreenPresenter.getDestinationsData(coordinates, profileType, jsonObject);
+                mISourceDestinationScreenPresenter.getDirectionsData(coordinates, profileType, jsonObject);
             }
             handler.removeMessages(SEARCH_TEXT_CHANGED);
         }

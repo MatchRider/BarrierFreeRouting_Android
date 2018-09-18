@@ -13,7 +13,7 @@ public class DirectionsManager implements ResponseCallback<DirectionsResponse> {
     private Call<DirectionsResponse> mDirectionsApiCall;
     private IDirectionsResponseReceiver mIDirectionsResponseReceiver;
 
-    public void getDestination(IDirectionsResponseReceiver receiver, String coordinates, String profileType, JSONObject jsonObject) {
+    public void getDirection(IDirectionsResponseReceiver receiver, String coordinates, String profileType, JSONObject jsonObject) {
         this.mIDirectionsResponseReceiver = receiver;
         String jsonString = null;
         String geoJson = "geojson";

@@ -32,10 +32,10 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
     }
 
     @Override
-    public void getDestinationsData(String coordinates, String profile , JSONObject jsonObject) {
+    public void getDirectionsData(String coordinates, String profile , JSONObject jsonObject) {
         if (mISourceDestinationViewFragment != null) {
             mISourceDestinationViewFragment.showLoader();
-            mDirectionsManager.getDestination(this, coordinates, profile , jsonObject);
+            mDirectionsManager.getDirection(this, coordinates, profile , jsonObject);
         }
     }
 
@@ -52,7 +52,7 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
     public void getGeoCodeDataForward(String query) {
         isForCurrentLoc=false;
         if (mISourceDestinationViewFragment != null) {
-            mISourceDestinationViewFragment.showLoader();
+           // mISourceDestinationViewFragment.showLoader();
             mGeoCodingManager.getGeoCodeForward(this, query);
         }
     }
@@ -61,7 +61,7 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
     public void getGeoCodeDataReverse(double latitude, double longitude) {
         isForCurrentLoc=true;
         if (mISourceDestinationViewFragment != null) {
-            mISourceDestinationViewFragment.showLoader();
+          //  mISourceDestinationViewFragment.showLoader();
             mGeoCodingManager.getGeoCodeReverse(this, latitude,longitude);
         }
     }
@@ -93,7 +93,7 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
     @Override
     public void onSuccessGeoCoding(GeoCodingResponse data) {
         if (mISourceDestinationViewFragment != null) {
-            mISourceDestinationViewFragment.hideLoader();
+           // mISourceDestinationViewFragment.hideLoader();
             mISourceDestinationViewFragment.onGeoDataDataReceived(data,isForCurrentLoc);
         }
     }
@@ -101,7 +101,7 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
     @Override
     public void onFailureGeoCoding(@NonNull ErrorResponse errorResponse) {
         if (mISourceDestinationViewFragment != null) {
-            mISourceDestinationViewFragment.hideLoader();
+           // mISourceDestinationViewFragment.hideLoader();
             mISourceDestinationViewFragment.onFailureGeoCoding(errorResponse.getErrorMessage());
         }
     }
@@ -112,6 +112,9 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
         }
         if(mGeoCodingManager!=null){
             mGeoCodingManager.cancel();
+        }
+        if(mNodeManager!=null){
+            mNodeManager.cancel();
         }
     }
 
