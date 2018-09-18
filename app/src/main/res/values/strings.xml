@@ -106,14 +106,15 @@
     <string name="string_less_width"><![CDATA[< 35.4]]></string>
     <string name="string_greater_width"><![CDATA[> 35.4]]></string>
 
-    <string name="value_string_less_width"><![CDATA[35.4]]></string>
-    <string name="value_string_greater_width"><![CDATA[35.4]]></string>
 
     <string name="thirty_five_less"><![CDATA[< 35.4]]></string>
     <string name="thirty_five_greater"><![CDATA[> 35.4]]></string>
 
     <string name="ninty_less"><![CDATA[< 35.4]]></string>
     <string name="ninty_greater"><![CDATA[> 35.4]]></string>
+
+    <string name="value_string_less_width"><![CDATA[35.4]]></string>
+    <string name="value_string_greater_width"><![CDATA[35.4]]></string>
 
 
     <string name="yes">Yes</string>

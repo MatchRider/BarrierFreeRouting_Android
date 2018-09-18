@@ -118,13 +118,6 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
         return stringArrayList;
     }
 
-    private ArrayList<String> prepareValueListDataSideWalk() {
-        ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add(getString(R.string.value_string_less_width));
-        stringArrayList.add(getString(R.string.value_string_greater_width));
-        return stringArrayList;
-    }
-
     @OnClick(R.id.img_back)
     public void onBackClick() {
         finish();

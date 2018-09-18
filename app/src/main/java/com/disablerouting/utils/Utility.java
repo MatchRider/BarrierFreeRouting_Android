@@ -221,4 +221,8 @@ public class Utility {
                 cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
+    public static String changeCmToMeter(String stringUnitPassed){
+        return String.valueOf(Integer.parseInt(stringUnitPassed)/100);
+    }
+
 }
