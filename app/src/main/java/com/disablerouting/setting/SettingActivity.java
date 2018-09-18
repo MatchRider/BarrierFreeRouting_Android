@@ -183,7 +183,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (mListWayData != null) {
             boolean isValid = Boolean.parseBoolean(mListWayData.getIsValid());
             if (!isValid) {
-                callToGetWay();
+                if(Utility.isOnline(this)) {
+                    callToGetWay();
+                }
             } else {
                 finish();
             }

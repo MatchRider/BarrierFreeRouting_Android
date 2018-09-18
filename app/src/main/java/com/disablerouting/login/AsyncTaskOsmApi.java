@@ -67,12 +67,15 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
         assert tokens != null;
         OAuth1AccessToken oAuth1AccessToken = new OAuth1AccessToken(tokens[0],tokens[1]);
         service.signRequest(oAuth1AccessToken, request);
-        Response response;
+        Response response = null;
         try {
-            response = service.execute(request);
+            if(service.execute(request) != null) {
+                response = service.execute(request);
+            }
             if(pDialog!=null){
                 pDialog.dismiss();
             }
+            assert response != null;
             if(response.isSuccessful()){
                 if(mIsForGet){
                     mIAysncTaskOsm.onSuccessAsyncTaskForGetWay(response.getBody());
@@ -89,11 +92,7 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
             }
 
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (InterruptedException | ExecutionException | IOException e) {
             e.printStackTrace();
         }
         return "Executed!";

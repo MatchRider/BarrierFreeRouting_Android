@@ -30,4 +30,6 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
     public interface ConnectionChangeListener {
         void onNetworkConnectionChanged(boolean isConnected);
     }
+
+
 }
