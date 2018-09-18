@@ -12,9 +12,11 @@ import java.util.List;
 public class WayData implements Parcelable{
 
     @JsonProperty("Id")
+    private
     String mId;
 
     @JsonProperty("Attributes")
+    private
     List<Attributes> mAttributesList;
 
     public WayData() {

@@ -2,6 +2,7 @@ package com.disablerouting.curd_operations;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 import com.disablerouting.curd_operations.model.ListWayData;
 import com.google.gson.Gson;
 
@@ -43,22 +44,25 @@ public class WayDataPreference {
     //add data
     public void saveValidateWayData(List<ListWayData> listWayData) {
         Gson gson = new Gson();
-        String jsonCart = gson.toJson(listWayData);
-        editor.putString(DataKeyValidated, jsonCart);
+        String jsonValidated = gson.toJson(listWayData);
+        editor.putString(DataKeyValidated, jsonValidated);
         editor.commit();
     }
 
     //get data
-    public ArrayList<ListWayData> getValidateWayData() {
+    public List<ListWayData> getValidateWayData() {
         List<ListWayData> listWayDataList;
         if (preferences.contains(DataKeyValidated)) {
-            String jsonCart = preferences.getString(DataKeyValidated, null);
+            String jsonValidated = preferences.getString(DataKeyValidated, null);
             Gson gson = new Gson();
-            ListWayData[] listWayData = gson.fromJson(jsonCart,
-                    ListWayData[].class);
-
-            listWayDataList = Arrays.asList(listWayData);
-            listWayDataList = new ArrayList<ListWayData>(listWayDataList);
+            ListWayData[] listWayData;
+            if (!TextUtils.isEmpty(jsonValidated)) {
+                listWayData = gson.fromJson(jsonValidated,
+                        ListWayData[].class);
+                listWayDataList = Arrays.asList(listWayData);
+            }else {
+                listWayDataList = new ArrayList<>();
+            }
         } else {
             try {
                 return new ArrayList<ListWayData>();
@@ -67,27 +71,30 @@ public class WayDataPreference {
                 return null;
             }
         }
-        return (ArrayList<ListWayData>) listWayDataList;
+        return listWayDataList;
     }
     //add data
     public void saveNotValidatedWayData(List<ListWayData> listWayData) {
         Gson gson = new Gson();
-        String jsonCart = gson.toJson(listWayData);
-        editor.putString(DataKeyNotValidated, jsonCart);
+        String jsonNotValidated = gson.toJson(listWayData);
+        editor.putString(DataKeyNotValidated, jsonNotValidated);
         editor.commit();
     }
 
     //get data
-    public ArrayList<ListWayData> getNotValidatedWayData() {
+    public List<ListWayData> getNotValidatedWayData() {
         List<ListWayData> listWayDataList;
         if (preferences.contains(DataKeyNotValidated)) {
-            String jsonCart = preferences.getString(DataKeyNotValidated, null);
+            String jsonNotValidated = preferences.getString(DataKeyNotValidated, null);
             Gson gson = new Gson();
-            ListWayData[] listWayData = gson.fromJson(jsonCart,
-                    ListWayData[].class);
-
-            listWayDataList = Arrays.asList(listWayData);
-            listWayDataList = new ArrayList<ListWayData>(listWayDataList);
+            ListWayData[] listWayData;
+            if (!TextUtils.isEmpty(jsonNotValidated)) {
+                listWayData = gson.fromJson(jsonNotValidated,
+                        ListWayData[].class);
+                listWayDataList = Arrays.asList(listWayData);
+            }else {
+                listWayDataList = new ArrayList<>();
+            }
         } else {
             try {
                 return new ArrayList<ListWayData>();
@@ -96,7 +103,7 @@ public class WayDataPreference {
                 return null;
             }
         }
-        return (ArrayList<ListWayData>) listWayDataList;
+        return listWayDataList;
     }
 
     //clear data

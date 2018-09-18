@@ -33,13 +33,18 @@ public class GeoCodingManager implements ResponseCallback<GeoCodingResponse> {
             mGeoCodingResponseCall = RetrofitClient.getApiService().getGeoCodeForward(ApiEndPoint.API_KEY, queryString,
                     static_latitude,static_longitude,layers,countryISO,radius);
         }
-        mGeoCodingResponseCall.enqueue(new ResponseWrapper<GeoCodingResponse>(this));
+        if(mGeoCodingResponseCall!=null) {
+            mGeoCodingResponseCall.enqueue(new ResponseWrapper<GeoCodingResponse>(this));
+        }
     }
 
     public void getGeoCodeReverse(IGeoCodingResponseReceiver receiver, double latitude, double longitude) {
         this.mIGeoCodingResponseReceiver = receiver;
         mGeoCodingResponseCall = RetrofitClient.getApiService().getGeoCodeReverse(ApiEndPoint.API_KEY,latitude,longitude,1);
-        mGeoCodingResponseCall.enqueue(new ResponseWrapper<GeoCodingResponse>(this));
+        if(mGeoCodingResponseCall!=null) {
+
+            mGeoCodingResponseCall.enqueue(new ResponseWrapper<GeoCodingResponse>(this));
+        }
     }
 
     /**

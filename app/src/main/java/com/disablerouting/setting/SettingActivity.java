@@ -57,7 +57,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     private AsyncTaskOsmApi asyncTaskOsmApi;
     private int mPositionClicked = -1;
-    private List<String> mNodeList;
+    private List<NodeData> mNodeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +106,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         StringBuilder tags = new StringBuilder();
         for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
             Attributes attributes = pair.getValue();
+            assert attributes != null;
             if (attributes != null && attributes.getKey() != null && attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)
                     || attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
                 if (!attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)) {
@@ -127,7 +128,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         // List<RequestNode> nodesList = new ArrayList<>();
         StringBuilder nodes = new StringBuilder();
         for (int i = 0; i < mNodeList.size(); i++) {
-            nodes.append("<nd ref=\"" + mNodeList.get(i) + "\"/>\n");
+            nodes.append("<nd ref=\"" + mNodeList.get(i).getId() + "\"/>\n");
         }
         /*Way way= new Way(mWayID,mChangeSetID,mVersionNumber,tagList,nodesList);
         requestCreateChangeSet.setWay(way);*/

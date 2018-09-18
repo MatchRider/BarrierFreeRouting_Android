@@ -27,7 +27,7 @@ public class ListWayData implements Parcelable{
 
     @JsonProperty("NodeReference")
     private
-    List<String> mNodeReference;
+    List<NodeData> mNodeReference;
 
     @JsonProperty("Color")
     private
@@ -54,24 +54,24 @@ public class ListWayData implements Parcelable{
         mId = in.readString();
         mProjectId = in.readString();
         mCoordinates = in.createTypedArrayList(ParcelableArrayList.CREATOR);
-        mNodeReference = in.createStringArrayList();
+        mNodeReference = in.createTypedArrayList(NodeData.CREATOR);
         mColor = in.readString();
         mIsValid = in.readString();
         mVersion = in.readString();
         mAttributesList = in.createTypedArrayList(Attributes.CREATOR);
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mId);
-        dest.writeString(mProjectId);
-        dest.writeTypedList(mCoordinates);
-        dest.writeStringList(mNodeReference);
-        dest.writeString(mColor);
-        dest.writeString(mIsValid);
-        dest.writeString(mVersion);
-        dest.writeTypedList(mAttributesList);
-    }
+    public static final Creator<ListWayData> CREATOR = new Creator<ListWayData>() {
+        @Override
+        public ListWayData createFromParcel(Parcel in) {
+            return new ListWayData(in);
+        }
+
+        @Override
+        public ListWayData[] newArray(int size) {
+            return new ListWayData[size];
+        }
+    };
 
     public String getId() {
         return mId;
@@ -97,11 +97,11 @@ public class ListWayData implements Parcelable{
         mCoordinates = coordinates;
     }
 
-    public List<String> getNodeReference() {
+    public List<NodeData> getNodeReference() {
         return mNodeReference;
     }
 
-    public void setNodeReference(List<String> nodeReference) {
+    public void setNodeReference(List<NodeData> nodeReference) {
         mNodeReference = nodeReference;
     }
 
@@ -148,17 +148,17 @@ public class ListWayData implements Parcelable{
         return 0;
     }
 
-    public static final Creator<ListWayData> CREATOR = new Creator<ListWayData>() {
-        @Override
-        public ListWayData createFromParcel(Parcel in) {
-            return new ListWayData(in);
-        }
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
 
-        @Override
-        public ListWayData[] newArray(int size) {
-            return new ListWayData[size];
-        }
-    };
+        dest.writeString(mId);
+        dest.writeString(mProjectId);
+        dest.writeTypedList(mCoordinates);
+        dest.writeString(mColor);
+        dest.writeString(mIsValid);
+        dest.writeString(mVersion);
+        dest.writeTypedList(mAttributesList);
+    }
 
 
     public List<GeoPoint> getGeoPoints(){
