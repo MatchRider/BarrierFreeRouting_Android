@@ -47,7 +47,8 @@ public class InstructionsAdapter extends RecyclerView.Adapter<InstructionsAdapte
                 holder.textViewDirection.setText("");
             }
             if (steps.getDistance() != 0) {
-                holder.textViewDistance.setText(Utility.trimTWoDecimalPlaces(steps.getDistance()/1000)+ mContext.getResources().getString(R.string.km));
+                String value=Utility.trimTWoDecimalPlaces(steps.getDistance());
+                holder.textViewDistance.setText(String.format("%s%s", value, mContext.getResources().getString(R.string.meter)));
             } else {
                 holder.textViewDistance.setText("");
             }
