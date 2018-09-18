@@ -26,7 +26,7 @@
     <string name="suggestions">Suggestions</string>
 
     <!--Expected Error Codes-->
-    <string name="no_internet">Internet is not available</string>
+    <string name="no_internet">You are not connected to the internet. Please check your connection.</string>
     <string name="INTERNAL_SERVER_ERROR">The request is incorrect and therefore can not be
         processed.
     </string>
