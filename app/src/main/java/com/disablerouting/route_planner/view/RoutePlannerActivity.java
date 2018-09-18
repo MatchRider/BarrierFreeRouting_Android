@@ -175,7 +175,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             if (nodeItem.getNodeType() != null && nodeItem.getNodeType().getIdentifier() != null &&
                     nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicTramStop) ||
                     nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicToilets) ||
-                    nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicBusStop)) {
+                    nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicBusStop)||
+                    nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicParking)) {
                 mNodeItemListFiltered.add(nodeItem);
             }
         }

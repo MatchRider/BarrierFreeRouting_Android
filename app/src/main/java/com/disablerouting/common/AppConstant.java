@@ -22,6 +22,7 @@ public interface AppConstant {
     String publicTramStop = "tram_stop";
     String publicToilets= "toilets";
     String publicBusStop= "bus_stop";
+    String publicParking= "parking";
 
     String PROFILE_DRIVING_CAR="driving-car";
     String PROFILE_WHEEL_CHAIR="wheelchair";

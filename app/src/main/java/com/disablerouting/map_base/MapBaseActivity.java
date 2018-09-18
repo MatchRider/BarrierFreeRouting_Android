@@ -442,9 +442,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                     if (mMapView != null) {
                         mLatitude = location.getLatitude();
                         mLongitude = location.getLongitude();
-                        Log.e("latlngfromupdate", String.valueOf(mLatitude + mLongitude));
-                        //mMapView.getOverlays().clear();
-                        //mMapView.invalidate();
                         onUpdateLocation(location);
                         AppData.getNewInstance().setCurrentLoc(new LatLng(mLatitude, mLongitude));
                     }
@@ -560,6 +557,13 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                         addMarkerNode(geoPoint, nodeItem.getNodeType().getIdentifier(), nodeItem.getWheelChair().toUpperCase());
                     }
                     break;
+                case AppConstant.publicParking:
+                    if (nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicParking)) {
+                        GeoPoint geoPoint = new GeoPoint(nodeItem.getLatitude(),
+                                nodeItem.getLongitude());
+                        addMarkerNode(geoPoint, nodeItem.getNodeType().getIdentifier(), nodeItem.getWheelChair().toUpperCase());
+                    }
+                    break;
             }
 
         }
@@ -602,6 +606,14 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mMapView.getOverlays().add(nodeMarker);
                 nodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_bus));
                 nodeMarker.setTitle(getResources().getString(R.string.bus_stop_title));
+                nodeMarker.setSnippet(getString(R.string.wheelchair_accessible) + wheelChairAccessible);
+                break;
+            case AppConstant.publicParking:
+                nodeMarker.setPosition(nodePoints);
+                nodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                mMapView.getOverlays().add(nodeMarker);
+                nodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_parking));
+                nodeMarker.setTitle(getResources().getString(R.string.parking_title));
                 nodeMarker.setSnippet(getString(R.string.wheelchair_accessible) + wheelChairAccessible);
                 break;
 
