@@ -59,7 +59,7 @@
     <string name="surface_type">Oberflächentyp</string>
     <string name="maximum_sloped">Bordsteinkantenhöhe (cm)</string>
     <string name="maximum_incline">Maximale Steigung (%)</string>
-    <string name="sidewalk_width">Bürgersteigbreite (m)</string>
+    <string name="sidewalk_width">Gehwegbreite (m)</string>
     <string name="permanent_obstacle">Hindernis liegt vor</string>
     <string name="routing_via" tools:ignore="TypographyEllipsis">Routing über...</string>
 

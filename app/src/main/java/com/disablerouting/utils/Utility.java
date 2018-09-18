@@ -225,4 +225,24 @@ public class Utility {
         return String.valueOf(Integer.parseInt(stringUnitPassed)/100);
     }
 
+    public static String changeCommaToDot(String stringUnitPassed){
+        String converted=stringUnitPassed;
+        if(stringUnitPassed.contains(",")){
+            converted = stringUnitPassed.replace(",",".");
+        }else if(stringUnitPassed.contains(">")) {
+            converted = stringUnitPassed.replace(">","");
+        }
+        else if(stringUnitPassed.contains("<")) {
+            converted = stringUnitPassed.replace("<","");
+        }
+        return converted;
+    }
+    public static String changeDotToComma(String stringUnitPassed){
+        String converted=stringUnitPassed;
+        if(stringUnitPassed.contains(".")){
+            converted = stringUnitPassed.replace(".",",");
+        }
+        return converted;
+    }
 }
+

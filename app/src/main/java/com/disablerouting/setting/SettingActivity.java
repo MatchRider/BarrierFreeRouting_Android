@@ -109,18 +109,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
             Attributes attributes = pair.getValue();
             assert attributes != null;
-            if (attributes != null && attributes.getKey() != null && attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)
-                    || attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
+            if (attributes.getKey() != null && attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) || attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
                 if (!attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)) {
-                    if(attributes.getValue().contains(">")){
-                        tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + attributes.getValue().replace(">", "") + "\"/>\n");
-                    }
-                    else if(attributes.getValue().contains("<")){
-                        tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + attributes.getValue().replace("<", "") + "\"/>\n");
-                    }
-                    else {
-                        tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + attributes.getValue() + "\"/>\n");
-                    }
+                    tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.changeCommaToDot(attributes.getValue()) + "\"/>\n");
                 } else {
                     tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + attributes.getValue().replace(">", "") + "\"/>\n");
                 }
@@ -259,7 +250,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 case AppConstant.KEY_WIDTH:
                     Attributes attributesWidth = new Attributes();
                     attributesWidth.setKey(mListWayData.getAttributesList().get(i).getKey());
-                    attributesWidth.setValue(mListWayData.getAttributesList().get(i).getValue());
+                    attributesWidth.setValue(Utility.changeDotToComma(mListWayData.getAttributesList().get(i).getValue()));
                     attributesWidth.setValid(mListWayData.getAttributesList().get(i).isValid());
                     mHashMapWay.put(3, attributesWidth);
                     break;
@@ -321,13 +312,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (mHashMapWay.get(3) != null && !mHashMapWay.get(3).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_WIDTH);
-            if (mHashMapWay.get(3).getValue() != null && mHashMapWay.get(3).getValue().contains(">")) {
-                attributesValidate.setValue(mHashMapWay.get(3).getValue().replace(">", ""));
-            }else if (mHashMapWay.get(3).getValue() != null && mHashMapWay.get(3).getValue().contains("<")) {
-                attributesValidate.setValue(mHashMapWay.get(3).getValue().replace("<", ""));
-            } else {
-                attributesValidate.setValue(mHashMapWay.get(3).getValue());
-            }
+            attributesValidate.setValue(Utility.changeCommaToDot(mHashMapWay.get(3).getValue()));
             attributesValidate.setValid(mHashMapWay.get(3).isValid());
             attributesValidateList.add(attributesValidate);
         }
