@@ -23,16 +23,16 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
     private ProgressDialog pDialog;
     private IAysncTaskOsm mIAysncTaskOsm;
     private boolean mIsForGet;
-    private String API_TYPE="api_type";
+    private String API_TYPE = "api_type";
 
 
     public AsyncTaskOsmApi(Context context, OauthData oauthData, IAysncTaskOsm aysncTaskOsm,
-                           boolean isForGet,String api){
-        mContext=context;
-        mOauthData=oauthData;
-        mIAysncTaskOsm=aysncTaskOsm;
-        mIsForGet= isForGet;
-        API_TYPE=api;
+                           boolean isForGet, String api) {
+        mContext = context;
+        mOauthData = oauthData;
+        mIAysncTaskOsm = aysncTaskOsm;
+        mIsForGet = isForGet;
+        API_TYPE = api;
 
     }
 
@@ -43,9 +43,9 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
         pDialog = new ProgressDialog(mContext);
         pDialog.setMessage(mContext.getResources().getString(R.string.please_wait));
         pDialog.setCancelable(false);
-        if(pDialog.isShowing()) {
+        if (pDialog.isShowing()) {
             pDialog.dismiss();
-        }else {
+        } else {
             pDialog.show();
         }
     }
@@ -57,36 +57,35 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
         final OAuthRequest request = new OAuthRequest(mOauthData.getMethodType(), mOauthData.getStringUrl());
         request.addHeader("Content-Type", "application/xml;charset=UTF-8");
         request.addHeader("Accept", "application/xml;versions=1");
-        if(!mOauthData.getRequestBody().isEmpty()) {
+        if (!mOauthData.getRequestBody().isEmpty()) {
             request.setPayload(mOauthData.getRequestBody());
         }
-        String[] tokens=null;
-        if(UserPreferences.getInstance(mContext)!=null) {
+        String[] tokens = null;
+        if (UserPreferences.getInstance(mContext) != null) {
             tokens = UserPreferences.getInstance(mContext).getAccessToken().split(",", -1);
         }
         assert tokens != null;
-        OAuth1AccessToken oAuth1AccessToken = new OAuth1AccessToken(tokens[0],tokens[1]);
+        OAuth1AccessToken oAuth1AccessToken = new OAuth1AccessToken(tokens[0], tokens[1]);
         service.signRequest(oAuth1AccessToken, request);
         Response response = null;
         try {
-            if(service.execute(request) != null) {
-                response = service.execute(request);
-            }
-            if(pDialog!=null){
+
+            response = service.execute(request);
+
+            if (pDialog != null) {
                 pDialog.dismiss();
             }
             assert response != null;
-            if(response.isSuccessful()){
-                if(mIsForGet){
+            if (response.isSuccessful()) {
+                if (mIsForGet) {
                     mIAysncTaskOsm.onSuccessAsyncTaskForGetWay(response.getBody());
-                }else {
-                    mIAysncTaskOsm.onSuccessAsyncTask(response.getBody(),API_TYPE);
+                } else {
+                    mIAysncTaskOsm.onSuccessAsyncTask(response.getBody(), API_TYPE);
                 }
-            }
-            else {
-                if(response.getCode()==409){
+            } else {
+                if (response.getCode() == 409) {
                     mIAysncTaskOsm.onFailureAsyncTask(response.getBody());
-                }else {
+                } else {
                     mIAysncTaskOsm.onFailureAsyncTask(response.getMessage());
                 }
             }
@@ -101,14 +100,14 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        if(pDialog!=null) {
+        if (pDialog != null) {
             pDialog.dismiss();
         }
 
     }
 
-    public void dismissDialog(){
-        if(pDialog!=null){
+    public void dismissDialog() {
+        if (pDialog != null) {
             pDialog.dismiss();
         }
     }

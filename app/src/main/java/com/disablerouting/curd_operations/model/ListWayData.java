@@ -27,7 +27,7 @@ public class ListWayData implements Parcelable{
 
     @JsonProperty("NodeReference")
     private
-    List<NodeData> mNodeReference;
+    List<NodeReference> mNodeReference;
 
     @JsonProperty("Color")
     private
@@ -54,7 +54,7 @@ public class ListWayData implements Parcelable{
         mId = in.readString();
         mProjectId = in.readString();
         mCoordinates = in.createTypedArrayList(ParcelableArrayList.CREATOR);
-        mNodeReference = in.createTypedArrayList(NodeData.CREATOR);
+        mNodeReference = in.createTypedArrayList(NodeReference.CREATOR);
         mColor = in.readString();
         mIsValid = in.readString();
         mVersion = in.readString();
@@ -97,11 +97,11 @@ public class ListWayData implements Parcelable{
         mCoordinates = coordinates;
     }
 
-    public List<NodeData> getNodeReference() {
+    public List<NodeReference> getNodeReference() {
         return mNodeReference;
     }
 
-    public void setNodeReference(List<NodeData> nodeReference) {
+    public void setNodeReference(List<NodeReference> nodeReference) {
         mNodeReference = nodeReference;
     }
 
@@ -154,6 +154,7 @@ public class ListWayData implements Parcelable{
         dest.writeString(mId);
         dest.writeString(mProjectId);
         dest.writeTypedList(mCoordinates);
+        dest.writeTypedList(mNodeReference);
         dest.writeString(mColor);
         dest.writeString(mIsValid);
         dest.writeString(mVersion);

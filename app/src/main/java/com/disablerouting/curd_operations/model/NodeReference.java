@@ -2,16 +2,17 @@ package com.disablerouting.curd_operations.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/*
 @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+*/
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NodeData implements Parcelable {
+public class NodeReference implements Parcelable {
 
     @JsonProperty("Id")
     private
@@ -33,10 +34,10 @@ public class NodeData implements Parcelable {
     private
     List<Attributes> mAttributes = new ArrayList<>();
 
-    public NodeData() {
+    public NodeReference() {
     }
 
-    protected NodeData(Parcel in) {
+    protected NodeReference(Parcel in) {
         mId = in.readString();
         mLat = in.readString();
         mLon = in.readString();
@@ -58,15 +59,15 @@ public class NodeData implements Parcelable {
         return 0;
     }
 
-    public static final Creator<NodeData> CREATOR = new Creator<NodeData>() {
+    public static final Creator<NodeReference> CREATOR = new Creator<NodeReference>() {
         @Override
-        public NodeData createFromParcel(Parcel in) {
-            return new NodeData(in);
+        public NodeReference createFromParcel(Parcel in) {
+            return new NodeReference(in);
         }
 
         @Override
-        public NodeData[] newArray(int size) {
-            return new NodeData[size];
+        public NodeReference[] newArray(int size) {
+            return new NodeReference[size];
         }
     };
 

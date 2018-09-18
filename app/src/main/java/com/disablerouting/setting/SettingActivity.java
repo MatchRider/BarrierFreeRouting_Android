@@ -57,7 +57,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     private AsyncTaskOsmApi asyncTaskOsmApi;
     private int mPositionClicked = -1;
-    private List<NodeData> mNodeList;
+    private List<NodeReference> mNodeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
 
-        callToGetChangeSet();
+        if(Utility.isOnline(this)) {
+            callToGetChangeSet();
+        }
         mISettingScreenPresenter = new SettingScreenPresenter(this, new UpdateWayManager(), new ValidateWayManager());
         if (getIntent().hasExtra(AppConstant.WAY_DATA)) {
             mListWayData = getIntent().getParcelableExtra(AppConstant.WAY_DATA);
@@ -321,8 +323,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             attributesValidate.setKey(AppConstant.KEY_WIDTH);
             if (mHashMapWay.get(3).getValue() != null && mHashMapWay.get(3).getValue().contains(">")) {
                 attributesValidate.setValue(mHashMapWay.get(3).getValue().replace(">", ""));
-
-            } else if (mHashMapWay.get(3).getValue() != null && mHashMapWay.get(3).getValue().contains("<")) {
+            }else if (mHashMapWay.get(3).getValue() != null && mHashMapWay.get(3).getValue().contains("<")) {
                 attributesValidate.setValue(mHashMapWay.get(3).getValue().replace("<", ""));
             } else {
                 attributesValidate.setValue(mHashMapWay.get(3).getValue());
