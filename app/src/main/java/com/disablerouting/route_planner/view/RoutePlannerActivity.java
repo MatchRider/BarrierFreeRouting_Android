@@ -378,32 +378,36 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     //For Way Data Validated
                     listWayData.clear();
                     listWayData= mWayListValidatedData;
-                    for (int i = 0; i < mWayListValidatedData.size(); i++) {
-                        List<GeoPoint> geoPointArrayList = mWayListValidatedData.get(i).getGeoPoints();
-                        start = null;
-                        if (i == 0)
-                            start = geoPointArrayList.get(0);
+                    if(mWayListValidatedData.size()!=0) {
+                        for (int i = 0; i < mWayListValidatedData.size(); i++) {
+                            List<GeoPoint> geoPointArrayList = mWayListValidatedData.get(i).getGeoPoints();
+                            start = null;
+                            if (i == 0)
+                                start = geoPointArrayList.get(0);
 
-                        final GeoPoint finalStart = start;
-                        publishProgress(new ProgressModel(finalStart,
-                                mWayListValidatedData.get(i), true));
+                            final GeoPoint finalStart = start;
+                            publishProgress(new ProgressModel(finalStart,
+                                    mWayListValidatedData.get(i), true));
 
+                        }
                     }
                 }
                 if (mButtonSelected == 1) {
                     //For Way Data Not validated
                     listWayData.clear();
                     listWayData= mWayListNotValidatedData;
-                    for (int i = 0; i < mWayListNotValidatedData.size(); i++) {
-                        List<GeoPoint> geoPointArrayList = mWayListNotValidatedData.get(i).getGeoPoints();
-                        start = null;
-                        if (i == 0)
-                            start = geoPointArrayList.get(0);
+                    if(mWayListNotValidatedData.size()!=0) {
+                        for (int i = 0; i < mWayListNotValidatedData.size(); i++) {
+                            List<GeoPoint> geoPointArrayList = mWayListNotValidatedData.get(i).getGeoPoints();
+                            start = null;
+                            if (i == 0)
+                                start = geoPointArrayList.get(0);
 
-                        final GeoPoint finalStart = start;
-                        publishProgress(new ProgressModel(finalStart,
-                                mWayListNotValidatedData.get(i), false));
+                            final GeoPoint finalStart = start;
+                            publishProgress(new ProgressModel(finalStart,
+                                    mWayListNotValidatedData.get(i), false));
 
+                        }
                     }
                 }
                 return listWayData;

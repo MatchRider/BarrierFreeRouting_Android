@@ -51,17 +51,21 @@ public class WayDataPreference {
 
     //get data
     public List<ListWayData> getValidateWayData() {
-        List<ListWayData> listWayDataList;
+        List<ListWayData> listWayDataList = null;
         if (preferences.contains(DataKeyValidated)) {
             String jsonValidated = preferences.getString(DataKeyValidated, null);
             Gson gson = new Gson();
             ListWayData[] listWayData;
-            if (!TextUtils.isEmpty(jsonValidated)) {
-                listWayData = gson.fromJson(jsonValidated,
-                        ListWayData[].class);
-                listWayDataList = Arrays.asList(listWayData);
-            }else {
-                listWayDataList = new ArrayList<>();
+            try {
+                if (!TextUtils.isEmpty(jsonValidated)) {
+                    listWayData = gson.fromJson(jsonValidated,
+                            ListWayData[].class);
+                    listWayDataList = Arrays.asList(listWayData);
+                } else {
+                    listWayDataList = new ArrayList<>();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
         } else {
             try {
@@ -83,18 +87,24 @@ public class WayDataPreference {
 
     //get data
     public List<ListWayData> getNotValidatedWayData() {
-        List<ListWayData> listWayDataList;
+        List<ListWayData> listWayDataList = null;
         if (preferences.contains(DataKeyNotValidated)) {
             String jsonNotValidated = preferences.getString(DataKeyNotValidated, null);
             Gson gson = new Gson();
             ListWayData[] listWayData;
-            if (!TextUtils.isEmpty(jsonNotValidated)) {
-                listWayData = gson.fromJson(jsonNotValidated,
-                        ListWayData[].class);
-                listWayDataList = Arrays.asList(listWayData);
-            }else {
-                listWayDataList = new ArrayList<>();
+            try {
+                if (!TextUtils.isEmpty(jsonNotValidated)) {
+                    listWayData = gson.fromJson(jsonNotValidated,
+                            ListWayData[].class);
+                    listWayDataList = Arrays.asList(listWayData);
+                }else {
+                    listWayDataList = new ArrayList<>();
+                }  
             }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+           
         } else {
             try {
                 return new ArrayList<ListWayData>();

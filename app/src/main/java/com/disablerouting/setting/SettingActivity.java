@@ -231,7 +231,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     }
                     attributesIncline.setValue(value);
                     attributesIncline.setValid(mListWayData.getAttributesList().get(i).isValid());
-                    mHashMapWay.put(2, attributesIncline);
+                    mHashMapWay.put(1, attributesIncline);
                     break;
 
                 case AppConstant.KEY_FOOTWAY:
@@ -352,6 +352,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     listWayDataList.get(i).setAttributesList(attributesList);
                     if (!isAllValid) {
                         listWayDataList.get(i).setIsValid("false");
+                        listNotValidated = new ArrayList<ListWayData>(listWayDataList);
+
                     } else {
                         listWayDataList.get(i).setIsValid("true");
                         //Remove from not validated data and put in validated list
