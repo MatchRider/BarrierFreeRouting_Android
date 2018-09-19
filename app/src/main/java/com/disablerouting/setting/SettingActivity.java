@@ -222,9 +222,12 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     Attributes attributesIncline = new Attributes();
                     attributesIncline.setKey(mListWayData.getAttributesList().get(i).getKey());
                     String value;
-                    if (mListWayData.getAttributesList().get(i).getValue() != null && mListWayData.getAttributesList().get(i).getValue().contains("&lt")) {
+                    if (mListWayData.getAttributesList().get(i).getValue() != null && mListWayData.getAttributesList().get(i).getValue().contains("&lt;")) {
                         value = mListWayData.getAttributesList().get(i).getValue().replace("&lt;", ">");
-                    } else if (mListWayData.getAttributesList().get(i).getValue() != null && mListWayData.getAttributesList().get(i).getValue().contains("Up to")) {
+                    }
+                    else if (mListWayData.getAttributesList().get(i).getValue() != null && mListWayData.getAttributesList().get(i).getValue().contains("&Lt;")) {
+                        value = mListWayData.getAttributesList().get(i).getValue().replace("&Lt;", ">");
+                    }else if (mListWayData.getAttributesList().get(i).getValue() != null && mListWayData.getAttributesList().get(i).getValue().contains("Up to")) {
                         value = mListWayData.getAttributesList().get(i).getValue().replace("Up to", "Bis zu");
                     } else {
                         value = mListWayData.getAttributesList().get(i).getValue();
@@ -245,7 +248,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 case AppConstant.KEY_WIDTH:
                     Attributes attributesWidth = new Attributes();
                     attributesWidth.setKey(mListWayData.getAttributesList().get(i).getKey());
-                    if (!mListWayData.getAttributesList().get(i).getValue().contains(",")) {
+                    if (mListWayData.getAttributesList().get(i).getValue().contains(".")) {
                         String stringValue = Utility.trimTWoDecimalPlaces(Double.parseDouble(mListWayData.getAttributesList().get(i).getValue()));
                         attributesWidth.setValue(Utility.changeDotToComma(stringValue));
                     } else {
@@ -451,8 +454,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @Override
     public void onDestroy() {
         super.onDestroy();
-        asyncTaskOsmApi.dismissDialog();
-
+        if(asyncTaskOsmApi!=null) {
+            asyncTaskOsmApi.dismissDialog();
+        }
     }
 
     @Override
