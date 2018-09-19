@@ -89,7 +89,6 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
                     mListPopupWindow.dismiss();
                 }
                 if (mEditTextRoutingVia.hasFocus() && mEditTextRoutingVia != null && !mEditTextRoutingVia.getText().toString().equalsIgnoreCase("")) {
-                   // mIFilterScreenPresenter.getCoordinatesData(mEditTextRoutingVia.getText().toString(), "", 5);
                     mIFilterScreenPresenter.getGeoCodeDataForward(mEditTextRoutingVia.getText().toString());
                 }
             }

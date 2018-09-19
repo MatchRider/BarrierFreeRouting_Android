@@ -97,8 +97,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mSwitchCompatToogle.setVisibility(View.GONE);
         }
 
-        // String data = Utility.readOSMFile(this);
-        //convertDataIntoModel(data);
     }
 
     @Override
@@ -302,29 +300,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
 
-    /*private void convertDataIntoModel(String data) {
-        JSONObject jsonObject = Utility.convertXMLtoJSON(data);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-            OSMData OSMData = objectMapper.readValue(jsonObject.toString(), com.disablerouting.route_planner.model.OSMData.class);
-            for (int i = 0; i < OSMData.getOSM().getNode().size(); i++) {
-                mNodeHashMap.put(OSMData.getOSM().getNode().get(i).getID(), OSMData.getOSM().getNode().get(i));
-            }
-            for (int i = 0; i < OSMData.getOSM().getWay().size(); i++) {
-                if (i % 2 == 0) {
-                    mWayListEven.add(OSMData.getOSM().getWay().get(i));
-                } else {
-                    mWayListOdd.add(OSMData.getOSM().getWay().get(i));
-                }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-*/
-
     @Override
     public void showLoader() {
         mProgressBar.setVisibility(View.VISIBLE);
@@ -496,7 +471,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
 
     }
-
 
     @OnClick(R.id.image_info)
     public void onInfo() {

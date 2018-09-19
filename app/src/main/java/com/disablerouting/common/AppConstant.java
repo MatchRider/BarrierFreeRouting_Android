@@ -9,10 +9,6 @@ public interface AppConstant {
     int REQUEST_CODE_SCREEN = 204;
     int REQUEST_CODE_UPDATE_MAP_DATA = 205;
 
-
-    String ERROR_LOCATION_NOT_FOUND = "Location not found";
-    String CHANGE_SET_ID = "ChangeSetId";
-    String FEED_BACK_MODEL = "feedBackModel";
     String IS_FILTER = "isFilter";
     String DATA_FILTER= "data_filter";
     String DATA_FILTER_SELECTED= "data_filter_selected";
@@ -27,7 +23,6 @@ public interface AppConstant {
     String PROFILE_DRIVING_CAR="driving-car";
     String PROFILE_WHEEL_CHAIR="wheelchair";
 
-    String STARTED_FROM_SUGGESTION = "startedFromSuggestion";
     String POSITION_SETTING="position";
     String TITLE_TEXT="title";
     String SETTING_ITEM_SELECTED_RECIEVE ="selected";
