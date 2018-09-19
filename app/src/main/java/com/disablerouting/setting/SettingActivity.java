@@ -158,7 +158,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private ArrayList<String> prepareListData() {
         ArrayList<String> stringArrayList = new ArrayList<>();
         stringArrayList.add(getString(R.string.surface_type));
-        stringArrayList.add(getString(R.string.maximum_sloped));
+       // stringArrayList.add(getString(R.string.maximum_sloped));
         stringArrayList.add(getString(R.string.maximum_incline));
         stringArrayList.add(getString(R.string.sidewalk_width));
         return stringArrayList;
