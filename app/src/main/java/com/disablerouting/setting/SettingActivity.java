@@ -55,8 +55,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private AsyncTaskOsmApi asyncTaskOsmApi;
     private int mPositionClicked = -1;
     private List<NodeReference> mNodeList;
-    private String mValueFootWay= "";
-    private String mValueHighWay= "";
+    private String mValueFootWay = "";
+    private String mValueHighWay = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
 
-        if(Utility.isOnline(this)) {
+        if (Utility.isOnline(this)) {
             callToGetChangeSet();
         }
         mISettingScreenPresenter = new SettingScreenPresenter(this, new UpdateWayManager(), new ValidateWayManager());
@@ -158,7 +158,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private ArrayList<String> prepareListData() {
         ArrayList<String> stringArrayList = new ArrayList<>();
         stringArrayList.add(getString(R.string.surface_type));
-       // stringArrayList.add(getString(R.string.maximum_sloped));
+        // stringArrayList.add(getString(R.string.maximum_sloped));
         stringArrayList.add(getString(R.string.maximum_incline));
         stringArrayList.add(getString(R.string.sidewalk_width));
         return stringArrayList;
@@ -175,7 +175,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (mListWayData != null) {
             boolean isValid = Boolean.parseBoolean(mListWayData.getIsValid());
             if (!isValid) {
-                if(Utility.isOnline(this)) {
+                if (Utility.isOnline(this)) {
                     callToGetWay();
                 }
             } else {
@@ -245,10 +245,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 case AppConstant.KEY_WIDTH:
                     Attributes attributesWidth = new Attributes();
                     attributesWidth.setKey(mListWayData.getAttributesList().get(i).getKey());
-                    if(!mListWayData.getAttributesList().get(i).getValue().contains(",")) {
+                    if (!mListWayData.getAttributesList().get(i).getValue().contains(",")) {
                         String stringValue = Utility.trimTWoDecimalPlaces(Double.parseDouble(mListWayData.getAttributesList().get(i).getValue()));
                         attributesWidth.setValue(Utility.changeDotToComma(stringValue));
-                    }else {
+                    } else {
                         attributesWidth.setValue(mListWayData.getAttributesList().get(i).getValue());
 
                     }
@@ -278,7 +278,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         wayDataValidate.setVersion(versionString);
         List<AttributesValidate> attributesValidateList = new ArrayList<>();
         AttributesValidate attributesValidate = null;
-        if(!mValueFootWay.isEmpty()) {
+        if (!mValueFootWay.isEmpty()) {
             if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
                 attributesValidate = new AttributesValidate();
                 attributesValidate.setKey(AppConstant.KEY_FOOTWAY);
@@ -291,7 +291,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 attributesValidateList.add(attributesValidate);
             }
         }
-        if(!mValueHighWay.isEmpty()) {
+        if (!mValueHighWay.isEmpty()) {
             if (mHashMapWay.get(1) != null && !mHashMapWay.get(1).getKey().isEmpty()) {
                 attributesValidate = new AttributesValidate();
                 attributesValidate.setKey(AppConstant.KEY_HIGHWAY);
@@ -332,7 +332,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (responseUpdate.isStatus()) {
             boolean isAllValid = true;
             List<ListWayData> listWayDataList = WayDataPreference.getInstance(this).getNotValidatedWayData();
-            ArrayList<ListWayData> listNotValidated=null;
+            ArrayList<ListWayData> listNotValidated = null;
             for (int i = 0; i < listWayDataList.size(); i++) {
                 if (mListWayData.getId().equals(listWayDataList.get(i).getId())) {
                     List<Attributes> attributesList = listWayDataList.get(i).getAttributesList();

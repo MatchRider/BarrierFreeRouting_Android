@@ -97,7 +97,7 @@
 
     <string name="string_one_point_two">1,2</string>
     <string name="string_two_point_four">2,4</string>
-    <string name="string_two_point_four_greater"><![CDATA[> 2.4]]></string>
+    <string name="string_two_point_four_greater"><![CDATA[> 2,4]]></string>
 
     <string name="value_string_one_point_two">1.2</string>
     <string name="value_string_two_point_four">2.4</string>
