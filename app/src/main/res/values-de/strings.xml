@@ -76,7 +76,7 @@
     <string name="asphalt_filter">Asphaltiert oder Beton</string>
     <string name="paving_stones_filter">Pflastersteine oder besser</string>
     <string name="cobblestone_filter">Kopfsteinpflaster oder besser</string>
-    <string name="grass_paver_filter">Schotter oder besser</string>
+    <string name="compacted_filter">Schotter oder besser</string>
     <string name="all_filter">Alle Oberflächen</string>
 
     <string name="zero">0</string>

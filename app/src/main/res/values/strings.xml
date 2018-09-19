@@ -85,7 +85,7 @@
     <string name="asphalt_filter">Asphalt/Concrete</string>
     <string name="paving_stones_filter">Paving Stones or better</string>
     <string name="cobblestone_filter">Cobblestone or better</string>
-    <string name="grass_paver_filter">Compacted</string>
+    <string name="compacted_filter">Compacted</string>
     <string name="all_filter">All traversable surfaces</string>
 
 

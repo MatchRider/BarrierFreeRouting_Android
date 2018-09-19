@@ -307,7 +307,7 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.asphalt_filter)));
         surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.paving_stones_filter)));
         surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.cobblestone_filter)));
-        surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.grass_paver_filter)));
+        surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.compacted_filter)));
         surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.all_filter)));
 
         List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<DataModelExpandableList>();

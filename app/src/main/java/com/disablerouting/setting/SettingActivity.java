@@ -31,10 +31,7 @@ import com.github.scribejava.core.model.Verb;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SettingActivity extends BaseActivityImpl implements SettingAdapterListener, ISettingView,
         IAysncTaskOsm {
@@ -335,6 +332,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (responseUpdate.isStatus()) {
             boolean isAllValid = true;
             List<ListWayData> listWayDataList = WayDataPreference.getInstance(this).getNotValidatedWayData();
+            ArrayList<ListWayData> listNotValidated=null;
             for (int i = 0; i < listWayDataList.size(); i++) {
                 if (mListWayData.getId().equals(listWayDataList.get(i).getId())) {
                     List<Attributes> attributesList = listWayDataList.get(i).getAttributesList();
@@ -358,13 +356,17 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         listWayDataList.get(i).setIsValid("true");
                         //Remove from not validated data and put in validated list
                         List<ListWayData> listWayDataValidated = WayDataPreference.getInstance(this).getValidateWayData();
-                        listWayDataValidated.add(listWayDataList.get(i));
-                        WayDataPreference.getInstance(this).saveValidateWayData(listWayDataValidated);
-                        listWayDataList.remove(i);
+                        ArrayList<ListWayData> listValidated = new ArrayList<ListWayData>(listWayDataValidated);
+
+                        listValidated.add(listWayDataList.get(i));
+                        WayDataPreference.getInstance(this).saveValidateWayData(listValidated);
+                        listNotValidated = new ArrayList<ListWayData>(listWayDataList);
+                        listNotValidated.remove(i);
+                        break;
                     }
                 }
             }
-            WayDataPreference.getInstance(this).saveNotValidatedWayData(listWayDataList);
+            WayDataPreference.getInstance(this).saveNotValidatedWayData(listNotValidated);
             setResult(RESULT_OK);
             Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
             finish();
