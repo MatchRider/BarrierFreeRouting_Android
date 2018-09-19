@@ -38,10 +38,7 @@ import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.Polyline;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDestinationListener, IRouteView {
 
@@ -296,10 +293,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (requestCode == AppConstant.REQUEST_CODE_UPDATE_MAP_DATA) {
             if (resultCode == Activity.RESULT_OK) {
                 if (WayDataPreference.getInstance(this)!=null) {
-                    mWayListNotValidatedData.clear();
-                    mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayData();
-                    mWayListValidatedData.clear();
-                    mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayData();
+                    mWayListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidatedWayData());
+                    mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayData());
                     onToggleClickedBanner(false);
                 }
             }

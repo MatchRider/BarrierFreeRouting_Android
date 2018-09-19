@@ -58,6 +58,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private AsyncTaskOsmApi asyncTaskOsmApi;
     private int mPositionClicked = -1;
     private List<NodeReference> mNodeList;
+    private String mValueFootWay= "";
+    private String mValueHighWay= "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,22 +237,24 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     mHashMapWay.put(2, attributesIncline);
                     break;
 
-               /* case AppConstant.KEY_FOOTWAY:
-                    Attributes attributesFootway= new Attributes();
-                    attributesFootway.setKey(AppConstant.KEY_FOOTWAY);
-                    mHashMapWay.put(0, attributesFootway);
+                case AppConstant.KEY_FOOTWAY:
+                    mValueFootWay = mListWayData.getAttributesList().get(i).getValue();
                     break;
 
                 case AppConstant.KEY_HIGHWAY:
-                    Attributes attributesHighway= new Attributes();
-                    attributesHighway.setKey(AppConstant.KEY_HIGHWAY);
-                    mHashMapWay.put(1, attributesHighway);
-                    break;*/
+                    mValueHighWay = mListWayData.getAttributesList().get(i).getValue();
+                    break;
 
                 case AppConstant.KEY_WIDTH:
                     Attributes attributesWidth = new Attributes();
                     attributesWidth.setKey(mListWayData.getAttributesList().get(i).getKey());
-                    attributesWidth.setValue(Utility.changeDotToComma(mListWayData.getAttributesList().get(i).getValue()));
+                    if(!mListWayData.getAttributesList().get(i).getValue().contains(",")) {
+                        String stringValue = Utility.trimTWoDecimalPlaces(Double.parseDouble(mListWayData.getAttributesList().get(i).getValue()));
+                        attributesWidth.setValue(Utility.changeDotToComma(stringValue));
+                    }else {
+                        attributesWidth.setValue(mListWayData.getAttributesList().get(i).getValue());
+
+                    }
                     attributesWidth.setValid(mListWayData.getAttributesList().get(i).isValid());
                     mHashMapWay.put(3, attributesWidth);
                     break;
@@ -277,25 +281,29 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         wayDataValidate.setVersion(versionString);
         List<AttributesValidate> attributesValidateList = new ArrayList<>();
         AttributesValidate attributesValidate = null;
-        if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
-            attributesValidate = new AttributesValidate();
-            attributesValidate.setKey(AppConstant.KEY_FOOTWAY);
-            if (mHashMapWay.get(0) != null && mHashMapWay.get(0).getValue() != null) {
-                attributesValidate.setValue(mHashMapWay.get(0).getValue());
+        if(!mValueFootWay.isEmpty()) {
+            if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
+                attributesValidate = new AttributesValidate();
+                attributesValidate.setKey(AppConstant.KEY_FOOTWAY);
+                if (mValueFootWay != null) {
+                    attributesValidate.setValue(mValueFootWay);
+                }
+                if (mHashMapWay.get(0) != null && mHashMapWay.get(0).getKey() != null) {
+                    attributesValidate.setValid(false);
+                }
+                attributesValidateList.add(attributesValidate);
             }
-            if (mHashMapWay.get(0) != null && mHashMapWay.get(0).getKey() != null) {
-                attributesValidate.setValid(false);
-            }
-            attributesValidateList.add(attributesValidate);
         }
-        if (mHashMapWay.get(1) != null && !mHashMapWay.get(1).getKey().isEmpty()) {
-            attributesValidate = new AttributesValidate();
-            attributesValidate.setKey(AppConstant.KEY_HIGHWAY);
-            if (mHashMapWay.get(1) != null && mHashMapWay.get(1).getValue() != null) {
-                attributesValidate.setValue(mHashMapWay.get(1).getValue());
+        if(!mValueHighWay.isEmpty()) {
+            if (mHashMapWay.get(1) != null && !mHashMapWay.get(1).getKey().isEmpty()) {
+                attributesValidate = new AttributesValidate();
+                attributesValidate.setKey(AppConstant.KEY_HIGHWAY);
+                if (mValueHighWay != null) {
+                    attributesValidate.setValue(mValueHighWay);
+                }
+                attributesValidate.setValid(false);
+                attributesValidateList.add(attributesValidate);
             }
-            attributesValidate.setValid(false);
-            attributesValidateList.add(attributesValidate);
         }
         if (mHashMapWay.get(2) != null && !mHashMapWay.get(2).getKey().isEmpty()) {
             attributesValidate = new AttributesValidate();
@@ -318,6 +326,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         }
         wayDataValidate.setAttributesValidate(attributesValidateList);
         requestWayInfo.setWayDataValidates(wayDataValidate);
+        requestWayInfo.setModifiedByUser("shubham.sahgal@daffodilsw.com");
         mISettingScreenPresenter.onUpdate(requestWayInfo);
     }
 

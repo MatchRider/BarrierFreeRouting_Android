@@ -20,6 +20,9 @@ public class Error implements Parcelable {
     private
     boolean mIsError;
 
+    public Error() {
+    }
+
     protected Error(Parcel in) {
         mCode = in.readString();
         mMessage = in.readString();

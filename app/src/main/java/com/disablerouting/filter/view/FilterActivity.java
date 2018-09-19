@@ -259,7 +259,6 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         mListDataHeaderKeyForFilter.add("maximum_incline");
         mListDataHeaderKeyForFilter.add("width");
 
-
         List<DataModelExpandableList> surfaceTypeData = new ArrayList<>();
         surfaceTypeData.add(new DataModelExpandableList(getString(R.string.asphalt)));
         surfaceTypeData.add(new DataModelExpandableList(getString(R.string.concrete)));
@@ -267,7 +266,7 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         surfaceTypeData.add(new DataModelExpandableList(getString(R.string.cobblestone)));
         surfaceTypeData.add(new DataModelExpandableList(getString(R.string.compacted)));
 
-        List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<DataModelExpandableList>();
+        List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<>();
         maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.zero)));
         maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.value_string_one_point_two)));
         maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.value_string_two_point_four)));

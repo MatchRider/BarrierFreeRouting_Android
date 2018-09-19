@@ -11,11 +11,18 @@ public class RequestWayInfo {
     private
     RequestWayData mWayDataValidates;
 
-    public RequestWayData getWayDataValidates() {
-        return mWayDataValidates;
+    @JsonProperty("ModifiedByUser")
+    private
+    String mModifiedByUser;
+
+    public RequestWayInfo() {
     }
 
     public void setWayDataValidates(RequestWayData wayDataValidates) {
         mWayDataValidates = wayDataValidates;
+    }
+
+    public void setModifiedByUser(String modifiedByUser) {
+        mModifiedByUser = modifiedByUser;
     }
 }

@@ -29,6 +29,9 @@ public class RequestWayData {
     private
     List<AttributesValidate> mAttributesValidate;
 
+    public RequestWayData() {
+    }
+
     public String getId() {
         return mId;
     }
