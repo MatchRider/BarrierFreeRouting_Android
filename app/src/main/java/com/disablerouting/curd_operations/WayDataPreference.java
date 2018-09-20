@@ -18,6 +18,9 @@ public class WayDataPreference {
     private SharedPreferences.Editor editor;
     private String DataKeyValidated = "ListWayValidated";
     private String DataKeyNotValidated = "ListWayNotValidated";
+    private String DataKeyValidatedNode = "ListWayValidatedNode";
+    private String DataKeyNotValidatedNode = "ListWayNotValidatedNode";
+
     private static WayDataPreference sInstance;
 
     private WayDataPreference(SharedPreferences mPreferences) {
@@ -105,6 +108,78 @@ public class WayDataPreference {
                 e.printStackTrace();
             }
            
+        } else {
+            try {
+                return new ArrayList<ListWayData>();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return listWayDataList;
+    }
+    //add data
+    public void saveValidateDataNode(List<ListWayData> listWayData) {
+        Gson gson = new Gson();
+        String jsonValidated = gson.toJson(listWayData);
+        editor.putString(DataKeyValidatedNode, jsonValidated);
+        editor.commit();
+    }
+
+    //get data
+    public List<ListWayData> getValidateDataNode() {
+        List<ListWayData> listWayDataList = null;
+        if (preferences.contains(DataKeyValidatedNode)) {
+            String jsonValidated = preferences.getString(DataKeyValidatedNode, null);
+            Gson gson = new Gson();
+            ListWayData[] listWayData;
+            try {
+                if (!TextUtils.isEmpty(jsonValidated)) {
+                    listWayData = gson.fromJson(jsonValidated,
+                            ListWayData[].class);
+                    listWayDataList = Arrays.asList(listWayData);
+                } else {
+                    listWayDataList = new ArrayList<>();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                return new ArrayList<ListWayData>();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return listWayDataList;
+    }
+    //add data
+    public void saveNotValidateDataNode(List<ListWayData> listWayData) {
+        Gson gson = new Gson();
+        String jsonValidated = gson.toJson(listWayData);
+        editor.putString(DataKeyNotValidatedNode, jsonValidated);
+        editor.commit();
+    }
+
+    //get data
+    public List<ListWayData> getNotValidateDataNode() {
+        List<ListWayData> listWayDataList = null;
+        if (preferences.contains(DataKeyNotValidatedNode)) {
+            String jsonValidated = preferences.getString(DataKeyNotValidatedNode, null);
+            Gson gson = new Gson();
+            ListWayData[] listWayData;
+            try {
+                if (!TextUtils.isEmpty(jsonValidated)) {
+                    listWayData = gson.fromJson(jsonValidated,
+                            ListWayData[].class);
+                    listWayDataList = Arrays.asList(listWayData);
+                } else {
+                    listWayDataList = new ArrayList<>();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         } else {
             try {
                 return new ArrayList<ListWayData>();

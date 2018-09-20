@@ -23,6 +23,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 import com.disablerouting.R;
 import com.disablerouting.application.AppData;
 import com.disablerouting.base.BaseActivityImpl;
@@ -89,6 +90,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private int colorIndex = 0;
     private int previousColor = 0;
     private AlertDialog mAlertDialogEnhance;
+
 
     //Runnable marker data
     //private int mPolylineIndex = -1;
@@ -712,6 +714,32 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     }
 
+    public void addNodeForWays(ListWayData listWayData) {
+        for (int i = 0; i < listWayData.getNodeReference().size(); i++) {
+            if(listWayData.getNodeReference().get(i).getAttributes().size()>0) {
+                for (int j = 0; j < listWayData.getNodeReference().get(i).getAttributes().size(); j++) {
+                        Marker mNodeMarker = new Marker(mMapView);
+                        if (mMapView != null) {
+                            GeoPoint geoPoint = new GeoPoint(Double.parseDouble(listWayData.getNodeReference().get(i).getLat()),
+                                    Double.parseDouble(listWayData.getNodeReference().get(i).getLon()));
+                            mNodeMarker.setPosition(geoPoint);
+                            mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                            mMapView.getOverlays().add(mNodeMarker);
+                            mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_pin));
+                            mNodeMarker.setTitle(listWayData.getNodeReference().get(i).getAttributes().get(j).getValue());
+                            mNodeMarker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+                                @Override
+                                public boolean onMarkerClick(Marker marker, MapView mapView) {
+                                    Toast.makeText(MapBaseActivity.this, "Coming", Toast.LENGTH_SHORT).show();
+                                    return false;
+                                }
+                            });
+                        }
+                }
+            }
+        }
+    }
+
     public void checkForWay(Polyline polyline, ListWayData way, boolean valid) {
     }
         /*protected Runnable updateMarker = new Runnable() {
@@ -769,7 +797,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         Button btnYes = (Button) customView.findViewById(R.id.btn_yes);
         builder.setView(customView);
 
-        if(mAlertDialogEnhance!=null && mAlertDialogEnhance.isShowing()){
+        if (mAlertDialogEnhance != null && mAlertDialogEnhance.isShowing()) {
             mAlertDialogEnhance.dismiss();
         }
         mAlertDialogEnhance = builder.create();
@@ -806,8 +834,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         });
     }
 
-    public void setZoomMap(){
-        if(mMapView!=null) {
+    public void setZoomMap() {
+        if (mMapView != null) {
             MapController myMapController = (MapController) mMapView.getController();
             myMapController.setZoom(16);
         }

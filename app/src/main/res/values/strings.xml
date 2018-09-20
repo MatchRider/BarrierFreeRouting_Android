@@ -203,5 +203,7 @@
     <string name="please_wait">Please Wait…</string>
     <string name="logout">Logout</string>
     <string name="confirm_logout_message">Are you sure you want to logout?</string>
+    <string name="ways">Ways</string>
+    <string name="nodes">Nodes</string>
 
 </resources>

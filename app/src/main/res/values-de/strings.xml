@@ -185,6 +185,8 @@
     <string name="please_wait">Bitte warten…</string>
     <string name="logout">Ausloggen</string>
     <string name="confirm_logout_message">Möchten Sie sich wirklich abmelden?</string>
+    <string name="ways">Ways</string>
+    <string name="nodes">Nodes</string>
 
 
 </resources>

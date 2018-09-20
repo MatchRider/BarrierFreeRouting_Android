@@ -42,6 +42,7 @@ public class BaseActivityImpl extends AppCompatActivity implements UIBase, Netwo
         mNetworkReceiver = new NetworkChangeReceiver();
         registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
+
     }
 
     @Override

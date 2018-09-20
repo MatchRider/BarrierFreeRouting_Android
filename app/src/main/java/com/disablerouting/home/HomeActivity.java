@@ -59,6 +59,8 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
     private boolean slideState = false;
     private List<ListWayData> mWayListValidatedData = new ArrayList<>();
     private List<ListWayData> mWayListNotValidatedData = new ArrayList<>();
+    private List<ListWayData> mNodeListValidatedData = new ArrayList<>();
+    private List<ListWayData> mNodeListNotValidatedData = new ArrayList<>();
 
     final String[] locationPermissions = new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
             android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -283,10 +285,28 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
                     } else {
                         mWayListNotValidatedData.add(responseWay.getWayData().get(i));
                     }
+
+                    for (int j=0;j<responseWay.getWayData().get(i).getNodeReference().size();j++){
+                        if(responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes()!=null) {
+                            for (int k = 0; k < responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().size(); k++) {
+                                if (responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().size() > 0) {
+                                    if (!responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().get(k).isValid()) {
+                                        mNodeListNotValidatedData.add(responseWay.getWayData().get(i));
+                                    } else {
+                                        mNodeListValidatedData.add(responseWay.getWayData().get(i));
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                 }
                 if (WayDataPreference.getInstance(this) != null) {
                     WayDataPreference.getInstance(this).saveValidateWayData(mWayListValidatedData);
                     WayDataPreference.getInstance(this).saveNotValidatedWayData(mWayListNotValidatedData);
+                    WayDataPreference.getInstance(this).saveValidateDataNode(mNodeListValidatedData);
+                    WayDataPreference.getInstance(this).saveNotValidateDataNode(mNodeListNotValidatedData);
+
                 }
             }
             else {
