@@ -718,6 +718,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         for (int i = 0; i < listWayData.getNodeReference().size(); i++) {
             if(listWayData.getNodeReference().get(i).getAttributes().size()>0) {
                 for (int j = 0; j < listWayData.getNodeReference().get(i).getAttributes().size(); j++) {
+
+                    if(listWayData.getNodeReference().get(i).getAttributes().get(j).getKey().equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
                         Marker mNodeMarker = new Marker(mMapView);
                         if (mMapView != null) {
                             GeoPoint geoPoint = new GeoPoint(Double.parseDouble(listWayData.getNodeReference().get(i).getLat()),
@@ -735,6 +737,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                                 }
                             });
                         }
+                    }
                 }
             }
         }
