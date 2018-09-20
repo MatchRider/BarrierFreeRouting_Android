@@ -66,7 +66,7 @@
     <string name="error_source_destination_same">Please select different source and destination
     </string>
     <string name="surface_type">Surface Type</string>
-    <string name="maximum_sloped">Maximum Sloped Curb (inches)</string>
+    <string name="maximum_sloped">Maximum sloped curb (inches)</string>
     <string name="maximum_incline">Maximum Incline (%)</string>
     <string name="sidewalk_width">Walkway width (inches)</string>
     <string name="permanent_obstacle">Permanent Obstacle</string>
@@ -82,8 +82,8 @@
 
     <string name="walk_way_width">Walkway width (inches)</string>
 
-    <string name="asphalt_filter">Asphalt/Concrete</string>
-    <string name="paving_stones_filter">Paving Stones or better</string>
+    <string name="asphalt_filter">Asphalt or Concrete</string>
+    <string name="paving_stones_filter">Paving stones or better</string>
     <string name="cobblestone_filter">Cobblestone or better</string>
     <string name="compacted_filter">Compacted</string>
     <string name="all_filter">All traversable surfaces</string>
@@ -95,9 +95,9 @@
     <string name="up_to_ten">Up to 10</string>
     <string name="greater_ten"><![CDATA[> 10]]></string>
 
-    <string name="string_one_point_two">1,2</string>
-    <string name="string_two_point_four">2,4</string>
-    <string name="string_two_point_four_greater"><![CDATA[> 2,4]]></string>
+    <string name="string_one_point_two">1.2</string>
+    <string name="string_two_point_four">2.4</string>
+    <string name="string_two_point_four_greater"><![CDATA[> 2.4]]></string>
 
     <string name="value_string_one_point_two">1.2</string>
     <string name="value_string_two_point_four">2.4</string>
