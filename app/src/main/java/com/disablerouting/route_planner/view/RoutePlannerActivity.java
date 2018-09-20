@@ -431,10 +431,12 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         clearItemsFromMap();
         if (!isChecked) {
             mButtonSelected = 1;
+            setZoomMap();
             PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
             mPlotWayDataTaskNotValidated.execute();
         } else {
             mButtonSelected = 2;
+            setZoomMap();
             PlotWayDataTask mPlotWayDataTaskValidated = new PlotWayDataTask();
             mPlotWayDataTaskValidated.execute();
         }
@@ -455,6 +457,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mButtonGo.setVisibility(View.GONE);
                 mImageViewInfo.setVisibility(View.GONE);
                 clearItemsFromMap();
+                setZoomMap();
                 PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
                 mPlotWayDataTaskNotValidated.execute();
             } else {

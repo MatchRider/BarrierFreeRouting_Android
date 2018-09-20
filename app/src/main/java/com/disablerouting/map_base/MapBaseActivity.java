@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBox;
@@ -132,7 +133,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      */
     protected void initializeMap() {
         mMapView = findViewById(com.disablerouting.R.id.map_view);
-        mMapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
+        Configuration.getInstance().setUserAgentValue(getPackageName());
+        mMapView.setTileSource(TileSourceFactory.MAPNIK);
         mMapView.setBuiltInZoomControls(true);
         mMapView.setMultiTouchControls(true);
 
@@ -189,7 +191,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 geoPointArrayList.add(geoPoint);
             }
             addPolyLine(geoPointArrayList, stepsList);
-            if (geoPointArrayList != null && geoPointArrayList.size() != 0) {
+            if (geoPointArrayList.size() != 0) {
                 geoPointStart = geoPointArrayList.get(0);
                 geoPointEnd = geoPointArrayList.get(geoPointArrayList.size() - 1);
                 addMarkers(geoPointStart, startAdd, geoPointEnd, endAdd);
@@ -308,7 +310,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             mCurrentMarker.setIcon(getResources().getDrawable(R.drawable.ic_current_loc));
             mCurrentMarker.setTitle("Your Current location");
             MapController myMapController = (MapController) mMapView.getController();
-            myMapController.setZoom(12);
+            myMapController.setZoom(14);
             myMapController.setCenter(currentGeoPoints);
         }
 
@@ -326,7 +328,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
         if (mMapView != null) {
             MapController myMapController = (MapController) mMapView.getController();
-            myMapController.setZoom(10);
+            myMapController.setZoom(14);
             myMapController.setCenter(start);
 
             if (start != null) {
@@ -802,6 +804,13 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mAlertDialogEnhance.dismiss();
             }
         });
+    }
+
+    public void setZoomMap(){
+        if(mMapView!=null) {
+            MapController myMapController = (MapController) mMapView.getController();
+            myMapController.setZoom(16);
+        }
     }
 
 }
