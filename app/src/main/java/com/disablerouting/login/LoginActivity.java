@@ -58,11 +58,7 @@ public class LoginActivity extends BaseActivityImpl  {
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (IOException | InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         }
@@ -90,11 +86,7 @@ public class LoginActivity extends BaseActivityImpl  {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(authUrl));
                 startActivity(intent);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (IOException | InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
             return "Executed!";
