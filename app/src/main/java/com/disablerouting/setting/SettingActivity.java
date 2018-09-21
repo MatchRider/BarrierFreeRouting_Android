@@ -61,6 +61,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private String mValueFootWay = "";
     private String mValueHighWay = "";
     private boolean mIsForWAY = false;
+    private boolean isValidFORCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             } else {
                 mNodeReference = getIntent().getParcelableExtra(AppConstant.WAY_DATA);
                 if (mNodeReference != null) {
+                    isValidFORCall = mNodeReference.getAttributes().get(0).isValid();
                     mNodeID = mNodeReference.getId();
                     getDataFromWay();
                     setUpRecyclerView();
@@ -245,8 +247,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 }
             }
         } else {
-            boolean isValid = mNodeReference.getAttributes().get(0).isValid();
-            if(!isValid) {
+            if(!isValidFORCall) {
                 if (Utility.isOnline(this)) {
                     callToGetWay();
                 }

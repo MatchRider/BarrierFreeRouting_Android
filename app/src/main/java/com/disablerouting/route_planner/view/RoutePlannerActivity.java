@@ -87,7 +87,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private List<ListWayData> mWayListNotValidatedData = new ArrayList<>();
     private List<NodeReference> mNodeListValidatedData = new ArrayList<>();
     private List<NodeReference> mNodeListNotValidatedData = new ArrayList<>();
-    private HashMap<Integer, List<Object>> mIntegerListHashMap= new HashMap<>();
+    private HashMap<Integer, List<Object>> mIntegerListHashMap = new HashMap<>();
 
     private int mButtonSelected = 1;
     private ProgressDialog pDialog;
@@ -390,18 +390,17 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         @Override
         protected void onPostExecute(CommonModel aVoid) {
             super.onPostExecute(aVoid);
-            List<ListWayData> listWayData=  aVoid.getListWayDataList();
-            List<NodeReference> nodeReferenceList=  aVoid.getNodeReferenceList();
-            if(listWayData!=null) {
-                if (listWayData.size() > 0) {
-                    setBoundingBox(listWayData.get(0).getGeoPoints().get(0), listWayData.get(listWayData.size() - 1).getGeoPoints().get(0));
-                }
-            }else {
-                GeoPoint geoPointStart= new GeoPoint(Double.parseDouble(nodeReferenceList.get(0).getLat()),
+            List<ListWayData> listWayData = aVoid.getListWayDataList();
+            List<NodeReference> nodeReferenceList = aVoid.getNodeReferenceList();
+            if (listWayData != null && listWayData.size() > 0) {
+                setBoundingBox(listWayData.get(0).getGeoPoints().get(0), listWayData.get(listWayData.size() - 1).getGeoPoints().get(0));
+            }
+            if (nodeReferenceList != null && nodeReferenceList.size() > 0) {
+                GeoPoint geoPointStart = new GeoPoint(Double.parseDouble(nodeReferenceList.get(0).getLat()),
                         Double.parseDouble(nodeReferenceList.get(0).getLon()));
-                GeoPoint geoPointEnd= new GeoPoint(Double.parseDouble(nodeReferenceList.get(nodeReferenceList.size()-1).getLat()),
-                        Double.parseDouble(nodeReferenceList.get(nodeReferenceList.size()-1).getLon()));
-                setBoundingBox(geoPointStart,geoPointEnd);
+                GeoPoint geoPointEnd = new GeoPoint(Double.parseDouble(nodeReferenceList.get(nodeReferenceList.size() - 1).getLat()),
+                        Double.parseDouble(nodeReferenceList.get(nodeReferenceList.size() - 1).getLon()));
+                setBoundingBox(geoPointStart, geoPointEnd);
             }
 
             pDialog.dismiss();
@@ -414,7 +413,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 addPolyLineForWays(model.getListWayData(), model.isValid());
             }
             if ((mTabSelected == 4 && mButtonSelected == 1) || (mTabSelected == 4 && mButtonSelected == 2)) {
-                addNodeForWays(model.getNodeReference(),model.isValid());
+                addNodeForWays(model.getNodeReference(), model.isValid());
             }
 
         }
@@ -423,7 +422,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         protected CommonModel doInBackground(Void... params) {
             try {
 
-                CommonModel commonModel= new CommonModel();
+                CommonModel commonModel = new CommonModel();
                 GeoPoint start;
                 List<ListWayData> listWayData = new ArrayList<>();
                 List<NodeReference> nodeReferenceList = new ArrayList<>();
@@ -441,7 +440,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
                                 final GeoPoint finalStart = start;
                                 publishProgress(new ProgressModel(finalStart,
-                                        mWayListNotValidatedData.get(i), false,null));
+                                        mWayListNotValidatedData.get(i), false, null));
 
                             }
                         }
@@ -459,39 +458,39 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
                                 final GeoPoint finalStart = start;
                                 publishProgress(new ProgressModel(finalStart,
-                                        mWayListValidatedData.get(i), true,null));
+                                        mWayListValidatedData.get(i), true, null));
 
                             }
                         }
                     }
                 }
-                    if (mTabSelected == 4) {
-                        if (mButtonSelected == 1) {
-                            //For Way Data Not validated
-                            nodeReferenceList.clear();
-                            nodeReferenceList = mNodeListNotValidatedData;
-                            if (mNodeListNotValidatedData.size() != 0) {
-                                for (int i = 0; i < mNodeListNotValidatedData.size(); i++) {
+                if (mTabSelected == 4) {
+                    if (mButtonSelected == 1) {
+                        //For Way Data Not validated
+                        nodeReferenceList.clear();
+                        nodeReferenceList = mNodeListNotValidatedData;
+                        if (mNodeListNotValidatedData.size() != 0) {
+                            for (int i = 0; i < mNodeListNotValidatedData.size(); i++) {
 
-                                    publishProgress(new ProgressModel(null,
-                                            null, false,mNodeListNotValidatedData.get(i)));
+                                publishProgress(new ProgressModel(null,
+                                        null, false, mNodeListNotValidatedData.get(i)));
 
-                                }
                             }
                         }
-                        if (mButtonSelected == 2) {
-                            //For Way Data Not validated
-                            nodeReferenceList.clear();
-                            nodeReferenceList = mNodeListValidatedData;
-                            if (mNodeListValidatedData.size() != 0) {
-                                for (int i = 0; i < mNodeListValidatedData.size(); i++) {
+                    }
+                    if (mButtonSelected == 2) {
+                        //For Way Data Not validated
+                        nodeReferenceList.clear();
+                        nodeReferenceList = mNodeListValidatedData;
+                        if (mNodeListValidatedData.size() != 0) {
+                            for (int i = 0; i < mNodeListValidatedData.size(); i++) {
 
-                                    publishProgress(new ProgressModel(null,
-                                            null, true,mNodeListValidatedData.get(i)));
+                                publishProgress(new ProgressModel(null,
+                                        null, true, mNodeListValidatedData.get(i)));
 
-                                }
                             }
                         }
+                    }
 
 
                 }
@@ -508,14 +507,14 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
     @Override
-    public void checkForWay(Polyline polyline, ListWayData way, boolean valid , boolean isForWay, NodeReference nodeReference) {
-        if(isForWay) {
+    public void checkForWay(Polyline polyline, ListWayData way, boolean valid, boolean isForWay, NodeReference nodeReference) {
+        if (isForWay) {
             Intent intent = new Intent(this, SettingActivity.class);
             intent.putExtra(AppConstant.WAY_DATA, way);
             intent.putExtra(AppConstant.IS_FOR_WAY, true);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intent, AppConstant.REQUEST_CODE_UPDATE_MAP_DATA);
-        }else {
+        } else {
             Intent intent = new Intent(this, SettingActivity.class);
             intent.putExtra(AppConstant.WAY_DATA, nodeReference);
             intent.putExtra(AppConstant.IS_FOR_WAY, false);
@@ -577,17 +576,17 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         } else {
             if (mSwitchCompatToogle.isChecked()) {
 
-                    mRadioGroup.setVisibility(View.VISIBLE);
-                    mSourceDestinationFragment.onToggleView(true);
-                    mButtonGo.setVisibility(View.GONE);
-                    mImageViewInfo.setVisibility(View.GONE);
-                    clearItemsFromMap();
-                if(mNodeListNotValidatedData.size()!=0) {
+                mRadioGroup.setVisibility(View.VISIBLE);
+                mSourceDestinationFragment.onToggleView(true);
+                mButtonGo.setVisibility(View.GONE);
+                mImageViewInfo.setVisibility(View.GONE);
+                clearItemsFromMap();
+                if (mNodeListNotValidatedData.size() != 0) {
                     hideLoader();
                     setZoomMap();
                     PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
                     mPlotWayDataTaskNotValidated.execute();
-                }else {
+                } else {
                     showLoader();
                 }
             } else {
