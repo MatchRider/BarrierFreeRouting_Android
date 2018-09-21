@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 public final class UserPreferences {
     private static final String PREFS_NAME = "ACCESS_TOKEN_OSM";
     private static final String ACCESS_TOKEN = "ACCESS_TOKEN";
+    private static final String ACCESS_USER_DETAIL = "USER_DETAIL";
     private static UserPreferences sInstance;
     private final SharedPreferences mPreferences;
 
@@ -33,6 +34,12 @@ public final class UserPreferences {
         mPreferences.edit().putString(ACCESS_TOKEN, token).apply();
     }
 
+    public void saveUSERID(String token) {
+        mPreferences.edit().putString(ACCESS_USER_DETAIL, token).apply();
+    }
+    public String getUserDetail() {
+        return mPreferences.getString(ACCESS_USER_DETAIL, null);
+    }
     /**
      * Get singleton instance.
      *
@@ -49,7 +56,8 @@ public final class UserPreferences {
     }
 
     public boolean isUserLoggedIn() {
-        return mPreferences!=null && mPreferences.getString(ACCESS_TOKEN,null) != null;
+        return mPreferences!=null && mPreferences.getString(ACCESS_TOKEN,null) != null
+                && mPreferences.getString(ACCESS_USER_DETAIL,null)!=null;
     }
     /**
      * {@inheritDoc}

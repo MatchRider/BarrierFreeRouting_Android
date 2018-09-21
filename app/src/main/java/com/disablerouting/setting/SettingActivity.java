@@ -23,6 +23,7 @@ import com.disablerouting.curd_operations.model.*;
 import com.disablerouting.login.AsyncTaskOsmApi;
 import com.disablerouting.login.IAysncTaskOsm;
 import com.disablerouting.login.OauthData;
+import com.disablerouting.login.UserPreferences;
 import com.disablerouting.setting.presenter.ISettingScreenPresenter;
 import com.disablerouting.setting.presenter.SettingScreenPresenter;
 import com.disablerouting.setting.setting_detail.SettingDetailActivity;
@@ -121,6 +122,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         }
 
     }
+
 
     /**
      * Api Call To UPDATE WAY DATA ON OSM SERVER
@@ -407,7 +409,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             }
             wayDataValidate.setAttributesValidate(attributesValidateList);
             requestWayInfo.setWayDataValidates(wayDataValidate);
-            requestWayInfo.setModifiedByUser("shubham.sahgal@daffodilsw.com");
+            if(UserPreferences.getInstance(this)!=null && UserPreferences.getInstance(this).getUserDetail()!=null) {
+                requestWayInfo.setModifiedByUser(UserPreferences.getInstance(this).getUserDetail());
+            }
             mISettingScreenPresenter.onUpdate(requestWayInfo);
         } else {
             RequestNodeInfo requestNodeInfo = new RequestNodeInfo();
@@ -425,7 +429,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             }
             nodeReference.setAttributes(attributesValidateList);
             requestNodeInfo.setNodeReference(nodeReference);
-            requestNodeInfo.setModifiedByUser("shubham.sahgal@daffodilsw.com");
+            if(UserPreferences.getInstance(this)!=null && UserPreferences.getInstance(this).getUserDetail()!=null) {
+                requestNodeInfo.setModifiedByUser(UserPreferences.getInstance(this).getUserDetail());
+            }
             mISettingScreenPresenter.onUpdateNode(requestNodeInfo);
 
         }
@@ -571,6 +577,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     }
                 });
             }
+
         }
 
     }

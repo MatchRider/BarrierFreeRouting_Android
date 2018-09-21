@@ -34,6 +34,7 @@ public interface AppConstant {
 
      String API_TYPE_CREATE_CHANGE_SET="createChangeSet";
      String API_TYPE_CREATE_PUT_WAY="wayUpdate";
+     String API_TYPE_GET_USER_DETAIL="getUserDetail";
 
      String KEY_FOOTWAY = "footway"; //footway surface
      String KEY_HIGHWAY = "highway"; //highway kerb
