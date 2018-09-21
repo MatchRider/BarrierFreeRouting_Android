@@ -90,6 +90,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private int colorIndex = 0;
     private int previousColor = 0;
     private AlertDialog mAlertDialogEnhance;
+    private Marker mPreviousNodeMarker;
 
 
     //Runnable marker data
@@ -299,6 +300,20 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         mMapView.invalidate();
     }
 
+    private void updateNodeUI(Marker marker, boolean valid) {
+
+        if (mPreviousNodeMarker != null) {
+            if (valid) {
+                mPreviousNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_pin_green));
+            } else {
+                mPreviousNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_pin_pink));
+
+            }
+        }
+        marker.setIcon(getResources().getDrawable(R.drawable.ic_pin_green));
+        mPreviousNodeMarker = marker;
+        mMapView.invalidate();
+    }
 
     /**
      * Add current location
@@ -714,12 +729,12 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     }
 
-    public void addNodeForWays(final NodeReference nodeReference ,boolean isValid) {
+    public void addNodeForWays(final NodeReference nodeReference , final boolean isValid) {
         for (int i = 0; i < nodeReference.getAttributes().size(); i++) {
             if(nodeReference.getAttributes().size()>0) {
                 for (int j = 0; j < nodeReference.getAttributes().size(); j++) {
                     if(nodeReference.getAttributes().get(j).getKey().equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
-                        Marker mNodeMarker = new Marker(mMapView);
+                        final Marker mNodeMarker = new Marker(mMapView);
                         if (mMapView != null) {
                             GeoPoint geoPoint = new GeoPoint(Double.parseDouble(nodeReference.getLat()),
                                     Double.parseDouble(nodeReference.getLon()));
@@ -735,6 +750,13 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                             mNodeMarker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
                                 @Override
                                 public boolean onMarkerClick(Marker marker, MapView mapView) {
+                                    GeoPoint geoPointStart= new GeoPoint(Double.parseDouble(nodeReference.getLat()),
+                                            Double.parseDouble(nodeReference.getLon()));
+                                    GeoPoint geoPointEnd= new GeoPoint(Double.parseDouble(nodeReference.getLat()),
+                                            Double.parseDouble(nodeReference.getLon()));
+                                    setBoundingBox(geoPointStart,geoPointEnd);
+
+                                    updateNodeUI(marker,isValid);
                                     showEnhanceDialog(null, true, null,false,nodeReference);
                                     return false;
                                 }
@@ -746,27 +768,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         }
     }
 
-    /**
-     * Update Polyline of ways
-     *
-     * @param polyline polyline
-     * @param valid    valid data or not
-     */
-    private void updateNodeUI(Polyline polyline, boolean valid) {
-        if (mPreviousPolyline != null) {
-            if (valid) {
-                mPreviousPolyline.setColor(getResources().getColor(R.color.colorGreen));
-            } else {
-                mPreviousPolyline.setColor(previousColor);
-            }
-            mPreviousPolyline.setWidth(10);
-        }
-        previousColor = polyline.getColor();
-        polyline.setColor(getResources().getColor(R.color.colorBrown));
-        polyline.setWidth(50);
-        mPreviousPolyline = polyline;
-        mMapView.invalidate();
-    }
+
+
 
     public void checkForWay(Polyline polyline, ListWayData way, boolean valid , boolean isForWay,NodeReference nodeReference) {
     }

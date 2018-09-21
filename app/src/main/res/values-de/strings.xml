@@ -175,8 +175,8 @@
     <string name="send">Absenden</string>
 
     <string name="log_in_with_osm">Bei OpenStreetMap einloggen</string>
-    <string name="validated">Validierte Wege</string>
-    <string name="not_validated">Nicht validierte Wege</string>
+    <string name="validated">Validierte</string>
+    <string name="not_validated">Nicht validierte</string>
     <string name="updated_info">Daten aktualisiert</string>
     <string name="updated_node_info">Updated Node Info</string>
     <string name="instructions_for_route">Wegführung</string>
@@ -186,8 +186,8 @@
     <string name="please_wait">Bitte warten…</string>
     <string name="logout">Ausloggen</string>
     <string name="confirm_logout_message">Möchten Sie sich wirklich abmelden?</string>
-    <string name="ways">Ways</string>
-    <string name="nodes">Nodes</string>
+    <string name="ways">Wege</string>
+    <string name="nodes">Knoten</string>
 
 
 </resources>
