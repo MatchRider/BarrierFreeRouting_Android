@@ -31,6 +31,7 @@ import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.WayDataPreference;
 import com.disablerouting.curd_operations.manager.ListGetWayManager;
 import com.disablerouting.curd_operations.model.ListWayData;
+import com.disablerouting.curd_operations.model.NodeReference;
 import com.disablerouting.curd_operations.model.ResponseListWay;
 import com.disablerouting.home.presenter.HomeScreenPresenter;
 import com.disablerouting.home.presenter.IHomeScreenPresenter;
@@ -40,6 +41,7 @@ import com.disablerouting.login.UserPreferences;
 import com.disablerouting.route_planner.view.RoutePlannerActivity;
 import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
 import com.disablerouting.utils.PermissionUtils;
+import com.disablerouting.utils.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,8 +61,8 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
     private boolean slideState = false;
     private List<ListWayData> mWayListValidatedData = new ArrayList<>();
     private List<ListWayData> mWayListNotValidatedData = new ArrayList<>();
-    private List<ListWayData> mNodeListValidatedData = new ArrayList<>();
-    private List<ListWayData> mNodeListNotValidatedData = new ArrayList<>();
+    private List<NodeReference> mNodeListValidatedData = new ArrayList<>();
+    private List<NodeReference> mNodeListNotValidatedData = new ArrayList<>();
 
     final String[] locationPermissions = new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
             android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -288,14 +290,22 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
 
                     for (int j=0;j<responseWay.getWayData().get(i).getNodeReference().size();j++){
                         if(responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes()!=null) {
+
                             for (int k = 0; k < responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().size(); k++) {
-                                if (responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().size() > 0) {
+
                                     if (!responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().get(k).isValid()) {
-                                        mNodeListNotValidatedData.add(responseWay.getWayData().get(i));
+                                        if(!Utility.isListContainId(mNodeListNotValidatedData,responseWay.getWayData().get(i).getNodeReference()
+                                                .get(j).getId())){
+                                            mNodeListNotValidatedData.add(responseWay.getWayData().get(i).getNodeReference().get(j));
+
+                                        }
                                     } else {
-                                        mNodeListValidatedData.add(responseWay.getWayData().get(i));
+                                        if(!Utility.isListContainId(mNodeListValidatedData,responseWay.getWayData().get(i).getNodeReference()
+                                                .get(j).getId())) {
+                                            mNodeListValidatedData.add(responseWay.getWayData().get(i).getNodeReference().get(j));
+                                        }
                                     }
-                                }
+
                             }
                         }
                     }

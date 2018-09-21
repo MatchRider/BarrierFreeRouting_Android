@@ -27,6 +27,7 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
     TextView mTxvTitle;
 
     private int mPositionOfTitle;
+    private boolean mIsForWAY = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +36,13 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
         ButterKnife.bind(this);
 
         if (getIntent().hasExtra(AppConstant.SETTING_ITEM_SELECTED_SEND)) {
+            mIsForWAY = getIntent().getBooleanExtra(AppConstant.IS_FOR_WAY, false);
             String titleToBeSet = getIntent().getStringExtra(AppConstant.SETTING_ITEM_SELECTED_SEND);
             mPositionOfTitle = getIntent().getIntExtra(AppConstant.POSITION_SETTING, -1);
             mTxvTitle.setVisibility(View.VISIBLE);
-            mTxvTitle.setText(String.format("%s%s", titleToBeSet+"\n", getString(R.string.please_choose)));
+            mTxvTitle.setText(String.format("%s%s", titleToBeSet + "\n", getString(R.string.please_choose)));
+            setUpRecyclerView(mPositionOfTitle);
         }
-        setUpRecyclerView(mPositionOfTitle);
     }
 
     /**
@@ -48,28 +50,38 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
      */
     private void setUpRecyclerView(int positionOfTitle) {
         SettingDetailAdapter settingDetailAdapter;
-        switch (positionOfTitle) {
-            case 0:
-                settingDetailAdapter = new SettingDetailAdapter(prepareListDataSurface(), this, true);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-                mRecyclerView.setAdapter(settingDetailAdapter);
-                break;
-            case 1:
-                settingDetailAdapter = new SettingDetailAdapter(prepareListDataMaxSlope(), this,false);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-                mRecyclerView.setAdapter(settingDetailAdapter);
-                break;
-            case 2:
-                settingDetailAdapter = new SettingDetailAdapter(prepareListDataMaxIncline(), this,false);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-                mRecyclerView.setAdapter(settingDetailAdapter);
-                break;
-            case 3:
-                settingDetailAdapter = new SettingDetailAdapter(prepareListDataSideWalk(), this,false);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-                mRecyclerView.setAdapter(settingDetailAdapter);
-                break;
+        if (mIsForWAY) {
+            switch (positionOfTitle) {
+                case 0:
+                    settingDetailAdapter = new SettingDetailAdapter(prepareListDataSurface(), this, true);
+                    mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                    mRecyclerView.setAdapter(settingDetailAdapter);
+                    break;
+                case 1:
+                    settingDetailAdapter = new SettingDetailAdapter(prepareListDataMaxSlope(), this, false);
+                    mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                    mRecyclerView.setAdapter(settingDetailAdapter);
+                    break;
+                case 2:
+                    settingDetailAdapter = new SettingDetailAdapter(prepareListDataMaxIncline(), this, false);
+                    mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                    mRecyclerView.setAdapter(settingDetailAdapter);
+                    break;
+                case 3:
+                    settingDetailAdapter = new SettingDetailAdapter(prepareListDataSideWalk(), this, false);
+                    mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                    mRecyclerView.setAdapter(settingDetailAdapter);
+                    break;
 
+            }
+        } else {
+            switch (positionOfTitle) {
+                case 0:
+                    settingDetailAdapter = new SettingDetailAdapter(prepareListDataMaxSlope(), this, false);
+                    mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                    mRecyclerView.setAdapter(settingDetailAdapter);
+                    break;
+            }
         }
     }
 
@@ -125,20 +137,28 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
 
     @Override
     public void onDetailItemClick(View v, int position) {
-        switch (mPositionOfTitle){
-            case 0:
-                setDataWhenFilterApplied(prepareListDataSurface().get(position), position);
-                break;
-            case 1:
-                setDataWhenFilterApplied(prepareListDataMaxSlope().get(position), position);
-                break;
-            case 2:
-                setDataWhenFilterApplied(prepareListDataMaxIncline().get(position), position);
-                break;
-            case 3:
-                setDataWhenFilterApplied(prepareListDataSideWalk().get(position), position);
-                break;
+        if (mIsForWAY) {
+            switch (mPositionOfTitle) {
+                case 0:
+                    setDataWhenFilterApplied(prepareListDataSurface().get(position), position);
+                    break;
+                case 1:
+                    setDataWhenFilterApplied(prepareListDataMaxSlope().get(position), position);
+                    break;
+                case 2:
+                    setDataWhenFilterApplied(prepareListDataMaxIncline().get(position), position);
+                    break;
+                case 3:
+                    setDataWhenFilterApplied(prepareListDataSideWalk().get(position), position);
+                    break;
 
+            }
+        } else {
+            switch (mPositionOfTitle) {
+                case 0:
+                    setDataWhenFilterApplied(prepareListDataMaxSlope().get(position), position);
+                    break;
+            }
         }
     }
 }

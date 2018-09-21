@@ -40,6 +40,8 @@ public interface AppConstant {
      String KEY_INCLINE = "incline";
      String KEY_WIDTH = "width";
      String KEY_KERB_HEIGHT = "kerb:height";
+     String IS_FOR_WAY= "is_for_way";
+
 
 
 }

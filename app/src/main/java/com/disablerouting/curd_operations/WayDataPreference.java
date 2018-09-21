@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 import com.disablerouting.curd_operations.model.ListWayData;
+import com.disablerouting.curd_operations.model.NodeReference;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -119,76 +120,76 @@ public class WayDataPreference {
         return listWayDataList;
     }
     //add data
-    public void saveValidateDataNode(List<ListWayData> listWayData) {
+    public void saveValidateDataNode(List<NodeReference> nodeReferences) {
         Gson gson = new Gson();
-        String jsonValidated = gson.toJson(listWayData);
+        String jsonValidated = gson.toJson(nodeReferences);
         editor.putString(DataKeyValidatedNode, jsonValidated);
         editor.commit();
     }
 
     //get data
-    public List<ListWayData> getValidateDataNode() {
-        List<ListWayData> listWayDataList = null;
+    public List<NodeReference> getValidateDataNode() {
+        List<NodeReference> nodeReferenceList = null;
         if (preferences.contains(DataKeyValidatedNode)) {
             String jsonValidated = preferences.getString(DataKeyValidatedNode, null);
             Gson gson = new Gson();
-            ListWayData[] listWayData;
+            NodeReference[] nodeReferences;
             try {
                 if (!TextUtils.isEmpty(jsonValidated)) {
-                    listWayData = gson.fromJson(jsonValidated,
-                            ListWayData[].class);
-                    listWayDataList = Arrays.asList(listWayData);
+                    nodeReferences = gson.fromJson(jsonValidated,
+                            NodeReference[].class);
+                    nodeReferenceList = Arrays.asList(nodeReferences);
                 } else {
-                    listWayDataList = new ArrayList<>();
+                    nodeReferenceList = new ArrayList<>();
                 }
             }catch (Exception e){
                 e.printStackTrace();
             }
         } else {
             try {
-                return new ArrayList<ListWayData>();
+                return new ArrayList<NodeReference>();
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
         }
-        return listWayDataList;
+        return nodeReferenceList;
     }
     //add data
-    public void saveNotValidateDataNode(List<ListWayData> listWayData) {
+    public void saveNotValidateDataNode(List<NodeReference> nodeReferences) {
         Gson gson = new Gson();
-        String jsonValidated = gson.toJson(listWayData);
-        editor.putString(DataKeyNotValidatedNode, jsonValidated);
+        String jsonNotValidated = gson.toJson(nodeReferences);
+        editor.putString(DataKeyNotValidatedNode, jsonNotValidated);
         editor.commit();
     }
 
     //get data
-    public List<ListWayData> getNotValidateDataNode() {
-        List<ListWayData> listWayDataList = null;
+    public List<NodeReference> getNotValidateDataNode() {
+        List<NodeReference> nodeReferenceList = null;
         if (preferences.contains(DataKeyNotValidatedNode)) {
             String jsonValidated = preferences.getString(DataKeyNotValidatedNode, null);
             Gson gson = new Gson();
-            ListWayData[] listWayData;
+            NodeReference[] nodeReferences;
             try {
                 if (!TextUtils.isEmpty(jsonValidated)) {
-                    listWayData = gson.fromJson(jsonValidated,
-                            ListWayData[].class);
-                    listWayDataList = Arrays.asList(listWayData);
+                    nodeReferences = gson.fromJson(jsonValidated,
+                            NodeReference[].class);
+                    nodeReferenceList = Arrays.asList(nodeReferences);
                 } else {
-                    listWayDataList = new ArrayList<>();
+                    nodeReferenceList = new ArrayList<>();
                 }
             }catch (Exception e){
                 e.printStackTrace();
             }
         } else {
             try {
-                return new ArrayList<ListWayData>();
+                return new ArrayList<NodeReference>();
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
         }
-        return listWayDataList;
+        return nodeReferenceList;
     }
 
     //clear data

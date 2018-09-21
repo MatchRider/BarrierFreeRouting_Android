@@ -32,13 +32,13 @@
                     android:layout_below="@id/contentContainer"
                     android:layout_marginTop="@dimen/margin_large"
                     android:layout_marginStart="@dimen/margin_normal"
-                    android:layout_marginEnd="@dimen/margin_normal"
                     android:layout_height="wrap_content">
         <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/radioGroup"
                 android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_toStartOf="@id/toggle_way"
                 android:orientation="horizontal"
                 android:layout_centerHorizontal="true">

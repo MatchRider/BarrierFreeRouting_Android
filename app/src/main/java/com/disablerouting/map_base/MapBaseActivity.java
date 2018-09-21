@@ -23,12 +23,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 import com.disablerouting.R;
 import com.disablerouting.application.AppData;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.model.ListWayData;
+import com.disablerouting.curd_operations.model.NodeReference;
 import com.disablerouting.route_planner.model.NodeItem;
 import com.disablerouting.route_planner.model.Steps;
 import com.disablerouting.utils.PermissionUtils;
@@ -705,7 +705,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 setBoundingBox(listWayData.getGeoPoints().get(0), listWayData.getGeoPoints().get(listWayData.getGeoPoints().size() - 1));
                 ListWayData relatedObject = (ListWayData) polyline.getRelatedObject();
                 updatePolylineUIWays(polyline, valid);
-                showEnhanceDialog(polyline, valid, relatedObject);
+                showEnhanceDialog(polyline, valid, relatedObject,true,null);
 
                 return false;
             }
@@ -714,25 +714,28 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     }
 
-    public void addNodeForWays(ListWayData listWayData) {
-        for (int i = 0; i < listWayData.getNodeReference().size(); i++) {
-            if(listWayData.getNodeReference().get(i).getAttributes().size()>0) {
-                for (int j = 0; j < listWayData.getNodeReference().get(i).getAttributes().size(); j++) {
-
-                    if(listWayData.getNodeReference().get(i).getAttributes().get(j).getKey().equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
+    public void addNodeForWays(final NodeReference nodeReference ,boolean isValid) {
+        for (int i = 0; i < nodeReference.getAttributes().size(); i++) {
+            if(nodeReference.getAttributes().size()>0) {
+                for (int j = 0; j < nodeReference.getAttributes().size(); j++) {
+                    if(nodeReference.getAttributes().get(j).getKey().equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
                         Marker mNodeMarker = new Marker(mMapView);
                         if (mMapView != null) {
-                            GeoPoint geoPoint = new GeoPoint(Double.parseDouble(listWayData.getNodeReference().get(i).getLat()),
-                                    Double.parseDouble(listWayData.getNodeReference().get(i).getLon()));
+                            GeoPoint geoPoint = new GeoPoint(Double.parseDouble(nodeReference.getLat()),
+                                    Double.parseDouble(nodeReference.getLon()));
                             mNodeMarker.setPosition(geoPoint);
                             mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                             mMapView.getOverlays().add(mNodeMarker);
-                            mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_pin));
-                            mNodeMarker.setTitle(listWayData.getNodeReference().get(i).getAttributes().get(j).getValue());
+                            if(isValid) {
+                                mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_pin_green));
+                            }else {
+                                mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_pin_pink));
+                            }
+                            mNodeMarker.setTitle(nodeReference.getAttributes().get(j).getValue());
                             mNodeMarker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
                                 @Override
                                 public boolean onMarkerClick(Marker marker, MapView mapView) {
-                                    Toast.makeText(MapBaseActivity.this, "Coming", Toast.LENGTH_SHORT).show();
+                                    showEnhanceDialog(null, true, null,false,nodeReference);
                                     return false;
                                 }
                             });
@@ -743,7 +746,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         }
     }
 
-    public void checkForWay(Polyline polyline, ListWayData way, boolean valid) {
+    public void checkForWay(Polyline polyline, ListWayData way, boolean valid , boolean isForWay,NodeReference nodeReference) {
     }
         /*protected Runnable updateMarker = new Runnable() {
         @Override
@@ -792,7 +795,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     }*/
 
 
-    private void showEnhanceDialog(final Polyline polyline, final boolean valid, final ListWayData listWayData) {
+    private void showEnhanceDialog(final Polyline polyline, final boolean valid, final ListWayData listWayData,
+                                   final boolean isForWay, final NodeReference nodeReference) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater layoutInflater = getLayoutInflater();
         View customView = layoutInflater.inflate(R.layout.enchance_feedback_pop_up, null);
@@ -805,16 +809,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         }
         mAlertDialogEnhance = builder.create();
         mAlertDialogEnhance.show();
-         /*if (mAlertDialogEnhance == null) {
-            mAlertDialogEnhance = builder.create();
-        }*/
-        /*if (mAlertDialogEnhance.isShowing()) {
-            mAlertDialogEnhance.cancel();
-            mAlertDialogEnhance.dismiss();
-            showEnhanceDialog(polyline, valid, listWayData);
-        } else {
-            mAlertDialogEnhance.show();
-        }*/
         mAlertDialogEnhance.setCanceledOnTouchOutside(true);
         mAlertDialogEnhance.getWindow().setDimAmount(0.0f);
         mAlertDialogEnhance.getWindow().setBackgroundDrawable(new
@@ -831,7 +825,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         btnYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkForWay(polyline, listWayData, valid);
+                checkForWay(polyline, listWayData, valid ,isForWay,nodeReference);
                 mAlertDialogEnhance.dismiss();
             }
         });

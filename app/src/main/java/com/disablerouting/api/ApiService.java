@@ -135,6 +135,14 @@ public interface ApiService {
     Call<ResponseUpdate> update(@Body RequestWayInfo requestWayInfo);
 
     /**
+     * Api call for update node
+     * @param requestNodeInfo Request node info
+     * @return node updated
+     */
+    @POST("updateNode")
+    Call<ResponseUpdate> updateNode(@Body RequestNodeInfo requestNodeInfo);
+
+    /**
      * Api call for get list data
      * @return list of ways
      */

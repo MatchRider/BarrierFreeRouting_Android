@@ -7,6 +7,7 @@ import com.disablerouting.curd_operations.manager.IUpdateWayResponseReceiver;
 import com.disablerouting.curd_operations.manager.IValidateWayResponseReceiver;
 import com.disablerouting.curd_operations.manager.UpdateWayManager;
 import com.disablerouting.curd_operations.manager.ValidateWayManager;
+import com.disablerouting.curd_operations.model.RequestNodeInfo;
 import com.disablerouting.curd_operations.model.RequestWayInfo;
 import com.disablerouting.curd_operations.model.ResponseUpdate;
 import com.disablerouting.curd_operations.model.ResponseWay;
@@ -32,6 +33,13 @@ public class SettingScreenPresenter implements IUpdateWayResponseReceiver, ISett
         }
     }
 
+    @Override
+    public void onUpdateNode(RequestNodeInfo requestNodeInfo) {
+        if(mISettingView!=null){
+            mISettingView.showLoader();
+            mUpdateWayManager.onUpdateNode(this,requestNodeInfo);
+        }
+    }
     @Override
     public void onValidate(RequestWayInfo requestWayInfo) {
         if(mISettingView!=null){

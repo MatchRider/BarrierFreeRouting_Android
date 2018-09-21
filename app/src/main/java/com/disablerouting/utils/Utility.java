@@ -19,6 +19,7 @@ import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import com.disablerouting.api.ApiEndPoint;
+import com.disablerouting.curd_operations.model.NodeReference;
 import com.disablerouting.login.OSMApi;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.oauth.OAuth10aService;
@@ -35,6 +36,7 @@ import java.io.Reader;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -244,5 +246,15 @@ public class Utility {
         }
         return converted;
     }
+
+    public static boolean isListContainId(List<NodeReference> nodeReferencesList, String id) {
+        for (NodeReference nodeReference : nodeReferencesList) {
+            if (nodeReference.getId().contains(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 

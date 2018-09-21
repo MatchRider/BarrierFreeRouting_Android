@@ -6,6 +6,7 @@ import com.disablerouting.api.ErrorResponse;
 import com.disablerouting.api.ResponseCallback;
 import com.disablerouting.api.ResponseWrapper;
 import com.disablerouting.api.RetrofitClient;
+import com.disablerouting.curd_operations.model.RequestNodeInfo;
 import com.disablerouting.curd_operations.model.RequestWayInfo;
 import com.disablerouting.curd_operations.model.ResponseUpdate;
 import retrofit2.Call;
@@ -21,6 +22,11 @@ public class UpdateWayManager implements ResponseCallback<ResponseUpdate> {
         mResponseUpdateCall.enqueue(new ResponseWrapper<ResponseUpdate>(this));
     }
 
+    public void onUpdateNode(IUpdateWayResponseReceiver receiver, RequestNodeInfo requestNodeInfo) {
+        this.mUpdateWayResponseReceiver = receiver;
+        mResponseUpdateCall = RetrofitClient.getApiServiceCURD().updateNode(requestNodeInfo);
+        mResponseUpdateCall.enqueue(new ResponseWrapper<ResponseUpdate>(this));
+    }
     /**
      * To cancel all on going calls from network
      */
