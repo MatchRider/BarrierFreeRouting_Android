@@ -746,6 +746,28 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         }
     }
 
+    /**
+     * Update Polyline of ways
+     *
+     * @param polyline polyline
+     * @param valid    valid data or not
+     */
+    private void updateNodeUI(Polyline polyline, boolean valid) {
+        if (mPreviousPolyline != null) {
+            if (valid) {
+                mPreviousPolyline.setColor(getResources().getColor(R.color.colorGreen));
+            } else {
+                mPreviousPolyline.setColor(previousColor);
+            }
+            mPreviousPolyline.setWidth(10);
+        }
+        previousColor = polyline.getColor();
+        polyline.setColor(getResources().getColor(R.color.colorBrown));
+        polyline.setWidth(50);
+        mPreviousPolyline = polyline;
+        mMapView.invalidate();
+    }
+
     public void checkForWay(Polyline polyline, ListWayData way, boolean valid , boolean isForWay,NodeReference nodeReference) {
     }
         /*protected Runnable updateMarker = new Runnable() {

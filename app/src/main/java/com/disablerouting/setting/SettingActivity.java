@@ -527,7 +527,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 }
                 WayDataPreference.getInstance(this).saveNotValidateDataNode(listNotValidatedNode);
                 setResult(RESULT_OK);
-                Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingActivity.this, R.string.updated_node_info, Toast.LENGTH_SHORT).show();
                 finish();
             } else {
                 if (responseUpdate.getError() != null && responseUpdate.getError().get(0) != null &&

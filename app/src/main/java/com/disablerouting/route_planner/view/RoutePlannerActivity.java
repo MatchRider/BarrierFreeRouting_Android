@@ -576,15 +576,20 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
         } else {
             if (mSwitchCompatToogle.isChecked()) {
-                mRadioGroup.setVisibility(View.VISIBLE);
 
-                mSourceDestinationFragment.onToggleView(true);
-                mButtonGo.setVisibility(View.GONE);
-                mImageViewInfo.setVisibility(View.GONE);
-                clearItemsFromMap();
-                setZoomMap();
-                PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
-                mPlotWayDataTaskNotValidated.execute();
+                    mRadioGroup.setVisibility(View.VISIBLE);
+                    mSourceDestinationFragment.onToggleView(true);
+                    mButtonGo.setVisibility(View.GONE);
+                    mImageViewInfo.setVisibility(View.GONE);
+                    clearItemsFromMap();
+                if(mNodeListNotValidatedData.size()!=0) {
+                    hideLoader();
+                    setZoomMap();
+                    PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
+                    mPlotWayDataTaskNotValidated.execute();
+                }else {
+                    showLoader();
+                }
             } else {
                 mRadioGroup.setVisibility(View.GONE);
                 mSourceDestinationFragment.onToggleView(false);

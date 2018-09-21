@@ -178,6 +178,7 @@
     <string name="validated">Validierte Wege</string>
     <string name="not_validated">Nicht validierte Wege</string>
     <string name="updated_info">Daten aktualisiert</string>
+    <string name="updated_node_info">Updated Node Info</string>
     <string name="instructions_for_route">Wegführung</string>
     <string name="unable_to_get_data">Daten können nicht abgerufen werden</string>
     <string name="message_give_feedback">Do you want to enhance this way info ?</string>
