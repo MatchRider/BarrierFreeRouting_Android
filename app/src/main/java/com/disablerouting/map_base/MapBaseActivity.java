@@ -40,6 +40,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -58,7 +59,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeedBackListener, MapEventsReceiver {
+public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeedBackListener, MapEventsReceiver  {
 
     private MapView mMapView = null;
     private MyLocationNewOverlay mLocationOverlay;
@@ -862,6 +863,17 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             myMapController.setZoom(15);
         }
     }
+
+
+    public IGeoPoint getMapCenter() {
+        IGeoPoint mapViewMapCenter = null;
+        if (mMapView != null) {
+            mapViewMapCenter = mMapView.getMapCenter();
+        }
+        return mapViewMapCenter;
+    }
+
+
 
 }
 
