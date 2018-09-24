@@ -859,7 +859,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     public void setZoomMap() {
         if (mMapView != null) {
             MapController myMapController = (MapController) mMapView.getController();
-            myMapController.setZoom(16);
+            myMapController.setZoom(15);
         }
     }
 
