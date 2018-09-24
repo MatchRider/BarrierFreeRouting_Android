@@ -588,6 +588,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mRadioGroup.setVisibility(View.VISIBLE);
                 mSourceDestinationFragment.onToggleView(true);
                 mButtonGo.setVisibility(View.GONE);
+                mImageCurrentPin.setVisibility(View.GONE);
                 mImageViewInfo.setVisibility(View.GONE);
                 clearItemsFromMap();
                 if (mNodeListNotValidatedData.size() != 0) {
@@ -605,6 +606,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
                 mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
                 mButtonGo.setVisibility(View.VISIBLE);
+                mImageCurrentPin.setVisibility(View.VISIBLE);
 
                 if (mISMapPlotted) {
                     mImageViewInfo.setVisibility(View.VISIBLE);

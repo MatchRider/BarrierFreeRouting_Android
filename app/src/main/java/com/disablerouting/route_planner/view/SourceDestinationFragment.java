@@ -206,12 +206,13 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             public void onFocusChange(View view, boolean b) {
                 if (b && mEditTextSource.getText().toString().trim().length() == 0) {
                     mSourceAddressFetch.setVisibility(View.VISIBLE);
-                    mOnSourceDestinationListener.onClickField(true); //TODO
 
                 } else {
                     mSourceAddressFetch.setVisibility(View.GONE);
                     mDestinationAddressFetch.setVisibility(View.GONE);
                 }
+                mOnSourceDestinationListener.onClickField(true); //Adding pin fetch address
+
             }
         });
         mEditTextDestination.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -219,13 +220,14 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             public void onFocusChange(View view, boolean b) {
                 if (b && mEditTextDestination.getText().toString().trim().length() == 0) {
                     mDestinationAddressFetch.setVisibility(View.VISIBLE);
-                    mOnSourceDestinationListener.onClickField(true); //TODO
 
                 } else {
                     mDestinationAddressFetch.setVisibility(View.GONE);
                     mSourceAddressFetch.setVisibility(View.GONE);
 
                 }
+                mOnSourceDestinationListener.onClickField(true); //Adding pin fetch address
+
             }
         });
     }
