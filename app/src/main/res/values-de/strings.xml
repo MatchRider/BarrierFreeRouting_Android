@@ -175,8 +175,8 @@
     <string name="send">Absenden</string>
 
     <string name="log_in_with_osm">Bei OpenStreetMap einloggen</string>
-    <string name="validated">Validierte</string>
-    <string name="not_validated">Nicht validierte</string>
+    <string name="validated">Überprüfte</string>
+    <string name="not_validated">Nicht überprüfte</string>
     <string name="updated_info">Daten aktualisiert</string>
     <string name="updated_node_info">Aktualisierte Knoteninformationen</string>
     <string name="instructions_for_route">Wegführung</string>
