@@ -81,6 +81,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @BindView(R.id.radioButtonNodes)
     RadioButton mRadioButtonNodes;
 
+    @BindView(R.id.img_current_pin)
+    ImageView mImageCurrentPin;
+
+
     private boolean mISMapPlotted = false;
     private boolean mIsUpdateAgain = false;
     private List<ListWayData> mWayListValidatedData = new ArrayList<>();
@@ -119,6 +123,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mButtonGo.setVisibility(View.GONE);
             mSwitchCompatToogle.setVisibility(View.GONE);
             mRadioGroup.setVisibility(View.VISIBLE);
+            mImageCurrentPin.setVisibility(View.GONE);
         }
 
         mRadioGroup.setOnCheckedChangeListener(this);
@@ -269,9 +274,12 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
 
+
+
     @OnClick(R.id.btn_go)
     public void goPlotMap() {
         // UI_HANDLER.post(updateMarker);
+        mImageCurrentPin.setVisibility(View.GONE);
         clearItemsFromMap();
         Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
         mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
@@ -566,6 +574,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
 
+
     @OnClick(R.id.toggle_way)
     public void toggleViews() {
         if (UserPreferences.getInstance(this).getAccessToken() == null) {
@@ -612,5 +621,24 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         intent.putParcelableArrayListExtra(AppConstant.STEP_DATA, (ArrayList<? extends Parcelable>) mStepsList);
         launchActivity(intent);
     }
+
+    @Override
+    public void onDragClicked(GeoPoint geoPoint) {
+        mSourceDestinationFragment.setDataWhenDragging(geoPoint);
+
+    }
+
+    @Override
+    public void onClickField(boolean onStart) {
+        if(onStart){
+            mImageCurrentPin.setVisibility(View.VISIBLE);
+            getMapCenter();
+
+        }else {
+            mImageCurrentPin.setVisibility(View.GONE);
+
+        }
+    }
+
 
 }

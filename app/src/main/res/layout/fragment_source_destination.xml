@@ -65,6 +65,7 @@
                                 android:fontFamily="@font/frutiger_lt_bold"
                                 android:textColor="@color/colorWhite"/>
                         <LinearLayout
+                                android:id="@+id/ll_txv_source"
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:orientation="horizontal"
@@ -149,6 +150,7 @@
                                 android:fontFamily="@font/frutiger_lt_bold"
                                 android:textColor="@color/colorWhite"/>
                         <LinearLayout
+                                android:id="@+id/ll_txv_dest"
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:orientation="horizontal"

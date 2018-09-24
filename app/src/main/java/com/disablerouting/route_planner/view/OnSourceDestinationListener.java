@@ -30,4 +30,6 @@ public interface OnSourceDestinationListener {
 
     void onToggleClickedBanner(boolean isChecked);
 
+    void onClickField(boolean onStart);
+
 }

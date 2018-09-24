@@ -42,7 +42,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.config.Configuration;
-import org.osmdroid.events.MapEventsReceiver;
+import org.osmdroid.events.*;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
@@ -865,14 +865,29 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     }
 
 
-    public IGeoPoint getMapCenter() {
-        IGeoPoint mapViewMapCenter = null;
-        if (mMapView != null) {
-            mapViewMapCenter = mMapView.getMapCenter();
-        }
-        return mapViewMapCenter;
-    }
 
+    public void getMapCenter() {
+        final GeoPoint[] geoPoint = {null};
+        final IGeoPoint[] mapViewMapCenter = {null};
+        if (mMapView != null) {
+            mMapView.setMapListener(new DelayedMapListener(new MapListener() {
+
+                @Override
+                public boolean onScroll(ScrollEvent paramScrollEvent) {
+                    mapViewMapCenter[0] = mMapView.getMapCenter();
+                    geoPoint[0] = new GeoPoint(mapViewMapCenter[0].getLatitude(),mapViewMapCenter[0].getLongitude());
+                    mFeedBackListener.onDragClicked(geoPoint[0]);
+                    return true;
+                }
+
+                @Override
+                public boolean onZoom(ZoomEvent event) {
+                    return false;
+                }
+
+            }));
+        }
+    }
 
 
 }

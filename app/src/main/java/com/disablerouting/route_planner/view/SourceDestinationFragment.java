@@ -206,6 +206,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             public void onFocusChange(View view, boolean b) {
                 if (b && mEditTextSource.getText().toString().trim().length() == 0) {
                     mSourceAddressFetch.setVisibility(View.VISIBLE);
+                    mOnSourceDestinationListener.onClickField(true); //TODO
+
                 } else {
                     mSourceAddressFetch.setVisibility(View.GONE);
                     mDestinationAddressFetch.setVisibility(View.GONE);
@@ -217,6 +219,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             public void onFocusChange(View view, boolean b) {
                 if (b && mEditTextDestination.getText().toString().trim().length() == 0) {
                     mDestinationAddressFetch.setVisibility(View.VISIBLE);
+                    mOnSourceDestinationListener.onClickField(true); //TODO
 
                 } else {
                     mDestinationAddressFetch.setVisibility(View.GONE);
@@ -672,6 +675,11 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         //Nothing to do
     }
 
+    @Override
+    public void onDragClicked(GeoPoint geoPoint) {
+
+    }
+
 
     public void onToggleView(boolean isToggled) {
         if(isToggled){
@@ -710,5 +718,12 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     public void OnFromSuggestion() {
             mIsFromSuggestion= true;
+    }
+
+    public void setDataWhenDragging(GeoPoint geoPoint ){
+        if(geoPoint!=null){
+            mISourceDestinationScreenPresenter.getGeoCodeDataReverse(geoPoint.getLatitude(), geoPoint.getLongitude());
+        }
+
     }
 }
