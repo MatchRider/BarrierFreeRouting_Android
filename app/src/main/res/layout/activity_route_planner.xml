@@ -88,7 +88,7 @@
     <ImageView
             android:id="@+id/img_current_pin"
             android:layout_width="wrap_content"
-            android:src="@drawable/ic_pin_pink"
+            android:src="@drawable/ic_pin_drag"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_centerVertical="true"
