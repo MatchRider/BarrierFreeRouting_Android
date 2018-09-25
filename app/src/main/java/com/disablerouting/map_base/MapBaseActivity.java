@@ -203,7 +203,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             setBoundingBox(geoPointStart, geoPointEnd);
 
         } else {
-            addCurrentLocation();
+            addCurrentLocation(16);
         }
         MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this, this);
         mMapView.getOverlays().add(0, mapEventsOverlay);
@@ -319,17 +319,28 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     /**
      * Add current location
      */
-    public void addCurrentLocation() {
+    public void addCurrentLocation(int zoom) {
         if (mMapView != null) {
-            GeoPoint currentGeoPoints = new GeoPoint(mLatitude, mLongitude); //49.3988,8.6724
-            mCurrentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-            mCurrentMarker.setPosition(currentGeoPoints);
-            mMapView.getOverlays().add(mCurrentMarker);
-            mCurrentMarker.setIcon(getResources().getDrawable(R.drawable.ic_current_loc));
-            mCurrentMarker.setTitle("Your Current location");
-            MapController myMapController = (MapController) mMapView.getController();
-            myMapController.setZoom(18);
-            myMapController.setCenter(currentGeoPoints);
+            if(zoom==0){
+                mMapView.getOverlays().remove(mCurrentMarker);
+                GeoPoint currentGeoPoints = new GeoPoint(mLatitude, mLongitude); //49.3988,8.6724
+                mCurrentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                mCurrentMarker.setPosition(currentGeoPoints);
+                mMapView.getOverlays().add(mCurrentMarker);
+                mCurrentMarker.setIcon(getResources().getDrawable(R.drawable.ic_current_loc));
+                mCurrentMarker.setTitle("Your Current location");
+            }else {
+                mMapView.getOverlays().remove(mCurrentMarker);
+                GeoPoint currentGeoPoints = new GeoPoint(mLatitude, mLongitude); //49.3988,8.6724
+                mCurrentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                mCurrentMarker.setPosition(currentGeoPoints);
+                mMapView.getOverlays().add(mCurrentMarker);
+                mCurrentMarker.setIcon(getResources().getDrawable(R.drawable.ic_current_loc));
+                mCurrentMarker.setTitle("Your Current location");
+                MapController myMapController = (MapController) mMapView.getController();
+                myMapController.setZoom(zoom);
+                myMapController.setCenter(currentGeoPoints);
+            }
         }
 
     }
@@ -405,8 +416,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     @SuppressLint("RestrictedApi")
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(60000);
-        mLocationRequest.setFastestInterval(60000);
+        mLocationRequest.setInterval(30000);
+        mLocationRequest.setFastestInterval(30000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
@@ -461,8 +472,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 for (Location location : locationResult.getLocations()) {
                     if (mMapView != null) {
                         mLatitude = location.getLatitude();
-                        mLongitude = location.getLongitude();
-                        onUpdateLocation(location);
+                        mLongitude = location.getLongitude();onUpdateLocation(location);
                         AppData.getNewInstance().setCurrentLoc(new LatLng(mLatitude, mLongitude));
                     }
                 }

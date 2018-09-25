@@ -118,7 +118,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
         IRoutePlannerScreenPresenter IRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this, new GetWayManager());
         if (mISFromSuggestion) {
-            addCurrentPosition();
+            addCurrentLocation(18);
             mSourceDestinationFragment.OnFromSuggestion();
             mButtonGo.setVisibility(View.GONE);
             mSwitchCompatToogle.setVisibility(View.GONE);
@@ -155,11 +155,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             }
             mIsUpdateAgain = true;
         }
-
-    }
-
-    public void addCurrentPosition() {
-        addCurrentLocation();
+        addCurrentLocation(0);
     }
 
     @Override
@@ -252,7 +248,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @OnClick(R.id.img_re_center)
     public void reCenter() {
         // clearItemsFromMap();
-        addCurrentLocation();
+        addCurrentLocation(18);
     }
 
     @Override
