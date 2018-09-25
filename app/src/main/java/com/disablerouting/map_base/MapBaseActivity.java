@@ -328,7 +328,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             mCurrentMarker.setIcon(getResources().getDrawable(R.drawable.ic_current_loc));
             mCurrentMarker.setTitle("Your Current location");
             MapController myMapController = (MapController) mMapView.getController();
-            myMapController.setZoom(14);
+            myMapController.setZoom(18);
             myMapController.setCenter(currentGeoPoints);
         }
 
