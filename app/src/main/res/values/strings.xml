@@ -93,11 +93,12 @@
     <string name="up_to_three">Up to 3</string>
     <string name="up_to_six">Up to 6</string>
     <string name="up_to_ten">Up to 10</string>
-    <string name="greater_ten"><![CDATA[> 10]]></string>
+    <string name="greater_ten"><![CDATA[über 10]]></string>
 
+    <string name="zero_curb">No curb</string>
     <string name="string_one_point_two">1.2</string>
     <string name="string_two_point_four">2.4</string>
-    <string name="string_two_point_four_greater"><![CDATA[> 2.4]]></string>
+    <string name="string_two_point_four_greater"><![CDATA[über 2.4]]></string>
 
     <string name="value_string_one_point_two">1.2</string>
     <string name="value_string_two_point_four">2.4</string>
@@ -110,8 +111,8 @@
     <string name="thirty_five_less"><![CDATA[< 35.4]]></string>
     <string name="thirty_five_greater"><![CDATA[> 35.4]]></string>
 
-    <string name="ninty_less"><![CDATA[< 35.4]]></string>
-    <string name="ninty_greater"><![CDATA[> 35.4]]></string>
+    <string name="ninty_less"><![CDATA[bis 35.4]]></string>
+    <string name="ninty_greater"><![CDATA[über 35.4]]></string>
 
     <string name="value_string_less_width"><![CDATA[35.4]]></string>
     <string name="value_string_greater_width"><![CDATA[35.4]]></string>

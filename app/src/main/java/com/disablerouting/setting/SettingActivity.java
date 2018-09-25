@@ -392,10 +392,17 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             if (mHashMapWay.get(2) != null && !mHashMapWay.get(2).getKey().isEmpty()) {
                 attributesValidate = new AttributesValidate();
                 attributesValidate.setKey(AppConstant.KEY_INCLINE);
-                if (mHashMapWay.get(2).getValue() != null && mHashMapWay.get(2).getValue().contains(">")) {
-                    attributesValidate.setValue(mHashMapWay.get(2).getValue().replace(">", ""));
+                if (mHashMapWay.get(2).getValue() != null && mHashMapWay.get(2).getValue().contains("über")) {
+                    attributesValidate.setValue(mHashMapWay.get(2).getValue().replace("über", ""));
 
-                } else {
+                }
+                else if (mHashMapWay.get(2).getValue() != null && mHashMapWay.get(2).getValue().contains("kein Bordstein")) {
+                    attributesValidate.setValue(mHashMapWay.get(2).getValue().replace("kein Bordstein", "0"));
+                }
+                else if (mHashMapWay.get(2).getValue() != null && mHashMapWay.get(2).getValue().contains("No curb")) {
+                    attributesValidate.setValue(mHashMapWay.get(2).getValue().replace("No curb", "0"));
+                }
+                else {
                     attributesValidate.setValue(mHashMapWay.get(2).getValue());
                 }
                 attributesValidate.setValid(mHashMapWay.get(2).isValid());
@@ -425,7 +432,18 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             Attributes attributesValidate = new Attributes();
             if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
                 attributesValidate.setKey(mHashMapWay.get(0).getKey());
-                attributesValidate.setKey(mHashMapWay.get(0).getValue());
+                if (mHashMapWay.get(0).getValue() != null && mHashMapWay.get(0).getValue().contains("über")) {
+                    attributesValidate.setKey(mHashMapWay.get(0).getValue().replace("über",""));
+                }
+                else if (mHashMapWay.get(0).getValue() != null && mHashMapWay.get(0).getValue().contains("kein Bordstein")) {
+                    attributesValidate.setValue(mHashMapWay.get(0).getValue().replace("kein Bordstein", "0"));
+                }
+                else if (mHashMapWay.get(0).getValue() != null && mHashMapWay.get(0).getValue().contains("No curb")) {
+                    attributesValidate.setValue(mHashMapWay.get(0).getValue().replace("No curb", "0"));
+                }else {
+                    attributesValidate.setKey(mHashMapWay.get(0).getValue());
+
+                }
                 attributesValidate.setValid(mHashMapWay.get(0).isValid());
             }
             nodeReference.setAttributes(attributesValidateList);

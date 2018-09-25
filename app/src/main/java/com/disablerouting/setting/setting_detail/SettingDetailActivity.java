@@ -99,7 +99,7 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
 
     private ArrayList<String> prepareListDataMaxSlope() {
         ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add(getString(R.string.zero));
+        stringArrayList.add(getString(R.string.zero_curb));
         stringArrayList.add(getString(R.string.string_one_point_two));
         stringArrayList.add(getString(R.string.string_two_point_four));
         stringArrayList.add(getString(R.string.string_two_point_four_greater));
@@ -146,7 +146,9 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
                     setDataWhenFilterApplied(prepareListDataMaxSlope().get(position), position);
                     break;
                 case 2:
+
                     setDataWhenFilterApplied(prepareListDataMaxIncline().get(position), position);
+
                     break;
                 case 3:
                     setDataWhenFilterApplied(prepareListDataSideWalk().get(position), position);

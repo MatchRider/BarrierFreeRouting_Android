@@ -141,7 +141,8 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
 
     @OnClick(R.id.btn_suggestion)
     void redirectSuggestions() {
-        showSuggestionDialog();
+        redirectToSuggestionScreen();
+        //showSuggestionDialog();
     }
 
     /**

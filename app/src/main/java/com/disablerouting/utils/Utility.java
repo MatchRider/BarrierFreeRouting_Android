@@ -237,6 +237,12 @@ public class Utility {
         else if(stringUnitPassed.contains("<")) {
             converted = stringUnitPassed.replace("<","");
         }
+        else if(stringUnitPassed.contains("über")) {
+            converted = stringUnitPassed.replace("über","");
+        }
+        else if(stringUnitPassed.contains("bis")) {
+            converted = stringUnitPassed.replace("bis","");
+        }
         return converted;
     }
     public static String changeDotToComma(String stringUnitPassed){
