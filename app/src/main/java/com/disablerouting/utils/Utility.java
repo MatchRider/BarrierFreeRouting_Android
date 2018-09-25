@@ -192,7 +192,9 @@ public class Utility {
     }
     public static boolean isParsableAsDouble(final String s) {
         try {
-            Double.valueOf(s);
+            if(s!=null) {
+                Double.valueOf(s);
+            }
             return true;
         } catch (NumberFormatException numberFormatException) {
             return false;

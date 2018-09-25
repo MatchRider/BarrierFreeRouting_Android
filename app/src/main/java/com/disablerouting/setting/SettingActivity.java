@@ -24,6 +24,7 @@ import com.disablerouting.login.AsyncTaskOsmApi;
 import com.disablerouting.login.IAysncTaskOsm;
 import com.disablerouting.login.OauthData;
 import com.disablerouting.login.UserPreferences;
+import com.disablerouting.setting.model.SettingModel;
 import com.disablerouting.setting.presenter.ISettingScreenPresenter;
 import com.disablerouting.setting.presenter.SettingScreenPresenter;
 import com.disablerouting.setting.setting_detail.SettingDetailActivity;
@@ -213,18 +214,34 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      *
      * @return list
      */
-    private ArrayList<String> prepareListDataWay() {
-        ArrayList<String> stringArrayList = new ArrayList<>();
+    private ArrayList<SettingModel> prepareListDataWay() {
+        ArrayList<SettingModel> modelArrayList= new ArrayList<>();
+        SettingModel settingModel;
+        settingModel= new SettingModel(0,getString(R.string.surface_type));
+        modelArrayList.add(settingModel);
+        settingModel= new SettingModel(2,getString(R.string.maximum_incline));
+        modelArrayList.add(settingModel);
+        settingModel= new SettingModel(3,getString(R.string.sidewalk_width));
+        modelArrayList.add(settingModel);
+
+       /* ArrayList<String> stringArrayList = new ArrayList<>();
         stringArrayList.add(getString(R.string.surface_type));
         stringArrayList.add(getString(R.string.maximum_incline));
         stringArrayList.add(getString(R.string.sidewalk_width));
-        return stringArrayList;
+        return stringArrayList;*/
+        return modelArrayList;
     }
 
-    private ArrayList<String> prepareListDataNode() {
-        ArrayList<String> stringArrayList = new ArrayList<>();
+    private ArrayList<SettingModel> prepareListDataNode() {
+        /*ArrayList<String> stringArrayList = new ArrayList<>();
         stringArrayList.add(getString(R.string.maximum_sloped));
-        return stringArrayList;
+        return stringArrayList;*/
+        ArrayList<SettingModel> modelArrayList= new ArrayList<>();
+        SettingModel settingModel;
+        settingModel= new SettingModel(0,getString(R.string.maximum_sloped));
+        modelArrayList.add(settingModel);
+        return modelArrayList;
+
     }
 
     @OnClick(R.id.img_back)
@@ -306,7 +323,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         }
                         attributesIncline.setValue(value);
                         attributesIncline.setValid(mListWayData.getAttributesList().get(i).isValid());
-                        mHashMapWay.put(1, attributesIncline);
+                        mHashMapWay.put(2, attributesIncline);
                         break;
 
                     case AppConstant.KEY_FOOTWAY:
@@ -567,7 +584,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     @Override
     public void onFailure(String error) {
-        Toast.makeText(SettingActivity.this, error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(SettingActivity.this, getResources().getString(R.string.error_when_entry_not_saved), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(SettingActivity.this, error, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -605,7 +623,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     public void onFailureAsyncTask(final String errorBody) {
         this.runOnUiThread(new Runnable() {
             public void run() {
-                Toast.makeText(SettingActivity.this, errorBody, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingActivity.this, getResources().getString(R.string.error_when_entry_not_saved), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -660,28 +678,28 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 case 0:
                     intent.putExtra(AppConstant.POSITION_SETTING, position);
                     mPositionClicked = position;
-                    intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataWay().get(position));
+                    intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataWay().get(position).getKeyString());
                     intent.putExtra(AppConstant.IS_FOR_WAY, true);
                     startActivityForResult(intent, OPEN_SETTING_TYPE);
                     break;
                 case 1:
                     intent.putExtra(AppConstant.POSITION_SETTING, position);
                     mPositionClicked = position;
-                    intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataWay().get(position));
+                    intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataWay().get(position).getKeyString());
                     intent.putExtra(AppConstant.IS_FOR_WAY, true);
                     startActivityForResult(intent, OPEN_SETTING_TYPE);
                     break;
                 case 2:
                     intent.putExtra(AppConstant.POSITION_SETTING, position);
                     mPositionClicked = position;
-                    intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataWay().get(position));
+                    intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataWay().get(position).getKeyString());
                     intent.putExtra(AppConstant.IS_FOR_WAY, true);
                     startActivityForResult(intent, OPEN_SETTING_TYPE);
                     break;
                 case 3:
                     intent.putExtra(AppConstant.POSITION_SETTING, position);
                     mPositionClicked = position;
-                    intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataWay().get(position));
+                    intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataWay().get(position).getKeyString());
                     intent.putExtra(AppConstant.IS_FOR_WAY, true);
                     startActivityForResult(intent, OPEN_SETTING_TYPE);
                     break;
@@ -692,7 +710,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 case 0:
                     intent.putExtra(AppConstant.POSITION_SETTING, position);
                     mPositionClicked = position;
-                    intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataNode().get(0));
+                    intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataNode().get(0).getKeyString());
                     intent.putExtra(AppConstant.IS_FOR_WAY, false);
                     startActivityForResult(intent, OPEN_SETTING_TYPE);
                     break;

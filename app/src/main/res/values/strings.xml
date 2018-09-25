@@ -207,5 +207,6 @@
     <string name="confirm_logout_message">Are you sure you want to logout?</string>
     <string name="ways">Ways</string>
     <string name="nodes">Nodes</string>
+    <string name="error_when_entry_not_saved">Your entry could not be saved.</string>
 
 </resources>
