@@ -26,7 +26,7 @@ import com.github.scribejava.core.oauth.OAuth10aService;
 import fr.arnaudguyon.xmltojsonlib.XmlToJson;
 import org.json.JSONObject;
 import org.osmdroid.api.IGeoPoint;
-import org.osmdroid.util.BoundingBoxE6;
+import org.osmdroid.util.BoundingBox;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import java.io.IOException;
@@ -64,8 +64,8 @@ public class Utility {
         return displayMetrics.heightPixels;
     }
 
-    public static BoundingBoxE6 boundToMap(double minLatitude , double maxLatitude ,
-                                    double minLongitude, double maxLongitude){
+    public static BoundingBox boundToMap(double minLatitude , double maxLatitude ,
+                                         double minLongitude, double maxLongitude){
         double minLat = minLatitude;
         double maxLat = maxLatitude;
         double minLong = minLongitude;
@@ -83,7 +83,7 @@ public class Utility {
                 maxLong = point.getLongitudeE6();
         }
 
-        return new BoundingBoxE6(maxLat, maxLong, minLat, minLong);
+        return new BoundingBox(maxLat, maxLong, minLat, minLong);
     }
 
     public static String trimTWoDecimalPlaces(double value){

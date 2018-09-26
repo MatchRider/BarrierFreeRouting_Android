@@ -22,7 +22,7 @@ public class GeoCodingManager implements ResponseCallback<GeoCodingResponse> {
     public void getGeoCodeForward(IGeoCodingResponseReceiver receiver, String queryString) {
         this.mIGeoCodingResponseReceiver = receiver;
         if(AppData.getNewInstance()!=null && AppData.getNewInstance().getCurrentLoc()!=null) {
-            double latitude= AppData.getNewInstance().getCurrentLoc().latitude; //49.4056438,8.5435314
+            double latitude= AppData.getNewInstance().getCurrentLoc().latitude;
             double longitude= AppData.getNewInstance().getCurrentLoc().longitude;
             String countryISO= "DEU"; // ALPHA 3 CODE GERMANY CODE
             //String countryISO= "IND"; // ALPHA 3 CODE India CODE

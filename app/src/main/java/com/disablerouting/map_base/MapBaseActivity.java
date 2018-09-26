@@ -136,9 +136,9 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      * Map Initialize
      */
     protected void initializeMap() {
-        mMapView = findViewById(com.disablerouting.R.id.map_view);
         Configuration.getInstance().setUserAgentValue(getPackageName());
-        mMapView.setTileSource(TileSourceFactory.MAPNIK);
+        mMapView = findViewById(com.disablerouting.R.id.map_view);
+        mMapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
         mMapView.setBuiltInZoomControls(true);
         mMapView.setMultiTouchControls(true);
 
