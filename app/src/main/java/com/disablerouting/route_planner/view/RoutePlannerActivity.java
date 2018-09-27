@@ -345,27 +345,21 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        //clearItemsFromMap();
         switch (checkedId) {
             case R.id.radioButtonWays:
                 mTabSelected = 3;
-                mRadioButtonWays.setTextColor(getResources().getColor(R.color.colorPrimary));
-                mRadioButtonNodes.setTextColor(getResources().getColor(R.color.colorWhite));
+                mRadioButtonWays.setTextColor(getResources().getColor(R.color.colorWhite));
+                mRadioButtonNodes.setTextColor(getResources().getColor(R.color.colorPrimary));
                 PlotWayDataTask mPlotWayDataTaskWays = new PlotWayDataTask();
                 mPlotWayDataTaskWays.execute();
-
                 break;
 
             case R.id.radioButtonNodes:
                 mTabSelected = 4;
-
-                mRadioButtonNodes.setTextColor(getResources().getColor(R.color.colorPrimary));
-                mRadioButtonWays.setTextColor(getResources().getColor(R.color.colorWhite));
-
+                mRadioButtonNodes.setTextColor(getResources().getColor(R.color.colorWhite));
+                mRadioButtonWays.setTextColor(getResources().getColor(R.color.colorPrimary));
                 PlotWayDataTask mPlotWayDataTaskNodes = new PlotWayDataTask();
                 mPlotWayDataTaskNodes.execute();
-
-
                 break;
 
             default:

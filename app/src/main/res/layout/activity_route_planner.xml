@@ -54,7 +54,7 @@
                     android:gravity="center"
                     android:checked="true"
                     android:padding="@dimen/padding_normal"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorWhite"
                     android:background="@drawable/custom_btn_radio"
                     tools:text="Ways"/>
 
@@ -67,7 +67,7 @@
                     tools:text="Nodes"
                     android:gravity="center"
                     android:padding="@dimen/padding_normal"
-                    android:textColor="@color/colorWhiteLight"
+                    android:textColor="@color/colorPrimary"
                     android:background="@drawable/custom_btn_radio"
                     android:layout_weight="1"/>
 
