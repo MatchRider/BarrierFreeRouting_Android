@@ -80,11 +80,11 @@
     <string name="compacted_filter">Schotter oder besser</string>
     <string name="all_filter">Alle Oberflächen</string>
 
-    <string name="zero">0</string>
-    <string name="up_to_three">bis 3</string>
-    <string name="up_to_six">bis 6</string>
-    <string name="up_to_ten">bis 10</string>
-    <string name="greater_ten"><![CDATA[über 10]]></string>
+    <string name="zero">0 %x</string>
+    <string name="up_to_three">bis 3 %</string>
+    <string name="up_to_six">bis 6 %</string>
+    <string name="up_to_ten">bis 10 %</string>
+    <string name="greater_ten"><![CDATA[über 10 %]]></string>
 
     <string name="zero_curb">kein Bordstein</string>
 
@@ -96,14 +96,14 @@
     <string name="value_string_two_point_four">0.06</string>
     <string name="value_string_two_point_four_greater"><![CDATA[0.06]]></string>
 
-    <string name="string_less_width"><![CDATA[< 0,9]]></string>
-    <string name="string_greater_width"><![CDATA[> 0,9]]></string>
+    <string name="string_less_width"><![CDATA[über 0,9]]></string>
+    <string name="string_greater_width"><![CDATA[über 0,9]]></string>
 
 
     <string name="thirty_five_less"><![CDATA[< 35,4]]></string>
     <string name="thirty_five_greater"><![CDATA[> 35,4]]></string>
 
-    <string name="ninty_less"><![CDATA[bis 0,9]]></string>
+    <string name="ninty_less"><![CDATA[über 0,9]]></string>
     <string name="ninty_greater"><![CDATA[über 0,9]]></string>
 
     <string name="value_string_less_width"><![CDATA[0.9]]></string>

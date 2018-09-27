@@ -60,7 +60,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
         holder.mImageViewEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnClickListener.OnIconEditViewOnClick(view, checkPos);
+                mOnClickListener.OnIconEditViewOnClick(view, position);
             }
         });
         holder.mCheckBoxVerify.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

@@ -50,8 +50,8 @@
     <dimen name="margin_45dp">55dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-    <dimen name="switch_track_width">30dp</dimen>
-    <dimen name="switch_track_height">20dp</dimen>
+    <dimen name="switch_track_width">40dp</dimen>
+    <dimen name="switch_track_height">30dp</dimen>
     <dimen name="switch_radius">50dp</dimen>
     <dimen name="switch_selector_padding">2dp</dimen>
     <dimen name="switch_stroke_height">0dp</dimen>

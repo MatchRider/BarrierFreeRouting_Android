@@ -146,9 +146,7 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
                     setDataWhenFilterApplied(prepareListDataMaxSlope().get(position), position);
                     break;
                 case 2:
-
                     setDataWhenFilterApplied(prepareListDataMaxIncline().get(position), position);
-
                     break;
                 case 3:
                     setDataWhenFilterApplied(prepareListDataSideWalk().get(position), position);

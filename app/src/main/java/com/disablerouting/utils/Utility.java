@@ -229,21 +229,30 @@ public class Utility {
         return String.valueOf(Integer.parseInt(stringUnitPassed)/100);
     }
 
-    public static String changeCommaToDot(String stringUnitPassed){
+    public static String covertValueRequired(String stringUnitPassed){
         String converted=stringUnitPassed;
         if(stringUnitPassed.contains(",")){
             converted = stringUnitPassed.replace(",",".");
-        }else if(stringUnitPassed.contains(">")) {
+        } if(stringUnitPassed.contains(">")) {
             converted = stringUnitPassed.replace(">","");
         }
-        else if(stringUnitPassed.contains("<")) {
+         if(stringUnitPassed.contains("<")) {
             converted = stringUnitPassed.replace("<","");
         }
-        else if(stringUnitPassed.contains("über")) {
+         if(stringUnitPassed.contains("über")) {
             converted = stringUnitPassed.replace("über","");
         }
-        else if(stringUnitPassed.contains("bis")) {
+         if(stringUnitPassed.contains("bis")) {
             converted = stringUnitPassed.replace("bis","");
+        }
+        if(stringUnitPassed.contains("kein Bordstein")) {
+            converted = stringUnitPassed.replace("kein Bordstein","0");
+        }
+        if(stringUnitPassed.contains("No curb")) {
+            converted = stringUnitPassed.replace("No curb","0");
+        }
+        if(stringUnitPassed.contains("%")) {
+            converted = stringUnitPassed.replace("%","");
         }
         return converted;
     }

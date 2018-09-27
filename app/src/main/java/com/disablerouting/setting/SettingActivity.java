@@ -136,12 +136,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
                 Attributes attributes = pair.getValue();
                 assert attributes != null;
-                if (attributes.getKey() != null && attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) || attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
-                    if (!attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)) {
-                        tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.changeCommaToDot(attributes.getValue()) + "\"/>\n");
-                    } else {
-                        tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + attributes.getValue().replace(">", "") + "\"/>\n");
-                    }
+                if (attributes.getKey() != null && attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) ||
+                        attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
+                    tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue() + "\"/>\n"));
+
                 }
             }
 
@@ -164,7 +162,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
                 Attributes attributes = pair.getValue();
                 assert attributes != null;
-                tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.changeCommaToDot(attributes.getValue()) + "\"/>\n");
+                tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
 
             }
             StringBuilder nodes = new StringBuilder();
@@ -215,13 +213,13 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      * @return list
      */
     private ArrayList<SettingModel> prepareListDataWay() {
-        ArrayList<SettingModel> modelArrayList= new ArrayList<>();
+        ArrayList<SettingModel> modelArrayList = new ArrayList<>();
         SettingModel settingModel;
-        settingModel= new SettingModel(0,getString(R.string.surface_type));
+        settingModel = new SettingModel(0, getString(R.string.surface_type));
         modelArrayList.add(settingModel);
-        settingModel= new SettingModel(2,getString(R.string.maximum_incline));
+        settingModel = new SettingModel(2, getString(R.string.maximum_incline));
         modelArrayList.add(settingModel);
-        settingModel= new SettingModel(3,getString(R.string.sidewalk_width));
+        settingModel = new SettingModel(3, getString(R.string.sidewalk_width));
         modelArrayList.add(settingModel);
 
        /* ArrayList<String> stringArrayList = new ArrayList<>();
@@ -236,9 +234,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         /*ArrayList<String> stringArrayList = new ArrayList<>();
         stringArrayList.add(getString(R.string.maximum_sloped));
         return stringArrayList;*/
-        ArrayList<SettingModel> modelArrayList= new ArrayList<>();
+        ArrayList<SettingModel> modelArrayList = new ArrayList<>();
         SettingModel settingModel;
-        settingModel= new SettingModel(0,getString(R.string.maximum_sloped));
+        settingModel = new SettingModel(0, getString(R.string.maximum_sloped));
         modelArrayList.add(settingModel);
         return modelArrayList;
 
@@ -264,11 +262,11 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 }
             }
         } else {
-            if(!isValidFORCall) {
+            if (!isValidFORCall) {
                 if (Utility.isOnline(this)) {
                     callToGetWay();
                 }
-            }else {
+            } else {
                 finish();
             }
         }
@@ -409,32 +407,20 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             if (mHashMapWay.get(2) != null && !mHashMapWay.get(2).getKey().isEmpty()) {
                 attributesValidate = new AttributesValidate();
                 attributesValidate.setKey(AppConstant.KEY_INCLINE);
-                if (mHashMapWay.get(2).getValue() != null && mHashMapWay.get(2).getValue().contains("über")) {
-                    attributesValidate.setValue(mHashMapWay.get(2).getValue().replace("über", ""));
-
-                }
-                else if (mHashMapWay.get(2).getValue() != null && mHashMapWay.get(2).getValue().contains("kein Bordstein")) {
-                    attributesValidate.setValue(mHashMapWay.get(2).getValue().replace("kein Bordstein", "0"));
-                }
-                else if (mHashMapWay.get(2).getValue() != null && mHashMapWay.get(2).getValue().contains("No curb")) {
-                    attributesValidate.setValue(mHashMapWay.get(2).getValue().replace("No curb", "0"));
-                }
-                else {
-                    attributesValidate.setValue(mHashMapWay.get(2).getValue());
-                }
+                attributesValidate.setValue(Utility.covertValueRequired(mHashMapWay.get(2).getValue()));
                 attributesValidate.setValid(mHashMapWay.get(2).isValid());
                 attributesValidateList.add(attributesValidate);
             }
             if (mHashMapWay.get(3) != null && !mHashMapWay.get(3).getKey().isEmpty()) {
                 attributesValidate = new AttributesValidate();
                 attributesValidate.setKey(AppConstant.KEY_WIDTH);
-                attributesValidate.setValue(Utility.changeCommaToDot(mHashMapWay.get(3).getValue()));
+                attributesValidate.setValue(Utility.covertValueRequired(mHashMapWay.get(3).getValue()));
                 attributesValidate.setValid(mHashMapWay.get(3).isValid());
                 attributesValidateList.add(attributesValidate);
             }
             wayDataValidate.setAttributesValidate(attributesValidateList);
             requestWayInfo.setWayDataValidates(wayDataValidate);
-            if(UserPreferences.getInstance(this)!=null && UserPreferences.getInstance(this).getUserDetail()!=null) {
+            if (UserPreferences.getInstance(this) != null && UserPreferences.getInstance(this).getUserDetail() != null) {
                 requestWayInfo.setModifiedByUser(UserPreferences.getInstance(this).getUserDetail());
             }
             mISettingScreenPresenter.onUpdate(requestWayInfo);
@@ -449,23 +435,12 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             Attributes attributesValidate = new Attributes();
             if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
                 attributesValidate.setKey(mHashMapWay.get(0).getKey());
-                if (mHashMapWay.get(0).getValue() != null && mHashMapWay.get(0).getValue().contains("über")) {
-                    attributesValidate.setKey(mHashMapWay.get(0).getValue().replace("über",""));
-                }
-                else if (mHashMapWay.get(0).getValue() != null && mHashMapWay.get(0).getValue().contains("kein Bordstein")) {
-                    attributesValidate.setValue(mHashMapWay.get(0).getValue().replace("kein Bordstein", "0"));
-                }
-                else if (mHashMapWay.get(0).getValue() != null && mHashMapWay.get(0).getValue().contains("No curb")) {
-                    attributesValidate.setValue(mHashMapWay.get(0).getValue().replace("No curb", "0"));
-                }else {
-                    attributesValidate.setKey(mHashMapWay.get(0).getValue());
-
-                }
+                attributesValidate.setValue(Utility.covertValueRequired(mHashMapWay.get(0).getValue()));
                 attributesValidate.setValid(mHashMapWay.get(0).isValid());
             }
             nodeReference.setAttributes(attributesValidateList);
             requestNodeInfo.setNodeReference(nodeReference);
-            if(UserPreferences.getInstance(this)!=null && UserPreferences.getInstance(this).getUserDetail()!=null) {
+            if (UserPreferences.getInstance(this) != null && UserPreferences.getInstance(this).getUserDetail() != null) {
                 requestNodeInfo.setModifiedByUser(UserPreferences.getInstance(this).getUserDetail());
             }
             mISettingScreenPresenter.onUpdateNode(requestNodeInfo);
@@ -676,33 +651,33 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (mIsForWAY) {
             switch (position) {
                 case 0:
-                    intent.putExtra(AppConstant.POSITION_SETTING, position);
-                    mPositionClicked = position;
+                    intent.putExtra(AppConstant.POSITION_SETTING, prepareListDataWay().get(position).getKeyPosition());
+                    mPositionClicked = prepareListDataWay().get(position).getKeyPosition();
                     intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataWay().get(position).getKeyString());
                     intent.putExtra(AppConstant.IS_FOR_WAY, true);
                     startActivityForResult(intent, OPEN_SETTING_TYPE);
                     break;
                 case 1:
-                    intent.putExtra(AppConstant.POSITION_SETTING, position);
-                    mPositionClicked = position;
+                    intent.putExtra(AppConstant.POSITION_SETTING, prepareListDataWay().get(position).getKeyPosition());
+                    mPositionClicked = prepareListDataWay().get(position).getKeyPosition();
                     intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataWay().get(position).getKeyString());
                     intent.putExtra(AppConstant.IS_FOR_WAY, true);
                     startActivityForResult(intent, OPEN_SETTING_TYPE);
                     break;
                 case 2:
+                    intent.putExtra(AppConstant.POSITION_SETTING, prepareListDataWay().get(position).getKeyPosition());
+                    mPositionClicked = prepareListDataWay().get(position).getKeyPosition();
+                    intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataWay().get(position).getKeyString());
+                    intent.putExtra(AppConstant.IS_FOR_WAY, true);
+                    startActivityForResult(intent, OPEN_SETTING_TYPE);
+                    break;
+               /* case 3:
                     intent.putExtra(AppConstant.POSITION_SETTING, position);
                     mPositionClicked = position;
                     intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataWay().get(position).getKeyString());
                     intent.putExtra(AppConstant.IS_FOR_WAY, true);
                     startActivityForResult(intent, OPEN_SETTING_TYPE);
-                    break;
-                case 3:
-                    intent.putExtra(AppConstant.POSITION_SETTING, position);
-                    mPositionClicked = position;
-                    intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataWay().get(position).getKeyString());
-                    intent.putExtra(AppConstant.IS_FOR_WAY, true);
-                    startActivityForResult(intent, OPEN_SETTING_TYPE);
-                    break;
+                    break;*/
 
             }
         } else {
