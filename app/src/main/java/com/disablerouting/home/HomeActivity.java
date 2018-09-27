@@ -288,7 +288,6 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
                     } else {
                         mWayListNotValidatedData.add(responseWay.getWayData().get(i));
                     }
-
                     for (int j=0;j<responseWay.getWayData().get(i).getNodeReference().size();j++){
                         if(responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes()!=null) {
 

@@ -223,6 +223,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                     geoPointEnd.getLatitude(), geoPointEnd.getLongitude());
             mMapView.getController().setCenter(boundingBox.getCenter());
             mMapView.zoomToBoundingBox(boundingBox, false);
+
         }
     }
 
@@ -322,11 +323,11 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     public void addCurrentLocation(int zoom) {
         if (mMapView != null) {
             if(zoom==0){
-                mMapView.getOverlays().remove(mCurrentMarker);
+               // mMapView.getOverlays().remove(mCurrentMarker);
                 GeoPoint currentGeoPoints = new GeoPoint(mLatitude, mLongitude); //49.3988,8.6724
-                mCurrentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+               // mCurrentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mCurrentMarker.setPosition(currentGeoPoints);
-                mMapView.getOverlays().add(mCurrentMarker);
+               // mMapView.getOverlays().add(mCurrentMarker);
                 mCurrentMarker.setIcon(getResources().getDrawable(R.drawable.ic_current_loc));
                 mCurrentMarker.setTitle("Your Current location");
             }else {
@@ -560,7 +561,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      */
     public void clearItemsFromMap() {
         mMapView.getOverlays().clear();
-        mMapView.invalidate();
+        // mMapView.invalidate();
     }
 
     public void plotDataOfNodes(List<NodeItem> nodeItemList) {
@@ -737,6 +738,9 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             }
         });
         mMapView.getOverlays().add(polylineWays);
+        if (mMapView != null) {
+            mMapView.getOverlayManager().add(polylineWays);
+        }
 
     }
 
