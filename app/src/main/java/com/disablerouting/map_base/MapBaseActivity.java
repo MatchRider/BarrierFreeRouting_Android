@@ -141,6 +141,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         mMapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
         mMapView.setBuiltInZoomControls(true);
         mMapView.setMultiTouchControls(true);
+        mMapView.setTilesScaledToDpi(true);
 
         mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getApplicationContext()), mMapView);
         mLocationOverlay.enableMyLocation();

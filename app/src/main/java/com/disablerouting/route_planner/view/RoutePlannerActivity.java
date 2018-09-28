@@ -548,6 +548,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onToggleClickedBanner(boolean isChecked) {
 //        clearItemsFromMap();
         mRadioGroup.setVisibility(View.VISIBLE);
+        mImageCurrentPin.setVisibility(View.GONE);
         if (!isChecked) {
             mButtonSelected = 1;
             // setZoomMap();
@@ -621,9 +622,12 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void onClickField(boolean onStart) {
         if (onStart) {
-            mImageCurrentPin.setVisibility(View.VISIBLE);
-            getMapCenter();
-
+            if(mButtonGo.getVisibility()==View.VISIBLE) {
+                mImageCurrentPin.setVisibility(View.VISIBLE);
+                getMapCenter();
+            }else {
+                mImageCurrentPin.setVisibility(View.GONE);
+            }
         } else {
             mImageCurrentPin.setVisibility(View.GONE);
 

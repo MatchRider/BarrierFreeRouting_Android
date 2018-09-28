@@ -263,7 +263,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
      */
     private void addListener() {
         mEditTextSource.addTextChangedListener(mSourceWatcher);
-
         mEditTextDestination.addTextChangedListener(mDestWatcher);
     }
 
@@ -685,6 +684,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     public void onToggleView(boolean isToggled) {
         if(isToggled){
+            mOnSourceDestinationListener.onClickField(false); //Adding pin fetch address
             Utility.collapse(mLinearLayoutSourceDestination);
             if(mLinearLayoutTimeDistance.getVisibility()==View.VISIBLE) {
                 Utility.collapse(mLinearLayoutTimeDistance);
@@ -696,9 +696,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             Utility.expand(mLinearLayoutSourceDestination);
             if(mDirectionsResponse!=null) {
                 Utility.expand(mLinearLayoutTimeDistance);
-            }/*else {
-                Utility.collapse(mLinearLayoutTimeDistance);
-            }*/
+            }
             Utility.collapse(mRelativeLayoutToogle);
 
         }
