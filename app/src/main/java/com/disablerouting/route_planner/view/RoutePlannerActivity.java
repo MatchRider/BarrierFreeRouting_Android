@@ -161,20 +161,19 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void plotDataOnMap(List<List<Double>> geoPointList, List<Steps> stepsList) {
         if (geoPointList != null && stepsList != null) {
+            for (int i= 0 ;i<stepsList.size();i++) {
+                plotDataOfSourceDestination(geoPointList, mSourceAddress, mDestinationAddress, stepsList, true);
+            }
             if(!mStepListHasData){
                 mStepsList.addAll(stepsList);
                 mStepListHasData=true;
             }else {
                 Steps steps= new Steps();
-                steps.setName(getString(R.string.mid_way));
+                steps.setInstructions(getString(R.string.mid_way));
                 steps.setType(14);
                 mStepsList.add(steps);
                 mStepsList.addAll(stepsList);
             }
-            for (int i= 0 ;i<stepsList.size();i++) {
-                plotDataOfSourceDestination(geoPointList, mSourceAddress, mDestinationAddress, stepsList, true);
-            }
-
         }
     }
 

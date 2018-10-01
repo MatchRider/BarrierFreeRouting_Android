@@ -93,7 +93,7 @@ public class Steps implements Parcelable {
         mType = type;
     }
 
-    public void setName(String name) {
-        mName = name;
+    public void setInstructions(String instructions) {
+        mInstructions = instructions;
     }
 }

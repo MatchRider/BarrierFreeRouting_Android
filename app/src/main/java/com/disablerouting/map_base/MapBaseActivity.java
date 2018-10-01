@@ -242,7 +242,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 int indexFirst = stepsList.get(i).getDoublesWayPoints().get(0);
                 int indexLast = stepsList.get(i).getDoublesWayPoints().get(1);
 
-                List<GeoPoint> geoPointsToSet = new ArrayList<>(geoPointList.subList(indexFirst, indexLast + 1));
+                List<GeoPoint> geoPointsToSet = new ArrayList<>(geoPointList.subList(indexFirst, indexLast+1));
                 final Polyline mPolyline = new Polyline();
                 mPolyline.setPoints(geoPointsToSet);
                 mPolyline.setWidth(20);
