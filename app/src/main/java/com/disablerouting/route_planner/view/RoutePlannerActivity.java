@@ -91,12 +91,12 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private List<ListWayData> mWayListNotValidatedData = new ArrayList<>();
     private List<NodeReference> mNodeListValidatedData = new ArrayList<>();
     private List<NodeReference> mNodeListNotValidatedData = new ArrayList<>();
-    private HashMap<Integer, List<Object>> mIntegerListHashMap = new HashMap<>();
 
     private int mButtonSelected = 1;
     private ProgressDialog pDialog;
     private boolean mISFromSuggestion;
-    private List<Steps> mStepsList = new ArrayList<>();
+    private List<Steps> mStepsList= new ArrayList<>();
+    boolean mStepListHasData=false;
     private int mTabSelected = 1;
 
     @Override
@@ -161,8 +161,20 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void plotDataOnMap(List<List<Double>> geoPointList, List<Steps> stepsList) {
         if (geoPointList != null && stepsList != null) {
-            mStepsList = stepsList;
-            plotDataOfSourceDestination(geoPointList, mSourceAddress, mDestinationAddress, stepsList, true);
+            if(!mStepListHasData){
+                mStepsList.addAll(stepsList);
+                mStepListHasData=true;
+            }else {
+                Steps steps= new Steps();
+                steps.setName(getString(R.string.mid_way));
+                steps.setType(14);
+                mStepsList.add(steps);
+                mStepsList.addAll(stepsList);
+            }
+            for (int i= 0 ;i<stepsList.size();i++) {
+                plotDataOfSourceDestination(geoPointList, mSourceAddress, mDestinationAddress, stepsList, true);
+            }
+
         }
     }
 
@@ -275,7 +287,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @OnClick(R.id.btn_go)
     public void goPlotMap() {
         // UI_HANDLER.post(updateMarker);
+        mStepsList.clear();
+        mStepListHasData=false;
         mImageCurrentPin.setVisibility(View.GONE);
+        getMapCenter(false);
         clearItemsFromMap();
         Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
         mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
@@ -610,6 +625,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onInfo() {
         Intent intent = new Intent(this, InstructionsActivity.class);
         intent.putParcelableArrayListExtra(AppConstant.STEP_DATA, (ArrayList<? extends Parcelable>) mStepsList);
+        //intent.putExtra(AppConstant.STEP_DATA,mListHashMap);
         launchActivity(intent);
     }
 
@@ -624,13 +640,14 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (onStart) {
             if(mButtonGo.getVisibility()==View.VISIBLE) {
                 mImageCurrentPin.setVisibility(View.VISIBLE);
-                getMapCenter();
+                getMapCenter(true);
             }else {
                 mImageCurrentPin.setVisibility(View.GONE);
+                getMapCenter(false);
             }
         } else {
             mImageCurrentPin.setVisibility(View.GONE);
-
+            getMapCenter(false);
         }
     }
 

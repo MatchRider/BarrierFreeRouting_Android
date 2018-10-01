@@ -192,6 +192,7 @@
     <string name="ways">Wege</string>
     <string name="nodes">Wegpunkt</string>
     <string name="error_when_entry_not_saved">Deine Eingabe konnte nicht gespeichert werden.</string>
+    <string name="mid_way">Mittlerer Weg</string>
 
 
 </resources>

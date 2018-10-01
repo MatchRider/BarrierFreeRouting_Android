@@ -22,7 +22,8 @@ public class DirectionInstruction {
     GOAL(10),
     DEPART(11),
     KEEPLEFT(12),
-    KEEPRIGHT(13);
+    KEEPRIGHT(13),
+    MID_WAY(14); // My own define type
 
     private int mType;
     private static Map map= new HashMap();
@@ -76,12 +77,14 @@ public class DirectionInstruction {
           return getImage(context,"ic_keep_left");
         case KEEPRIGHT:
           return getImage(context,"ic_keep_right");
+        case MID_WAY:
+          return getImage(context,"ic_mid_c");
         default:
           return null;
       }
     }
 
-    private static Drawable getImage(Context context, String name) {
+  private static Drawable getImage(Context context, String name) {
       return context.getResources().getDrawable(context.getResources().getIdentifier(name, "drawable", context.getPackageName()));
     }
 

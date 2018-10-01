@@ -210,5 +210,6 @@
     <string name="ways">Ways</string>
     <string name="nodes">Nodes</string>
     <string name="error_when_entry_not_saved">Your entry could not be saved.</string>
+    <string name="mid_way">Mid Way</string>
 
 </resources>

@@ -88,4 +88,12 @@ public class Steps implements Parcelable {
     public ArrayList<Integer> getDoublesWayPoints() {
         return mDoublesWayPoints;
     }
+
+    public void setType(int type) {
+        mType = type;
+    }
+
+    public void setName(String name) {
+        mName = name;
+    }
 }

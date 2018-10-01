@@ -888,26 +888,32 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
 
 
-    public void getMapCenter() {
-        final GeoPoint[] geoPoint = {null};
-        final IGeoPoint[] mapViewMapCenter = {null};
-        if (mMapView != null) {
-            mMapView.setMapListener(new DelayedMapListener(new MapListener() {
+    public void getMapCenter(boolean isFetchDragAdd) {
+        if(isFetchDragAdd) {
+            final GeoPoint[] geoPoint = {null};
+            final IGeoPoint[] mapViewMapCenter = {null};
+            if (mMapView != null) {
+                mMapView.setMapListener(new DelayedMapListener(new MapListener() {
 
-                @Override
-                public boolean onScroll(ScrollEvent paramScrollEvent) {
-                    mapViewMapCenter[0] = mMapView.getMapCenter();
-                    geoPoint[0] = new GeoPoint(mapViewMapCenter[0].getLatitude(),mapViewMapCenter[0].getLongitude());
-                    mFeedBackListener.onDragClicked(geoPoint[0]);
-                    return true;
-                }
+                    @Override
+                    public boolean onScroll(ScrollEvent paramScrollEvent) {
+                        mapViewMapCenter[0] = mMapView.getMapCenter();
+                        geoPoint[0] = new GeoPoint(mapViewMapCenter[0].getLatitude(), mapViewMapCenter[0].getLongitude());
+                        mFeedBackListener.onDragClicked(geoPoint[0]);
+                        return true;
+                    }
 
-                @Override
-                public boolean onZoom(ZoomEvent event) {
-                    return false;
-                }
+                    @Override
+                    public boolean onZoom(ZoomEvent event) {
+                        return false;
+                    }
 
-            }));
+                }));
+            }
+        }else {
+            if(mMapView!=null){
+                mMapView.setMapListener(null);
+            }
         }
     }
 

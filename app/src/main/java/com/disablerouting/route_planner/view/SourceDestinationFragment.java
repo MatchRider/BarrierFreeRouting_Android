@@ -279,6 +279,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 mOnSourceDestinationListener.onSourceDestinationSelected(mFeaturesSource, mFeaturesDestination);
                 String bBox = mGeoPointSource.getLatitude() + "," + mGeoPointSource.getLongitude() + "," +
                         mGeoPointDestination.getLatitude() + "," + mGeoPointDestination.getLongitude();
+
                 getNodes(bBox); // API call for set markers of amenity
                 mJSONObjectFilter = jsonObject;
                 mFeaturesRouteVia = featuresRouteVia;
@@ -334,11 +335,13 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 && data.getFeaturesList().get(0).getGeometry() != null && data.getFeaturesList().get(0).getProperties().getSegmentList().get(0).getStepsList() != null) {
             mDirectionsResponse=data;
             for (int i = 0; i< data.getFeaturesList().get(0).getProperties().getSegmentList().size(); i++){
-                    mOnSourceDestinationListener.plotDataOnMap(data.getFeaturesList().get(0).getGeometry().getCoordinates(), data.getFeaturesList().get(0).getProperties()
-                            .getSegmentList().get(i).getStepsList());
+                    mOnSourceDestinationListener.plotDataOnMap(data.getFeaturesList().get(0).getGeometry().getCoordinates(),
+                            data.getFeaturesList().get(0).getProperties().getSegmentList().get(i).getStepsList());
 
             }
-            if(data.getFeaturesList().get(0).getProperties().getSegmentList().size()>1 && data.getInfo()!=null && data.getInfo().getQuery()!=null && data.getInfo().getQuery().getCoordinatesList()!=null &&
+            if(data.getFeaturesList().get(0).getProperties().getSegmentList().size()>1 && data.getInfo()!=null &&
+                    data.getInfo().getQuery()!=null &&
+                    data.getInfo().getQuery().getCoordinatesList()!=null &&
                     data.getInfo().getQuery().getCoordinatesList().get(1)!=null) {
                 GeoPoint geoPointMid = new GeoPoint(data.getInfo().getQuery().getCoordinatesList().get(1).get(1),
                         data.getInfo().getQuery().getCoordinatesList().get(1).get(0));
