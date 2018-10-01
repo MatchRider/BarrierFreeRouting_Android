@@ -139,6 +139,7 @@
     <string name="sorry_no">leider nein!</string>
     <string name="that_s_a_pity_maybe_next_time">Schade, vielleicht beim nächsten Mal!?</string>
     <string name="please_take_a_closer_look_at_the_following_leg">Es geht um folgenden Abschnitt.</string>
+    <string name="please_take_look_at_node">Es geht um folgenden Wegpunkt.</string>
     <string name="verified">Validiert</string>
     <string name="not_verify">Validiert</string>
     <string name="is_the_following_correct">Stimmen folgende Informationen?</string>
@@ -189,7 +190,7 @@
     <string name="logout">Ausloggen</string>
     <string name="confirm_logout_message">Möchten Sie sich wirklich abmelden?</string>
     <string name="ways">Wege</string>
-    <string name="nodes">Knoten</string>
+    <string name="nodes">Wegpunkt</string>
     <string name="error_when_entry_not_saved">Deine Eingabe konnte nicht gespeichert werden.</string>
 
 

@@ -844,6 +844,10 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater layoutInflater = getLayoutInflater();
         View customView = layoutInflater.inflate(R.layout.enchance_feedback_pop_up, null);
+        Button btnTitle = (Button) customView.findViewById(R.id.btn_title);
+        if(!isForWay){
+            btnTitle.setText(getResources().getString(R.string.please_take_look_at_node));
+        }
         Button btnNo = (Button) customView.findViewById(R.id.btn_no);
         Button btnYes = (Button) customView.findViewById(R.id.btn_yes);
         builder.setView(customView);
