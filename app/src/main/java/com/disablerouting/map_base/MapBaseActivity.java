@@ -715,68 +715,71 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      * @param valid       valid data or not
      */
     public void addPolyLineForWays(final ListWayData listWayData, final boolean valid) {
-        Polyline polylineWays = new Polyline();
-        polylineWays.setPoints(listWayData.getGeoPoints());
-        polylineWays.setRelatedObject(listWayData);
-        polylineWays.setWidth(20);
-        String colorValue;
-        if (valid) {
-            polylineWays.setColor(getResources().getColor(R.color.colorGreen));
-        } else {
-            colorValue = listWayData.getColor();
-            polylineWays.setColor(Color.parseColor(colorValue));
-            //colorIndex=(colorIndex+1)%4;
-        }
-        polylineWays.setOnClickListener(new Polyline.OnClickListener() {
-            @Override
-            public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                setBoundingBox(listWayData.getGeoPoints().get(0), listWayData.getGeoPoints().get(listWayData.getGeoPoints().size() - 1));
-                ListWayData relatedObject = (ListWayData) polyline.getRelatedObject();
-                updatePolylineUIWays(polyline, valid);
-                showEnhanceDialog(polyline, valid, relatedObject,true,null);
-
-                return false;
+        if(listWayData!=null && listWayData.getGeoPoints()!=null) {
+            Polyline polylineWays = new Polyline();
+            polylineWays.setPoints(listWayData.getGeoPoints());
+            polylineWays.setRelatedObject(listWayData);
+            polylineWays.setWidth(20);
+            String colorValue;
+            if (valid) {
+                polylineWays.setColor(getResources().getColor(R.color.colorGreen));
+            } else {
+                colorValue = listWayData.getColor();
+                polylineWays.setColor(Color.parseColor(colorValue));
+                //colorIndex=(colorIndex+1)%4;
             }
-        });
-        mMapView.getOverlays().add(polylineWays);
-        if (mMapView != null) {
-            mMapView.getOverlayManager().add(polylineWays);
-        }
+            polylineWays.setOnClickListener(new Polyline.OnClickListener() {
+                @Override
+                public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
+                    setBoundingBox(listWayData.getGeoPoints().get(0), listWayData.getGeoPoints().get(listWayData.getGeoPoints().size() - 1));
+                    ListWayData relatedObject = (ListWayData) polyline.getRelatedObject();
+                    updatePolylineUIWays(polyline, valid);
+                    showEnhanceDialog(polyline, valid, relatedObject, true, null);
 
+                    return false;
+                }
+            });
+            mMapView.getOverlays().add(polylineWays);
+            if (mMapView != null) {
+                mMapView.getOverlayManager().add(polylineWays);
+            }
+        }
     }
 
     public void addNodeForWays(final NodeReference nodeReference , final boolean isValid) {
-        for (int i = 0; i < nodeReference.getAttributes().size(); i++) {
-            if(nodeReference.getAttributes().size()>0) {
-                for (int j = 0; j < nodeReference.getAttributes().size(); j++) {
-                    if(nodeReference.getAttributes().get(j).getKey().equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
-                        final Marker mNodeMarker = new Marker(mMapView);
-                        if (mMapView != null) {
-                            GeoPoint geoPoint = new GeoPoint(Double.parseDouble(nodeReference.getLat()),
-                                    Double.parseDouble(nodeReference.getLon()));
-                            mNodeMarker.setPosition(geoPoint);
-                            mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                            mMapView.getOverlays().add(mNodeMarker);
-                            if(isValid) {
-                                mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_pin_green));
-                            }else {
-                                mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_pin_pink));
-                            }
-                            mNodeMarker.setTitle(nodeReference.getAttributes().get(j).getValue());
-                            mNodeMarker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
-                                @Override
-                                public boolean onMarkerClick(Marker marker, MapView mapView) {
-                                    GeoPoint geoPointStart= new GeoPoint(Double.parseDouble(nodeReference.getLat()),
-                                            Double.parseDouble(nodeReference.getLon()));
-                                    GeoPoint geoPointEnd= new GeoPoint(Double.parseDouble(nodeReference.getLat()),
-                                            Double.parseDouble(nodeReference.getLon()));
-                                    setBoundingBox(geoPointStart,geoPointEnd);
-
-                                    updateNodeUI(marker,isValid);
-                                    showEnhanceDialog(null, true, null,false,nodeReference);
-                                    return false;
+        if(nodeReference!=null && nodeReference.getAttributes()!=null) {
+            for (int i = 0; i < nodeReference.getAttributes().size(); i++) {
+                if (nodeReference.getAttributes().size() > 0) {
+                    for (int j = 0; j < nodeReference.getAttributes().size(); j++) {
+                        if (nodeReference.getAttributes().get(j).getKey().equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
+                            final Marker mNodeMarker = new Marker(mMapView);
+                            if (mMapView != null) {
+                                GeoPoint geoPoint = new GeoPoint(Double.parseDouble(nodeReference.getLat()),
+                                        Double.parseDouble(nodeReference.getLon()));
+                                mNodeMarker.setPosition(geoPoint);
+                                mNodeMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                                mMapView.getOverlays().add(mNodeMarker);
+                                if (isValid) {
+                                    mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_pin_green));
+                                } else {
+                                    mNodeMarker.setIcon(getResources().getDrawable(R.drawable.ic_pin_pink));
                                 }
-                            });
+                                mNodeMarker.setTitle(nodeReference.getAttributes().get(j).getValue());
+                                mNodeMarker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+                                    @Override
+                                    public boolean onMarkerClick(Marker marker, MapView mapView) {
+                                        GeoPoint geoPointStart = new GeoPoint(Double.parseDouble(nodeReference.getLat()),
+                                                Double.parseDouble(nodeReference.getLon()));
+                                        GeoPoint geoPointEnd = new GeoPoint(Double.parseDouble(nodeReference.getLat()),
+                                                Double.parseDouble(nodeReference.getLon()));
+                                        setBoundingBox(geoPointStart, geoPointEnd);
+
+                                        updateNodeUI(marker, isValid);
+                                        showEnhanceDialog(null, true, null, false, nodeReference);
+                                        return false;
+                                    }
+                                });
+                            }
                         }
                     }
                 }
