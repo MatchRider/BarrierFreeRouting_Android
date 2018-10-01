@@ -138,7 +138,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 assert attributes != null;
                 if (attributes.getKey() != null && attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) ||
                         attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
-                    tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue() + "\"/>\n"));
+                    tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
 
                 }
             }
@@ -221,19 +221,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         modelArrayList.add(settingModel);
         settingModel = new SettingModel(3, getString(R.string.sidewalk_width));
         modelArrayList.add(settingModel);
-
-       /* ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add(getString(R.string.surface_type));
-        stringArrayList.add(getString(R.string.maximum_incline));
-        stringArrayList.add(getString(R.string.sidewalk_width));
-        return stringArrayList;*/
         return modelArrayList;
     }
 
     private ArrayList<SettingModel> prepareListDataNode() {
-        /*ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add(getString(R.string.maximum_sloped));
-        return stringArrayList;*/
         ArrayList<SettingModel> modelArrayList = new ArrayList<>();
         SettingModel settingModel;
         settingModel = new SettingModel(0, getString(R.string.maximum_sloped));
@@ -355,7 +346,11 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             for (int i = 0; i < mNodeReference.getAttributes().size(); i++) {
                 switch (mNodeReference.getAttributes().get(i).getKey()) {
                     case AppConstant.KEY_KERB_HEIGHT:
-                        mHashMapWay.put(0, mNodeReference.getAttributes().get(i));
+                        Attributes attributesKerb= new Attributes();
+                        attributesKerb.setKey(mNodeReference.getAttributes().get(i).getKey());
+                        attributesKerb.setValue(Utility.changeMeterToCm(mNodeReference.getAttributes().get(i).getValue()));
+                        attributesKerb.setValid(mNodeReference.getAttributes().get(i).isValid());
+                        mHashMapWay.put(0, attributesKerb);
                         break;
                     default:
                 }
@@ -435,7 +430,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             Attributes attributesValidate = new Attributes();
             if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
                 attributesValidate.setKey(mHashMapWay.get(0).getKey());
-                attributesValidate.setValue(Utility.covertValueRequired(mHashMapWay.get(0).getValue()));
+                String value = Utility.covertValueRequired(mHashMapWay.get(0).getValue());
+                value = Utility.changeCmToMeter(value);
+                attributesValidate.setValue(value);
                 attributesValidate.setValid(mHashMapWay.get(0).isValid());
             }
             nodeReference.setAttributes(attributesValidateList);

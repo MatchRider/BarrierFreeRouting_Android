@@ -45,7 +45,7 @@ public class Utility {
      * Hides the soft keyboard
      */
     public static void hideSoftKeyboard(AppCompatActivity activity) {
-        if (activity!=null && activity.getCurrentFocus() != null) {
+        if (activity != null && activity.getCurrentFocus() != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(INPUT_METHOD_SERVICE);
             assert inputMethodManager != null;
             inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
@@ -53,19 +53,19 @@ public class Utility {
     }
 
     public static TranslateAnimation translate(float fromX, float toX, float fromY,
-                                        float toY, int ms) {
+                                               float toY, int ms) {
         TranslateAnimation transAnim = new TranslateAnimation(fromX, toX, fromY, toY);
         transAnim.setDuration(ms);
         return transAnim;
     }
 
-    public static int calculatePopUpHeight(Context context){
+    public static int calculatePopUpHeight(Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         return displayMetrics.heightPixels;
     }
 
-    public static BoundingBox boundToMap(double minLatitude , double maxLatitude ,
-                                         double minLongitude, double maxLongitude){
+    public static BoundingBox boundToMap(double minLatitude, double maxLatitude,
+                                         double minLongitude, double maxLongitude) {
         double minLat = minLatitude;
         double maxLat = maxLatitude;
         double minLong = minLongitude;
@@ -86,13 +86,13 @@ public class Utility {
         return new BoundingBox(maxLat, maxLong, minLat, minLong);
     }
 
-    public static String trimTWoDecimalPlaces(double value){
+    public static String trimTWoDecimalPlaces(double value) {
         NumberFormat formatter = new DecimalFormat("#0.00");
         return formatter.format(value);
     }
 
-    public static JSONObject convertXMLtoJSON(String xmlString){
-        JSONObject jsonObj=null;
+    public static JSONObject convertXMLtoJSON(String xmlString) {
+        JSONObject jsonObj = null;
         try {
 
             XmlToJson xmlToJson = new XmlToJson.Builder(xmlString).build();
@@ -101,18 +101,18 @@ public class Utility {
             if (jsonObj != null) {
                 Log.d("JSON", jsonObj.toString());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return jsonObj;
     }
 
-    public static OAuth10aService createOauth10a(){
+    public static OAuth10aService createOauth10a() {
         return new ServiceBuilder(ApiEndPoint.CONSUMER_KEY)
-               .apiSecret(ApiEndPoint.CONSUMER_SECRET_KEY)
-               .callback(ApiEndPoint.OSM_REDIRECT_URI)
-               .build(OSMApi.instance());
+                .apiSecret(ApiEndPoint.CONSUMER_SECRET_KEY)
+                .callback(ApiEndPoint.OSM_REDIRECT_URI)
+                .build(OSMApi.instance());
     }
 
     public static void expand(View view) {
@@ -190,9 +190,10 @@ public class Utility {
         }
         return "";
     }
+
     public static boolean isParsableAsDouble(final String s) {
         try {
-            if(s!=null) {
+            if (s != null) {
                 Double.valueOf(s);
             }
             return true;
@@ -200,6 +201,7 @@ public class Utility {
             return false;
         }
     }
+
     public static void makeLinks(TextView textView, String[] links, ClickableSpan[] clickableSpans) {
         SpannableString spannableString = new SpannableString(textView.getText());
         for (int i = 0; i < links.length; i++) {
@@ -225,41 +227,51 @@ public class Utility {
                 cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
-    public static String changeCmToMeter(String stringUnitPassed){
-        return String.valueOf(Integer.parseInt(stringUnitPassed)/100);
+    public static String changeCmToMeter(String stringUnitPassed) {
+        return String.valueOf(Double.parseDouble(stringUnitPassed) / 100);
     }
 
-    public static String covertValueRequired(String stringUnitPassed){
-        String converted=stringUnitPassed;
-        if(stringUnitPassed.contains(",")){
-            converted = stringUnitPassed.replace(",",".");
-        } if(stringUnitPassed.contains(">")) {
-            converted = stringUnitPassed.replace(">","");
+    public static String covertValueRequired(String stringUnitPassed) {
+        String converted = stringUnitPassed;
+        if (stringUnitPassed.contains(",")) {
+            converted = converted.replace(",", ".");
         }
-         if(stringUnitPassed.contains("<")) {
-            converted = stringUnitPassed.replace("<","");
+        if (stringUnitPassed.contains(">")) {
+            converted = converted.replace(">", "");
         }
-         if(stringUnitPassed.contains("über")) {
-            converted = stringUnitPassed.replace("über","");
+        if (stringUnitPassed.contains("<")) {
+            converted = converted.replace("<", "");
         }
-         if(stringUnitPassed.contains("bis")) {
-            converted = stringUnitPassed.replace("bis","");
+        if (stringUnitPassed.contains("über")) {
+            converted = converted.replace("über", "");
         }
-        if(stringUnitPassed.contains("kein Bordstein")) {
-            converted = stringUnitPassed.replace("kein Bordstein","0");
+        if (stringUnitPassed.contains("bis")) {
+            converted = converted.replace("bis", "");
         }
-        if(stringUnitPassed.contains("No curb")) {
-            converted = stringUnitPassed.replace("No curb","0");
+        if (stringUnitPassed.contains("kein Bordstein")) {
+            converted = converted.replace("kein Bordstein", "0");
         }
-        if(stringUnitPassed.contains("%")) {
-            converted = stringUnitPassed.replace("%","");
+        if (stringUnitPassed.contains("No curb")) {
+            converted = converted.replace("No curb", "0");
+        }
+        if (stringUnitPassed.contains("%")) {
+            converted = converted.replace("%", "");
         }
         return converted;
     }
-    public static String changeDotToComma(String stringUnitPassed){
-        String converted=stringUnitPassed;
-        if(stringUnitPassed.contains(".")){
-            converted = stringUnitPassed.replace(".",",");
+
+    public static String changeDotToComma(String stringUnitPassed) {
+        String converted = stringUnitPassed;
+        if (stringUnitPassed.contains(".")) {
+            converted = stringUnitPassed.replace(".", ",");
+        }
+        return converted;
+    }
+
+    public static String changeMeterToCm(String stringUnitPassed) {
+        String converted = stringUnitPassed;
+        if (stringUnitPassed != null && stringUnitPassed.contains(".")) {
+            converted = String.valueOf(Double.parseDouble(stringUnitPassed) * 100);
         }
         return converted;
     }
