@@ -69,9 +69,7 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
         service.signRequest(oAuth1AccessToken, request);
         Response response = null;
         try {
-
             response = service.execute(request);
-
             if (pDialog != null) {
                 pDialog.dismiss();
             }

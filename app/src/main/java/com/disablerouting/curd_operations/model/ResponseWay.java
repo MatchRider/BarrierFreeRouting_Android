@@ -13,12 +13,15 @@ public class ResponseWay implements Parcelable {
 
 
     @JsonProperty("WayData")
+    private
     List<WayData> mWayData;
 
     @JsonProperty("Status")
+    private
     boolean mStatus;
 
     @JsonProperty("Error")
+    private
     String mError;
 
     public ResponseWay() {

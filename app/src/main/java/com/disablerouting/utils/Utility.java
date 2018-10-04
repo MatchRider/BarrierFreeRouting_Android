@@ -278,7 +278,7 @@ public class Utility {
 
     public static boolean isListContainId(List<NodeReference> nodeReferencesList, String id) {
         for (NodeReference nodeReference : nodeReferencesList) {
-            if (nodeReference.getAPINodeId().contains(id)) {
+            if (nodeReference.getOSMNodeId().contains(id)) {
                 return true;
             }
         }

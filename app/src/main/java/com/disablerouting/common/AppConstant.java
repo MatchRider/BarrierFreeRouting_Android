@@ -32,8 +32,10 @@ public interface AppConstant {
     String WAY_DATA="WayData";
     String STEP_DATA="StepData";
 
-     String API_TYPE_CREATE_CHANGE_SET="createChangeSet";
-     String API_TYPE_CREATE_PUT_WAY="wayUpdate";
+    String API_TYPE_CREATE_NODE="createNode";
+    String API_TYPE_CREATE_WAY="createWay";
+    String API_TYPE_CREATE_CHANGE_SET="createChangeSet";
+     String API_TYPE_CREATE_PUT_WAY_OR_NODE ="wayUpdate";
      String API_TYPE_GET_USER_DETAIL="getUserDetail";
 
      String KEY_FOOTWAY = "footway"; //footway surface

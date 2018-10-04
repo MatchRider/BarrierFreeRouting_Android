@@ -13,13 +13,13 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ListWayData implements Parcelable{
 
-    @JsonProperty("OSMWayId")
-    private
-    String mOSMWayId;
-
     @JsonProperty("APIWayId")
     private
     String mAPIWayId;
+
+    @JsonProperty("OSMWayId")
+    private
+    String mOSMWayId;
 
     @JsonProperty("ProjectId")
     private
@@ -79,7 +79,7 @@ public class ListWayData implements Parcelable{
     };
 
     public String getOSMWayId() {
-        return mOSMWayId;
+        return "";
     }
 
     public String getAPIWayId() {

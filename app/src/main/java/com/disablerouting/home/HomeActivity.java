@@ -295,13 +295,13 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
 
                                     if (!responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().get(k).isValid()) {
                                         if(!Utility.isListContainId(mNodeListNotValidatedData,responseWay.getWayData().get(i).getNodeReference()
-                                                .get(j).getAPINodeId())){
+                                                .get(j).getOSMNodeId())){
                                             mNodeListNotValidatedData.add(responseWay.getWayData().get(i).getNodeReference().get(j));
 
                                         }
                                     } else {
                                         if(!Utility.isListContainId(mNodeListValidatedData,responseWay.getWayData().get(i).getNodeReference()
-                                                .get(j).getAPINodeId())) {
+                                                .get(j).getOSMNodeId())) {
                                             mNodeListValidatedData.add(responseWay.getWayData().get(i).getNodeReference().get(j));
                                         }
                                     }
