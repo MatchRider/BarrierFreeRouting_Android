@@ -9,6 +9,7 @@
     <color name="colorBlackHint">#979797</color>
     <color name="colorRed">#b20000</color>
     <color name="colorGreen">#339900</color>
+    <color name="colorGreenLight">#7dbe7f</color>
     <color name="colorTextGray">#75787c</color>
     <color name="colorLightGray">#DBDBDB</color>
     <color name="colorBlack">#000000</color>

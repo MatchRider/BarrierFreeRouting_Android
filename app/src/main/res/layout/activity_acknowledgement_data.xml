@@ -72,7 +72,8 @@
             />
             <ImageView android:layout_width="150dp"
                        android:layout_gravity="center"
-                       android:background="@drawable/placeholder"
+                       android:background="@color/colorWhite"
+                       android:src="@drawable/logo_heidelberg"
                        android:layout_height="80dp"/>
 
 
@@ -105,10 +106,11 @@
             />
             <ImageView android:layout_width="150dp"
                        android:layout_gravity="center"
-                       android:background="@drawable/placeholder"
+                       android:background="@color/colorGreenLight"
+                       android:src="@drawable/logo_match_rider"
                        android:layout_height="80dp"/>
 
-            <TextView android:layout_width="match_parent"
+            <!--<TextView android:layout_width="match_parent"
                       android:id="@+id/txv_data_side_menu4"
                       android:textColor="@android:color/white"
                       android:layout_marginTop="@dimen/margin_small"
@@ -122,7 +124,7 @@
             <ImageView android:layout_width="150dp"
                        android:layout_gravity="center"
                        android:background="@drawable/placeholder"
-                       android:layout_height="80dp"/>
+                       android:layout_height="80dp"/>-->
 
         </LinearLayout>
     </ScrollView>
