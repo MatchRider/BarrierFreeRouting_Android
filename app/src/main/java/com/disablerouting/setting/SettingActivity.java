@@ -79,7 +79,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             if (mIsForWAY) {
                 mListWayData = getIntent().getParcelableExtra(AppConstant.WAY_DATA);
                 if (mListWayData != null) {
-                    mWayID = mListWayData.getId();
+                    mWayID = mListWayData.getAPIWayId();
                     mNodeList = mListWayData.getNodeReference();
                     getDataFromWay();
                     setUpRecyclerView();
@@ -88,7 +88,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 mNodeReference = getIntent().getParcelableExtra(AppConstant.WAY_DATA);
                 if (mNodeReference != null) {
                     isValidFORCall = mNodeReference.getAttributes().get(0).isValid();
-                    mNodeID = mNodeReference.getId();
+                    mNodeID = mNodeReference.getAPINodeId();
                     getDataFromWay();
                     setUpRecyclerView();
 
@@ -145,7 +145,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
             StringBuilder nodes = new StringBuilder();
             for (int i = 0; i < mNodeList.size(); i++) {
-                nodes.append("<nd ref=\"" + mNodeList.get(i).getId() + "\"/>\n");
+                nodes.append("<nd ref=\"" + mNodeList.get(i).getAPINodeId() + "\"/>\n");
             }
             String requestString = "<osm>\n" +
                     " <way  id=\"" + mWayID + "\" changeset=\"" + mChangeSetID + "\" version=\"" + mVersionNumber + "\" >\n" +
@@ -166,7 +166,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
             }
             StringBuilder nodes = new StringBuilder();
-            nodes.append("<nd ref=\"" + mNodeReference.getId() + "\"/>\n");
+            nodes.append("<nd ref=\"" + mNodeReference.getAPINodeId() + "\"/>\n");
             String requestString = "<osm>\n" +
                     " <node  id=\"" + mNodeID + "\" changeset=\"" + mChangeSetID + "\" version=\"" + mVersionNumber + "\"  lat=\"" + mNodeReference.getLat() + "\" lon=\"" + mNodeReference.getLon() + "\" >\n" +
                     nodes +
@@ -369,7 +369,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (mIsForWAY) {
             RequestWayInfo requestWayInfo = new RequestWayInfo();
             RequestWayData wayDataValidate = new RequestWayData();
-            wayDataValidate.setId(mListWayData.getId());
+            wayDataValidate.setId(mListWayData.getAPIWayId());
             wayDataValidate.setProjectId(mListWayData.getProjectId());
             wayDataValidate.setValid(mListWayData.getIsValid());
             wayDataValidate.setVersion(versionString);
@@ -422,9 +422,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         } else {
             RequestNodeInfo requestNodeInfo = new RequestNodeInfo();
             NodeReference nodeReference = new NodeReference();
-            nodeReference.setId(mNodeID);
+            nodeReference.setAPINodeId(mNodeID);
             nodeReference.setLat(mNodeReference.getLat());
-            nodeReference.setId(mNodeReference.getLon());
+            nodeReference.setAPINodeId(mNodeReference.getLon());
             nodeReference.setVersion(versionString);
             List<Attributes> attributesValidateList = new ArrayList<>();
             Attributes attributesValidate = new Attributes();
@@ -453,7 +453,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 List<ListWayData> listWayDataList = WayDataPreference.getInstance(this).getNotValidatedWayData();
                 ArrayList<ListWayData> listNotValidated = null;
                 for (int i = 0; i < listWayDataList.size(); i++) {
-                    if (mListWayData.getId().equals(listWayDataList.get(i).getId())) {
+                    if (mListWayData.getAPIWayId().equals(listWayDataList.get(i).getAPIWayId())) {
                         List<Attributes> attributesList = listWayDataList.get(i).getAttributesList();
                         for (int j = 0; j < attributesList.size(); j++) {
                             for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
@@ -504,7 +504,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 ArrayList<NodeReference> listNotValidatedNode = null;
 
                 for (int i = 0; i < nodeReferenceList.size(); i++) {
-                    if (mNodeReference.getId().equals(nodeReferenceList.get(i).getId())) {
+                    if (mNodeReference.getAPINodeId().equals(nodeReferenceList.get(i).getAPINodeId())) {
                         List<Attributes> attributesList = mNodeReference.getAttributes();
                         for (int j = 0; j < attributesList.size(); j++) {
                             for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {

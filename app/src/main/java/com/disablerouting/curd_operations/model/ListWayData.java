@@ -13,9 +13,13 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ListWayData implements Parcelable{
 
-    @JsonProperty("Id")
+    @JsonProperty("OSMWayId")
     private
-    String mId;
+    String mOSMWayId;
+
+    @JsonProperty("APIWayId")
+    private
+    String mAPIWayId;
 
     @JsonProperty("ProjectId")
     private
@@ -51,7 +55,8 @@ public class ListWayData implements Parcelable{
 
 
     protected ListWayData(Parcel in) {
-        mId = in.readString();
+        mOSMWayId = in.readString();
+        mAPIWayId = in.readString();
         mProjectId = in.readString();
         mCoordinates = in.createTypedArrayList(ParcelableArrayList.CREATOR);
         mNodeReference = in.createTypedArrayList(NodeReference.CREATOR);
@@ -73,12 +78,16 @@ public class ListWayData implements Parcelable{
         }
     };
 
-    public String getId() {
-        return mId;
+    public String getOSMWayId() {
+        return mOSMWayId;
     }
 
-    public void setId(String id) {
-        mId = id;
+    public String getAPIWayId() {
+        return mAPIWayId;
+    }
+
+    public void setAPIWayId(String id) {
+        mAPIWayId = id;
     }
 
     public String getProjectId() {
@@ -139,6 +148,7 @@ public class ListWayData implements Parcelable{
     }
 
 
+
     public static Creator<ListWayData> getCREATOR() {
         return CREATOR;
     }
@@ -151,7 +161,8 @@ public class ListWayData implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
 
-        dest.writeString(mId);
+        dest.writeString(mOSMWayId);
+        dest.writeString(mAPIWayId);
         dest.writeString(mProjectId);
         dest.writeTypedList(mCoordinates);
         dest.writeTypedList(mNodeReference);

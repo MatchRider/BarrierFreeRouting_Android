@@ -14,9 +14,13 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NodeReference implements Parcelable {
 
-    @JsonProperty("Id")
+    @JsonProperty("OSMNodeId")
     private
-    String mId;
+    String mOSMNodeId;
+
+    @JsonProperty("APINodeId")
+    private
+    String mAPINodeId;
 
     @JsonProperty("Lat")
     private
@@ -38,7 +42,8 @@ public class NodeReference implements Parcelable {
     }
 
     protected NodeReference(Parcel in) {
-        mId = in.readString();
+        mOSMNodeId = in.readString();
+        mAPINodeId = in.readString();
         mLat = in.readString();
         mLon = in.readString();
         mVersion = in.readString();
@@ -47,7 +52,8 @@ public class NodeReference implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mId);
+        dest.writeString(mOSMNodeId);
+        dest.writeString(mAPINodeId);
         dest.writeString(mLat);
         dest.writeString(mLon);
         dest.writeString(mVersion);
@@ -71,12 +77,20 @@ public class NodeReference implements Parcelable {
         }
     };
 
-    public String getId() {
-        return mId;
+    public String getAPINodeId() {
+        return mAPINodeId;
     }
 
-    public void setId(String id) {
-        mId = id;
+    public void setAPINodeId(String id) {
+        mAPINodeId = id;
+    }
+
+    public String getOSMNodeId() {
+        return mOSMNodeId;
+    }
+
+    public void setOSMNodeId(String OSMNodeId) {
+        mOSMNodeId = OSMNodeId;
     }
 
     public String getLat() {

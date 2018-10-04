@@ -13,7 +13,7 @@
 
     <!-- MENU ITEMS -->
     <string name="ACKNOWLEDGEMENTS">Impressum/Danksagung</string>
-    //<string name="FEEDBACK">Feedback</string>
+    <string name="FEEDBACK">Feedback</string>
     <string name="CONTACT">Kontakt</string>
     <string name="DISCLAIMER">Haftungsausschluss</string>
     <string name="LEGAL">Rechtliches</string>
@@ -98,10 +98,6 @@
 
     <string name="string_less_width"><![CDATA[über 0,9]]></string>
     <string name="string_greater_width"><![CDATA[über 0,9]]></string>
-
-
-    <string name="thirty_five_less"><![CDATA[< 35,4]]></string>
-    <string name="thirty_five_greater"><![CDATA[> 35,4]]></string>
 
     <string name="ninty_less"><![CDATA[über 0,9]]></string>
     <string name="ninty_greater"><![CDATA[über 0,9]]></string>

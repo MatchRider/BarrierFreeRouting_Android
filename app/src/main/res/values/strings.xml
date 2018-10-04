@@ -15,7 +15,6 @@
 
     <!-- MENU ITEMS -->
     <string name="ACKNOWLEDGEMENTS">Imprint/Acknowledgement</string>
-    //
     <string name="FEEDBACK">Feedback</string>
     <string name="CONTACT">Contact Us</string>
     <string name="DISCLAIMER">Disclaimer</string>
@@ -108,10 +107,6 @@
     <string name="string_less_width"><![CDATA[über 35.4]]></string>
     <string name="string_greater_width"><![CDATA[über 35.4]]></string>
 
-
-    <string name="thirty_five_less"><![CDATA[< 35.4]]></string>
-    <string name="thirty_five_greater"><![CDATA[> 35.4]]></string>
-
     <string name="ninty_less"><![CDATA[über 35.4]]></string>
     <string name="ninty_greater"><![CDATA[über 35.4]]></string>
 
@@ -199,7 +194,6 @@
     <string name="not_validated">Non Validated</string>
     <string name="updated_info">Updated Way Info</string>
     <string name="updated_node_info">Updated Node Info</string>
-    <string name="validated_way_info">Validated Way Info</string>
     <string name="instructions_for_route">Instructions for route</string>
     <string name="unable_to_get_data">Unable to get data</string>
     <string name="message_give_feedback">Do you want to enhance this way info ?</string>
