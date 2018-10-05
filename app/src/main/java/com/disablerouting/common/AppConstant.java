@@ -46,5 +46,8 @@ public interface AppConstant {
      String IS_FOR_WAY= "is_for_way";
 
 
+    String WAY_UPDATE="Way";
+    String NODE_UPDATE="Node";
+
 
 }

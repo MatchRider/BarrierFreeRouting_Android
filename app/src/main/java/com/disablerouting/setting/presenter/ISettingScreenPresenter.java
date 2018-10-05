@@ -10,13 +10,13 @@ public interface ISettingScreenPresenter {
      * On Update Request Way
      * @param requestWayInfo request update data
      */
-    void onUpdateWay(RequestWayInfo requestWayInfo);
+    void onUpdateWay(RequestWayInfo requestWayInfo, String isForWay);
 
     /**
      * On Update Request Node
      * @param requestNodeInfo request update data
      */
-    void onUpdateNode(RequestNodeInfo requestNodeInfo);
+    void onUpdateNode(RequestNodeInfo requestNodeInfo,String isForNode);
 
     /**
      * On validate Request
@@ -24,6 +24,7 @@ public interface ISettingScreenPresenter {
      */
     void onValidate(RequestWayInfo requestWayInfo);
 
+    void getLisData();
     /**
      * Disconnect ongoing calls on network
      */

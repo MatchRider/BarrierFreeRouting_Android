@@ -3,41 +3,43 @@ package com.disablerouting.setting.presenter;
 
 import android.support.annotation.NonNull;
 import com.disablerouting.api.ErrorResponse;
-import com.disablerouting.curd_operations.manager.IUpdateWayResponseReceiver;
-import com.disablerouting.curd_operations.manager.IValidateWayResponseReceiver;
-import com.disablerouting.curd_operations.manager.UpdateWayManager;
-import com.disablerouting.curd_operations.manager.ValidateWayManager;
-import com.disablerouting.curd_operations.model.RequestNodeInfo;
-import com.disablerouting.curd_operations.model.RequestWayInfo;
-import com.disablerouting.curd_operations.model.ResponseUpdate;
-import com.disablerouting.curd_operations.model.ResponseWay;
+import com.disablerouting.curd_operations.manager.*;
+import com.disablerouting.curd_operations.model.*;
 import com.disablerouting.setting.ISettingView;
 
-public class SettingScreenPresenter implements IUpdateWayResponseReceiver, ISettingScreenPresenter , IValidateWayResponseReceiver {
+public class SettingScreenPresenter implements IUpdateWayResponseReceiver, ISettingScreenPresenter ,
+        IValidateWayResponseReceiver , IListGetWayResponseReceiver {
 
     private ISettingView mISettingView;
     private UpdateWayManager mUpdateWayManager;
     private ValidateWayManager mValidateWayManager;
+    private ListGetWayManager mListGetWayManager;
+    private String mUpdateType;
 
-    public SettingScreenPresenter(ISettingView iSettingView, UpdateWayManager updateWayManager , ValidateWayManager validateWayManager) {
+    public SettingScreenPresenter(ISettingView iSettingView, UpdateWayManager updateWayManager ,
+                                  ValidateWayManager validateWayManager, ListGetWayManager listGetWayManager) {
         mISettingView = iSettingView;
         mUpdateWayManager = updateWayManager;
         mValidateWayManager= validateWayManager;
+        mListGetWayManager= listGetWayManager;
     }
 
     @Override
-    public void onUpdateWay(RequestWayInfo requestWayInfo) {
+    public void onUpdateWay(RequestWayInfo requestWayInfo,String wayUpdate) {
         if(mISettingView!=null){
             mISettingView.showLoader();
             mUpdateWayManager.onUpdate(this,requestWayInfo);
+            mUpdateType=wayUpdate;
         }
     }
 
     @Override
-    public void onUpdateNode(RequestNodeInfo requestNodeInfo) {
+    public void onUpdateNode(RequestNodeInfo requestNodeInfo,String nodeUpdate) {
         if(mISettingView!=null){
             mISettingView.showLoader();
             mUpdateWayManager.onUpdateNode(this,requestNodeInfo);
+            mUpdateType=nodeUpdate;
+
         }
     }
     @Override
@@ -45,6 +47,14 @@ public class SettingScreenPresenter implements IUpdateWayResponseReceiver, ISett
         if(mISettingView!=null){
             mISettingView.showLoader();
             mValidateWayManager.onValidate(this,requestWayInfo);
+        }
+    }
+
+    @Override
+    public void getLisData() {
+        if(mISettingView !=null){
+            mISettingView.showLoader();
+            mListGetWayManager.getListWay(this);
         }
     }
 
@@ -62,7 +72,7 @@ public class SettingScreenPresenter implements IUpdateWayResponseReceiver, ISett
     @Override
     public void onSuccessUpdate(ResponseUpdate data) {
         if(mISettingView!=null){
-            mISettingView.onUpdateDataReceived(data);
+            mISettingView.onUpdateDataReceived(data,mUpdateType);
             mISettingView.hideLoader();
         }
     }
@@ -88,6 +98,22 @@ public class SettingScreenPresenter implements IUpdateWayResponseReceiver, ISett
         mISettingView.hideLoader();
         if(mISettingView!=null){
             mISettingView.onFailure(errorResponse.getError());
+        }
+    }
+
+    @Override
+    public void onSuccessGetList(ResponseListWay data) {
+        if(mISettingView!=null){
+            mISettingView.onListDataSuccess(data);
+            mISettingView.hideLoader();
+        }
+    }
+
+    @Override
+    public void onFailureGetList(@NonNull ErrorResponse errorResponse) {
+        mISettingView.hideLoader();
+        if(mISettingView!=null){
+            mISettingView.onFailureListData(errorResponse.getError());
         }
     }
 }
