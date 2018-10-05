@@ -84,6 +84,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private List<NodeReference> mNodeListNotValidatedData = new ArrayList<>();
 
 
+    private Integer mNodeUpdation=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,7 +127,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         String string = "<osm><changeset><tag k=\"created_by\" v=\"JOSM 1.61\"/><tag k=\"comment\" v=\"Just adding some streetnames\"/></changeset></osm>";
         String URLChangeSet = ApiEndPoint.SANDBOX_BASE_URL_OSM + "changeset/create";
         OauthData oauthData = new OauthData(Verb.PUT, string, URLChangeSet);
-        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this, false, AppConstant.API_TYPE_CREATE_CHANGE_SET);
+        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
+                false, AppConstant.API_TYPE_CREATE_CHANGE_SET,false);
         asyncTaskOsmApi.execute("");
     }
 
@@ -144,14 +147,16 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private void GetNodeVersion() {
         String URLNodeGet = ApiEndPoint.SANDBOX_BASE_URL_OSM + "node/" + mNodeID;
         OauthData oauthData = new OauthData(Verb.GET, "", URLNodeGet);
-        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this, true, "");
+        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData,
+                this, true, "",false);
         asyncTaskOsmApi.execute("");
     }
 
     private void GetWayVersion() {
         String URLWayGet = ApiEndPoint.SANDBOX_BASE_URL_OSM + "way/" + mWayID;
         OauthData oauthData = new OauthData(Verb.GET, "", URLWayGet);
-        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this, true, "");
+        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
+                true, "",false);
         asyncTaskOsmApi.execute("");
     }
 
@@ -186,7 +191,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
         String URLNodePUT = ApiEndPoint.SANDBOX_BASE_URL_OSM + "node/" + mNodeID;
         OauthData oauthData = new OauthData(Verb.PUT, requestString, URLNodePUT);
-        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this, false, AppConstant.API_TYPE_CREATE_PUT_WAY_OR_NODE);
+        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData,
+                this, false, AppConstant.API_TYPE_CREATE_PUT_WAY_OR_NODE,false);
         asyncTaskOsmApi.execute("");
     }
 
@@ -214,7 +220,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 "</osm>";
         String URLWayPUT = ApiEndPoint.SANDBOX_BASE_URL_OSM + "way/" + mWayID;
         OauthData oauthData = new OauthData(Verb.PUT, requestString, URLWayPUT);
-        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this, false, AppConstant.API_TYPE_CREATE_PUT_WAY_OR_NODE);
+        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData,
+                this, false, AppConstant.API_TYPE_CREATE_PUT_WAY_OR_NODE,false);
         asyncTaskOsmApi.execute("");
     }
 
@@ -341,7 +348,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             String URLCreateNode = ApiEndPoint.SANDBOX_BASE_URL_OSM + "node/create";
             OauthData oauthData = new OauthData(Verb.PUT, requestString, URLCreateNode);
             asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
-                    false, AppConstant.API_TYPE_CREATE_NODE);
+                    false, AppConstant.API_TYPE_CREATE_NODE,false);
             try {
                 Object result = asyncTaskOsmApi.execute().get();
                 //asyncTaskOsmApi.execute("");
@@ -388,7 +395,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         String URLCreateWay = ApiEndPoint.SANDBOX_BASE_URL_OSM + "way/create";
         OauthData oauthData = new OauthData(Verb.PUT, requestString, URLCreateWay);
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
-                false, AppConstant.API_TYPE_CREATE_WAY);
+                false, AppConstant.API_TYPE_CREATE_WAY,false);
         asyncTaskOsmApi.execute("");
 
     }
@@ -536,7 +543,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     mISettingScreenPresenter.onUpdateNode(requestNodeInfo,AppConstant.NODE_UPDATE);
                 }
             }
-            onUpdateWayOurServer(mListWayData.getVersion());
         } else {
             RequestNodeInfo requestNodeInfo = new RequestNodeInfo();
             NodeReference nodeReference = new NodeReference();
@@ -778,9 +784,14 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         getListData();
                         setResult(RESULT_OK);
                         Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
-
                     }else {
-                        Toast.makeText(SettingActivity.this, R.string.updated_node_info, Toast.LENGTH_SHORT).show();
+                        mNodeUpdation= mNodeUpdation+1;
+                        if(mNodeUpdation==mNodeIdsCreated.size()){
+                            Toast.makeText(SettingActivity.this, R.string.updated_node_info, Toast.LENGTH_SHORT).show();
+                            onUpdateWayOurServer(mListWayData.getVersion());
+                        }
+                        //onUpdateWayOurServer(mListWayData.getVersion());
+
                     }
 
                 } else {
@@ -904,17 +915,18 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 });
             }
             if (API_TYPE.equalsIgnoreCase(AppConstant.API_TYPE_CREATE_NODE)) {
-                Log.e("Response:", responseBody);
+                Log.e("ResponseNode:", responseBody);
                 if (mIsForWAY) {
                     mNodeIdsCreated.put(mNodeRefIndex, responseBody);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(mCallForWay) {
+                    if(mCallForWay) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
                                 callToCreateWay();
+
                             }
-                        }
-                    });
+                        });
+                    }
                 }
                 if(!mIsForWAY){
                     mNodeIdsCreated.put(0, responseBody);
@@ -928,6 +940,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             }
             if (API_TYPE.equalsIgnoreCase(AppConstant.API_TYPE_CREATE_WAY)) {
                 mWayIdNew = responseBody;
+                Log.e("ResponseWay:", responseBody);
                 //Update Node on Our server first than Way
                 runOnUiThread(new Runnable() {
                     @Override

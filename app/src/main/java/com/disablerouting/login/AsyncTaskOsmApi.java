@@ -23,16 +23,18 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
     private ProgressDialog pDialog;
     private IAysncTaskOsm mIAysncTaskOsm;
     private boolean mIsForGet;
+    private boolean mShowDialog;
     private String API_TYPE = "api_type";
 
 
     public AsyncTaskOsmApi(Context context, OauthData oauthData, IAysncTaskOsm aysncTaskOsm,
-                           boolean isForGet, String api) {
+                           boolean isForGet, String api,boolean showDialog) {
         mContext = context;
         mOauthData = oauthData;
         mIAysncTaskOsm = aysncTaskOsm;
         mIsForGet = isForGet;
         API_TYPE = api;
+        mShowDialog=showDialog;
 
     }
 
@@ -40,13 +42,15 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        pDialog = new ProgressDialog(mContext);
-        pDialog.setMessage(mContext.getResources().getString(R.string.please_wait));
-        pDialog.setCancelable(false);
-        if (pDialog.isShowing()) {
-            pDialog.dismiss();
-        } else {
-            pDialog.show();
+        if(mShowDialog) {
+            pDialog = new ProgressDialog(mContext);
+            pDialog.setMessage(mContext.getResources().getString(R.string.please_wait));
+            pDialog.setCancelable(false);
+            if (pDialog.isShowing()) {
+                pDialog.dismiss();
+            } else {
+                pDialog.show();
+            }
         }
     }
 
@@ -98,14 +102,22 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        if (pDialog != null) {
+        if (mShowDialog && pDialog != null) {
             pDialog.dismiss();
         }
 
     }
 
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        if (mShowDialog && pDialog != null) {
+            pDialog.dismiss();
+        }
+    }
+
     public void dismissDialog() {
-        if (pDialog != null) {
+        if (mShowDialog && pDialog != null) {
             pDialog.dismiss();
         }
     }
