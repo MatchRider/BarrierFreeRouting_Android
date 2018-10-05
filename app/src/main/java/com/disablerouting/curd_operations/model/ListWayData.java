@@ -79,7 +79,7 @@ public class ListWayData implements Parcelable{
     };
 
     public String getOSMWayId() {
-        return "";
+        return mOSMWayId;
     }
 
     public String getAPIWayId() {

@@ -10,7 +10,7 @@ public interface ISettingScreenPresenter {
      * On Update Request Way
      * @param requestWayInfo request update data
      */
-    void onUpdate(RequestWayInfo requestWayInfo);
+    void onUpdateWay(RequestWayInfo requestWayInfo);
 
     /**
      * On Update Request Node

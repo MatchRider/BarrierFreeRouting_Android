@@ -9,9 +9,13 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RequestWayData {
 
-    @JsonProperty("Id")
+    @JsonProperty("OSMWayId")
     private
-    String mId;
+    String mOSMWayId;
+
+    @JsonProperty("APIWayId")
+    private
+    String mAPIWayId;
 
     @JsonProperty("ProjectId")
     private
@@ -32,12 +36,12 @@ public class RequestWayData {
     public RequestWayData() {
     }
 
-    public String getId() {
-        return mId;
+    public String getOSMWayId() {
+        return mOSMWayId;
     }
 
-    public void setId(String id) {
-        mId = id;
+    public void setOSMWayId(String id) {
+        mOSMWayId = id;
     }
 
     public String getProjectId() {
@@ -78,5 +82,13 @@ public class RequestWayData {
 
     public void setVersion(String version) {
         mVersion = version;
+    }
+
+    public String getAPIWayId() {
+        return mAPIWayId;
+    }
+
+    public void setAPIWayId(String APIWayId) {
+        mAPIWayId = APIWayId;
     }
 }

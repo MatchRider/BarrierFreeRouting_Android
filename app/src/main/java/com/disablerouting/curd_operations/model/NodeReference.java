@@ -86,7 +86,7 @@ public class NodeReference implements Parcelable {
     }
 
     public String getOSMNodeId() {
-        return ""; //
+        return mOSMNodeId; //
     }
 
     public void setOSMNodeId(String OSMNodeId) {

@@ -72,6 +72,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private String mWayIdNew = null;
     private Integer mNodeRefIndex=-1;
     private boolean mCallForWay =false;
+    private boolean mWayIdAvailable=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -272,6 +273,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         if (!mListWayData.getOSMWayId().isEmpty()) {
                             callToGetVersions();
                         } else {
+                            mWayIdAvailable=false;
                             checkNodes();
                         }
                     }
@@ -285,6 +287,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     if (!mListWayData.getOSMWayId().isEmpty()) {
                         callToGetVersions();
                     } else {
+                        mWayIdAvailable=false;
                         checkNodes();
                     }
                 }
@@ -493,8 +496,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     }
 
     private void onUpdateNode() {
-        onUpdateWayOurServer(mListWayData.getVersion());
-
         for (int i=0;i<mListWayData.getNodeReference().size();i++){
             if(mListWayData.getNodeReference().get(i).getOSMNodeId().isEmpty()) {
                 RequestNodeInfo requestNodeInfo = new RequestNodeInfo();
@@ -513,8 +514,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         attributesValidate.setValue(mListWayData.getNodeReference().get(i).getAttributes().get(0).getValue());
                         attributesValidate.setValid(mListWayData.getNodeReference().get(i).getAttributes().get(0).isValid());
                 }
-                attributesValidateList.add(attributesValidate);
-                nodeReference.setAttributes(attributesValidateList);
+                if(mListWayData.getNodeReference().get(i).getAttributes().size()!=0) {
+                    attributesValidateList.add(attributesValidate);
+                    nodeReference.setAttributes(attributesValidateList);
+                }
                 requestNodeInfo.setNodeReference(nodeReference);
                 if (UserPreferences.getInstance(this) != null && UserPreferences.getInstance(this).getUserDetail() != null) {
                     requestNodeInfo.setModifiedByUser(UserPreferences.getInstance(this).getUserDetail());
@@ -522,6 +525,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 mISettingScreenPresenter.onUpdateNode(requestNodeInfo);
             }
         }
+
+        Toast.makeText(SettingActivity.this, R.string.updated_node_info, Toast.LENGTH_SHORT).show();
+        onUpdateWayOurServer(mListWayData.getVersion());
     }
 
     /**
@@ -541,17 +547,18 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         RequestWayInfo requestWayInfo = new RequestWayInfo();
         RequestWayData wayDataValidate = new RequestWayData();
         if(mWayIdNew!=null){
-            wayDataValidate.setId(mWayIdNew);
+            wayDataValidate.setOSMWayId(mWayIdNew);
 
         }else {
-            wayDataValidate.setId(mListWayData.getOSMWayId());
+            wayDataValidate.setOSMWayId(mListWayData.getOSMWayId());
         }
+        wayDataValidate.setAPIWayId(mListWayData.getAPIWayId());
         wayDataValidate.setProjectId(mListWayData.getProjectId());
         wayDataValidate.setValid(mListWayData.getIsValid());
         wayDataValidate.setVersion(updateVersionNumber);
         List<AttributesValidate> attributesValidateList = new ArrayList<>();
         AttributesValidate attributesValidate = null;
-        if (!mValueFootWay.isEmpty()) {
+        if (mValueFootWay!=null && !mValueFootWay.isEmpty()) {
             if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
                 attributesValidate = new AttributesValidate();
                 attributesValidate.setKey(AppConstant.KEY_FOOTWAY);
@@ -564,7 +571,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 attributesValidateList.add(attributesValidate);
             }
         }
-        if (!mValueHighWay.isEmpty()) {
+        if (mValueHighWay!=null && !mValueHighWay.isEmpty()) {
             if (mHashMapWay.get(1) != null && !mHashMapWay.get(1).getKey().isEmpty()) {
                 attributesValidate = new AttributesValidate();
                 attributesValidate.setKey(AppConstant.KEY_HIGHWAY);
@@ -594,7 +601,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (UserPreferences.getInstance(this) != null && UserPreferences.getInstance(this).getUserDetail() != null) {
             requestWayInfo.setModifiedByUser(UserPreferences.getInstance(this).getUserDetail());
         }
-        mISettingScreenPresenter.onUpdate(requestWayInfo);
+        mISettingScreenPresenter.onUpdateWay(requestWayInfo);
     }
 
     private void onUpdateNodeOurServer(String updateVersionNumber){
@@ -624,110 +631,122 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     @Override
     public void onUpdateDataReceived(ResponseUpdate responseUpdate) {
-        if (mIsForWAY) {
-            if (responseUpdate.isStatus()) {
-                boolean isAllValid = true;
-                List<ListWayData> listWayDataList = WayDataPreference.getInstance(this).getNotValidatedWayData();
-                ArrayList<ListWayData> listNotValidated = null;
-                for (int i = 0; i < listWayDataList.size(); i++) {
-                    if (mListWayData.getOSMWayId().equals(listWayDataList.get(i).getOSMWayId())) {
-                        List<Attributes> attributesList = listWayDataList.get(i).getAttributesList();
-                        for (int j = 0; j < attributesList.size(); j++) {
-                            for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
-                                Attributes attributesUpdated = pair.getValue();
-                                if (attributesList.get(j).getKey().equalsIgnoreCase(attributesUpdated.getKey())) {
-                                    attributesList.get(j).setKey(attributesUpdated.getKey());
-                                    attributesList.get(j).setValue(attributesUpdated.getValue());
-                                    attributesList.get(j).setValid(attributesUpdated.isValid());
+
+        if(mWayIdAvailable) {
+            if (mIsForWAY) {
+                if (responseUpdate.isStatus()) {
+                    boolean isAllValid = true;
+                    List<ListWayData> listWayDataList = WayDataPreference.getInstance(this).getNotValidatedWayData();
+                    ArrayList<ListWayData> listNotValidated = null;
+                    for (int i = 0; i < listWayDataList.size(); i++) {
+                        if (mListWayData.getOSMWayId().equals(listWayDataList.get(i).getOSMWayId())) {
+                            List<Attributes> attributesList = listWayDataList.get(i).getAttributesList();
+                            for (int j = 0; j < attributesList.size(); j++) {
+                                for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
+                                    Attributes attributesUpdated = pair.getValue();
+                                    if (attributesList.get(j).getKey().equalsIgnoreCase(attributesUpdated.getKey())) {
+                                        attributesList.get(j).setKey(attributesUpdated.getKey());
+                                        attributesList.get(j).setValue(attributesUpdated.getValue());
+                                        attributesList.get(j).setValid(attributesUpdated.isValid());
+                                    }
+                                }
+                                if (!attributesList.get(j).isValid()) {
+                                    isAllValid = false;
                                 }
                             }
-                            if (!attributesList.get(j).isValid()) {
-                                isAllValid = false;
-                            }
-                        }
-                        listWayDataList.get(i).setAttributesList(attributesList);
-                        if (!isAllValid) {
-                            listWayDataList.get(i).setIsValid("false");
-                            listNotValidated = new ArrayList<ListWayData>(listWayDataList);
-
-                        } else {
-                            listWayDataList.get(i).setIsValid("true");
-                            //Remove from not validated data and put in validated list
-                            List<ListWayData> listWayDataValidated = WayDataPreference.getInstance(this).getValidateWayData();
-                            ArrayList<ListWayData> listValidated = new ArrayList<ListWayData>(listWayDataValidated);
-
-                            listValidated.add(listWayDataList.get(i));
-                            WayDataPreference.getInstance(this).saveValidateWayData(listValidated);
-                            listNotValidated = new ArrayList<ListWayData>(listWayDataList);
-                            listNotValidated.remove(i);
-                            break;
-                        }
-                    }
-                }
-                WayDataPreference.getInstance(this).saveNotValidatedWayData(listNotValidated);
-                setResult(RESULT_OK);
-                Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
-                finish();
-            } else {
-                if (responseUpdate.getError() != null && responseUpdate.getError().get(0) != null &&
-                        responseUpdate.getError().get(0).getMessage() != null) {
-                    Toast.makeText(this, responseUpdate.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        } else {
-            if (responseUpdate.isStatus()) {
-                boolean isAllValid = true;
-                List<NodeReference> nodeReferenceList = WayDataPreference.getInstance(this).getNotValidateDataNode();
-                ArrayList<NodeReference> listNotValidatedNode = null;
-
-                for (int i = 0; i < nodeReferenceList.size(); i++) {
-                    if (mNodeReference.getOSMNodeId().equals(nodeReferenceList.get(i).getOSMNodeId())) {
-                        List<Attributes> attributesList = mNodeReference.getAttributes();
-                        for (int j = 0; j < attributesList.size(); j++) {
-                            for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
-                                Attributes attributesUpdated = pair.getValue();
-                                if (attributesList.get(j).getKey().equalsIgnoreCase(attributesUpdated.getKey())) {
-                                    attributesList.get(j).setKey(attributesUpdated.getKey());
-                                    attributesList.get(j).setValue(attributesUpdated.getValue());
-                                    attributesList.get(j).setValid(attributesUpdated.isValid());
-                                }
-                            }
-                            if (!attributesList.get(j).isValid()) {
-                                isAllValid = false;
-                            }
-                            nodeReferenceList.get(i).setAttributes(attributesList);
+                            listWayDataList.get(i).setAttributesList(attributesList);
                             if (!isAllValid) {
-                                nodeReferenceList.get(i).getAttributes().get(j).setValid(false);
-                                listNotValidatedNode = new ArrayList<NodeReference>(nodeReferenceList);
+                                listWayDataList.get(i).setIsValid("false");
+                                listNotValidated = new ArrayList<ListWayData>(listWayDataList);
 
                             } else {
-                                nodeReferenceList.get(i).getAttributes().get(j).setValid(true);
+                                listWayDataList.get(i).setIsValid("true");
                                 //Remove from not validated data and put in validated list
-                                List<NodeReference> listNodeDataValidated = WayDataPreference.getInstance(this).getValidateDataNode();
-                                ArrayList<NodeReference> listValidatedNode = new ArrayList<NodeReference>(listNodeDataValidated);
+                                List<ListWayData> listWayDataValidated = WayDataPreference.getInstance(this).getValidateWayData();
+                                ArrayList<ListWayData> listValidated = new ArrayList<ListWayData>(listWayDataValidated);
 
-                                listValidatedNode.add(nodeReferenceList.get(i));
-                                WayDataPreference.getInstance(this).saveValidateDataNode(listValidatedNode);
-
-                                listNotValidatedNode = new ArrayList<NodeReference>(nodeReferenceList);
-                                listNotValidatedNode.remove(i);
+                                listValidated.add(listWayDataList.get(i));
+                                WayDataPreference.getInstance(this).saveValidateWayData(listValidated);
+                                listNotValidated = new ArrayList<ListWayData>(listWayDataList);
+                                listNotValidated.remove(i);
                                 break;
                             }
                         }
                     }
+                    WayDataPreference.getInstance(this).saveNotValidatedWayData(listNotValidated);
+                    setResult(RESULT_OK);
+                    Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    if (responseUpdate.getError() != null && responseUpdate.getError().get(0) != null &&
+                            responseUpdate.getError().get(0).getMessage() != null) {
+                        Toast.makeText(this, responseUpdate.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
-                WayDataPreference.getInstance(this).saveNotValidateDataNode(listNotValidatedNode);
-                setResult(RESULT_OK);
-                Toast.makeText(SettingActivity.this, R.string.updated_node_info, Toast.LENGTH_SHORT).show();
-                finish();
             } else {
-                if (responseUpdate.getError() != null && responseUpdate.getError().get(0) != null &&
-                        responseUpdate.getError().get(0).getMessage() != null) {
-                    Toast.makeText(this, responseUpdate.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
+                if (responseUpdate.isStatus()) {
+                    boolean isAllValid = true;
+                    List<NodeReference> nodeReferenceList = WayDataPreference.getInstance(this).getNotValidateDataNode();
+                    ArrayList<NodeReference> listNotValidatedNode = null;
+
+                    for (int i = 0; i < nodeReferenceList.size(); i++) {
+                        if (mNodeReference.getOSMNodeId().equals(nodeReferenceList.get(i).getOSMNodeId())) {
+                            List<Attributes> attributesList = mNodeReference.getAttributes();
+                            for (int j = 0; j < attributesList.size(); j++) {
+                                for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
+                                    Attributes attributesUpdated = pair.getValue();
+                                    if (attributesList.get(j).getKey().equalsIgnoreCase(attributesUpdated.getKey())) {
+                                        attributesList.get(j).setKey(attributesUpdated.getKey());
+                                        attributesList.get(j).setValue(attributesUpdated.getValue());
+                                        attributesList.get(j).setValid(attributesUpdated.isValid());
+                                    }
+                                }
+                                if (!attributesList.get(j).isValid()) {
+                                    isAllValid = false;
+                                }
+                                nodeReferenceList.get(i).setAttributes(attributesList);
+                                if (!isAllValid) {
+                                    nodeReferenceList.get(i).getAttributes().get(j).setValid(false);
+                                    listNotValidatedNode = new ArrayList<NodeReference>(nodeReferenceList);
+
+                                } else {
+                                    nodeReferenceList.get(i).getAttributes().get(j).setValid(true);
+                                    //Remove from not validated data and put in validated list
+                                    List<NodeReference> listNodeDataValidated = WayDataPreference.getInstance(this).getValidateDataNode();
+                                    ArrayList<NodeReference> listValidatedNode = new ArrayList<NodeReference>(listNodeDataValidated);
+
+                                    listValidatedNode.add(nodeReferenceList.get(i));
+                                    WayDataPreference.getInstance(this).saveValidateDataNode(listValidatedNode);
+
+                                    listNotValidatedNode = new ArrayList<NodeReference>(nodeReferenceList);
+                                    listNotValidatedNode.remove(i);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    WayDataPreference.getInstance(this).saveNotValidateDataNode(listNotValidatedNode);
+                    setResult(RESULT_OK);
+                    Toast.makeText(SettingActivity.this, R.string.updated_node_info, Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    if (responseUpdate.getError() != null && responseUpdate.getError().get(0) != null &&
+                            responseUpdate.getError().get(0).getMessage() != null) {
+                        Toast.makeText(this, responseUpdate.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
+        }else {
+            if(responseUpdate.isStatus()) {
+                Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
+                finish();
+            }else {
+                    if (responseUpdate.getError() != null && responseUpdate.getError().get(0) != null &&
+                            responseUpdate.getError().get(0).getMessage() != null) {
+                        Toast.makeText(this, responseUpdate.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
         }
-
     }
 
 
@@ -781,7 +800,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     @Override
                     public void run() {
                         onUpdateNode();
-
                     }
                 });
 

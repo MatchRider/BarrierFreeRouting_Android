@@ -26,7 +26,7 @@ public class SettingScreenPresenter implements IUpdateWayResponseReceiver, ISett
     }
 
     @Override
-    public void onUpdate(RequestWayInfo requestWayInfo) {
+    public void onUpdateWay(RequestWayInfo requestWayInfo) {
         if(mISettingView!=null){
             mISettingView.showLoader();
             mUpdateWayManager.onUpdate(this,requestWayInfo);
