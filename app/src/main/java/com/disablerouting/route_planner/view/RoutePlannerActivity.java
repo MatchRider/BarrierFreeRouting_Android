@@ -335,10 +335,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (requestCode == AppConstant.REQUEST_CODE_UPDATE_MAP_DATA) {
             if (resultCode == Activity.RESULT_OK) {
                 if (WayDataPreference.getInstance(this) != null) {
-                    mWayListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidatedWayData());
-                    mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayData());
-                    mNodeListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateDataNode());
-                    mNodeListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidateDataNode());
+                    mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayData();
+                    mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayData();
+                    mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNode();
+                    mNodeListNotValidatedData =WayDataPreference.getInstance(this).getNotValidateDataNode();
                     onToggleClickedBanner(false);
                 }
             }
@@ -587,7 +587,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
         } else {
             if (mSwitchCompatToogle.isChecked()) {
-
                 mRadioGroup.setVisibility(View.VISIBLE);
                 mSourceDestinationFragment.onToggleView(true);
                 mButtonGo.setVisibility(View.GONE);
@@ -596,7 +595,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                // clearItemsFromMap();
                 if (mNodeListNotValidatedData.size() != 0) {
                     hideLoader();
-                    setZoomMap();
+                   // setZoomMap();
                     PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
                     mPlotWayDataTaskNotValidated.execute();
                 } else {

@@ -292,7 +292,6 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
                         if(responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes()!=null) {
 
                             for (int k = 0; k < responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().size(); k++) {
-
                                     if (!responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().get(k).isValid()) {
                                         if(!Utility.isListContainId(mNodeListNotValidatedData,responseWay.getWayData().get(i).getNodeReference()
                                                 .get(j).getAPINodeId())){
@@ -331,7 +330,6 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
     @Override
     public void onFailure(String error) {
         Toast.makeText(HomeActivity.this, R.string.unable_to_get_data, Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
