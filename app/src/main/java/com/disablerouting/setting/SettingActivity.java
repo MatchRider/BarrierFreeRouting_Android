@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +50,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @BindView(R.id.rcv_setting)
     RecyclerView mRecyclerView;
 
+
+    @BindView(R.id.rel_progress_bar)
+    RelativeLayout mRelativeLayoutProgress;
 
     final int OPEN_SETTING_TYPE = 200;
     private SettingAdapter mSettingAdapter;
@@ -869,7 +873,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     Toast.makeText(this, responseWay.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
-            hideLoader();
+            mRelativeLayoutProgress.setVisibility(View.GONE);
+
             finish();
 
         }
@@ -877,7 +882,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     @Override
     public void onFailureListData(String error) {
-        hideLoader();
+        mRelativeLayoutProgress.setVisibility(View.GONE);
         Toast.makeText(SettingActivity.this, error, Toast.LENGTH_SHORT).show();
         finish();
     }
@@ -1110,7 +1115,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      * API call to get List data.
      */
     private void getListData() {
-        showLoader();
+        mRelativeLayoutProgress.setVisibility(View.VISIBLE);
         mISettingScreenPresenter.getLisData();
     }
 }
