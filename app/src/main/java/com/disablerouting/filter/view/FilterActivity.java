@@ -267,9 +267,9 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
 
         List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<>();
         maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.zero)));
-        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.value_string_one_point_two)));
-        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.value_string_two_point_four)));
-        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.value_string_two_point_four_greater)));
+        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_point_three)));
+        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_point_six)));
+        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_point_six_greater)));
 
         List<DataModelExpandableList> maxInclineData = new ArrayList<>();
         maxInclineData.add(new DataModelExpandableList("0.00"));
@@ -310,13 +310,13 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         surfaceTypeData.add(new DataModelExpandableList(getResources().getString(R.string.all_filter)));
 
         List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<DataModelExpandableList>();
-        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.zero)));
-        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_one_point_two)));
-        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_two_point_four)));
-        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_two_point_four_greater)));
+        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.zero_curb)));
+        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_three)));
+        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_six)));
+        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_greater_six)));
 
         List<DataModelExpandableList> maxInclineData = new ArrayList<>();
-        maxInclineData.add(new DataModelExpandableList("0 %"));
+        maxInclineData.add(new DataModelExpandableList(getString(R.string.zero_curb)));
         maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_three)));
         maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_six)));
         maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_ten)));

@@ -242,6 +242,9 @@ public class Utility {
         if (stringUnitPassed.contains("<")) {
             converted = converted.replace("<", "");
         }
+        if (stringUnitPassed.contains("unter")) {
+            converted = converted.replace("unter", "");
+        }
         if (stringUnitPassed.contains("über")) {
             converted = converted.replace("über", "");
         }
@@ -256,6 +259,15 @@ public class Utility {
         }
         if (stringUnitPassed.contains("%")) {
             converted = converted.replace("%", "");
+        }
+        if (stringUnitPassed.contains("m")) {
+            converted = converted.replace("m", "");
+        }
+        if (stringUnitPassed.contains("cm")) {
+            converted = converted.replace("cm", "");
+        }
+        if (stringUnitPassed.contains("inches")) {
+            converted = converted.replace("inches", "");
         }
         return converted;
     }

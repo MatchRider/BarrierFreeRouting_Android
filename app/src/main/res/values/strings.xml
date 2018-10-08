@@ -96,19 +96,19 @@
     <string name="greater_ten"><![CDATA[über 10 %]]></string>
 
     <string name="zero_curb">No curb</string>
-    <string name="string_one_point_two">1.2</string>
-    <string name="string_two_point_four">2.4</string>
-    <string name="string_two_point_four_greater"><![CDATA[über 2.4]]></string>
+    <string name="string_three">1.2 inches</string>
+    <string name="string_six">2.4 inches</string>
+    <string name="string_greater_six"><![CDATA[über 2.4 inches]]></string>
 
-    <string name="value_string_one_point_two">1.2</string>
-    <string name="value_string_two_point_four">2.4</string>
-    <string name="value_string_two_point_four_greater"><![CDATA[2.4]]></string>
+    <string name="string_point_three">1.2</string>
+    <string name="string_point_six">2.4</string>
+    <string name="string_point_six_greater"><![CDATA[2.4]]></string>
 
-    <string name="string_less_width"><![CDATA[über 35.4]]></string>
-    <string name="string_greater_width"><![CDATA[über 35.4]]></string>
+    <string name="string_less_nine"><![CDATA[unter 35.4 inches]]></string>
+    <string name="string_greater_nine"><![CDATA[über 35.4 inches]]></string>
 
-    <string name="ninty_less"><![CDATA[über 35.4]]></string>
-    <string name="ninty_greater"><![CDATA[über 35.4]]></string>
+    <string name="ninty_less"><![CDATA[unter 35.4 inches]]></string>
+    <string name="ninty_greater"><![CDATA[über 35.4 inches]]></string>
 
     <string name="value_string_less_width"><![CDATA[35.4]]></string>
     <string name="value_string_greater_width"><![CDATA[35.4]]></string>

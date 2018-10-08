@@ -88,19 +88,19 @@
 
     <string name="zero_curb">kein Bordstein</string>
 
-    <string name="string_one_point_two">3</string>
-    <string name="string_two_point_four">6</string>
-    <string name="string_two_point_four_greater"><![CDATA[über 6]]></string>
+    <string name="string_three">3 cm</string>
+    <string name="string_six">6 cm</string>
+    <string name="string_greater_six"><![CDATA[über 6 cm]]></string>
 
-    <string name="value_string_one_point_two">0.03</string>
-    <string name="value_string_two_point_four">0.06</string>
-    <string name="value_string_two_point_four_greater"><![CDATA[0.06]]></string>
+    <string name="string_point_three">0.03</string>
+    <string name="string_point_six">0.06</string>
+    <string name="string_point_six_greater"><![CDATA[0.06]]></string>
 
-    <string name="string_less_width"><![CDATA[über 0,9]]></string>
-    <string name="string_greater_width"><![CDATA[über 0,9]]></string>
+    <string name="string_less_nine"><![CDATA[unter 0,9 m]]></string>
+    <string name="string_greater_nine"><![CDATA[über 0,9 m]]></string>
 
-    <string name="ninty_less"><![CDATA[über 0,9]]></string>
-    <string name="ninty_greater"><![CDATA[über 0,9]]></string>
+    <string name="ninty_less"><![CDATA[unter 0,9 m]]></string>
+    <string name="ninty_greater"><![CDATA[über 0,9 m]]></string>
 
     <string name="value_string_less_width"><![CDATA[0.9]]></string>
     <string name="value_string_greater_width"><![CDATA[0.9]]></string>

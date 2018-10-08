@@ -100,15 +100,15 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
     private ArrayList<String> prepareListDataMaxSlope() {
         ArrayList<String> stringArrayList = new ArrayList<>();
         stringArrayList.add(getString(R.string.zero_curb));
-        stringArrayList.add(getString(R.string.string_one_point_two));
-        stringArrayList.add(getString(R.string.string_two_point_four));
-        stringArrayList.add(getString(R.string.string_two_point_four_greater));
+        stringArrayList.add(getString(R.string.string_three));
+        stringArrayList.add(getString(R.string.string_six));
+        stringArrayList.add(getString(R.string.string_greater_six));
         return stringArrayList;
     }
 
     private ArrayList<String> prepareListDataMaxIncline() {
         ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add(getString(R.string.zero));
+        stringArrayList.add(getString(R.string.zero_curb));
         stringArrayList.add(getString(R.string.up_to_three));
         stringArrayList.add(getString(R.string.up_to_six));
         stringArrayList.add(getString(R.string.up_to_ten));
@@ -118,8 +118,8 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
 
     private ArrayList<String> prepareListDataSideWalk() {
         ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add(getString(R.string.string_less_width));
-        stringArrayList.add(getString(R.string.string_greater_width));
+        stringArrayList.add(getString(R.string.string_less_nine));
+        stringArrayList.add(getString(R.string.string_greater_nine));
         return stringArrayList;
     }
 
