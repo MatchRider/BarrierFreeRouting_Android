@@ -49,6 +49,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @BindView(R.id.rcv_setting)
     RecyclerView mRecyclerView;
 
+
     final int OPEN_SETTING_TYPE = 200;
     private SettingAdapter mSettingAdapter;
     private ListWayData mListWayData;
@@ -76,15 +77,13 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private boolean mCallForWay = false;
     private boolean mWayIdAvailable = false;
     private Handler mHandler = new Handler();
+    private Integer mNodeUpdate = 0;
 
 
     private List<ListWayData> mWayListValidatedData = new ArrayList<>();
     private List<ListWayData> mWayListNotValidatedData = new ArrayList<>();
     private List<NodeReference> mNodeListValidatedData = new ArrayList<>();
     private List<NodeReference> mNodeListNotValidatedData = new ArrayList<>();
-
-
-    private Integer mNodeUpdation = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -288,6 +287,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 boolean isValid = Boolean.parseBoolean(mListWayData.getIsValid());
                 if (!isValid) {
                     if (Utility.isOnline(this)) {
+                        showLoader();
                         if (!mListWayData.getOSMWayId().isEmpty()) {
                             callToGetVersions();
                         } else {
@@ -302,6 +302,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         } else {
             if (!isValidFORCall) {
                 if (Utility.isOnline(this)) {
+                    showLoader();
                     if (!mNodeReference.getOSMNodeId().isEmpty()) {
                         callToGetVersions();
                     } else {
@@ -321,7 +322,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      */
     private void callToCreateNode(NodeReference nodeReference) {
         if (AppData.getNewInstance() != null && AppData.getNewInstance().getCurrentLoc() != null) {
-
             double lat = AppData.getNewInstance().getCurrentLoc().latitude;
             double lon = AppData.getNewInstance().getCurrentLoc().longitude;
             String requestString = null;
@@ -726,6 +726,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                             responseUpdate.getError().get(0).getMessage() != null) {
                         Toast.makeText(this, responseUpdate.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
                     }
+
                 }
             } else {
                 if (responseUpdate.isStatus()) {
@@ -775,11 +776,13 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     getListData();
                     Toast.makeText(SettingActivity.this, R.string.updated_node_info, Toast.LENGTH_SHORT).show();
                     //  finish();
+
                 } else {
                     if (responseUpdate.getError() != null && responseUpdate.getError().get(0) != null &&
                             responseUpdate.getError().get(0).getMessage() != null) {
                         Toast.makeText(this, responseUpdate.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
                     }
+
                 }
             }
         } else {
@@ -790,11 +793,12 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         setResult(RESULT_OK);
                         Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
                     } else {
-                        mNodeUpdation = mNodeUpdation + 1;
-                        if (mNodeUpdation == mNodeIdsCreated.size()) {
+                        mNodeUpdate = mNodeUpdate + 1;
+                        if (mNodeUpdate == mNodeIdsCreated.size()) {
                             Toast.makeText(SettingActivity.this, R.string.updated_node_info, Toast.LENGTH_SHORT).show();
                             onUpdateWayOurServer(mListWayData.getVersion());
                         }
+
                     }
 
                 } else {
@@ -802,12 +806,14 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                             responseUpdate.getError().get(0).getMessage() != null) {
                         Toast.makeText(this, responseUpdate.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
                     }
+
                 }
             } else {
                 if (responseUpdate.isStatus()) {
                     setResult(RESULT_OK);
                     getListData();
                     Toast.makeText(SettingActivity.this, R.string.updated_node_info, Toast.LENGTH_SHORT).show();
+
                 } else {
                     if (responseUpdate.getError() != null && responseUpdate.getError().get(0) != null &&
                             responseUpdate.getError().get(0).getMessage() != null) {
@@ -863,6 +869,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     Toast.makeText(this, responseWay.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
+            hideLoader();
             finish();
 
         }
@@ -870,12 +877,14 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     @Override
     public void onFailureListData(String error) {
+        hideLoader();
         Toast.makeText(SettingActivity.this, error, Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
     public void onFailure(String error) {
+        hideLoader();
         Toast.makeText(SettingActivity.this, getResources().getString(R.string.error_when_entry_not_saved), Toast.LENGTH_SHORT).show();
     }
 
@@ -1101,6 +1110,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      * API call to get List data.
      */
     private void getListData() {
+        showLoader();
         mISettingScreenPresenter.getLisData();
     }
 }

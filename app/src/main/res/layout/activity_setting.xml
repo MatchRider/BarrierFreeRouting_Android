@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-              android:orientation="vertical"
-              android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
     <LinearLayout android:id="@+id/ll_result"
                   android:layout_width="match_parent"
                   android:orientation="vertical"
@@ -46,6 +47,7 @@
 
     </LinearLayout>
     <LinearLayout
+            android:layout_below="@id/ll_result"
             android:id="@+id/ll_question_correct"
             android:layout_width="match_parent"
             android:padding="@dimen/padding_large"
@@ -65,12 +67,13 @@
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
             android:id="@+id/rcv_setting"
+            android:layout_below="@id/ll_question_correct"
             android:paddingTop="@dimen/padding_large"
             android:paddingStart="@dimen/padding_large"
             android:paddingEnd="@dimen/padding_large"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-    android:layout_weight="1"/>
+            android:layout_height="match_parent"
+    />
     <Button
             android:id="@+id/btn_finish"
             android:layout_width="match_parent"
@@ -80,12 +83,28 @@
             android:background="@drawable/btn_ripple"
             android:padding="@dimen/padding_large"
             android:textAllCaps="false"
-            android:layout_gravity="bottom|end"
+            android:layout_alignParentBottom="true"
             android:layout_marginEnd="@dimen/padding_large"
             android:layout_marginStart="@dimen/padding_large"
             android:layout_marginBottom="@dimen/padding_large"
             android:fontFamily="@font/frutiger_light"
             android:text="@string/finish"
     />
-
-</LinearLayout>
+    <RelativeLayout
+            android:id="@+id/rel_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@android:color/transparent"
+            android:clickable="false">
+        <ProgressBar
+                android:id="@+id/progress_bar"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:indeterminateDrawable="@drawable/circle_progress">
+        </ProgressBar>
+    </RelativeLayout>
+</RelativeLayout>
