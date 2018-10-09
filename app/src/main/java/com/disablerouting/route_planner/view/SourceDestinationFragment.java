@@ -188,7 +188,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_source_destination, container, false);
 
-
     }
 
     @Override

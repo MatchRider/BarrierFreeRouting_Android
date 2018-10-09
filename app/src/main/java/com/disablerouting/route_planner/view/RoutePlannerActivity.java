@@ -54,7 +54,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private Features mFeaturesDestinationAddress;
     private String mSourceAddress;
     private String mDestinationAddress;
-    private JSONObject mJsonObjectFilter;
+    private JSONObject mJsonObjectFilter =new JSONObject();
+    ;
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, Integer> mHashMapObjectFilterItem = new HashMap<>();
     private List<NodeItem> mNodeItemListFiltered = new ArrayList<>();
@@ -201,10 +202,18 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         Intent intentFilter = new Intent(this, FilterActivity.class);
         intentFilter.putExtra(AppConstant.IS_FILTER, true);
         if (UserPreferences.getInstance(this) != null && UserPreferences.getInstance(this).getUserSearch() != null) {
-            mHashMapObjectFilterItem = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilterItem();
-            mHashMapObjectFilterRoutingVia = UserPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting();
-            intentFilter.putExtra(AppConstant.DATA_FILTER_SELECTED, mHashMapObjectFilterItem);
-            intentFilter.putExtra(AppConstant.DATA_FILTER_ROUTING_VIA, mHashMapObjectFilterRoutingVia);
+            if(UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilterItem()!=null) {
+                mHashMapObjectFilterItem = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilterItem();
+                intentFilter.putExtra(AppConstant.DATA_FILTER_SELECTED, mHashMapObjectFilterItem);
+            }
+            if(UserPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting()!=null) {
+                mHashMapObjectFilterRoutingVia = UserPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting();
+                intentFilter.putExtra(AppConstant.DATA_FILTER_ROUTING_VIA, mHashMapObjectFilterRoutingVia);
+            }
+            if(UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter()!=null) {
+                mHashMapObjectFilter = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter();
+                intentFilter.putExtra(AppConstant.DATA_FILTER, mHashMapObjectFilter);
+            }
         } else {
             intentFilter.putExtra(AppConstant.DATA_FILTER_SELECTED, mHashMapObjectFilterItem);
             intentFilter.putExtra(AppConstant.DATA_FILTER_ROUTING_VIA, mHashMapObjectFilterRoutingVia);
@@ -367,7 +376,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     mFeaturesSourceAddress.getGeometry().getCoordinates().get(1));
             GeoPoint geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
                     mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
-            if (mHashMapObjectFilter != null) {
+            if (mHashMapObjectFilter != null && mHashMapObjectFilter.size()!=0) {
                 mJsonObjectFilter = createFilter(mHashMapObjectFilter);
             }
             UserSearchModel userSearchModel = new UserSearchModel(mSourceAddress, mDestinationAddress,
@@ -379,7 +388,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
     private JSONObject createFilter(HashMap<String, String> hashMapObjectFilter) {
-        mJsonObjectFilter = new JSONObject();
+        mJsonObjectFilter= new JSONObject();
         JSONObject jsonObjectProfileParams = new JSONObject();
         JSONObject restrictions = new JSONObject();
         try {

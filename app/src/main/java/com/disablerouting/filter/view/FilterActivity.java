@@ -108,6 +108,9 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
             if (getIntent().hasExtra(AppConstant.DATA_FILTER_SELECTED)) {
                 mHashMapObjectFilterItem = (HashMap<Integer, Integer>) getIntent().getSerializableExtra(AppConstant.DATA_FILTER_SELECTED);
             }
+            if(getIntent().hasExtra(AppConstant.DATA_FILTER)){
+             mHashMapResult = (HashMap<String, String>) getIntent().getSerializableExtra(AppConstant.DATA_FILTER);
+            }
             if (getIntent().hasExtra(AppConstant.DATA_FILTER_ROUTING_VIA)) {
                 mHashMapResultForRouting = (HashMap<String, Features>) getIntent().getSerializableExtra(AppConstant.DATA_FILTER_ROUTING_VIA);
                 Features value = mHashMapResultForRouting.get(AppConstant.DATA_FILTER_ROUTING_VIA);
