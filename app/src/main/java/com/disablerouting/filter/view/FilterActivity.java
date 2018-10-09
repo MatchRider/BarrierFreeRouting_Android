@@ -431,7 +431,7 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
             mEditTextRoutingVia.setText(mFeaturesResultSearch.get(i).getProperties().toString());
             mtxvListSubTitle.setVisibility(View.VISIBLE);
             mtxvListSubTitle.setText(mFeaturesResultSearch.get(i).getProperties().toString());
-            mHashMapResultForRouting.put(AppConstant.DATA_FILTER_ROUTING_VIA,mFeaturesResultSearch.get(0));
+            mHashMapResultForRouting.put(AppConstant.DATA_FILTER_ROUTING_VIA,mFeaturesResultSearch.get(i));
         }
         handler.removeMessages(SEARCH_TEXT_CHANGED);
     }

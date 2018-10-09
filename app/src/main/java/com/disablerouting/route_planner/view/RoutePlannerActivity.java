@@ -243,7 +243,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         mButtonGo.setVisibility(View.VISIBLE);
         mButtonGo.setClickable(true);
         mButtonGo.setText(R.string.go);
-
+        setUserSearchData();
     }
 
     @Override
@@ -320,12 +320,13 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mHashMapObjectFilter = (HashMap<String, String>) data.getSerializableExtra(AppConstant.DATA_FILTER);
                 mHashMapObjectFilterItem = (HashMap<Integer, Integer>) data.getSerializableExtra(AppConstant.DATA_FILTER_SELECTED);
                 mHashMapObjectFilterRoutingVia = (HashMap<String, Features>) data.getSerializableExtra(AppConstant.DATA_FILTER_ROUTING_VIA);
-                if (mHashMapObjectFilterItem != null && mHashMapObjectFilterItem.size() != 0) {
+
+               /* if (mHashMapObjectFilterItem != null && mHashMapObjectFilterItem.size() != 0) {
                     mJsonObjectFilter = createFilter(mHashMapObjectFilter);
                 } else {
                     mJsonObjectFilter = null;
-                }
-
+                }*/
+                mJsonObjectFilter = createFilter(mHashMapObjectFilter);
                 setUserSearchData();
             }
         }
