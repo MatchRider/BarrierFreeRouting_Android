@@ -26,6 +26,7 @@ import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.instructions.InstructionsActivity;
 import com.disablerouting.login.LoginActivity;
 import com.disablerouting.login.UserPreferences;
+import com.disablerouting.login.model.UserSearchModel;
 import com.disablerouting.map_base.MapBaseActivity;
 import com.disablerouting.route_planner.model.NodeItem;
 import com.disablerouting.route_planner.model.ProgressModel;
@@ -53,12 +54,13 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private Features mFeaturesDestinationAddress;
     private String mSourceAddress;
     private String mDestinationAddress;
-    private JSONObject mJsonObjectFilter = null;
-
+    private JSONObject mJsonObjectFilter;
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, Integer> mHashMapObjectFilterItem = new HashMap<>();
     private List<NodeItem> mNodeItemListFiltered = new ArrayList<>();
     private HashMap<String, Features> mHashMapObjectFilterRoutingVia = new HashMap<>();
+    private HashMap<String, String> mHashMapObjectFilter;
+
 
     @BindView(R.id.btn_go)
     Button mButtonGo;
@@ -95,8 +97,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private int mButtonSelected = 1;
     private ProgressDialog pDialog;
     private boolean mISFromSuggestion;
-    private List<Steps> mStepsList= new ArrayList<>();
-    boolean mStepListHasData=false;
+    private List<Steps> mStepsList = new ArrayList<>();
+    boolean mStepListHasData = false;
     private int mTabSelected = 1;
 
     @Override
@@ -161,14 +163,14 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void plotDataOnMap(List<List<Double>> geoPointList, List<Steps> stepsList) {
         if (geoPointList != null && stepsList != null) {
-            for (int i= 0 ;i<stepsList.size();i++) {
+            for (int i = 0; i < stepsList.size(); i++) {
                 plotDataOfSourceDestination(geoPointList, mSourceAddress, mDestinationAddress, stepsList, true);
             }
-            if(!mStepListHasData){
+            if (!mStepListHasData) {
                 mStepsList.addAll(stepsList);
-                mStepListHasData=true;
-            }else {
-                Steps steps= new Steps();
+                mStepListHasData = true;
+            } else {
+                Steps steps = new Steps();
                 steps.setInstructions(getString(R.string.mid_way));
                 steps.setType(14);
                 mStepsList.add(steps);
@@ -190,6 +192,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mSourceAddress = featuresSource.getProperties().toString();
             mFeaturesDestinationAddress = featuresDestination;
             mDestinationAddress = featuresDestination.getProperties().toString();
+
         }
     }
 
@@ -197,8 +200,15 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onApplyFilter() {
         Intent intentFilter = new Intent(this, FilterActivity.class);
         intentFilter.putExtra(AppConstant.IS_FILTER, true);
-        intentFilter.putExtra(AppConstant.DATA_FILTER_SELECTED, mHashMapObjectFilterItem);
-        intentFilter.putExtra(AppConstant.DATA_FILTER_ROUTING_VIA, mHashMapObjectFilterRoutingVia);
+        if (UserPreferences.getInstance(this) != null && UserPreferences.getInstance(this).getUserSearch() != null) {
+            mHashMapObjectFilterItem = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilterItem();
+            mHashMapObjectFilterRoutingVia = UserPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting();
+            intentFilter.putExtra(AppConstant.DATA_FILTER_SELECTED, mHashMapObjectFilterItem);
+            intentFilter.putExtra(AppConstant.DATA_FILTER_ROUTING_VIA, mHashMapObjectFilterRoutingVia);
+        } else {
+            intentFilter.putExtra(AppConstant.DATA_FILTER_SELECTED, mHashMapObjectFilterItem);
+            intentFilter.putExtra(AppConstant.DATA_FILTER_ROUTING_VIA, mHashMapObjectFilterRoutingVia);
+        }
         startActivityForResult(intentFilter, AppConstant.REQUEST_CODE_CAPTURE);
     }
 
@@ -281,49 +291,33 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
 
-
-
     @OnClick(R.id.btn_go)
     public void goPlotMap() {
         // UI_HANDLER.post(updateMarker);
         mStepsList.clear();
-        mStepListHasData=false;
+        mStepListHasData = false;
         mImageCurrentPin.setVisibility(View.GONE);
         getMapCenter(false);
         clearItemsFromMap();
         Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
         mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
-
+        setUserSearchData();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == AppConstant.REQUEST_CODE_CAPTURE) {
             if (resultCode == Activity.RESULT_OK) {
-                HashMap<String, String> hashMapObjectFilter = (HashMap<String, String>) data.getSerializableExtra(AppConstant.DATA_FILTER);
+                mHashMapObjectFilter = (HashMap<String, String>) data.getSerializableExtra(AppConstant.DATA_FILTER);
                 mHashMapObjectFilterItem = (HashMap<Integer, Integer>) data.getSerializableExtra(AppConstant.DATA_FILTER_SELECTED);
                 mHashMapObjectFilterRoutingVia = (HashMap<String, Features>) data.getSerializableExtra(AppConstant.DATA_FILTER_ROUTING_VIA);
-
                 if (mHashMapObjectFilterItem != null && mHashMapObjectFilterItem.size() != 0) {
-                    mJsonObjectFilter = new JSONObject();
-                    JSONObject jsonObjectProfileParams = new JSONObject();
-                    JSONObject restrictions = new JSONObject();
-
-                    try {
-                        for (Map.Entry<String, String> entry : hashMapObjectFilter.entrySet()) {
-                            String key = entry.getKey();
-                            String value = entry.getValue();
-                            restrictions.put(key, value);
-                        }
-                        jsonObjectProfileParams.put("restrictions", restrictions);
-                        mJsonObjectFilter.put("profile_params", jsonObjectProfileParams);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    mJsonObjectFilter = createFilter(mHashMapObjectFilter);
                 } else {
                     mJsonObjectFilter = null;
                 }
+
+                setUserSearchData();
             }
         }
         if (requestCode == AppConstant.REQUEST_CODE_LOGIN) {
@@ -338,11 +332,70 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayData();
                     mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayData();
                     mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNode();
-                    mNodeListNotValidatedData =WayDataPreference.getInstance(this).getNotValidateDataNode();
+                    mNodeListNotValidatedData = WayDataPreference.getInstance(this).getNotValidateDataNode();
                     onToggleClickedBanner(false);
                 }
             }
         }
+    }
+
+    private void setUserSearchData() {
+        //Save Data in user Preferences
+        if (UserPreferences.getInstance(this) != null) {
+            if (mSourceAddress == null) {
+                mSourceAddress = UserPreferences.getInstance(this).getUserSearch().getSourceAdd();
+            }
+            if (mDestinationAddress == null) {
+                mDestinationAddress = UserPreferences.getInstance(this).getUserSearch().getDestAdd();
+            }
+            if (mFeaturesSourceAddress == null) {
+                mFeaturesSourceAddress = UserPreferences.getInstance(this).getUserSearch().getFeaturesSource();
+            }
+            if (mFeaturesDestinationAddress == null) {
+                mFeaturesDestinationAddress = UserPreferences.getInstance(this).getUserSearch().getFeaturesDest();
+            }
+            if (mHashMapObjectFilterRoutingVia == null) {
+                mHashMapObjectFilterRoutingVia = UserPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting();
+            }
+            if (mHashMapObjectFilterItem == null) {
+                mHashMapObjectFilterItem = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilterItem();
+            }
+            if (mHashMapObjectFilter == null) {
+                mHashMapObjectFilter = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter();
+            }
+            GeoPoint geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
+                    mFeaturesSourceAddress.getGeometry().getCoordinates().get(1));
+            GeoPoint geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
+                    mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
+            if (mHashMapObjectFilter != null) {
+                mJsonObjectFilter = createFilter(mHashMapObjectFilter);
+            }
+            UserSearchModel userSearchModel = new UserSearchModel(mSourceAddress, mDestinationAddress,
+                    geoPointSource, geoPointDestination, mFeaturesSourceAddress, mFeaturesDestinationAddress,
+                    mHashMapObjectFilterRoutingVia, mHashMapObjectFilterItem, mJsonObjectFilter, mHashMapObjectFilter);
+            UserPreferences.getInstance(this).saveUserSearch(userSearchModel);
+        }
+
+    }
+
+    private JSONObject createFilter(HashMap<String, String> hashMapObjectFilter) {
+        mJsonObjectFilter = new JSONObject();
+        JSONObject jsonObjectProfileParams = new JSONObject();
+        JSONObject restrictions = new JSONObject();
+        try {
+            for (Map.Entry<String, String> entry : hashMapObjectFilter.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                restrictions.put(key, value);
+            }
+            jsonObjectProfileParams.put("restrictions", restrictions);
+            mJsonObjectFilter.put("profile_params", jsonObjectProfileParams);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return mJsonObjectFilter;
     }
 
 
@@ -420,7 +473,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         @Override
         protected void onProgressUpdate(ProgressModel... values) {
             ProgressModel model = values[0];
-            if ((mTabSelected == 3 && mButtonSelected == 2)||(mTabSelected == 3 && mButtonSelected == 1)) {
+            if ((mTabSelected == 3 && mButtonSelected == 2) || (mTabSelected == 3 && mButtonSelected == 1)) {
                 addPolyLineForWays(model.getListWayData(), model.isValid());
             }
             if ((mTabSelected == 4 && mButtonSelected == 1) || (mTabSelected == 4 && mButtonSelected == 2)) {
@@ -592,10 +645,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mButtonGo.setVisibility(View.GONE);
                 mImageCurrentPin.setVisibility(View.GONE);
                 mImageViewInfo.setVisibility(View.GONE);
-               // clearItemsFromMap();
+                // clearItemsFromMap();
                 if (mNodeListNotValidatedData.size() != 0) {
                     hideLoader();
-                   // setZoomMap();
+                    // setZoomMap();
                     PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
                     mPlotWayDataTaskNotValidated.execute();
                 } else {
@@ -605,13 +658,26 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mRadioGroup.setVisibility(View.GONE);
                 mSourceDestinationFragment.onToggleView(false);
                 clearItemsFromMap();
-                Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
-                mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
-                mButtonGo.setVisibility(View.VISIBLE);
-                mImageCurrentPin.setVisibility(View.VISIBLE);
-
                 if (mISMapPlotted) {
-                    mImageViewInfo.setVisibility(View.VISIBLE);
+                    if (mHashMapObjectFilterRoutingVia == null) {
+                        mHashMapObjectFilterRoutingVia = UserPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting();
+                    }
+                    if (mHashMapObjectFilter == null) {
+                        mHashMapObjectFilter = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter();
+                    }
+                    Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
+                    if (UserPreferences.getInstance(this) != null && UserPreferences.getInstance(this).getUserSearch() != null) {
+                        if (mHashMapObjectFilter != null) {
+                            mJsonObjectFilter = createFilter(mHashMapObjectFilter);
+                        }
+                    }
+                    mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
+                }
+                mButtonGo.setVisibility(View.VISIBLE);
+                if (mISMapPlotted) {
+                    mImageViewInfo.setVisibility(View.GONE);
+                } else {
+                    mImageCurrentPin.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -636,10 +702,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void onClickField(boolean onStart) {
         if (onStart) {
-            if(mButtonGo.getVisibility()==View.VISIBLE) {
+            if (mButtonGo.getVisibility() == View.VISIBLE) {
                 mImageCurrentPin.setVisibility(View.VISIBLE);
                 getMapCenter(true);
-            }else {
+            } else {
                 mImageCurrentPin.setVisibility(View.GONE);
                 getMapCenter(false);
             }

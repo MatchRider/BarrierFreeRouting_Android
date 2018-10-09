@@ -2,6 +2,8 @@ package com.disablerouting.login;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import com.disablerouting.login.model.UserSearchModel;
+import com.google.gson.Gson;
 
 
 /**
@@ -12,6 +14,8 @@ public final class UserPreferences {
     private static final String PREFS_NAME = "ACCESS_TOKEN_OSM";
     private static final String ACCESS_TOKEN = "ACCESS_TOKEN";
     private static final String ACCESS_USER_DETAIL = "USER_DETAIL";
+    private static final String ACCESS_USER_SEARCH = "USER_SEARCH_DETAIL";
+    private static final String ACCESS_USER_FILTER = "USER_SEARCH_FILTER";
     private static UserPreferences sInstance;
     private final SharedPreferences mPreferences;
 
@@ -39,6 +43,17 @@ public final class UserPreferences {
     }
     public String getUserDetail() {
         return mPreferences.getString(ACCESS_USER_DETAIL, null);
+    }
+
+    public void saveUserSearch(UserSearchModel userSearchModel) {
+        Gson gson = new Gson();
+        String json = gson.toJson(userSearchModel);
+        mPreferences.edit().putString(ACCESS_USER_SEARCH, json).apply();
+    }
+    public UserSearchModel getUserSearch() {
+        Gson gson = new Gson();
+        String json = mPreferences.getString(ACCESS_USER_SEARCH, null);
+        return gson.fromJson(json, UserSearchModel.class);
     }
     /**
      * Get singleton instance.

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ListPopupWindow;
@@ -25,6 +26,7 @@ import com.disablerouting.common.AppConstant;
 import com.disablerouting.geo_coding.manager.GeoCodingManager;
 import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
+import com.disablerouting.login.UserPreferences;
 import com.disablerouting.map_base.OnFeedBackListener;
 import com.disablerouting.route_planner.adapter.CustomListAdapter;
 import com.disablerouting.route_planner.manager.DirectionsManager;
@@ -39,6 +41,7 @@ import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.List;
+import java.util.Objects;
 
 public class SourceDestinationFragment extends BaseFragmentImpl implements ISourceDestinationViewFragment,
         TextView.OnEditorActionListener, AdapterView.OnItemClickListener, OnFeedBackListener  {
@@ -177,16 +180,19 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mISourceDestinationScreenPresenter = new SourceDestinationScreenPresenter(this, new DirectionsManager(), new GeoCodingManager(), new NodeManager());
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_source_destination, container, false);
+
+
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         addFocusChangeListener();
@@ -196,7 +202,20 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             mRelativeLayoutToogle.setVisibility(View.VISIBLE);
             mOnSourceDestinationListener.onToggleClickedBanner(false);
             mTextViewTitle.setText(getResources().getString(R.string.not_validated));
-
+        }
+        if(!mIsFromSuggestion){
+            if(UserPreferences.getInstance(getContext())!=null && UserPreferences.getInstance(getContext()).getUserSearch()!=null){
+                mEditTextSource.setText(UserPreferences.getInstance(getContext()).getUserSearch().getSourceAdd());
+                mEditTextDestination.setText(UserPreferences.getInstance(getContext()).getUserSearch().getDestAdd());
+                mGeoPointSource=UserPreferences.getInstance(getContext()).getUserSearch().getSourceGeoPoint();
+                mGeoPointDestination=UserPreferences.getInstance(getContext()).getUserSearch().getDestGeoPoint();
+                mFeaturesSource = UserPreferences.getInstance(getContext()).getUserSearch().getFeaturesSource();
+                mFeaturesDestination  = UserPreferences.getInstance(getContext()).getUserSearch().getFeaturesDest();
+                //JSONObject jsonObject = UserPreferences.getInstance(getContext()).getUserSearch().getJSONObjectFiter();
+                //HashMap<String, Features> mRoutingVia = UserPreferences.getInstance(getContext()).getUserSearch().getHashMapFilterForRouting();
+                //Features features = mRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
+                //plotRoute(jsonObject,features);
+            }
         }
     }
 
@@ -285,7 +304,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 mFeaturesRouteVia = featuresRouteVia;
                 callForDestination(null, mGeoPointSource, mGeoPointDestination, mJSONObjectFilter,mFeaturesRouteVia);
             } else {
-                showSnackBar(getContext().getResources().getString(R.string.error_source_destination_same));
+                showSnackBar(Objects.requireNonNull(getContext()).getResources().getString(R.string.error_source_destination_same));
             }
         }
     }
@@ -572,13 +591,13 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             mEditTextSource.setText(mFeaturesResultSearch.get(i).getProperties().toString());
             mGeoPointSource = new GeoPoint(mFeaturesResultSearch.get(i).getGeometry().getCoordinates().get(0),
                     mFeaturesResultSearch.get(i).getGeometry().getCoordinates().get(1));
-            mFeaturesSource = mFeaturesResultSearch.get(0);
+            mFeaturesSource = mFeaturesResultSearch.get(i);
 
         } else if (mEditTextDestination.hasFocus()) {
             mEditTextDestination.setText(mFeaturesResultSearch.get(i).getProperties().toString());
             mGeoPointDestination = new GeoPoint(mFeaturesResultSearch.get(i).getGeometry().getCoordinates().get(0),
                     mFeaturesResultSearch.get(i).getGeometry().getCoordinates().get(1));
-            mFeaturesDestination = mFeaturesResultSearch.get(0);
+            mFeaturesDestination = mFeaturesResultSearch.get(i);
 
         }
         handler.removeMessages(SEARCH_TEXT_CHANGED);

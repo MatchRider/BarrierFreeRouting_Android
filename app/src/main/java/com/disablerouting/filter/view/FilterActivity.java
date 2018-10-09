@@ -152,7 +152,6 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         mtxvListSubTitle.setVisibility(View.GONE);
         mtxvListSubTitle.setText("");
         mEditTextRoutingVia.setText("");
-
     }
 
     public void addFocusChangeListener() {
