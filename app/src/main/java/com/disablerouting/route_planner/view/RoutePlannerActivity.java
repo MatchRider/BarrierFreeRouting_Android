@@ -341,26 +341,26 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     private void setUserSearchData() {
         //Save Data in user Preferences
-        if (UserPreferences.getInstance(this) != null) {
-            if (mSourceAddress == null) {
+        if (UserPreferences.getInstance(this) != null && UserPreferences.getInstance(this).getAccessToken()!=null) {
+            if (mSourceAddress == null && UserPreferences.getInstance(this).getUserSearch()!=null) {
                 mSourceAddress = UserPreferences.getInstance(this).getUserSearch().getSourceAdd();
             }
-            if (mDestinationAddress == null) {
+            if (mDestinationAddress == null && UserPreferences.getInstance(this).getUserSearch()!=null) {
                 mDestinationAddress = UserPreferences.getInstance(this).getUserSearch().getDestAdd();
             }
-            if (mFeaturesSourceAddress == null) {
+            if (mFeaturesSourceAddress == null && UserPreferences.getInstance(this).getUserSearch()!=null) {
                 mFeaturesSourceAddress = UserPreferences.getInstance(this).getUserSearch().getFeaturesSource();
             }
-            if (mFeaturesDestinationAddress == null) {
+            if (mFeaturesDestinationAddress == null && UserPreferences.getInstance(this).getUserSearch()!=null) {
                 mFeaturesDestinationAddress = UserPreferences.getInstance(this).getUserSearch().getFeaturesDest();
             }
-            if (mHashMapObjectFilterRoutingVia == null) {
+            if (mHashMapObjectFilterRoutingVia == null && UserPreferences.getInstance(this).getUserSearch()!=null) {
                 mHashMapObjectFilterRoutingVia = UserPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting();
             }
-            if (mHashMapObjectFilterItem == null) {
+            if (mHashMapObjectFilterItem == null && UserPreferences.getInstance(this).getUserSearch()!=null) {
                 mHashMapObjectFilterItem = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilterItem();
             }
-            if (mHashMapObjectFilter == null) {
+            if (mHashMapObjectFilter == null && UserPreferences.getInstance(this).getUserSearch()!=null) {
                 mHashMapObjectFilter = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter();
             }
             GeoPoint geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
@@ -660,10 +660,14 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 clearItemsFromMap();
                 if (mISMapPlotted) {
                     if (mHashMapObjectFilterRoutingVia == null) {
-                        mHashMapObjectFilterRoutingVia = UserPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting();
+                        if (UserPreferences.getInstance(this) != null && UserPreferences.getInstance(this).getUserSearch() != null) {
+                            mHashMapObjectFilterRoutingVia = UserPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting();
+                        }
                     }
                     if (mHashMapObjectFilter == null) {
-                        mHashMapObjectFilter = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter();
+                        if (UserPreferences.getInstance(this) != null && UserPreferences.getInstance(this).getUserSearch() != null) {
+                            mHashMapObjectFilter = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter();
+                        }
                     }
                     Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
                     if (UserPreferences.getInstance(this) != null && UserPreferences.getInstance(this).getUserSearch() != null) {

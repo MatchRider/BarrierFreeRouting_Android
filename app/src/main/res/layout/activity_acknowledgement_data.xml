@@ -58,7 +58,9 @@
             <ImageView android:layout_width="match_parent"
                        android:layout_gravity="center"
                        android:src="@drawable/image_company"
-                       android:layout_height="50dp"/>
+                       android:layout_height="50dp"
+                       android:contentDescription="@string/app_name"/>
+
             <TextView android:layout_width="match_parent"
                       android:id="@+id/txv_data_side_menu1"
                       android:textColor="@android:color/white"
@@ -74,7 +76,10 @@
                        android:layout_gravity="center"
                        android:background="@color/colorWhite"
                        android:src="@drawable/logo_heidelberg"
-                       android:layout_height="80dp"/>
+                       android:layout_height="80dp"
+                       android:paddingStart="@dimen/padding_small"
+                       android:paddingEnd="@dimen/padding_small"
+                       android:contentDescription="@string/app_name"/>
 
 
             <TextView android:layout_width="match_parent"
