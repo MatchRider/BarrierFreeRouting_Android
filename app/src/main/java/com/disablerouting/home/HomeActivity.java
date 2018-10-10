@@ -80,7 +80,6 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         checkLocationStatus();
         getWayListData();
 
-
     }
 
     /**
