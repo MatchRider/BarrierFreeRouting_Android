@@ -11,13 +11,16 @@ import java.util.List;
 public class Way {
 
     @Attribute(name = "id", required = false)
+    private
     String mID;
 
     @Attribute(name = "changeset", required = false)
+    private
     String mChangeset;
 
 
     @Attribute(name = "versions", required = false)
+    private
     String mVersion;
 
 

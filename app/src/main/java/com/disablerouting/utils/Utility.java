@@ -21,6 +21,9 @@ import android.widget.TextView;
 import com.disablerouting.api.ApiEndPoint;
 import com.disablerouting.curd_operations.model.NodeReference;
 import com.disablerouting.login.OSMApi;
+import com.disablerouting.osm_activity.model.GetOsmData;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.oauth.OAuth10aService;
 import fr.arnaudguyon.xmltojsonlib.XmlToJson;
@@ -97,7 +100,6 @@ public class Utility {
 
             XmlToJson xmlToJson = new XmlToJson.Builder(xmlString).build();
             jsonObj = xmlToJson.toJson();
-            Log.d("XML", xmlString);
             if (jsonObj != null) {
                 Log.d("JSON", jsonObj.toString());
             }
@@ -174,7 +176,7 @@ public class Utility {
     public static String readOSMFile(Context context) {
         InputStream input;
         try {
-            input = context.getAssets().open("Befahrung_Incline_Matchrider.osm");
+            input = context.getAssets().open("dev_map.osm");
             Reader reader = new InputStreamReader(input);
             StringBuilder sb = new StringBuilder();
             char buffer[] = new char[16384];  // read 16k blocks
@@ -296,6 +298,21 @@ public class Utility {
         }
         return false;
     }
+
+    
+     public static GetOsmData convertDataIntoModel(String data) {
+        JSONObject jsonObject = Utility.convertXMLtoJSON(data);
+        ObjectMapper objectMapper = new ObjectMapper();
+         GetOsmData osmData = null;
+        try {
+             objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+             osmData = objectMapper.readValue(jsonObject.toString(), GetOsmData.class);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+         return osmData;
+     }
 
 }
 

@@ -149,4 +149,7 @@ public interface ApiService {
     @GET("List")
     Call<ResponseListWay> getList();
 
+//    @Streaming
+    @GET("map")
+    Call<ResponseBody> downloadFileWithDynamicUrlAsync(@Query("bbox") String bbox);
 }

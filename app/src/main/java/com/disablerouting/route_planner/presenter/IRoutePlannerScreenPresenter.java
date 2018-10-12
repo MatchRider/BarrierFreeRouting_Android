@@ -1,12 +1,9 @@
 package com.disablerouting.route_planner.presenter;
 
-import com.disablerouting.curd_operations.model.RequestGetWay;
-
 public interface IRoutePlannerScreenPresenter {
 
 
-    void getWays(RequestGetWay requestGetWay);
-
+    void getOSMData();
     /**
      * Disconnect ongoing calls on network
      */

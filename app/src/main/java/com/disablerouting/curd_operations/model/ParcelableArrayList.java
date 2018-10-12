@@ -14,7 +14,7 @@ public class ParcelableArrayList extends ArrayList<String> implements
         super();
     }
 
-    protected ParcelableArrayList(Parcel in) {
+    public ParcelableArrayList(Parcel in) {
         in.readList(this, String.class.getClassLoader());
     }
 

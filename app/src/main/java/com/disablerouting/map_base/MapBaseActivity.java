@@ -724,8 +724,10 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             if (valid) {
                 polylineWays.setColor(getResources().getColor(R.color.colorGreen));
             } else {
-                colorValue = listWayData.getColor();
-                polylineWays.setColor(Color.parseColor(colorValue));
+                if(listWayData.getColor() != null) {
+                    colorValue = listWayData.getColor();
+                    polylineWays.setColor(Color.parseColor(colorValue));
+                }
                 //colorIndex=(colorIndex+1)%4;
             }
             polylineWays.setOnClickListener(new Polyline.OnClickListener() {

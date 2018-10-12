@@ -14,6 +14,9 @@ public class Way {
     @JsonProperty("id")
     private String mID;
 
+    @JsonProperty("version")
+    private String mVersion;
+
     @JsonProperty("tag")
     private List<Tag> mTagList;
 
@@ -23,6 +26,10 @@ public class Way {
 
     public String getID() {
         return mID;
+    }
+
+    public String getVersion() {
+        return mVersion;
     }
 
     public List<Tag> getTagList() {

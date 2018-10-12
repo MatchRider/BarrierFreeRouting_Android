@@ -5,6 +5,8 @@ public interface IHomeScreenPresenter {
 
     void getListWays();
 
+    void getOSMData();
+
     /**
      * Disconnect ongoing calls on network
      */

@@ -82,6 +82,10 @@ public class ListWayData implements Parcelable{
         return mOSMWayId;
     }
 
+    public void setOSMWayId(String OSMWayId) {
+        mOSMWayId = OSMWayId;
+    }
+
     public String getAPIWayId() {
         return mAPIWayId;
     }

@@ -70,4 +70,16 @@ public class ResponseListWay implements Parcelable {
         dest.writeByte((byte) (mStatus ? 1 : 0));
         dest.writeTypedList(mError);
     }
+
+    public void setWayData(List<ListWayData> wayData) {
+        mWayData = wayData;
+    }
+
+    public void setStatus(boolean status) {
+        mStatus = status;
+    }
+
+    public void setError(List<Error> error) {
+        mError = error;
+    }
 }

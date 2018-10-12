@@ -22,6 +22,11 @@ public class WayDataPreference {
     private String DataKeyValidatedNode = "ListWayValidatedNode";
     private String DataKeyNotValidatedNode = "ListWayNotValidatedNode";
 
+    private String DataKeyValidatedOSM = "ListWayValidatedOSM";
+    private String DataKeyNotValidatedOSM = "ListWayNotValidatedOSM";
+    private String DataKeyValidatedNodeOSM = "ListWayValidatedNodeOSM";
+    private String DataKeyNotValidatedNodeOSM = "ListWayNotValidatedNodeOSM";
+
     private static WayDataPreference sInstance;
 
     private WayDataPreference(SharedPreferences mPreferences) {
@@ -168,6 +173,153 @@ public class WayDataPreference {
         List<NodeReference> nodeReferenceList = null;
         if (preferences.contains(DataKeyNotValidatedNode)) {
             String jsonValidated = preferences.getString(DataKeyNotValidatedNode, null);
+            Gson gson = new Gson();
+            NodeReference[] nodeReferences;
+            try {
+                if (!TextUtils.isEmpty(jsonValidated)) {
+                    nodeReferences = gson.fromJson(jsonValidated,
+                            NodeReference[].class);
+                    nodeReferenceList = Arrays.asList(nodeReferences);
+                } else {
+                    nodeReferenceList = new ArrayList<>();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                return new ArrayList<NodeReference>();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return nodeReferenceList;
+    }
+    //..............................................................
+    //add data
+    public void saveValidateWayDataOSM(List<ListWayData> listWayData) {
+        Gson gson = new Gson();
+        String jsonValidated = gson.toJson(listWayData);
+        editor.putString(DataKeyValidatedOSM, jsonValidated);
+        editor.commit();
+    }
+
+    //get data
+    public List<ListWayData> getValidateWayDataOSM() {
+        List<ListWayData> listWayDataList = null;
+        if (preferences.contains(DataKeyValidatedOSM)) {
+            String jsonValidated = preferences.getString(DataKeyValidatedOSM, null);
+            Gson gson = new Gson();
+            ListWayData[] listWayData;
+            try {
+                if (!TextUtils.isEmpty(jsonValidated)) {
+                    listWayData = gson.fromJson(jsonValidated,
+                            ListWayData[].class);
+                    listWayDataList = Arrays.asList(listWayData);
+                } else {
+                    listWayDataList = new ArrayList<>();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                return new ArrayList<ListWayData>();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return listWayDataList;
+    }
+    //add data
+    public void saveNotValidatedWayDataOSM(List<ListWayData> listWayData) {
+        Gson gson = new Gson();
+        String jsonNotValidated = gson.toJson(listWayData);
+        editor.putString(DataKeyNotValidatedOSM, jsonNotValidated);
+        editor.commit();
+    }
+
+    //get data
+    public List<ListWayData> getNotValidatedWayDataOSM() {
+        List<ListWayData> listWayDataList = null;
+        if (preferences.contains(DataKeyNotValidatedOSM)) {
+            String jsonNotValidated = preferences.getString(DataKeyNotValidatedOSM, null);
+            Gson gson = new Gson();
+            ListWayData[] listWayData;
+            try {
+                if (!TextUtils.isEmpty(jsonNotValidated)) {
+                    listWayData = gson.fromJson(jsonNotValidated,
+                            ListWayData[].class);
+                    listWayDataList = Arrays.asList(listWayData);
+                }else {
+                    listWayDataList = new ArrayList<>();
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+        } else {
+            try {
+                return new ArrayList<ListWayData>();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return listWayDataList;
+    }
+    //add data
+    public void saveValidateDataNodeOSM(List<NodeReference> nodeReferences) {
+        Gson gson = new Gson();
+        String jsonValidated = gson.toJson(nodeReferences);
+        editor.putString(DataKeyValidatedNodeOSM, jsonValidated);
+        editor.commit();
+    }
+
+    //get data
+    public List<NodeReference> getValidateDataNodeOSM() {
+        List<NodeReference> nodeReferenceList = null;
+        if (preferences.contains(DataKeyValidatedNodeOSM)) {
+            String jsonValidated = preferences.getString(DataKeyValidatedNodeOSM, null);
+            Gson gson = new Gson();
+            NodeReference[] nodeReferences;
+            try {
+                if (!TextUtils.isEmpty(jsonValidated)) {
+                    nodeReferences = gson.fromJson(jsonValidated,
+                            NodeReference[].class);
+                    nodeReferenceList = Arrays.asList(nodeReferences);
+                } else {
+                    nodeReferenceList = new ArrayList<>();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                return new ArrayList<NodeReference>();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return nodeReferenceList;
+    }
+    //add data
+    public void saveNotValidateDataNodeOSM(List<NodeReference> nodeReferences) {
+        Gson gson = new Gson();
+        String jsonNotValidated = gson.toJson(nodeReferences);
+        editor.putString(DataKeyNotValidatedNodeOSM, jsonNotValidated);
+        editor.commit();
+    }
+
+    //get data
+    public List<NodeReference> getNotValidateDataNodeOSM() {
+        List<NodeReference> nodeReferenceList = null;
+        if (preferences.contains(DataKeyNotValidatedNodeOSM)) {
+            String jsonValidated = preferences.getString(DataKeyNotValidatedNodeOSM, null);
             Gson gson = new Gson();
             NodeReference[] nodeReferences;
             try {

@@ -69,6 +69,10 @@ public class RetrofitClient {
             if(UserPreferences.getInstance(context)!=null && UserPreferences.getInstance(context).getAccessToken()!=null){
                 osm= UserPreferences.getInstance(context).getAccessToken();
             }
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            // set your desired log level
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
 
             final OkHttpClient client = new OkHttpClient.Builder()
                     .followRedirects(true)
@@ -76,6 +80,7 @@ public class RetrofitClient {
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .connectTimeout(30, TimeUnit.SECONDS)
                     .addInterceptor(new ApiInterceptorOsm(osm))
+                    .addInterceptor(logging)
                     .build();
 
             sRetrofitOSM = new Retrofit.Builder()
@@ -97,9 +102,9 @@ public class RetrofitClient {
 
             final OkHttpClient client = new OkHttpClient.Builder()
                     .followRedirects(true)
-                    .readTimeout(30, TimeUnit.SECONDS)
-                    .writeTimeout(30, TimeUnit.SECONDS)
-                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .connectTimeout(60, TimeUnit.SECONDS)
                     .addInterceptor(new ApiInterceptor(true))
                     .addInterceptor(logging)
                     .build();

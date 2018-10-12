@@ -30,23 +30,24 @@ import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.WayDataPreference;
 import com.disablerouting.curd_operations.manager.ListGetWayManager;
-import com.disablerouting.curd_operations.model.ListWayData;
-import com.disablerouting.curd_operations.model.NodeReference;
-import com.disablerouting.curd_operations.model.ResponseListWay;
+import com.disablerouting.curd_operations.model.*;
 import com.disablerouting.home.presenter.HomeScreenPresenter;
 import com.disablerouting.home.presenter.IHomeScreenPresenter;
 import com.disablerouting.home.presenter.IHomeView;
 import com.disablerouting.login.LoginActivity;
 import com.disablerouting.login.UserPreferences;
+import com.disablerouting.osm_activity.manager.OSMManager;
+import com.disablerouting.osm_activity.model.GetOsmData;
 import com.disablerouting.route_planner.view.RoutePlannerActivity;
 import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
 import com.disablerouting.utils.PermissionUtils;
 import com.disablerouting.utils.Utility;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragmentCallback, IHomeView {
+public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentCallback, IHomeView {
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -64,6 +65,11 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
     private List<NodeReference> mNodeListValidatedData = new ArrayList<>();
     private List<NodeReference> mNodeListNotValidatedData = new ArrayList<>();
 
+    private List<ListWayData> mWayListValidatedDataOSM = new ArrayList<>();
+    private List<ListWayData> mWayListNotValidatedDataOSM = new ArrayList<>();
+    private List<NodeReference> mNodeListValidatedDataOSM = new ArrayList<>();
+    private List<NodeReference> mNodeListNotValidatedDataOSM = new ArrayList<>();
+
     final String[] locationPermissions = new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
             android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
             android.Manifest.permission.ACCESS_NETWORK_STATE};
@@ -74,7 +80,7 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
 
-        mIHomeScreenPresenter= new HomeScreenPresenter(this,new ListGetWayManager());
+        mIHomeScreenPresenter = new HomeScreenPresenter(this, new ListGetWayManager(), new OSMManager(), this);
         addNavigationMenu(navigationDrawerLayout, this);
         addListener();
         checkLocationStatus();
@@ -134,14 +140,23 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
 
     @OnClick(R.id.btn_route_planner)
     void redirectRoutePlanner() {
-        Intent intent= new Intent(this, RoutePlannerActivity.class);
-        startActivityForResult(intent,AppConstant.REQUEST_CODE_SCREEN);
+        Intent intent = new Intent(this, RoutePlannerActivity.class);
+        startActivityForResult(intent, AppConstant.REQUEST_CODE_SCREEN);
     }
 
     @OnClick(R.id.btn_suggestion)
     void redirectSuggestions() {
         redirectToSuggestionScreen();
         //showSuggestionDialog();
+    }
+
+    @OnClick(R.id.btn_osm)
+    void redirectOSM() {
+        if (UserPreferences.getInstance(this).getAccessToken() == null) {
+            Toast.makeText(this, "Login Required", Toast.LENGTH_SHORT).show();
+        } else {
+            mIHomeScreenPresenter.getOSMData();
+        }
     }
 
     /**
@@ -209,7 +224,7 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         if (requestCode == AppConstant.SETTING_REQUEST_CODE) {
             checkLocationStatus();
         }
-        if(requestCode== AppConstant.REQUEST_CODE_SCREEN){
+        if (requestCode == AppConstant.REQUEST_CODE_SCREEN) {
             if (resultCode == Activity.RESULT_OK) {
                 mSideMenuFragment.onLogin();
             }
@@ -217,7 +232,7 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
         if (requestCode == AppConstant.REQUEST_CODE_LOGIN) {
             if (resultCode == Activity.RESULT_OK) {
                 mSideMenuFragment.onLogin();
-                if(UserPreferences.getInstance(this).isUserLoggedIn()) {
+                if (UserPreferences.getInstance(this).isUserLoggedIn()) {
                     getWayListData();
                 }
             }
@@ -249,21 +264,32 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
             }
         });
     }
-    
-    private void redirectToSuggestionScreen(){
+
+    private void redirectToSuggestionScreen() {
         if (UserPreferences.getInstance(this).getAccessToken() == null) {
             Intent intentLogin = new Intent(this, LoginActivity.class);
             startActivityForResult(intentLogin, AppConstant.REQUEST_CODE_LOGIN);
-        }else {
+        } else {
             Intent intent = new Intent(this, RoutePlannerActivity.class);
             intent.putExtra("FromSuggestion", true);
             startActivity(intent);
         }
     }
 
+    private void redirectToOSMScreen() {
+        if (UserPreferences.getInstance(this).getAccessToken() == null) {
+            Intent intentLogin = new Intent(this, LoginActivity.class);
+            startActivityForResult(intentLogin, AppConstant.REQUEST_CODE_LOGIN);
+        } else {
+            Intent intent = new Intent(this, RoutePlannerActivity.class);
+            intent.putExtra("FromOSM", true);
+            startActivity(intent);
+        }
+    }
+
     @Override
     public void onClick(int close) {
-        if(slideState) {
+        if (slideState) {
             mDrawerLayout.closeDrawer(Gravity.START);
         }
         super.onClick(close);
@@ -272,57 +298,203 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
     /**
      * API CALL TO GET LIST OF WAY DATA
      */
-    private void getWayListData(){
+    private void getWayListData() {
         mIHomeScreenPresenter.getListWays();
     }
 
     @Override
     public void onListWayReceived(ResponseListWay responseWay) {
-        if(responseWay!=null) {
+        if (responseWay != null) {
             if (responseWay.isStatus()) {
-                for (int i = 0; i < responseWay.getWayData().size(); i++) {
-                    boolean isValidWay = Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
-                    if (isValidWay) {
-                        mWayListValidatedData.add(responseWay.getWayData().get(i));
-                    } else {
-                        mWayListNotValidatedData.add(responseWay.getWayData().get(i));
+                createListData(responseWay, false);
+            } else {
+                if (responseWay.getError() != null && responseWay.getError().get(0) != null &&
+                        responseWay.getError().get(0).getMessage() != null) {
+                    Toast.makeText(this, responseWay.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onOSMDataReceived(String responseBody) {
+        if (responseBody != null) {
+            GetOsmData getOsmData = Utility.convertDataIntoModel(responseBody);
+            Log.e("Nodes", String.valueOf(getOsmData.getOSM().getNode().size()));
+            Log.e("Ways", String.valueOf(getOsmData.getOSM().getWays().size()));
+
+            List<NodeReference> nodeReferenceList = new ArrayList<>();
+            NodeReference nodeReference = null;
+            for (int i = 0; i < getOsmData.getOSM().getNode().size(); i++) {
+                nodeReference = new NodeReference();
+
+                nodeReference.setOSMNodeId(getOsmData.getOSM().getNode().get(i).getID());
+                nodeReference.setLat(getOsmData.getOSM().getNode().get(i).getLatitude());
+                nodeReference.setLon(getOsmData.getOSM().getNode().get(i).getLongitude());
+                nodeReference.setVersion(getOsmData.getOSM().getNode().get(i).getVersion());
+
+                List<Attributes> attributesList = new ArrayList<>();
+                Attributes attributes = null;
+                if (getOsmData.getOSM().getNode().get(i).getTag() != null &&
+                        getOsmData.getOSM().getNode().get(i).getTag().size() != 0) {
+                    for (int k = 0; k < getOsmData.getOSM().getNode().get(i).getTag().size(); k++) {
+                        attributes = new Attributes();
+                        attributes.setKey(getOsmData.getOSM().getNode().get(i).getTag().get(k).getK());
+                        attributes.setValue(getOsmData.getOSM().getNode().get(i).getTag().get(k).getV());
+                        attributes.setValid(false);
+                        attributesList.add(attributes);
+                        nodeReference.setAttributes(attributesList);
                     }
-                    for (int j=0;j<responseWay.getWayData().get(i).getNodeReference().size();j++){
-                        if(responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes()!=null) {
+                }
+                nodeReferenceList.add(nodeReference);
+            }
 
-                            for (int k = 0; k < responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().size(); k++) {
-                                    if (!responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().get(k).isValid()) {
-                                        if(!Utility.isListContainId(mNodeListNotValidatedData,responseWay.getWayData().get(i).getNodeReference()
-                                                .get(j).getAPINodeId())){
-                                            mNodeListNotValidatedData.add(responseWay.getWayData().get(i).getNodeReference().get(j));
+            List<ListWayData> listWayDataListCreated = new ArrayList<>();
+            ListWayData listWayData = null;
 
-                                        }
-                                    } else {
-                                        if(!Utility.isListContainId(mNodeListValidatedData,responseWay.getWayData().get(i).getNodeReference()
-                                                .get(j).getAPINodeId())) {
-                                            mNodeListValidatedData.add(responseWay.getWayData().get(i).getNodeReference().get(j));
-                                        }
-                                    }
 
-                            }
+            for (int i = 0; i < getOsmData.getOSM().getWays().size(); i++) {
+                listWayData = new ListWayData();
+
+                listWayData.setOSMWayId(getOsmData.getOSM().getWays().get(i).getID());
+                listWayData.setVersion(getOsmData.getOSM().getWays().get(i).getVersion());
+                listWayData.setIsValid("false");
+                listWayData.setColor("#a50050");
+                ParcelableArrayList stringListCoordinates;
+
+                List<NodeReference> nodeReferencesWay = new ArrayList<>();
+                List<ParcelableArrayList> coordinatesList = new LinkedList<>();
+
+                for (int j = 0; getOsmData.getOSM().getWays().get(i).getNdList() != null &&
+                        getOsmData.getOSM().getWays().get(i).getNdList().size() != 0 &&
+                        j < getOsmData.getOSM().getWays().get(i).getNdList().size(); j++) {
+
+                    for (int k = 0; k < nodeReferenceList.size(); k++) {
+                        if (getOsmData.getOSM().getWays().get(i).getNdList().get(j).getRef()
+                                .equalsIgnoreCase(nodeReferenceList.get(k).getOSMNodeId())) {
+
+                            stringListCoordinates = new ParcelableArrayList();
+                            nodeReferencesWay.add(nodeReferenceList.get(k));
+                            stringListCoordinates = new ParcelableArrayList();
+                            stringListCoordinates.add(0, nodeReferenceList.get(k).getLat());
+                            stringListCoordinates.add(1, nodeReferenceList.get(k).getLon());
+                            coordinatesList.add(stringListCoordinates);
+                            break;
                         }
                     }
 
                 }
-                if (WayDataPreference.getInstance(this) != null) {
-                    WayDataPreference.getInstance(this).saveValidateWayData(mWayListValidatedData);
-                    WayDataPreference.getInstance(this).saveNotValidatedWayData(mWayListNotValidatedData);
-                    WayDataPreference.getInstance(this).saveValidateDataNode(mNodeListValidatedData);
-                    WayDataPreference.getInstance(this).saveNotValidateDataNode(mNodeListNotValidatedData);
+                listWayData.setCoordinates(coordinatesList);
+                listWayData.setNodeReference(nodeReferencesWay);
 
+                List<Attributes> attributesArrayListWay = new ArrayList<>();
+                for (int j = 0; getOsmData.getOSM().getWays().get(i).getTagList() != null &&
+                        getOsmData.getOSM().getWays().get(i).getTagList().size() != 0 &&
+                        j < getOsmData.getOSM().getWays().get(i).getTagList().size(); j++) {
+                    Attributes attributesWay = new Attributes();
+                    attributesWay.setKey(getOsmData.getOSM().getWays().get(i).getTagList().get(j).getK());
+                    attributesWay.setValue(getOsmData.getOSM().getWays().get(i).getTagList().get(j).getV());
+                    attributesWay.setValid(false);
+                    attributesArrayListWay.add(attributesWay);
+                }
+                listWayData.setAttributesList(attributesArrayListWay);
+                listWayDataListCreated.add(listWayData);
+            }
+
+            Log.e("List", String.valueOf(listWayDataListCreated.size()));
+
+            ResponseListWay responseListWay = new ResponseListWay();
+            responseListWay.setWayData(listWayDataListCreated);
+            if (listWayDataListCreated.size() > 0) {
+                responseListWay.setStatus(true);
+            } else {
+                responseListWay.setStatus(false);
+            }
+            createListData(responseListWay, true);
+        }
+    }
+
+    public void createListData(ResponseListWay responseWay, boolean isForOsm) {
+        if (!isForOsm) {
+            mWayListValidatedData.clear();
+            mWayListNotValidatedData.clear();
+            mNodeListValidatedData.clear();
+            mNodeListNotValidatedData.clear();
+
+            for (int i = 0; i < responseWay.getWayData().size(); i++) {
+                boolean isValidWay = Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
+                if (isValidWay) {
+                    mWayListValidatedData.add(responseWay.getWayData().get(i));
+                } else {
+                    mWayListNotValidatedData.add(responseWay.getWayData().get(i));
+                }
+                for (int j = 0; j < responseWay.getWayData().get(i).getNodeReference().size(); j++) {
+                    if (responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes() != null) {
+
+                        for (int k = 0; k < responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().size(); k++) {
+                            if (!responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().get(k).isValid()) {
+
+                                if (!Utility.isListContainId(mNodeListNotValidatedData, responseWay.getWayData().get(i).getNodeReference()
+                                        .get(j).getAPINodeId())) {
+                                    mNodeListNotValidatedData.add(responseWay.getWayData().get(i).getNodeReference().get(j));
+
+                                }
+
+                            } else {
+                                if (!Utility.isListContainId(mNodeListValidatedData, responseWay.getWayData().get(i).getNodeReference()
+                                        .get(j).getAPINodeId())) {
+                                    mNodeListValidatedData.add(responseWay.getWayData().get(i).getNodeReference().get(j));
+                                }
+                            }
+                        }
+                    }
                 }
             }
-            else {
-                if(responseWay.getError()!=null && responseWay.getError().get(0)!=null &&
-                        responseWay.getError().get(0).getMessage()!=null) {
-                    Toast.makeText(this, responseWay.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
+            if (WayDataPreference.getInstance(this) != null) {
+                WayDataPreference.getInstance(this).saveValidateWayData(mWayListValidatedData);
+                WayDataPreference.getInstance(this).saveNotValidatedWayData(mWayListNotValidatedData);
+                WayDataPreference.getInstance(this).saveValidateDataNode(mNodeListValidatedData);
+                WayDataPreference.getInstance(this).saveNotValidateDataNode(mNodeListNotValidatedData);
+
+            }
+
+        }
+        if (isForOsm) {
+            mWayListValidatedDataOSM.clear();
+            mWayListNotValidatedDataOSM.clear();
+            mNodeListValidatedDataOSM.clear();
+            mNodeListNotValidatedDataOSM.clear();
+
+            for (int i = 0; i < responseWay.getWayData().size(); i++) {
+                boolean isValidWay = Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
+                if (isValidWay) {
+                    mWayListValidatedDataOSM.add(responseWay.getWayData().get(i));
+                } else {
+                    mWayListNotValidatedDataOSM.add(responseWay.getWayData().get(i));
+                }
+                for (int j = 0; j < responseWay.getWayData().get(i).getNodeReference().size(); j++) {
+                    if (responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes() != null) {
+
+                        for (int k = 0; k < responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().size(); k++) {
+                            if (!responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().get(k).isValid()) {
+                                mNodeListNotValidatedDataOSM.add(responseWay.getWayData().get(i).getNodeReference().get(j));
+
+                            } else {
+                                mNodeListValidatedDataOSM.add(responseWay.getWayData().get(i).getNodeReference().get(j));
+
+                            }
+                        }
+                    }
                 }
             }
+            if (WayDataPreference.getInstance(this) != null) {
+                WayDataPreference.getInstance(this).saveValidateWayDataOSM(mWayListValidatedDataOSM);
+                WayDataPreference.getInstance(this).saveNotValidatedWayDataOSM(mWayListNotValidatedDataOSM);
+                WayDataPreference.getInstance(this).saveValidateDataNodeOSM(mNodeListValidatedDataOSM);
+                WayDataPreference.getInstance(this).saveNotValidateDataNodeOSM(mNodeListNotValidatedDataOSM);
+
+            }
+            redirectToOSMScreen();
         }
     }
 
@@ -338,6 +510,6 @@ public class HomeActivity extends BaseActivityImpl  implements ISideMenuFragment
 
     @Override
     public void hideLoader() {
-      hideProgress();
+        hideProgress();
     }
 }

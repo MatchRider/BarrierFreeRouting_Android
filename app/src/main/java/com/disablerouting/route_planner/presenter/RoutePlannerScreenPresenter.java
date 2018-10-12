@@ -1,59 +1,57 @@
 package com.disablerouting.route_planner.presenter;
 
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import com.disablerouting.api.ErrorResponse;
-import com.disablerouting.curd_operations.manager.GetWayManager;
-import com.disablerouting.curd_operations.manager.IGetWayResponseReceiver;
-import com.disablerouting.curd_operations.manager.IListGetWayResponseReceiver;
-import com.disablerouting.curd_operations.manager.ListGetWayManager;
-import com.disablerouting.curd_operations.model.RequestGetWay;
-import com.disablerouting.curd_operations.model.ResponseListWay;
-import com.disablerouting.curd_operations.model.ResponseWay;
+import com.disablerouting.osm_activity.manager.OSMManager;
+import com.disablerouting.osm_activity.presenter.IOSMResponseReceiver;
 
-public class RoutePlannerScreenPresenter implements IGetWayResponseReceiver , IRoutePlannerScreenPresenter {
+public class RoutePlannerScreenPresenter implements IOSMResponseReceiver, IRoutePlannerScreenPresenter {
 
     private IRouteView mIRouteView;
-    private GetWayManager mGetWayManager;
+    private OSMManager mOSMManager;
+    private Context mContext;
 
-    public RoutePlannerScreenPresenter(IRouteView IRouteView, GetWayManager getWayManager) {
+
+    public RoutePlannerScreenPresenter(IRouteView IRouteView,OSMManager osmManager,Context context) {
         mIRouteView = IRouteView;
-        mGetWayManager = getWayManager;
+        mOSMManager=osmManager;
+        mContext=context;
     }
 
-    @Override
-    public void onSuccessGet(ResponseWay data) {
-        mIRouteView.hideLoader();
-        if(mIRouteView!=null){
-            mIRouteView.onWayDataReceived(data);
-        }
-    }
 
     @Override
-    public void onFailureGet(@NonNull ErrorResponse errorResponse) {
-        mIRouteView.hideLoader();
-        if(mIRouteView!=null){
-            mIRouteView.onFailure(errorResponse.getError());
-        }
-    }
-
-    @Override
-    public void getWays(RequestGetWay requestGetWay) {
+    public void getOSMData() {
         if(mIRouteView!=null){
             mIRouteView.showLoader();
-            mGetWayManager.getWAy(this,requestGetWay);
+            mOSMManager.getOSMData(this,mContext);
         }
-
     }
-
-
 
     @Override
     public void disconnect() {
-        if (mGetWayManager != null) {
-            mGetWayManager.cancel();
+        if (mOSMManager != null) {
+            mOSMManager.cancel();
         }
 
+    }
+
+    @Override
+    public void onSuccessDirection(String data) {
+        if(mIRouteView!=null){
+            mIRouteView.onOSMDataReceived(data);
+            mIRouteView.hideLoader();
+        }
+
+    }
+
+    @Override
+    public void onFailureDirection(@NonNull ErrorResponse errorResponse) {
+        if(mIRouteView!=null){
+            mIRouteView.hideLoader();
+            mIRouteView.onFailure(errorResponse.getErrorMessage());
+        }
     }
 
 

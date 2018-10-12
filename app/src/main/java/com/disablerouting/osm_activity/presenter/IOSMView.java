@@ -1,9 +1,9 @@
-package com.disablerouting.route_planner.presenter;
+package com.disablerouting.osm_activity.presenter;
 
 
 import com.disablerouting.common.ILoader;
 
-public interface IRouteView extends ILoader {
+public interface IOSMView extends ILoader {
 
     void onOSMDataReceived(String responseBody);
 
