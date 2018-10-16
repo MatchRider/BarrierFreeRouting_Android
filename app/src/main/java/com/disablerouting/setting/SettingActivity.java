@@ -957,7 +957,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 }
             }
             mRelativeLayoutProgress.setVisibility(View.GONE);
-
             finish();
 
         }
@@ -1017,6 +1016,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                                 Toast.makeText(SettingActivity.this, getResources().getString(R.string.updated_node_info), Toast.LENGTH_SHORT).show();
 
                             }
+                            setResult(RESULT_OK);
                             finish();
                         } else {
                             onUpdateWay(mUpdateVersionNumber);

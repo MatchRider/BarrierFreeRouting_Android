@@ -24,7 +24,7 @@ public class RoutePlannerScreenPresenter implements IOSMResponseReceiver, IRoute
     @Override
     public void getOSMData() {
         if(mIRouteView!=null){
-            mIRouteView.showLoader();
+            //mIRouteView.showLoader();
             mOSMManager.getOSMData(this,mContext);
         }
     }
@@ -41,7 +41,7 @@ public class RoutePlannerScreenPresenter implements IOSMResponseReceiver, IRoute
     public void onSuccessDirection(String data) {
         if(mIRouteView!=null){
             mIRouteView.onOSMDataReceived(data);
-            mIRouteView.hideLoader();
+           // mIRouteView.hideLoader();
         }
 
     }
@@ -49,7 +49,7 @@ public class RoutePlannerScreenPresenter implements IOSMResponseReceiver, IRoute
     @Override
     public void onFailureDirection(@NonNull ErrorResponse errorResponse) {
         if(mIRouteView!=null){
-            mIRouteView.hideLoader();
+           // mIRouteView.hideLoader();
             mIRouteView.onFailure(errorResponse.getErrorMessage());
         }
     }
