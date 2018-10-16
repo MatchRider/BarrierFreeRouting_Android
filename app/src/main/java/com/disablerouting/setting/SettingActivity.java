@@ -108,7 +108,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 if (mListWayData != null) {
                     mWayID = mListWayData.getOSMWayId();
                     mNodeList = mListWayData.getNodeReference();
-                    mISFromOSM = !mListWayData.getIsForData().isEmpty() && mListWayData.getIsForData().equalsIgnoreCase(AppConstant.OSM_DATA);
+                    if(mListWayData.getIsForData()!=null) {
+                        mISFromOSM = !mListWayData.getIsForData().isEmpty() && mListWayData.getIsForData().equalsIgnoreCase(AppConstant.OSM_DATA);
+                    }
                     getDataFromWay();
                     setUpRecyclerView();
                 }
@@ -117,7 +119,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 if (mNodeReference != null) {
                     isValidFORCall = mNodeReference.getAttributes().get(0).isValid();
                     mNodeID = mNodeReference.getOSMNodeId();
-                    mISFromOSM = !mNodeReference.getIsForData().isEmpty() && mNodeReference.getIsForData().equalsIgnoreCase(AppConstant.OSM_DATA);
+                    if(mNodeReference.getIsForData()!=null) {
+                        mISFromOSM = !mNodeReference.getIsForData().isEmpty() && mNodeReference.getIsForData().equalsIgnoreCase(AppConstant.OSM_DATA);
+                    }
                     getDataFromWay();
                     setUpRecyclerView();
 
@@ -463,7 +467,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      */
     private void getDataFromWay() {
         if (mIsForWAY) {
-            if (!mListWayData.getIsForData().isEmpty()) {
+            if (mListWayData.getIsForData()!=null && !mListWayData.getIsForData().isEmpty()) {
                 for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
                     switch (mListWayData.getAttributesList().get(i).getKey()) {
                         case AppConstant.KEY_INCLINE:
