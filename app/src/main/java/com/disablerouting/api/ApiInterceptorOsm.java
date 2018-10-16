@@ -53,7 +53,9 @@ class ApiInterceptorOsm implements Interceptor {
     private Request modifyNonAuthHeaders(Request request) {
         if (request != null) {
             Request.Builder builder = request.newBuilder();
-            builder.header(ApiEndPoint.AUTHORIZATION_TAG_OSM, mStringOSMKey);
+            if(mStringOSMKey!=null && !mStringOSMKey.isEmpty()) {
+                builder.header(ApiEndPoint.AUTHORIZATION_TAG_OSM, mStringOSMKey);
+            }
             builder.header(ApiEndPoint.APP_CONTENT_TYPE, "text/plain");
 
             return builder.build();

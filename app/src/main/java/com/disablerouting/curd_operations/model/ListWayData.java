@@ -49,6 +49,8 @@ public class ListWayData implements Parcelable{
     private
     List<Attributes> mAttributesList;
 
+    private String mIsForData;
+
     public ListWayData() {
 
     }
@@ -64,6 +66,8 @@ public class ListWayData implements Parcelable{
         mIsValid = in.readString();
         mVersion = in.readString();
         mAttributesList = in.createTypedArrayList(Attributes.CREATOR);
+        mIsForData = in.readString();
+
     }
 
     public static final Creator<ListWayData> CREATOR = new Creator<ListWayData>() {
@@ -151,7 +155,13 @@ public class ListWayData implements Parcelable{
         mAttributesList = attributesList;
     }
 
+    public String getIsForData() {
+        return mIsForData;
+    }
 
+    public void setIsForData(String isForData) {
+        mIsForData = isForData;
+    }
 
     public static Creator<ListWayData> getCREATOR() {
         return CREATOR;
@@ -174,6 +184,7 @@ public class ListWayData implements Parcelable{
         dest.writeString(mIsValid);
         dest.writeString(mVersion);
         dest.writeTypedList(mAttributesList);
+        dest.writeString(mIsForData);
     }
 
 

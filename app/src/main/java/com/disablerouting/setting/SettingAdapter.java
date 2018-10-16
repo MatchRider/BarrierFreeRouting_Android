@@ -10,10 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import com.disablerouting.R;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.model.Attributes;
@@ -31,12 +28,14 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, Attributes> mSelectionMap = new HashMap<>();
     private boolean mIsValidChoosed;
+    private boolean mIsFromOSM;
 
 
-    public SettingAdapter(Context context, List<SettingModel> stringArrayList, SettingAdapterListener settingAdapterListener) {
+    SettingAdapter(Context context, List<SettingModel> stringArrayList, SettingAdapterListener settingAdapterListener, boolean isFromOSM) {
         mContext = context;
         mStringArrayList = stringArrayList;
         mOnClickListener = settingAdapterListener;
+        mIsFromOSM=isFromOSM;
 
     }
 
@@ -52,6 +51,12 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolderSetting holder, @SuppressLint("RecyclerView") final int position) {
         String data = mStringArrayList.get(position).getKeyString();
+        if(mIsFromOSM){
+            holder.mLinearLayoutVerify.setVisibility(View.GONE);
+        }else {
+            holder.mLinearLayoutVerify.setVisibility(View.VISIBLE);
+
+        }
         if (data != null) {
             holder.mTextViewTitle.setText(data);
         }
@@ -165,6 +170,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
         TextView mTextViewSubTitle;
         ImageView mImageViewEdit;
         CheckBox mCheckBoxVerify;
+        LinearLayout mLinearLayoutVerify;
 
         ViewHolderSetting(View itemView) {
             super(itemView);
@@ -172,6 +178,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
             mTextViewSubTitle = (TextView) itemView.findViewById(R.id.txv_list_sub_title);
             mImageViewEdit = (ImageView) itemView.findViewById(R.id.img_edit);
             mCheckBoxVerify = (CheckBox) itemView.findViewById(R.id.chk_verify);
+            mLinearLayoutVerify =(LinearLayout) itemView.findViewById(R.id.ll_verify);
         }
 
     }

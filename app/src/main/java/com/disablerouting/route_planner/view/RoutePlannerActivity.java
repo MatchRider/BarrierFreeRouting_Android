@@ -137,7 +137,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
         if (mISFromSuggestion) {
             addCurrentLocation(18);
-            mSourceDestinationFragment.OnFromSuggestion();
+            mSourceDestinationFragment.OnFromSuggestion(true);
             mButtonGo.setVisibility(View.GONE);
             mSwitchCompatToogle.setVisibility(View.GONE);
             mRadioGroup.setVisibility(View.VISIBLE);
@@ -146,7 +146,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
         if (mISFromOSM) {
             addCurrentLocation(18);
-            mSourceDestinationFragment.OnFromSuggestion();
+            mSourceDestinationFragment.OnFromSuggestion(false);
             mButtonGo.setVisibility(View.GONE);
             mSwitchCompatToogle.setVisibility(View.GONE);
             mRadioGroup.setVisibility(View.VISIBLE);

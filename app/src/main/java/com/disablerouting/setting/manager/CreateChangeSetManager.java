@@ -29,7 +29,7 @@ public class CreateChangeSetManager implements ResponseCallback<ResponseBody>{
         RequestBody requestBody= RequestBody.create(MediaType.parse("text/plain"),string);*/
 
         mCreateChangeSet = RetrofitClient.getApiServiceOsm(context).createChangeSet(requestCreateChangeSet);
-        mCreateChangeSet.enqueue(new ResponseWrapperOsm<ResponseBody>(this));
+        mCreateChangeSet.enqueue(new ResponseWrapperOsm<ResponseBody>(this,context));
 
        /* String string="<osm><changeset><tag k=\"created_by\" v=\"JOSM 1.61\"/><tag k=\"comment\" v=\"Just adding some streetnames\"/></changeset></osm>";
         OauthData oauthData= new OauthData(Verb.PUT,string,"https://master.apis.dev.openstreetmap.org/api/0.6/changeset/create");

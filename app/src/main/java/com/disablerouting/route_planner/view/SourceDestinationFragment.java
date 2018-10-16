@@ -117,6 +117,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     private JSONObject mJSONObjectFilter;
     private Features mFeaturesRouteVia;
     private boolean mIsFromSuggestion;
+    private boolean mIsFromOSM=false;
     private DirectionsResponse mDirectionsResponse=null;
 
     @SuppressLint("HandlerLeak")
@@ -179,7 +180,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mISourceDestinationScreenPresenter = new SourceDestinationScreenPresenter(this, new DirectionsManager(), new GeoCodingManager(), new NodeManager());
+        mISourceDestinationScreenPresenter = new SourceDestinationScreenPresenter(this,
+                new DirectionsManager(), new GeoCodingManager(), new NodeManager());
 
     }
 
@@ -196,11 +198,20 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         ButterKnife.bind(this, view);
         addFocusChangeListener();
         addListener();
-        if(mIsFromSuggestion){
+        if(mIsFromSuggestion) {
             mLinearLayoutSourceDestination.setVisibility(View.GONE);
             mRelativeLayoutToogle.setVisibility(View.VISIBLE);
             mOnSourceDestinationListener.onToggleClickedBanner(false);
             mTextViewTitle.setText(getResources().getString(R.string.not_validated));
+        }
+        else {
+            if(mIsFromOSM) {
+                mLinearLayoutSourceDestination.setVisibility(View.GONE);
+                mRelativeLayoutToogle.setVisibility(View.VISIBLE);
+                mToogleWAY.setVisibility(View.INVISIBLE);
+                mOnSourceDestinationListener.onToggleClickedBanner(false);
+                mTextViewTitle.setText(getResources().getString(R.string.not_validated));
+            }
         }
         if(!mIsFromSuggestion){
             if(UserPreferences.getInstance(getContext())!=null && UserPreferences.getInstance(getContext()).getUserSearch()!=null){
@@ -737,8 +748,13 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     }
 
-    public void OnFromSuggestion() {
-            mIsFromSuggestion= true;
+    public void OnFromSuggestion(boolean isFromSuggestion) {
+        if(isFromSuggestion) {
+            mIsFromSuggestion = true;
+            mIsFromOSM=false;
+        }else {
+            mIsFromOSM = true;
+        }
     }
 
     public void setDataWhenDragging(GeoPoint geoPoint ){

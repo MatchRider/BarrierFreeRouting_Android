@@ -152,11 +152,12 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
 
     @OnClick(R.id.btn_osm)
     void redirectOSM() {
-        if (UserPreferences.getInstance(this).getAccessToken() == null) {
+        redirectToOSMScreen();
+       /* if (UserPreferences.getInstance(this).getAccessToken() == null) {
             Toast.makeText(this, "Login Required", Toast.LENGTH_SHORT).show();
         } else {
             mIHomeScreenPresenter.getOSMData();
-        }
+        }*/
     }
 
     /**
@@ -300,6 +301,9 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
      */
     private void getWayListData() {
         mIHomeScreenPresenter.getListWays();
+        //Once when completed
+        mIHomeScreenPresenter.getOSMData();
+
     }
 
     @Override
@@ -332,6 +336,8 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
                 nodeReference.setLat(getOsmData.getOSM().getNode().get(i).getLatitude());
                 nodeReference.setLon(getOsmData.getOSM().getNode().get(i).getLongitude());
                 nodeReference.setVersion(getOsmData.getOSM().getNode().get(i).getVersion());
+                nodeReference.setIsForData(AppConstant.OSM_DATA);
+
 
                 List<Attributes> attributesList = new ArrayList<>();
                 Attributes attributes = null;
@@ -359,7 +365,8 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
                 listWayData.setOSMWayId(getOsmData.getOSM().getWays().get(i).getID());
                 listWayData.setVersion(getOsmData.getOSM().getWays().get(i).getVersion());
                 listWayData.setIsValid("false");
-                listWayData.setColor("#a50050");
+                listWayData.setColor(Utility.randomColor());
+                listWayData.setIsForData(AppConstant.OSM_DATA);
                 ParcelableArrayList stringListCoordinates;
 
                 List<NodeReference> nodeReferencesWay = new ArrayList<>();
@@ -373,7 +380,6 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
                         if (getOsmData.getOSM().getWays().get(i).getNdList().get(j).getRef()
                                 .equalsIgnoreCase(nodeReferenceList.get(k).getOSMNodeId())) {
 
-                            stringListCoordinates = new ParcelableArrayList();
                             nodeReferencesWay.add(nodeReferenceList.get(k));
                             stringListCoordinates = new ParcelableArrayList();
                             stringListCoordinates.add(0, nodeReferenceList.get(k).getLat());
@@ -458,6 +464,8 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
 
             }
 
+
+
         }
         if (isForOsm) {
             mWayListValidatedDataOSM.clear();
@@ -494,7 +502,7 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
                 WayDataPreference.getInstance(this).saveNotValidateDataNodeOSM(mNodeListNotValidatedDataOSM);
 
             }
-            redirectToOSMScreen();
+           // redirectToOSMScreen();
         }
     }
 
@@ -511,5 +519,11 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
     @Override
     public void hideLoader() {
         hideProgress();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        hideLoader();
     }
 }

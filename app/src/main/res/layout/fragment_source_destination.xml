@@ -224,7 +224,7 @@
                                 android:orientation="horizontal"
                                 android:id="@+id/rel_toogle"
                                 android:visibility="gone"
-                                android:layout_weight="9.0"
+                                android:layout_weight="9"
                                 android:layout_height="wrap_content">
                     <TextView
                             android:id="@+id/txv_title"

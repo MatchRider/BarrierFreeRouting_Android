@@ -40,6 +40,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -313,6 +314,12 @@ public class Utility {
         }
          return osmData;
      }
+
+    public static String randomColor() {
+        Random rnd = new Random();
+        int intColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        return String.format("#%06X", (0xFFFFFF & intColor));
+    }
 
 }
 

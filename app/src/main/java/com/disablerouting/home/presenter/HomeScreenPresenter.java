@@ -37,7 +37,7 @@ public class HomeScreenPresenter implements IHomeScreenPresenter, IListGetWayRes
     @Override
     public void getOSMData() {
         if(mIHomeView!=null){
-            mIHomeView.showLoader();
+           // mIHomeView.showLoader();
             mOSMManager.getOSMData(this,mContext);
         }
     }
@@ -70,7 +70,7 @@ public class HomeScreenPresenter implements IHomeScreenPresenter, IListGetWayRes
     public void onSuccessDirection(String data) {
         if(mIHomeView!=null){
             mIHomeView.onOSMDataReceived(data);
-            mIHomeView.hideLoader();
+           // mIHomeView.hideLoader();
         }
 
     }
@@ -78,7 +78,7 @@ public class HomeScreenPresenter implements IHomeScreenPresenter, IListGetWayRes
     @Override
     public void onFailureDirection(@NonNull ErrorResponse errorResponse) {
         if(mIHomeView!=null){
-            mIHomeView.hideLoader();
+          //  mIHomeView.hideLoader();
             mIHomeView.onFailure(errorResponse.getErrorMessage());
         }
     }

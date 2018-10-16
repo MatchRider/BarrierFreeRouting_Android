@@ -1,5 +1,7 @@
 package com.disablerouting.api;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -17,6 +19,9 @@ import java.net.UnknownHostException;
 public class ResponseWrapperOsm<T> implements Callback<T> {
 
     private final ResponseCallback<T> mResponseCallback;
+    private final Context mContext;
+    private ProgressDialog progressDoalog;
+
 
     private String OPS_SOMETHING_WENT_WRONG ="Ops Something went wrong. Please try again after sometime.";
     /**
@@ -24,14 +29,27 @@ public class ResponseWrapperOsm<T> implements Callback<T> {
      * in case of all errors we would get the default response.
      * @param responseCallback implementation of the response callback.
      */
-    public ResponseWrapperOsm(ResponseCallback<T> responseCallback) {
+    public ResponseWrapperOsm(ResponseCallback<T> responseCallback , Context context) {
         mResponseCallback = responseCallback;
+        mContext=context;
+      /*  // Set up progress before call
+        progressDoalog = new ProgressDialog(context);
+        progressDoalog.setMax(100);
+        progressDoalog.setIndeterminate(true);
+        progressDoalog.setMessage("Its loading....");
+        progressDoalog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        // show it
+        progressDoalog.show();*/
     }
 
     /** {@inheritDoc} */
     @Override
     public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
 
+
+        /*if(progressDoalog.isShowing()) {
+            progressDoalog.dismiss();
+        }*/
         if (response.isSuccessful() && response.body()!= null) {
             mResponseCallback.onSuccess(response.body());
         } else {
@@ -53,6 +71,9 @@ public class ResponseWrapperOsm<T> implements Callback<T> {
     /** {@inheritDoc} */
     @Override
     public void onFailure(@NonNull Call<T> call, @NonNull Throwable throwable) {
+       /* if(progressDoalog.isShowing()) {
+            progressDoalog.dismiss();
+        }*/
         ErrorResponse errorResponse;
         if (throwable instanceof ConnectException
                 || throwable instanceof UnknownHostException) {
