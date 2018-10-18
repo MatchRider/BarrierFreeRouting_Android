@@ -4,6 +4,9 @@ public interface IRoutePlannerScreenPresenter {
 
 
     void getOSMData();
+
+
+    void getListData();
     /**
      * Disconnect ongoing calls on network
      */

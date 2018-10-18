@@ -67,7 +67,7 @@ public class HomeScreenPresenter implements IHomeScreenPresenter, IListGetWayRes
     }
 
     @Override
-    public void onSuccessDirection(String data) {
+    public void onSuccessOSM(String data) {
         if(mIHomeView!=null){
             mIHomeView.onOSMDataReceived(data);
            // mIHomeView.hideLoader();
@@ -76,7 +76,7 @@ public class HomeScreenPresenter implements IHomeScreenPresenter, IListGetWayRes
     }
 
     @Override
-    public void onFailureDirection(@NonNull ErrorResponse errorResponse) {
+    public void onFailureOSM(@NonNull ErrorResponse errorResponse) {
         if(mIHomeView!=null){
           //  mIHomeView.hideLoader();
             mIHomeView.onFailure(errorResponse.getErrorMessage());

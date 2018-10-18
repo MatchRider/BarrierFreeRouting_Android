@@ -17,6 +17,7 @@ import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.WayDataPreference;
+import com.disablerouting.curd_operations.manager.ListGetWayManager;
 import com.disablerouting.curd_operations.model.*;
 import com.disablerouting.filter.view.FilterActivity;
 import com.disablerouting.geo_coding.model.Features;
@@ -132,7 +133,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
         addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
         mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this,
-                new OSMManager(), this);
+                new OSMManager(), new ListGetWayManager(),this);
 
         if (mISFromSuggestion) {
             addCurrentLocation(18);
@@ -365,11 +366,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             if (resultCode == Activity.RESULT_OK) {
                 if (WayDataPreference.getInstance(this) != null) {
                     if (!mISFromOSM) {
-                        mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayData();
-                        mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayData();
-                        mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNode();
-                        mNodeListNotValidatedData = WayDataPreference.getInstance(this).getNotValidateDataNode();
-                        onToggleClickedBanner(false);
+                        mIRoutePlannerScreenPresenter.getListData();
+
                     } else {
                         showLoader();
                         mIRoutePlannerScreenPresenter.getOSMData();
@@ -572,6 +570,65 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             }
             createListData(responseListWay, true);
         }
+    }
+
+    @Override
+    public void onListDataReceived(ResponseListWay responseWay) {
+        if (responseWay != null) {
+            if (responseWay.isStatus()) {
+                mWayListValidatedData = new ArrayList<>();
+                mWayListNotValidatedData= new ArrayList<>();
+                mNodeListValidatedData= new ArrayList<>();
+                mNodeListNotValidatedData= new ArrayList<>();
+
+                for (int i = 0; i < responseWay.getWayData().size(); i++) {
+                    boolean isValidWay = Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
+                    if (isValidWay) {
+                        mWayListValidatedData.add(responseWay.getWayData().get(i));
+                    } else {
+                        mWayListNotValidatedData.add(responseWay.getWayData().get(i));
+                    }
+                    for (int j = 0; j < responseWay.getWayData().get(i).getNodeReference().size(); j++) {
+                        if (responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes() != null) {
+                            for (int k = 0; k < responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().size(); k++) {
+
+                                if (!responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().get(k).isValid()) {
+                                    if (!Utility.isListContainId(mNodeListNotValidatedData, responseWay.getWayData().get(i).getNodeReference()
+                                            .get(j).getAPINodeId())) {
+                                        mNodeListNotValidatedData.add(responseWay.getWayData().get(i).getNodeReference().get(j));
+
+                                    }
+                                } else {
+                                    if (!Utility.isListContainId(mNodeListValidatedData, responseWay.getWayData().get(i).getNodeReference()
+                                            .get(j).getAPINodeId())) {
+                                        mNodeListValidatedData.add(responseWay.getWayData().get(i).getNodeReference().get(j));
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+                if (WayDataPreference.getInstance(this) != null) {
+                    WayDataPreference.getInstance(this).saveValidateWayData(mWayListValidatedData);
+                    WayDataPreference.getInstance(this).saveNotValidatedWayData(mWayListNotValidatedData);
+                    WayDataPreference.getInstance(this).saveValidateDataNode(mNodeListValidatedData);
+                    WayDataPreference.getInstance(this).saveNotValidateDataNode(mNodeListNotValidatedData);
+
+                }
+            } else {
+                if (responseWay.getError() != null && responseWay.getError().get(0) != null &&
+                        responseWay.getError().get(0).getMessage() != null) {
+                    Toast.makeText(this, responseWay.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayData();
+            mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayData();
+            mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNode();
+            mNodeListNotValidatedData = WayDataPreference.getInstance(this).getNotValidateDataNode();
+            onToggleClickedBanner(false);
+        }
+
     }
 
     private void createListData(ResponseListWay responseWay, boolean b) {

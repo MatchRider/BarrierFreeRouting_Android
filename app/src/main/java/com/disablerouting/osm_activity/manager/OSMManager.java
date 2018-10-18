@@ -55,7 +55,7 @@ public class OSMManager implements ResponseCallback<ResponseBody> {
         if(mIOSMResponseReceiver!=null){
             try {
                 String dataXML = data.string();
-                mIOSMResponseReceiver.onSuccessDirection(dataXML);
+                mIOSMResponseReceiver.onSuccessOSM(dataXML);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -70,7 +70,7 @@ public class OSMManager implements ResponseCallback<ResponseBody> {
             progressDoalog.dismiss();
         }*/
         if (mIOSMResponseReceiver != null) {
-            mIOSMResponseReceiver.onFailureDirection(errorResponse);
+            mIOSMResponseReceiver.onFailureOSM(errorResponse);
         }
     }
 

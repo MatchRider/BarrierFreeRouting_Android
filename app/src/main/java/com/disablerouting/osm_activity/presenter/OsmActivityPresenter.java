@@ -20,7 +20,7 @@ public class OsmActivityPresenter implements IOSMResponseReceiver , IOSMScreenPr
 
 
     @Override
-    public void onSuccessDirection(String data) {
+    public void onSuccessOSM(String data) {
         if(mIOSMView!=null){
             mIOSMView.onOSMDataReceived(data);
             mIOSMView.hideLoader();
@@ -29,7 +29,7 @@ public class OsmActivityPresenter implements IOSMResponseReceiver , IOSMScreenPr
     }
 
     @Override
-    public void onFailureDirection(@NonNull ErrorResponse errorResponse) {
+    public void onFailureOSM(@NonNull ErrorResponse errorResponse) {
         if(mIOSMView!=null){
             mIOSMView.hideLoader();
             mIOSMView.onFailure(errorResponse.getErrorMessage());

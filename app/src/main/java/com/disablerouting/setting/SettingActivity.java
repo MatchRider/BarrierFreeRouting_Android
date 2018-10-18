@@ -805,9 +805,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     */
 
                     setResult(RESULT_OK);
-                    getListData();
                     Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
-                    // finish();
                 } else {
                     if (responseUpdate.getError() != null && responseUpdate.getError().get(0) != null &&
                             responseUpdate.getError().get(0).getMessage() != null) {
@@ -815,6 +813,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     }
 
                 }
+                finish();
             } else {
                 if (responseUpdate.isStatus()) {
                   /*  boolean isAllValid = true;
@@ -860,32 +859,29 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     WayDataPreference.getInstance(this).saveNotValidateDataNode(listNotValidatedNode);
                   */
                     setResult(RESULT_OK);
-                    getListData();
                     Toast.makeText(SettingActivity.this, R.string.updated_node_info, Toast.LENGTH_SHORT).show();
-                    //  finish();
-
                 } else {
                     if (responseUpdate.getError() != null && responseUpdate.getError().get(0) != null &&
                             responseUpdate.getError().get(0).getMessage() != null) {
                         Toast.makeText(this, responseUpdate.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
                     }
-
                 }
+                finish();
+
             }
         } else {
             if (mIsForWAY) {
                 if (responseUpdate.isStatus()) {
                     if (updateType.equalsIgnoreCase(AppConstant.WAY_UPDATE)) {
-                        getListData();
                         setResult(RESULT_OK);
                         Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
+                        finish();
                     } else {
                         mNodeUpdate = mNodeUpdate + 1;
                         if (mNodeUpdate == mNodeIdsCreated.size()) {
                             Toast.makeText(SettingActivity.this, R.string.updated_node_info, Toast.LENGTH_SHORT).show();
                             onUpdateWayOurServer(mListWayData.getVersion());
                         }
-
                     }
 
                 } else {
@@ -893,12 +889,11 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                             responseUpdate.getError().get(0).getMessage() != null) {
                         Toast.makeText(this, responseUpdate.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
                     }
-
+                    finish();
                 }
             } else {
                 if (responseUpdate.isStatus()) {
                     setResult(RESULT_OK);
-                    getListData();
                     Toast.makeText(SettingActivity.this, R.string.updated_node_info, Toast.LENGTH_SHORT).show();
 
                 } else {
@@ -907,6 +902,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         Toast.makeText(this, responseUpdate.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
+                finish();
             }
         }
     }

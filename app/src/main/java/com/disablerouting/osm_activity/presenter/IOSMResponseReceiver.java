@@ -9,11 +9,11 @@ public interface IOSMResponseReceiver {
      * Call when api get success
      * @param data response type
      */
-    void onSuccessDirection(String data);
+    void onSuccessOSM(String data);
 
     /**
      * Call when api get failure
      * @param errorResponse Server error response
      */
-    void onFailureDirection(@NonNull ErrorResponse errorResponse);
+    void onFailureOSM(@NonNull ErrorResponse errorResponse);
 }
