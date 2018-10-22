@@ -257,8 +257,14 @@ public class Utility {
         if (stringUnitPassed.contains("kein Bordstein")) {
             converted = converted.replace("kein Bordstein", "0");
         }
+        if (stringUnitPassed.contains("keine Steigung")) {
+            converted = converted.replace("keine Steigung", "0");
+        }
         if (stringUnitPassed.contains("No curb")) {
             converted = converted.replace("No curb", "0");
+        }
+        if (stringUnitPassed.contains("No gradient")) {
+            converted = converted.replace("No gradient", "0");
         }
         if (stringUnitPassed.contains("%")) {
             converted = converted.replace("%", "");

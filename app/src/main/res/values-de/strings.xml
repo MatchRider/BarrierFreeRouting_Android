@@ -87,6 +87,8 @@
     <string name="greater_ten"><![CDATA[über 10 %]]></string>
 
     <string name="zero_curb">kein Bordstein</string>
+    <string name="zero_curb_inlcline">kein Steigung</string>
+
 
     <string name="string_three">3 cm</string>
     <string name="string_six">6 cm</string>

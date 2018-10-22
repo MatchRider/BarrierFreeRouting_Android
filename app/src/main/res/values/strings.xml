@@ -96,6 +96,8 @@
     <string name="greater_ten"><![CDATA[über 10 %]]></string>
 
     <string name="zero_curb">No curb</string>
+    <string name="zero_curb_inlcline">No gradient</string>
+
     <string name="string_three">1.2 inches</string>
     <string name="string_six">2.4 inches</string>
     <string name="string_greater_six"><![CDATA[über 2.4 inches]]></string>
@@ -188,8 +190,8 @@
     <string name="send">Send</string>
 
 
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="log_in_with_osm">Log in with OSM</string>OR
+    <string name="title_activity_login" translatable="false">LoginActivity</string>
+    <string name="log_in_with_osm">Log in with OSM</string>
     <string name="validated">Validated</string>
     <string name="not_validated">Non Validated</string>
     <string name="updated_info">Updated Way Info</string>
