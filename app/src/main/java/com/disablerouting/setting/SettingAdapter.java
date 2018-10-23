@@ -144,7 +144,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
             }
 
 
-        } else {
+        } /*else {
             holder.mTextViewTitle.setTextColor(mContext.getResources().getColor(R.color.colorTextGray));
             holder.mTextViewSubTitle.setText(subTitle);
             holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
@@ -155,7 +155,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
             holder.mImageViewEdit.setVisibility(View.VISIBLE);
             holder.mImageViewEdit.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_edit));
             holder.mImageViewEdit.setClickable(false);
-        }
+        }*/
 
     }
 
