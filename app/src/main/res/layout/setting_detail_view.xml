@@ -17,7 +17,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/margin_small"
-                android:textSize="@dimen/text_normal"
+                android:textSize="@dimen/text_xxlarge"
                 tools:text="fsdfsd"
                 android:drawableStart="@drawable/ic_circular_shape"
                 android:drawablePadding="@dimen/padding_xlarge"

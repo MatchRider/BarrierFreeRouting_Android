@@ -1,6 +1,8 @@
 package com.disablerouting.setting.setting_detail;
 
 
+import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,14 +31,15 @@ public class SettingDetailAdapter extends RecyclerView.Adapter<SettingDetailAdap
     }
 
 
+    @NonNull
     @Override
-    public ViewHolderSettingDetail onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolderSettingDetail onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.setting_detail_view, parent, false);
         return new ViewHolderSettingDetail(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolderSettingDetail holder, final int position) {
+    public void onBindViewHolder(@NonNull ViewHolderSettingDetail holder, @SuppressLint("RecyclerView") final int position) {
         String data = mStringArrayList.get(position);
         if(data!=null){
             holder.mTextViewTitle.setText(data);

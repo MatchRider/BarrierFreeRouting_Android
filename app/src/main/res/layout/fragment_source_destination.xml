@@ -12,7 +12,7 @@
     <LinearLayout android:layout_width="match_parent"
                   android:orientation="horizontal"
                   android:id="@+id/ll"
-                  android:paddingStart="@dimen/padding_normal"
+                  android:paddingStart="@dimen/padding_minor"
                   android:paddingEnd="@dimen/padding_normal"
                   android:paddingTop="@dimen/padding_normal"
                   android:paddingBottom="@dimen/padding_normal"
@@ -21,33 +21,24 @@
                   tools:ignore="UselessParent"
                   android:baselineAligned="false">
 
-        <LinearLayout android:layout_width="0dp"
-                      android:gravity="start"
-                      android:orientation="vertical"
-                      android:layout_weight="1"
-                      android:layout_height="wrap_content">
-
-            <ImageView
-                    android:id="@+id/img_back"
-                    android:layout_width="wrap_content"
-                    android:src="@drawable/ic_navigate_back"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/app_name"/>
-
-        </LinearLayout>
-        <LinearLayout android:layout_width="0dp"
-                      android:layout_weight="9.0"
+        <LinearLayout android:layout_width="match_parent"
                       android:orientation="vertical"
                       android:layout_height="wrap_content">
             <RelativeLayout android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
+                <ImageView
+                        android:id="@+id/img_back"
+                        android:layout_width="wrap_content"
+                        android:src="@drawable/ic_navigate_back"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_smallest"
+                        android:contentDescription="@string/app_name"/>
                 <LinearLayout
-                        android:layout_marginEnd="@dimen/margin_small"
                         android:layout_width="match_parent"
-                        android:layout_weight="9.0"
                         android:visibility="visible"
                         android:orientation="vertical"
+                        android:layout_toEndOf="@id/img_back"
                         android:id="@+id/ll_source_dest"
                         android:layout_height="wrap_content">
                     <LinearLayout
@@ -60,7 +51,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/a"
-                                android:textSize="@dimen/text_xlarge"
+                                android:textSize="@dimen/text_xxlarge"
                                 android:layout_gravity="center_vertical"
                                 android:fontFamily="@font/frutiger_lt_bold"
                                 android:textColor="@color/colorWhite"/>
@@ -75,9 +66,9 @@
 
                             <com.disablerouting.widget.CustomAutoCompleteTextView
                                     android:id="@+id/edt_source_add"
-                                    android:layout_marginStart="@dimen/margin_small"
                                     android:layout_width="0dp"
                                     android:layout_weight="1"
+                                    android:layout_marginStart="@dimen/margin_smallest"
                                     android:layout_height="wrap_content"
                                     android:hint="@string/enter_source"
                                     android:paddingTop="@dimen/padding_medium"
@@ -87,7 +78,7 @@
                                     android:background="@color/colorWhite"
                                     android:singleLine="true"
                                     android:ellipsize="end"
-                                    android:textSize="@dimen/text_large"
+                                    android:textSize="@dimen/text_xxlarge"
                                     android:textColorHint="@color/colorBlackHint"
                                     android:textColor="@color/colorBlack"
                                     tools:ignore="NestedWeights"
@@ -100,7 +91,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
-                                        android:layout_marginStart="@dimen/padding_normal"
+                                        android:layout_marginStart="@dimen/padding_minor"
                                         android:layout_marginEnd="@dimen/padding_normal"
                                         android:clickable="true"
                                         android:focusable="true"
@@ -113,7 +104,7 @@
                                         android:layout_width="20dp"
                                         android:layout_height="20dp"
                                         android:layout_gravity="center_vertical"
-                                        android:layout_marginStart="@dimen/padding_normal"
+                                        android:layout_marginStart="@dimen/padding_minor"
                                         android:layout_marginEnd="@dimen/padding_normal"
                                         android:clickable="true"
                                         android:focusable="true"
@@ -130,6 +121,7 @@
                                 android:layout_width="wrap_content"
                                 android:textColor="@color/colorWhite"
                                 android:background="@drawable/ic_filter"
+                                android:layout_gravity="center_vertical"
                                 android:layout_height="wrap_content"
                                 android:contentDescription="@string/app_name"/>
 
@@ -145,7 +137,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/b"
-                                android:textSize="@dimen/text_xlarge"
+                                android:layout_marginEnd="2dp"
+                                android:textSize="@dimen/text_xxlarge"
                                 android:layout_gravity="center_vertical"
                                 android:fontFamily="@font/frutiger_lt_bold"
                                 android:textColor="@color/colorWhite"/>
@@ -159,7 +152,7 @@
                                 android:layout_height="wrap_content">
                             <com.disablerouting.widget.CustomAutoCompleteTextView
                                     android:id="@+id/edt_dest_add"
-                                    android:layout_marginStart="@dimen/margin_small"
+                                    android:layout_marginStart="@dimen/margin_smallest"
                                     android:layout_width="0dp"
                                     android:layout_weight="1"
                                     android:layout_height="wrap_content"
@@ -169,7 +162,7 @@
                                     android:paddingStart="@dimen/padding_minor"
                                     android:paddingEnd="@dimen/padding_minor"
                                     android:background="@color/colorWhite"
-                                    android:textSize="@dimen/text_large"
+                                    android:textSize="@dimen/text_xxlarge"
                                     android:singleLine="true"
                                     android:ellipsize="end"
                                     android:textColorHint="@color/colorBlackHint"
@@ -184,7 +177,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
-                                        android:layout_marginStart="@dimen/padding_normal"
+                                        android:layout_marginStart="@dimen/padding_minor"
                                         android:layout_marginEnd="@dimen/padding_normal"
                                         android:clickable="true"
                                         android:focusable="true"
@@ -196,7 +189,7 @@
                                         android:layout_width="20dp"
                                         android:layout_height="20dp"
                                         android:layout_gravity="center_vertical"
-                                        android:layout_marginStart="@dimen/padding_normal"
+                                        android:layout_marginStart="@dimen/padding_minor"
                                         android:layout_marginEnd="@dimen/padding_normal"
                                         android:clickable="true"
                                         android:focusable="true"
@@ -213,6 +206,7 @@
                                 android:layout_width="wrap_content"
                                 android:src="@drawable/ic_swap"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
                                 android:contentDescription="@string/app_name"/>
 
 
@@ -224,7 +218,6 @@
                                 android:orientation="horizontal"
                                 android:id="@+id/rel_toogle"
                                 android:visibility="gone"
-                                android:layout_weight="9"
                                 android:layout_height="wrap_content">
                     <TextView
                             android:id="@+id/txv_title"
@@ -236,7 +229,7 @@
                             android:layout_centerInParent="true"
                             android:textSize="@dimen/text_xxlarge"
                             android:layout_height="wrap_content"
-                            tools:ignore="RelativeOverlap"/>
+                            tools:ignore="RelativeOverlap,RtlSymmetry"/>
 
                    <!-- <android.support.v7.widget.SwitchCompat
                             android:id="@+id/toggle_way_sd"
@@ -285,9 +278,9 @@
                 android:drawablePadding="@dimen/padding_minor"
                 tools:text="0.15"
                 android:textSize="@dimen/text_small_X"
-                android:fontFamily="@string/frutiger_bold_font"
+                android:fontFamily="@font/frutiger_light"
                 android:gravity="center_vertical"
-                android:textColor="@color/colorTextGray"
+                android:textColor="@color/colorBlack"
                 android:layout_height="wrap_content"/>
         <TextView
                 android:id="@+id/txv_km"
@@ -299,9 +292,9 @@
                 android:drawablePadding="@dimen/padding_minor"
                 tools:text="0.15"
                 android:textSize="@dimen/text_small_X"
-                android:fontFamily="@string/frutiger_bold_font"
+                android:fontFamily="@font/frutiger_light"
                 android:gravity="center_vertical"
-                android:textColor="@color/colorTextGray"
+                android:textColor="@color/colorBlack"
                 android:layout_height="wrap_content"/>
         <TextView
                 android:id="@+id/txv_accent"
@@ -313,9 +306,9 @@
                 android:drawablePadding="@dimen/padding_minor"
                 tools:text="0.15"
                 android:textSize="@dimen/text_small_X"
-                android:fontFamily="@string/frutiger_bold_font"
+                android:fontFamily="@font/frutiger_light"
                 android:gravity="center_vertical"
-                android:textColor="@color/colorTextGray"
+                android:textColor="@color/colorBlack"
                 android:layout_height="wrap_content"/>
         <TextView
                 android:id="@+id/txv_decent"
@@ -327,9 +320,9 @@
                 android:drawablePadding="@dimen/padding_minor"
                 tools:text="0.15"
                 android:textSize="@dimen/text_small_X"
-                android:fontFamily="@string/frutiger_bold_font"
+                android:fontFamily="@font/frutiger_light"
                 android:gravity="center_vertical"
-                android:textColor="@color/colorTextGray"
+                android:textColor="@color/colorBlack"
                 android:layout_height="wrap_content"/>
     </LinearLayout>
 </RelativeLayout>
