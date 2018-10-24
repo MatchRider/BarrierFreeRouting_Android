@@ -35,7 +35,31 @@
                   android:orientation="horizontal"
                   android:paddingTop="@dimen/margin_small"
                   android:paddingStart="@dimen/margin_xxxx_large"
-                  android:layout_height="wrap_content">
+                  android:layout_height="wrap_content"
+                  tools:ignore="RtlSymmetry">
+
+        <TextView
+                android:id="@+id/txv_street"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="fdsfsfdsfd"
+                android:textSize="@dimen/text_normal"
+                android:textColor="@color/colorBrow"
+                android:gravity="start"
+                android:visibility="gone"
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:fontFamily="@font/frutiger_lt_bold"
+                android:layout_gravity="center_vertical"
+        />
+
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:orientation="horizontal"
+                  android:paddingTop="@dimen/margin_small"
+                  android:paddingStart="@dimen/margin_xxxx_large"
+                  android:layout_height="wrap_content"
+                  tools:ignore="RtlSymmetry">
 
         <TextView
                 android:id="@+id/txv_km"

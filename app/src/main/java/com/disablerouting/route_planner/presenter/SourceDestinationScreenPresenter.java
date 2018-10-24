@@ -77,8 +77,9 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
     @Override
     public void onSuccessDirection(DirectionsResponse data) {
         if (mISourceDestinationViewFragment != null) {
-            mISourceDestinationViewFragment.hideLoader();
             mISourceDestinationViewFragment.onDirectionDataReceived(data);
+            mISourceDestinationViewFragment.hideLoader();
+
         }
     }
 
@@ -121,8 +122,9 @@ public class SourceDestinationScreenPresenter implements ISourceDestinationScree
     @Override
     public void onSuccessNodes(NodeResponse data) {
         if (mISourceDestinationViewFragment != null) {
-            mISourceDestinationViewFragment.hideLoader();
             mISourceDestinationViewFragment.onNodeDataReceived(data);
+            mISourceDestinationViewFragment.hideLoader();
+
         }
     }
 
