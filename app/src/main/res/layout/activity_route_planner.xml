@@ -53,7 +53,8 @@
                     android:button="@null"
                     android:gravity="center"
                     android:checked="true"
-                    android:padding="@dimen/padding_normal"
+                    android:padding="@dimen/padding_large"
+                    android:textSize="@dimen/text_xlarge"
                     android:textColor="@color/colorWhite"
                     android:background="@drawable/custom_btn_radio"
                     tools:text="Ways"/>
@@ -66,7 +67,8 @@
                     android:button="@null"
                     tools:text="Nodes"
                     android:gravity="center"
-                    android:padding="@dimen/padding_normal"
+                    android:padding="@dimen/padding_large"
+                    android:textSize="@dimen/text_xlarge"
                     android:textColor="@color/colorPrimary"
                     android:background="@drawable/custom_btn_radio"
                     android:layout_weight="1"/>

@@ -187,7 +187,7 @@
     <string name="please_wait">Bitte warten…</string>
     <string name="logout">Ausloggen</string>
     <string name="confirm_logout_message">Möchten Sie sich wirklich abmelden?</string>
-    <string name="ways">Wege</string>
+    <string name="ways">Wegpunkte</string>
     <string name="nodes">Wegpunkt</string>
     <string name="error_when_entry_not_saved">Deine Eingabe konnte nicht gespeichert werden.</string>
     <string name="mid_way">Mittlerer Weg</string>

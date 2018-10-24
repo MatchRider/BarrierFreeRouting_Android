@@ -27,7 +27,7 @@ public class GeoCodingManager implements ResponseCallback<GeoCodingResponse> {
             String countryISO= "DEU"; // ALPHA 3 CODE GERMANY CODE
             //String countryISO= "IND"; // ALPHA 3 CODE India CODE
             String layers="venue,address";
-            int radius=10;
+            int radius=5;
             double static_latitude =  49.4100344; // Galeria Kaufhauf
             double static_longitude = 8.6612393;
             mGeoCodingResponseCall = RetrofitClient.getApiService().getGeoCodeForward(ApiEndPoint.API_KEY, queryString,
