@@ -77,7 +77,7 @@ public class RoutePlannerScreenPresenter implements IOSMResponseReceiver, IRoute
     public void onSuccessGetList(ResponseListWay responseListWay) {
         if(mIRouteView!=null){
             mIRouteView.onListDataReceived(responseListWay);
-            mIRouteView.hideLoader();
+           // mIRouteView.hideLoader();
         }
     }
 

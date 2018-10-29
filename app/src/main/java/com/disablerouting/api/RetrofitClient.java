@@ -155,9 +155,9 @@ public class RetrofitClient {
 */
             final OkHttpClient client = new OkHttpClient.Builder()
                     .followRedirects(true)
-                    .readTimeout(30, TimeUnit.SECONDS)
-                    .writeTimeout(30, TimeUnit.SECONDS)
-                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .connectTimeout(60, TimeUnit.SECONDS)
                     .addInterceptor(new ApiInterceptor(false))
                    // .addInterceptor(logging)
                     .build();

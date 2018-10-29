@@ -316,12 +316,15 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 boolean isValid = Boolean.parseBoolean(mListWayData.getIsValid());
                 if (!isValid) {
                     if (Utility.isOnline(this)) {
-                        showLoader();
-                        if (!mListWayData.getOSMWayId().isEmpty()) {
-                            callToGetVersions();
-                        } else {
-                            mWayIdAvailable = false;
-                            checkNodes();
+                       // showLoader();
+                        if(mChangeSetID!=null) {
+                            mRelativeLayoutProgress.setVisibility(View.VISIBLE);
+                            if (!mListWayData.getOSMWayId().isEmpty()) {
+                                callToGetVersions();
+                            } else {
+                                mWayIdAvailable = false;
+                                checkNodes();
+                            }
                         }
                     }
                 } else {
@@ -331,12 +334,15 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         } else {
             if (!isValidFORCall) {
                 if (Utility.isOnline(this)) {
-                    showLoader();
-                    if (!mNodeReference.getOSMNodeId().isEmpty()) {
-                        callToGetVersions();
-                    } else {
-                        mWayIdAvailable = false;
-                        callToCreateNode(mNodeReference);
+                    //showLoader();
+                    if(mChangeSetID!=null) {
+                        mRelativeLayoutProgress.setVisibility(View.VISIBLE);
+                        if (!mNodeReference.getOSMNodeId().isEmpty()) {
+                            callToGetVersions();
+                        } else {
+                            mWayIdAvailable = false;
+                            callToCreateNode(mNodeReference);
+                        }
                     }
                 }
             } else {
@@ -563,7 +569,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         }
 
     }
-
     private void onUpdateNode() {
         if (mIsForWAY) {
             for (int i = 0; i < mListWayData.getNodeReference().size(); i++) {

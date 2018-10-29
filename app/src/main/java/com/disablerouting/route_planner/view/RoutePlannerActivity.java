@@ -87,6 +87,9 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     ImageView mImageCurrentPin;
 
 
+    @BindView(R.id.contentContainer)
+    FrameLayout mFrameLayout;
+
     private boolean mISMapPlotted = false;
     private boolean mIsUpdateAgain = false;
     private List<ListWayData> mWayListValidatedData = new ArrayList<>();
@@ -449,6 +452,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void hideLoader() {
       //hideProgress();
         mProgressBar.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -630,6 +634,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNode();
             mNodeListNotValidatedData = WayDataPreference.getInstance(this).getNotValidateDataNode();
             onToggleClickedBanner(false);
+            hideLoader();
         }
 
     }
