@@ -366,6 +366,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             if (resultCode == Activity.RESULT_OK) {
                 if (WayDataPreference.getInstance(this) != null) {
                     if (!mISFromOSM) {
+                        showLoader();
                         mIRoutePlannerScreenPresenter.getListData();
 
                     } else {
@@ -439,12 +440,14 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void showLoader() {
+       //showProgress();
         mProgressBar.setVisibility(View.VISIBLE);
 
     }
 
     @Override
     public void hideLoader() {
+      //hideProgress();
         mProgressBar.setVisibility(View.GONE);
     }
 
@@ -922,7 +925,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onInfo() {
         Intent intent = new Intent(this, InstructionsActivity.class);
         intent.putParcelableArrayListExtra(AppConstant.STEP_DATA, (ArrayList<? extends Parcelable>) mStepsList);
-        //intent.putExtra(AppConstant.STEP_DATA,mListHashMap);
         launchActivity(intent);
     }
 

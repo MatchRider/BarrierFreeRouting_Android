@@ -108,7 +108,7 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
 
     private ArrayList<String> prepareListDataMaxIncline() {
         ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add(getString(R.string.zero_curb));
+        stringArrayList.add(getString(R.string.zero_curb_inlcline));
         stringArrayList.add(getString(R.string.up_to_three));
         stringArrayList.add(getString(R.string.up_to_six));
         stringArrayList.add(getString(R.string.up_to_ten));

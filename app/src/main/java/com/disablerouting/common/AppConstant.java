@@ -38,11 +38,12 @@ public interface AppConstant {
     String API_TYPE_UPDATE_WAY_OR_NODE = "wayUpdate";
     String API_TYPE_GET_USER_DETAIL = "getUserDetail";
 
-    String KEY_SURFACE = "surface";
-    String KEY_FOOTWAY = "footway"; //footway surface
-    String KEY_HIGHWAY = "highway"; //highway kerb
-    String KEY_INCLINE = "incline";
-    String KEY_WIDTH = "width";
+    String KEY_SURFACE = "surface"; // Position 0
+    String KEY_HIGHWAY = "highway"; // Position 1
+    String KEY_INCLINE = "incline"; // Position 2
+    String KEY_WIDTH = "width"; // Position 3
+    String KEY_FOOTWAY = "footway"; // Position 4
+
     String KEY_KERB_HEIGHT = "kerb:height";
     String IS_FOR_WAY = "is_for_way";
 
