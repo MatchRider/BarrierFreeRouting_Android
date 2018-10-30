@@ -85,8 +85,9 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
         addListener();
         checkLocationStatus();
         getWayListData();
-
     }
+
+
 
     /**
      * Check location services status
@@ -398,6 +399,7 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
                         getOsmData.getOSM().getWays().get(i).getTagList().size() != 0 &&
                         j < getOsmData.getOSM().getWays().get(i).getTagList().size(); j++) {
                     Attributes attributesWay = new Attributes();
+
                     attributesWay.setKey(getOsmData.getOSM().getWays().get(i).getTagList().get(j).getK());
                     attributesWay.setValue(getOsmData.getOSM().getWays().get(i).getTagList().get(j).getV());
                     attributesWay.setValid(false);
@@ -474,11 +476,36 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
             mNodeListNotValidatedDataOSM.clear();
 
             for (int i = 0; i < responseWay.getWayData().size(); i++) {
+
                 boolean isValidWay = Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
-                if (isValidWay) {
-                    mWayListValidatedDataOSM.add(responseWay.getWayData().get(i));
-                } else {
-                    mWayListNotValidatedDataOSM.add(responseWay.getWayData().get(i));
+                boolean isHaveSeparateGeometry=false;
+                boolean isHaveKeyHighway=false;
+                boolean isHaveKeyFootWay=false;
+                boolean isSideWalkPartOfWay=false;
+                for (int k = 0; k < responseWay.getWayData().get(i).getAttributesList().size(); k++) {
+
+                    String key = responseWay.getWayData().get(i).getAttributesList().get(k).getKey();
+                    String value = responseWay.getWayData().get(i).getAttributesList().get(k).getValue();
+                    if(key.equalsIgnoreCase(AppConstant.KEY_HIGHWAY) && value.equalsIgnoreCase(AppConstant.KEY_FOOTWAY)){
+                        isHaveKeyHighway =true;
+                    }
+                    if(key.equalsIgnoreCase(AppConstant.KEY_FOOTWAY) && value.equalsIgnoreCase(AppConstant.KEY_SIDEWALK)){
+                        isHaveKeyFootWay =true;
+                    }
+                    if(isHaveKeyHighway && isHaveKeyFootWay){
+                        isHaveSeparateGeometry=true;
+                    }
+                    if(key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK)){
+                        isSideWalkPartOfWay =true;
+                    }
+
+                }
+                if(isHaveSeparateGeometry || isSideWalkPartOfWay) {
+                    if (isValidWay) {
+                        mWayListValidatedDataOSM.add(responseWay.getWayData().get(i));
+                    } else {
+                        mWayListNotValidatedDataOSM.add(responseWay.getWayData().get(i));
+                    }
                 }
                 for (int j = 0; j < responseWay.getWayData().get(i).getNodeReference().size(); j++) {
                     if (responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes() != null) {

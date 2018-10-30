@@ -21,7 +21,7 @@ public class OSMManager implements ResponseCallback<ResponseBody> {
 
     public void getOSMData(IOSMResponseReceiver receiver, Context context) {
         this.mIOSMResponseReceiver = receiver;
-        mOsmApiCall = RetrofitClient.getApiServiceOsm(context).downloadFileWithDynamicUrlAsync("8.662997,49.405089,8.697251,49.416175");
+        mOsmApiCall = RetrofitClient.getApiServiceOsm(context).downloadFileWithDynamicUrlAsync("8.672704,49.40659,8.720019,49.415246");
         if (mOsmApiCall != null)
             mOsmApiCall.enqueue(new ResponseWrapperOsm<ResponseBody>(this,context));
 

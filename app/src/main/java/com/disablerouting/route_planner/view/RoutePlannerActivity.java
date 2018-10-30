@@ -598,11 +598,37 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
                 for (int i = 0; i < responseWay.getWayData().size(); i++) {
                     boolean isValidWay = Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
-                    if (isValidWay) {
-                        mWayListValidatedData.add(responseWay.getWayData().get(i));
-                    } else {
-                        mWayListNotValidatedData.add(responseWay.getWayData().get(i));
+
+                    boolean isHaveSeparateGeometry=false;
+                    boolean isHaveKeyHighway=false;
+                    boolean isHaveKeyFootWay=false;
+                    boolean isSideWalkPartOfWay=false;
+                    for (int k = 0; k < responseWay.getWayData().get(i).getAttributesList().size(); k++) {
+
+                        String key = responseWay.getWayData().get(i).getAttributesList().get(k).getKey();
+                        String value = responseWay.getWayData().get(i).getAttributesList().get(k).getValue();
+                        if(key.equalsIgnoreCase(AppConstant.KEY_HIGHWAY) && value.equalsIgnoreCase(AppConstant.KEY_FOOTWAY)){
+                            isHaveKeyHighway =true;
+                        }
+                        if(key.equalsIgnoreCase(AppConstant.KEY_FOOTWAY) && value.equalsIgnoreCase(AppConstant.KEY_SIDEWALK)){
+                            isHaveKeyFootWay =true;
+                        }
+                        if(isHaveKeyHighway && isHaveKeyFootWay){
+                            isHaveSeparateGeometry=true;
+                        }
+                        if(key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK)){
+                            isSideWalkPartOfWay =true;
+                        }
+
                     }
+                    if(isHaveSeparateGeometry || isSideWalkPartOfWay) {
+                        if (isValidWay) {
+                            mWayListValidatedData.add(responseWay.getWayData().get(i));
+                        } else {
+                            mWayListNotValidatedData.add(responseWay.getWayData().get(i));
+                        }
+                    }
+
                     for (int j = 0; j < responseWay.getWayData().get(i).getNodeReference().size(); j++) {
                         if (responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes() != null) {
                             for (int k = 0; k < responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().size(); k++) {

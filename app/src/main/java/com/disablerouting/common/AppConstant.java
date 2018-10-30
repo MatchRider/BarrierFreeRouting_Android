@@ -44,6 +44,8 @@ public interface AppConstant {
     String KEY_WIDTH = "width"; // Position 3
     String KEY_FOOTWAY = "footway"; // Position 4
 
+    String KEY_SIDEWALK = "sidewalk"; // Position 4
+
     String KEY_KERB_HEIGHT = "kerb:height";
     String IS_FOR_WAY = "is_for_way";
 
