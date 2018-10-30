@@ -1,7 +1,6 @@
 package com.disablerouting.osm_activity.manager;
 
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import com.disablerouting.api.ErrorResponse;
@@ -18,19 +17,10 @@ public class OSMManager implements ResponseCallback<ResponseBody> {
 
     private Call<ResponseBody> mOsmApiCall;
     private IOSMResponseReceiver mIOSMResponseReceiver;
-    private ProgressDialog progressDoalog;
 
 
     public void getOSMData(IOSMResponseReceiver receiver, Context context) {
         this.mIOSMResponseReceiver = receiver;
-       /* // Set up progress before call
-        progressDoalog = new ProgressDialog(context);
-        progressDoalog.setMax(100);
-        progressDoalog.setIndeterminate(true);
-        progressDoalog.setMessage("Its loading....");
-        progressDoalog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        // show it
-        progressDoalog.show();*/
         mOsmApiCall = RetrofitClient.getApiServiceOsm(context).downloadFileWithDynamicUrlAsync("8.662997,49.405089,8.697251,49.416175");
         if (mOsmApiCall != null)
             mOsmApiCall.enqueue(new ResponseWrapperOsm<ResponseBody>(this,context));
@@ -48,10 +38,6 @@ public class OSMManager implements ResponseCallback<ResponseBody> {
 
     @Override
     public void onSuccess(@NonNull ResponseBody data) {
-
-        /*if(progressDoalog.isShowing()) {
-            progressDoalog.dismiss();
-        }*/
         if(mIOSMResponseReceiver!=null){
             try {
                 String dataXML = data.string();
@@ -66,9 +52,6 @@ public class OSMManager implements ResponseCallback<ResponseBody> {
 
     @Override
     public void onFailure(@NonNull ErrorResponse errorResponse) {
-       /* if(progressDoalog.isShowing()) {
-            progressDoalog.dismiss();
-        }*/
         if (mIOSMResponseReceiver != null) {
             mIOSMResponseReceiver.onFailureOSM(errorResponse);
         }

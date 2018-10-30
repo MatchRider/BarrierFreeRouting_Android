@@ -94,6 +94,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         ButterKnife.bind(this);
 
         if (Utility.isOnline(this)) {
+            showLoader();
             callToGetChangeSet();
         }
         mISettingScreenPresenter = new SettingScreenPresenter(this, new UpdateWayManager(),
@@ -131,6 +132,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      * Api Call To CREATE CHANGE SET
      */
     private void callToGetChangeSet() {
+        showLoader();
         String string = "<osm><changeset><tag k=\"created_by\" v=\"JOSM 1.61\"/><tag k=\"comment\" v=\"Just adding some streetnames\"/></changeset></osm>";
         String URLChangeSet = ApiEndPoint.SANDBOX_BASE_URL_OSM + "changeset/create";
         OauthData oauthData = new OauthData(Verb.PUT, string, URLChangeSet);
@@ -153,23 +155,23 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     }
 
     private void GetNodeVersion() {
+        showLoader();
         String URLNodeGet = ApiEndPoint.SANDBOX_BASE_URL_OSM + "node/" + mNodeID;
         OauthData oauthData = new OauthData(Verb.GET, "", URLNodeGet);
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData,
                 this, true, "", false);
         asyncTaskOsmApi.execute("");
         Log.e("API", URLNodeGet);
-
     }
 
     private void GetWayVersion() {
+        showLoader();
         String URLWayGet = ApiEndPoint.SANDBOX_BASE_URL_OSM + "way/" + mWayID;
         OauthData oauthData = new OauthData(Verb.GET, "", URLWayGet);
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
                 true, "", false);
         asyncTaskOsmApi.execute("");
         Log.e("API", URLWayGet);
-
 
     }
 
@@ -186,11 +188,18 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     }
 
     private void onUpdateNODEonOSMServer() {
+        showLoader();
         StringBuilder tags = new StringBuilder();
         for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
             Attributes attributes = pair.getValue();
             if (attributes != null && attributes.getValue() != null) {
-                tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
+                if(!mISFromOSM) {
+                    if(attributes.isValid()) {
+                        tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
+                    }
+                }else {
+                    tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
+                }
             }
 
         }
@@ -215,22 +224,20 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     }
 
     private void onUpdateWAYonOSMServer() {
+        showLoader();
         StringBuilder tags = new StringBuilder();
         for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
             Attributes attributes = pair.getValue();
             assert attributes != null;
             if (attributes.getValue() != null) {
-                tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
-            }
-            /*if(mISFromOSM){
-                tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
-            }else {
-                if (attributes.getKey() != null && attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) ||
-                        attributes.getKey() != null && attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
+                if(!mISFromOSM) {
+                    if(attributes.isValid()) {
+                        tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
+                    }
+                }else {
                     tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
-
                 }
-            }*/
+            }
         }
 
         StringBuilder nodes = new StringBuilder();
@@ -316,7 +323,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 boolean isValid = Boolean.parseBoolean(mListWayData.getIsValid());
                 if (!isValid) {
                     if (Utility.isOnline(this)) {
-                       // showLoader();
+                        showLoader();
                         if(mChangeSetID!=null) {
                             mRelativeLayoutProgress.setVisibility(View.VISIBLE);
                             if (!mListWayData.getOSMWayId().isEmpty()) {
@@ -334,7 +341,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         } else {
             if (!isValidFORCall) {
                 if (Utility.isOnline(this)) {
-                    //showLoader();
+                    showLoader();
                     if(mChangeSetID!=null) {
                         mRelativeLayoutProgress.setVisibility(View.VISIBLE);
                         if (!mNodeReference.getOSMNodeId().isEmpty()) {
@@ -356,6 +363,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      * Api Call To CREATE NODE
      */
     private void callToCreateNode(NodeReference nodeReference) {
+        showLoader();
         if (AppData.getNewInstance() != null && AppData.getNewInstance().getCurrentLoc() != null) {
             double lat = AppData.getNewInstance().getCurrentLoc().latitude;
             double lon = AppData.getNewInstance().getCurrentLoc().longitude;
@@ -399,6 +407,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      * Api Call To CREATE WAY
      */
     private void callToCreateWay() {
+        showLoader();
         String requestString;
         StringBuilder tags = new StringBuilder();
         for (Attributes attributes : mListWayData.getAttributesList()) {
@@ -570,6 +579,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     }
     private void onUpdateNode() {
+        showLoader();
         if (mIsForWAY) {
             for (int i = 0; i < mListWayData.getNodeReference().size(); i++) {
                 if (mListWayData.getNodeReference().get(i).getOSMNodeId().isEmpty()) {
@@ -644,6 +654,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     }
 
     private void onUpdateWayOurServer(String updateVersionNumber) {
+        showLoader();
         RequestWayInfo requestWayInfo = new RequestWayInfo();
         RequestWayData wayDataValidate = new RequestWayData();
         if (mWayIdNew != null) {
@@ -703,6 +714,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     }
 
     private void onUpdateNodeOurServer(String updateVersionNumber) {
+        showLoader();
         RequestNodeInfo requestNodeInfo = new RequestNodeInfo();
         NodeReference nodeReference = new NodeReference();
         nodeReference.setOSMNodeId(mNodeReference.getOSMNodeId());
@@ -740,7 +752,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     }
                 }
                 setResult(RESULT_OK);
-                mRelativeLayoutProgress.setVisibility(View.GONE);
+                hideLoader();
+                //mRelativeLayoutProgress.setVisibility(View.GONE);
                 finish();
             } else {
                 if (responseUpdate.isStatus()) {
@@ -752,7 +765,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     }
                 }
                 setResult(RESULT_OK);
-                mRelativeLayoutProgress.setVisibility(View.GONE);
+                hideLoader();
+                //mRelativeLayoutProgress.setVisibility(View.GONE);
                 finish();
 
             }
@@ -763,6 +777,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     if (updateType.equalsIgnoreCase(AppConstant.WAY_UPDATE)) {
                         setResult(RESULT_OK);
                         Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
+                        hideLoader();
+
                         finish();
                     } else {
                         mNodeUpdate = mNodeUpdate + 1;
@@ -778,7 +794,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         Toast.makeText(this, responseUpdate.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
                     }
                     setResult(RESULT_OK);
-                    mRelativeLayoutProgress.setVisibility(View.GONE);
+                    hideLoader();
+
+                    //mRelativeLayoutProgress.setVisibility(View.GONE);
                     finish();
                 }
             } else {
@@ -792,7 +810,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     }
                 }
                 setResult(RESULT_OK);
-                mRelativeLayoutProgress.setVisibility(View.GONE);
+                hideLoader();
+
+                // mRelativeLayoutProgress.setVisibility(View.GONE);
                 finish();
             }
         }
@@ -806,14 +826,15 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     @Override
     public void onFailureListData(String error) {
-        mRelativeLayoutProgress.setVisibility(View.GONE);
+       // mRelativeLayoutProgress.setVisibility(View.GONE);
+        hideLoader();
         Toast.makeText(SettingActivity.this, error, Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
     public void onFailure(String error) {
-        mRelativeLayoutProgress.setVisibility(View.GONE);
+        //mRelativeLayoutProgress.setVisibility(View.GONE);
         hideLoader();
         Toast.makeText(SettingActivity.this, getResources().getString(R.string.error_when_entry_not_saved), Toast.LENGTH_SHORT).show();
     }
@@ -844,6 +865,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @Override
     public void onSuccessAsyncTask(String responseBody, String API_TYPE) {
         if (responseBody != null) {
+            hideLoader();
             if (API_TYPE.equalsIgnoreCase(AppConstant.API_TYPE_CREATE_CHANGE_SET)) {
                 mChangeSetID = responseBody;
             }
@@ -919,6 +941,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @Override
     public void onSuccessAsyncTaskForGetWay(String responseBody) {
         if (responseBody != null) {
+            hideLoader();
             if (mIsForWAY) {
                 JSONObject jsonObject = Utility.convertXMLtoJSON(responseBody);
                 try {
@@ -1055,4 +1078,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         mISettingScreenPresenter.getLisData();
 
     }
+
+
 }

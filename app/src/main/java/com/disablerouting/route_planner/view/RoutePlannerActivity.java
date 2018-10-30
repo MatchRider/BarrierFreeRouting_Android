@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -136,7 +137,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
         addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
         mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this,
-                new OSMManager(), new ListGetWayManager(),this);
+                new OSMManager(), new ListGetWayManager(), this);
 
         if (mISFromSuggestion) {
             addCurrentLocation(18);
@@ -253,11 +254,12 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void plotNodesOnMap(List<NodeItem> mNodes) {
         for (NodeItem nodeItem : mNodes) {
-            if (nodeItem.getNodeType() != null && nodeItem.getNodeType().getIdentifier() != null &&
+            assert nodeItem.getNodeType() != null;
+            if (nodeItem.getNodeType() != null && (nodeItem.getNodeType() != null && nodeItem.getNodeType().getIdentifier() != null &&
                     nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicTramStop) ||
                     nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicToilets) ||
                     nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicBusStop) ||
-                    nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicParking)) {
+                    nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicParking))) {
                 mNodeItemListFiltered.add(nodeItem);
             }
         }
@@ -350,11 +352,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mHashMapObjectFilterItem = (HashMap<Integer, Integer>) data.getSerializableExtra(AppConstant.DATA_FILTER_SELECTED);
                 mHashMapObjectFilterRoutingVia = (HashMap<String, Features>) data.getSerializableExtra(AppConstant.DATA_FILTER_ROUTING_VIA);
 
-               /* if (mHashMapObjectFilterItem != null && mHashMapObjectFilterItem.size() != 0) {
-                    mJsonObjectFilter = createFilter(mHashMapObjectFilter);
-                } else {
-                    mJsonObjectFilter = null;
-                }*/
                 mJsonObjectFilter = createFilter(mHashMapObjectFilter);
                 setUserSearchData();
             }
@@ -371,7 +368,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     if (!mISFromOSM) {
                         showLoader();
                         mIRoutePlannerScreenPresenter.getListData();
-
                     } else {
                         showLoader();
                         mIRoutePlannerScreenPresenter.getOSMData();
@@ -380,6 +376,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             }
         }
     }
+
+
 
     private void setUserSearchData() {
         //Save Data in user Preferences
@@ -405,10 +403,16 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             if (mHashMapObjectFilter == null && UserPreferences.getInstance(this).getUserSearch() != null) {
                 mHashMapObjectFilter = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter();
             }
-            GeoPoint geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
-                    mFeaturesSourceAddress.getGeometry().getCoordinates().get(1));
-            GeoPoint geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
-                    mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
+            GeoPoint geoPointSource = null;
+            if (mFeaturesSourceAddress != null && mFeaturesSourceAddress.getGeometry() != null) {
+                geoPointSource = new GeoPoint(mFeaturesSourceAddress.getGeometry().getCoordinates().get(0),
+                        mFeaturesSourceAddress.getGeometry().getCoordinates().get(1));
+            }
+            GeoPoint geoPointDestination = null;
+            if (mFeaturesDestinationAddress != null && mFeaturesDestinationAddress.getGeometry() != null) {
+                geoPointDestination = new GeoPoint(mFeaturesDestinationAddress.getGeometry().getCoordinates().get(0),
+                        mFeaturesDestinationAddress.getGeometry().getCoordinates().get(1));
+            }
             if (mHashMapObjectFilter != null && mHashMapObjectFilter.size() != 0) {
                 mJsonObjectFilter = createFilter(mHashMapObjectFilter);
             }
@@ -441,17 +445,21 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
 
+
     @Override
     public void showLoader() {
-       //showProgress();
+        //showProgress();
         mProgressBar.setVisibility(View.VISIBLE);
+        mFrameLayout.setBackgroundColor(getResources().getColor(R.color.colorLightGray));
 
     }
 
     @Override
     public void hideLoader() {
-      //hideProgress();
+        //hideProgress();
         mProgressBar.setVisibility(View.GONE);
+        mFrameLayout.setBackgroundColor(Color.TRANSPARENT);
+
 
     }
 
@@ -584,9 +592,9 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (responseWay != null) {
             if (responseWay.isStatus()) {
                 mWayListValidatedData = new ArrayList<>();
-                mWayListNotValidatedData= new ArrayList<>();
-                mNodeListValidatedData= new ArrayList<>();
-                mNodeListNotValidatedData= new ArrayList<>();
+                mWayListNotValidatedData = new ArrayList<>();
+                mNodeListValidatedData = new ArrayList<>();
+                mNodeListNotValidatedData = new ArrayList<>();
 
                 for (int i = 0; i < responseWay.getWayData().size(); i++) {
                     boolean isValidWay = Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
@@ -642,9 +650,9 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private void createListData(ResponseListWay responseWay, boolean b) {
         if (b) {
             mWayListValidatedData = new ArrayList<>();
-            mWayListNotValidatedData= new ArrayList<>();
-            mNodeListValidatedData= new ArrayList<>();
-            mNodeListNotValidatedData= new ArrayList<>();
+            mWayListNotValidatedData = new ArrayList<>();
+            mNodeListValidatedData = new ArrayList<>();
+            mNodeListNotValidatedData = new ArrayList<>();
 
             for (int i = 0; i < responseWay.getWayData().size(); i++) {
                 boolean isValidWay = Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
@@ -677,7 +685,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             }
             onToggleClickedBanner(false);
             hideLoader();
-
         }
     }
 

@@ -159,7 +159,7 @@ public class RetrofitClient {
                     .writeTimeout(60, TimeUnit.SECONDS)
                     .connectTimeout(60, TimeUnit.SECONDS)
                     .addInterceptor(new ApiInterceptor(false))
-                   // .addInterceptor(logging)
+                  //  .addInterceptor(logging)
                     .build();
 
             sRetrofitCURD = new Retrofit.Builder()
