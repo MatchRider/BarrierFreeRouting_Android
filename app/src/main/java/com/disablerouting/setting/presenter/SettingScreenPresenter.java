@@ -45,7 +45,7 @@ public class SettingScreenPresenter implements IUpdateWayResponseReceiver, ISett
     @Override
     public void onValidate(RequestWayInfo requestWayInfo) {
         if(mISettingView!=null){
-            mISettingView.showLoader();
+           // mISettingView.showLoader();
             mValidateWayManager.onValidate(this,requestWayInfo);
         }
     }
@@ -53,7 +53,7 @@ public class SettingScreenPresenter implements IUpdateWayResponseReceiver, ISett
     @Override
     public void getLisData() {
         if(mISettingView !=null){
-            mISettingView.showLoader();
+           // mISettingView.showLoader();
             mListGetWayManager.getListWay(this);
         }
     }
@@ -73,13 +73,13 @@ public class SettingScreenPresenter implements IUpdateWayResponseReceiver, ISett
     public void onSuccessUpdate(ResponseUpdate data) {
         if(mISettingView!=null){
             mISettingView.onUpdateDataReceived(data,mUpdateType);
-            mISettingView.hideLoader();
+            //mISettingView.hideLoader();
         }
     }
 
     @Override
     public void onFailureUpdate(@NonNull ErrorResponse errorResponse) {
-        mISettingView.hideLoader();
+       // mISettingView.hideLoader();
         if(mISettingView!=null){
             mISettingView.onFailure(errorResponse.getError());
         }
@@ -95,7 +95,7 @@ public class SettingScreenPresenter implements IUpdateWayResponseReceiver, ISett
 
     @Override
     public void onFailureValidate(@NonNull ErrorResponse errorResponse) {
-        mISettingView.hideLoader();
+       // mISettingView.hideLoader();
         if(mISettingView!=null){
             mISettingView.onFailure(errorResponse.getError());
         }
@@ -105,13 +105,13 @@ public class SettingScreenPresenter implements IUpdateWayResponseReceiver, ISett
     public void onSuccessGetList(ResponseListWay data) {
         if(mISettingView!=null){
             mISettingView.onListDataSuccess(data);
-            mISettingView.hideLoader();
+           // mISettingView.hideLoader();
         }
     }
 
     @Override
     public void onFailureGetList(@NonNull ErrorResponse errorResponse) {
-        mISettingView.hideLoader();
+       // mISettingView.hideLoader();
         if(mISettingView!=null){
             mISettingView.onFailureListData(errorResponse.getError());
         }

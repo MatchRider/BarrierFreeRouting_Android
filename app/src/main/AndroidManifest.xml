@@ -112,10 +112,6 @@
                   android:label="@string/instructions_for_route"
                   android:theme="@style/AppTheme">
         </activity>
-        <activity android:name=".osm_activity.OSMActivity"
-                  android:screenOrientation="portrait"
-                  android:theme="@style/AppTheme">
-        </activity>
     </application>
 
 </manifest>

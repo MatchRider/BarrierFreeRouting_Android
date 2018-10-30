@@ -455,6 +455,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     mCallForWay = i == mListWayData.getNodeReference().size() - 1;
                     if (mListWayData.getNodeReference().get(i).getOSMNodeId().isEmpty()) {
                         //Create Node
+                        hideLoader();
                         callToCreateNode(mListWayData.getNodeReference().get(i));
                     }
                 }
@@ -778,11 +779,11 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         setResult(RESULT_OK);
                         Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
                         hideLoader();
-
                         finish();
                     } else {
                         mNodeUpdate = mNodeUpdate + 1;
                         if (mNodeUpdate == mNodeIdsCreated.size()) {
+                            hideLoader();
                             Toast.makeText(SettingActivity.this, R.string.updated_node_info, Toast.LENGTH_SHORT).show();
                             onUpdateWayOurServer(mListWayData.getVersion());
                         }
@@ -795,7 +796,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     }
                     setResult(RESULT_OK);
                     hideLoader();
-
                     //mRelativeLayoutProgress.setVisibility(View.GONE);
                     finish();
                 }
@@ -811,7 +811,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 }
                 setResult(RESULT_OK);
                 hideLoader();
-
                 // mRelativeLayoutProgress.setVisibility(View.GONE);
                 finish();
             }
