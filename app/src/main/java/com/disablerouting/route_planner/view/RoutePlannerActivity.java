@@ -603,6 +603,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     boolean isHaveKeyHighway=false;
                     boolean isHaveKeyFootWay=false;
                     boolean isSideWalkPartOfWay=false;
+                    boolean isSideWalkPartOfWayNOKey=false;
+
                     for (int k = 0; k < responseWay.getWayData().get(i).getAttributesList().size(); k++) {
 
                         String key = responseWay.getWayData().get(i).getAttributesList().get(k).getKey();
@@ -619,9 +621,12 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                         if(key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK)){
                             isSideWalkPartOfWay =true;
                         }
+                        if(key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK) && value.equalsIgnoreCase("NO")){
+                            isSideWalkPartOfWayNOKey =true;
+                        }
 
                     }
-                    if(isHaveSeparateGeometry || isSideWalkPartOfWay) {
+                    if((isHaveSeparateGeometry || isSideWalkPartOfWay) && !isSideWalkPartOfWayNOKey) {
                         if (isValidWay) {
                             mWayListValidatedData.add(responseWay.getWayData().get(i));
                         } else {

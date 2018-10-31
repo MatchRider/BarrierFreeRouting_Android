@@ -86,6 +86,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private List<ListWayData> mWayListNotValidatedData = new ArrayList<>();
     private List<NodeReference> mNodeListValidatedData = new ArrayList<>();
     private List<NodeReference> mNodeListNotValidatedData = new ArrayList<>();
+    private String mApiEndPoint= ApiEndPoint.LIVE_BASE_URL_OSM; // ApiEndPoint.SANDBOX_BASE_URL_OSM
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +135,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private void callToGetChangeSet() {
         showLoader();
         String string = "<osm><changeset><tag k=\"created_by\" v=\"JOSM 1.61\"/><tag k=\"comment\" v=\"Just adding some streetnames\"/></changeset></osm>";
-        String URLChangeSet = ApiEndPoint.SANDBOX_BASE_URL_OSM + "changeset/create";
+        String URLChangeSet = mApiEndPoint + "changeset/create";
         OauthData oauthData = new OauthData(Verb.PUT, string, URLChangeSet);
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
                 false, AppConstant.API_TYPE_CREATE_CHANGE_SET, false);
@@ -156,7 +157,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     private void GetNodeVersion() {
         showLoader();
-        String URLNodeGet = ApiEndPoint.SANDBOX_BASE_URL_OSM + "node/" + mNodeID;
+        String URLNodeGet = mApiEndPoint + "node/" + mNodeID;
         OauthData oauthData = new OauthData(Verb.GET, "", URLNodeGet);
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData,
                 this, true, "", false);
@@ -166,7 +167,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     private void GetWayVersion() {
         showLoader();
-        String URLWayGet = ApiEndPoint.SANDBOX_BASE_URL_OSM + "way/" + mWayID;
+        String URLWayGet = mApiEndPoint + "way/" + mWayID;
         OauthData oauthData = new OauthData(Verb.GET, "", URLWayGet);
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
                 true, "", false);
@@ -214,7 +215,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 " </node>\n" +
                 "</osm>";
 
-        String URLNodePUT = ApiEndPoint.SANDBOX_BASE_URL_OSM + "node/" + mNodeID;
+        String URLNodePUT = mApiEndPoint + "node/" + mNodeID;
         OauthData oauthData = new OauthData(Verb.PUT, requestString, URLNodePUT);
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData,
                 this, false, AppConstant.API_TYPE_UPDATE_WAY_OR_NODE, false);
@@ -251,7 +252,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 tags +
                 " </way>\n" +
                 "</osm>";
-        String URLWayPUT = ApiEndPoint.SANDBOX_BASE_URL_OSM + "way/" + mWayID;
+        String URLWayPUT = mApiEndPoint + "way/" + mWayID;
         OauthData oauthData = new OauthData(Verb.PUT, requestString, URLWayPUT);
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData,
                 this, false, AppConstant.API_TYPE_UPDATE_WAY_OR_NODE, false);
@@ -388,7 +389,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         "</osm>";
             }
 
-            String URLCreateNode = ApiEndPoint.SANDBOX_BASE_URL_OSM + "node/create";
+            String URLCreateNode = mApiEndPoint + "node/create";
             Log.e("API", URLCreateNode);
             OauthData oauthData = new OauthData(Verb.PUT, requestString, URLCreateNode);
             asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
@@ -437,7 +438,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 "</osm>";
 
 
-        String URLCreateWay = ApiEndPoint.SANDBOX_BASE_URL_OSM + "way/create";
+        String URLCreateWay = mApiEndPoint + "way/create";
         Log.e("API", URLCreateWay);
 
         OauthData oauthData = new OauthData(Verb.PUT, requestString, URLCreateWay);
@@ -931,8 +932,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     public void onFailureAsyncTask(final String errorBody) {
         this.runOnUiThread(new Runnable() {
             public void run() {
-                hideLoader();
                 Toast.makeText(SettingActivity.this, getResources().getString(R.string.error_when_entry_not_saved), Toast.LENGTH_SHORT).show();
+                hideLoader();
+
             }
         });
     }

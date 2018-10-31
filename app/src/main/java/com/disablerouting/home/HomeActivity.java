@@ -43,9 +43,7 @@ import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
 import com.disablerouting.utils.PermissionUtils;
 import com.disablerouting.utils.Utility;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentCallback, IHomeView {
 
@@ -466,8 +464,6 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
 
             }
 
-
-
         }
         if (isForOsm) {
             mWayListValidatedDataOSM.clear();
@@ -482,6 +478,7 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
                 boolean isHaveKeyHighway=false;
                 boolean isHaveKeyFootWay=false;
                 boolean isSideWalkPartOfWay=false;
+                boolean isSideWalkPartOfWayNOKey=false;
                 for (int k = 0; k < responseWay.getWayData().get(i).getAttributesList().size(); k++) {
 
                     String key = responseWay.getWayData().get(i).getAttributesList().get(k).getKey();
@@ -498,9 +495,12 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
                     if(key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK)){
                         isSideWalkPartOfWay =true;
                     }
+                    if(key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK) && value.equalsIgnoreCase("NO")){
+                        isSideWalkPartOfWayNOKey =true;
+                    }
 
                 }
-                if(isHaveSeparateGeometry || isSideWalkPartOfWay) {
+                if((isHaveSeparateGeometry || isSideWalkPartOfWay) && !isSideWalkPartOfWayNOKey) {
                     if (isValidWay) {
                         mWayListValidatedDataOSM.add(responseWay.getWayData().get(i));
                     } else {
@@ -529,7 +529,10 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
                 WayDataPreference.getInstance(this).saveNotValidateDataNodeOSM(mNodeListNotValidatedDataOSM);
 
             }
-           // redirectToOSMScreen();
+            Date currentTime = Calendar.getInstance().getTime();
+            Log.e("Time End", String.valueOf(currentTime));
+
+            // redirectToOSMScreen();
         }
     }
 

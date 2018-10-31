@@ -3,12 +3,16 @@ package com.disablerouting.home.presenter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import com.disablerouting.api.ErrorResponse;
 import com.disablerouting.curd_operations.manager.IListGetWayResponseReceiver;
 import com.disablerouting.curd_operations.manager.ListGetWayManager;
 import com.disablerouting.curd_operations.model.ResponseListWay;
 import com.disablerouting.osm_activity.manager.OSMManager;
 import com.disablerouting.osm_activity.presenter.IOSMResponseReceiver;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class HomeScreenPresenter implements IHomeScreenPresenter, IListGetWayResponseReceiver,
         IOSMResponseReceiver {
@@ -36,6 +40,8 @@ public class HomeScreenPresenter implements IHomeScreenPresenter, IListGetWayRes
 
     @Override
     public void getOSMData() {
+        Date currentTime = Calendar.getInstance().getTime();
+        Log.e("Time Start", String.valueOf(currentTime));
         if(mIHomeView!=null){
            // mIHomeView.showLoader();
             mOSMManager.getOSMData(this,mContext);
