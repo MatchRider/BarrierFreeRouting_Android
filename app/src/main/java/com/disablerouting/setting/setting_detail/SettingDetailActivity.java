@@ -92,9 +92,7 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
         stringArrayList.add(getString(R.string.paving_stones));
         stringArrayList.add(getString(R.string.cobblestone));
         stringArrayList.add(getString(R.string.compacted));
-        //stringArrayList.add(getString(R.string.grass_paver));
-        //stringArrayList.add(getString(R.string.gravel));
-        return stringArrayList;
+         return stringArrayList;
     }
 
     private ArrayList<String> prepareListDataMaxSlope() {

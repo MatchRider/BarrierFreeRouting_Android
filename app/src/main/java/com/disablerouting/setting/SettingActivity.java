@@ -81,12 +81,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private Integer mNodeUpdate = 0;
     private boolean mISFromOSM = false;
 
-
-    private List<ListWayData> mWayListValidatedData = new ArrayList<>();
-    private List<ListWayData> mWayListNotValidatedData = new ArrayList<>();
-    private List<NodeReference> mNodeListValidatedData = new ArrayList<>();
-    private List<NodeReference> mNodeListNotValidatedData = new ArrayList<>();
-    private String mApiEndPoint= ApiEndPoint.LIVE_BASE_URL_OSM; // ApiEndPoint.SANDBOX_BASE_URL_OSM
+    private String mApiEndPoint= ApiEndPoint.SANDBOX_BASE_URL_OSM; //ApiEndPoint.LIVE_BASE_URL_OSM; //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,19 +186,41 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private void onUpdateNODEonOSMServer() {
         showLoader();
         StringBuilder tags = new StringBuilder();
-        for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
-            Attributes attributes = pair.getValue();
-            if (attributes != null && attributes.getValue() != null) {
-                if(!mISFromOSM) {
-                    if(attributes.isValid()) {
+        if(!mISFromOSM) {
+            for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
+                Attributes attributes = pair.getValue();
+                if (attributes != null && attributes.getValue() != null) {
+                    if (attributes.isValid()) {
                         tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
-                    }
-                }else {
-                    tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
-                }
-            }
 
+                    }
+                }
+
+            }
+        }else {
+            String sideWalkValue = null;
+            for (int i=0;i<mListWayData.getAttributesList().size();i++){
+                Attributes attributes = mListWayData.getAttributesList().get(i);
+                if(attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK)){
+                    sideWalkValue=attributes.getValue(); // both,left,right
+                }
+
+                tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
+            }
+            if(mHashMapWay!=null && mHashMapWay.get(0).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)){
+                if(mHashMapWay.get(0).getValue()!=null){
+                    tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK+":"+sideWalkValue+":"+AppConstant.KEY_SURFACE + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(0).getValue()) + "\"/>\n");
+                }
+
+            }
+            if(mHashMapWay!=null && mHashMapWay.get(3).getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)){
+                if(mHashMapWay.get(3).getValue()!=null){
+                    tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK+":"+sideWalkValue+":"+AppConstant.KEY_WIDTH + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(3).getValue()) + "\"/>\n");
+                }
+
+            }
         }
+
         StringBuilder nodes = new StringBuilder();
         if(mNodeReference.getOSMNodeId() !=null && !mNodeReference.getOSMNodeId().isEmpty()) {
             nodes.append("<nd ref=\"" + mNodeReference.getOSMNodeId() + "\"/>\n");
@@ -227,17 +244,39 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private void onUpdateWAYonOSMServer() {
         showLoader();
         StringBuilder tags = new StringBuilder();
-        for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
-            Attributes attributes = pair.getValue();
-            assert attributes != null;
-            if (attributes.getValue() != null) {
-                if(!mISFromOSM) {
-                    if(attributes.isValid()) {
+        if(!mISFromOSM) {
+            for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
+                Attributes attributes = pair.getValue();
+                assert attributes != null;
+                if (attributes.getValue() != null) {
+                    if (attributes.isValid()) {
                         tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
                     }
-                }else {
-                    tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
+
                 }
+            }
+        }else {
+            String sideWalkValue = null;
+
+            for (int i=0;i<mListWayData.getAttributesList().size();i++){
+                Attributes attributes = mListWayData.getAttributesList().get(i);
+                if(attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK)){
+                    sideWalkValue=attributes.getValue(); // both,left,right
+                }
+
+                tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
+            }
+            if(mHashMapWay!=null && mHashMapWay.get(0).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)){
+                if(mHashMapWay.get(0).getValue()!=null){
+                    tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK+":"+sideWalkValue+":"+AppConstant.KEY_SURFACE + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(0).getValue()) + "\"/>\n");
+                }
+
+            }
+            if(mHashMapWay!=null && mHashMapWay.get(3).getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)){
+                if(mHashMapWay.get(3).getValue()!=null){
+                    tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK+":"+sideWalkValue+":"+AppConstant.KEY_WIDTH + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(3).getValue()) + "\"/>\n");
+                }
+
             }
         }
 
