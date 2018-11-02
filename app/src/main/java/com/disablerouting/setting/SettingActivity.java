@@ -9,9 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -44,14 +42,25 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class SettingActivity extends BaseActivityImpl implements SettingAdapterListener, ISettingView,
-        IAysncTaskOsm {
+        IAysncTaskOsm, RadioGroup.OnCheckedChangeListener {
 
     @BindView(R.id.rcv_setting)
     RecyclerView mRecyclerView;
 
-
     @BindView(R.id.rel_progress_bar)
     RelativeLayout mRelativeLayoutProgress;
+
+    @BindView(R.id.radioGroup)
+    RadioGroup mRadioGroup;
+
+    @BindView(R.id.radioButtonLeft)
+    RadioButton mRadioButtonLeft;
+
+    @BindView(R.id.radioButtonRight)
+    RadioButton mRadioButtonRight;
+
+    @BindView(R.id.radioButtonBoth)
+    RadioButton mRadioButtonBoth;
 
     final int OPEN_SETTING_TYPE = 200;
     private SettingAdapter mSettingAdapter;
@@ -80,8 +89,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private Handler mHandler = new Handler();
     private Integer mNodeUpdate = 0;
     private boolean mISFromOSM = false;
-
-    private String mApiEndPoint=  ApiEndPoint.LIVE_BASE_URL_OSM; //ApiEndPoint.SANDBOX_BASE_URL_OSM;
+    private String mStringChoosedSideWalk = "";
+    private String mApiEndPoint = ApiEndPoint.LIVE_BASE_URL_OSM; //ApiEndPoint.SANDBOX_BASE_URL_OSM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +113,12 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     mNodeList = mListWayData.getNodeReference();
                     if (mListWayData.getIsForData() != null) {
                         mISFromOSM = !mListWayData.getIsForData().isEmpty() && mListWayData.getIsForData().equalsIgnoreCase(AppConstant.OSM_DATA);
+                    }
+                    if (mISFromOSM) {
+                        mRadioGroup.setVisibility(View.VISIBLE);
+                        mRadioGroup.setOnCheckedChangeListener(this);
+                    } else {
+                        mRadioGroup.setVisibility(View.GONE);
                     }
                     getDataFromWay();
                     setUpRecyclerView();
@@ -186,43 +201,21 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private void onUpdateNODEonOSMServer() {
         showLoader();
         StringBuilder tags = new StringBuilder();
-        if(!mISFromOSM) {
-            for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
-                Attributes attributes = pair.getValue();
-                if (attributes != null && attributes.getValue() != null) {
+        for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
+            Attributes attributes = pair.getValue();
+            if (attributes != null && attributes.getValue() != null) {
+                if (!mISFromOSM) {
                     if (attributes.isValid()) {
                         tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
-
                     }
+                } else {
+                    tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
                 }
-
             }
-        }else {
-            String sideWalkValue = null;
-            for (int i=0;i<mListWayData.getAttributesList().size();i++){
-                Attributes attributes = mListWayData.getAttributesList().get(i);
-                if(attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK)){
-                    sideWalkValue=attributes.getValue(); // both,left,right
-                }
 
-                tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
-            }
-            if(mHashMapWay!=null && mHashMapWay.get(0).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)){
-                if(mHashMapWay.get(0).getValue()!=null){
-                    tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK+":"+sideWalkValue+":"+AppConstant.KEY_SURFACE + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(0).getValue()) + "\"/>\n");
-                }
-
-            }
-            if(mHashMapWay!=null && mHashMapWay.get(3).getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)){
-                if(mHashMapWay.get(3).getValue()!=null){
-                    tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK+":"+sideWalkValue+":"+AppConstant.KEY_WIDTH + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(3).getValue()) + "\"/>\n");
-                }
-
-            }
         }
-
         StringBuilder nodes = new StringBuilder();
-        if(mNodeReference.getOSMNodeId() !=null && !mNodeReference.getOSMNodeId().isEmpty()) {
+        if (mNodeReference.getOSMNodeId() != null && !mNodeReference.getOSMNodeId().isEmpty()) {
             nodes.append("<nd ref=\"" + mNodeReference.getOSMNodeId() + "\"/>\n");
         }
         String requestString = "<osm>\n" +
@@ -244,7 +237,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private void onUpdateWAYonOSMServer() {
         showLoader();
         StringBuilder tags = new StringBuilder();
-        if(!mISFromOSM) {
+        if (!mISFromOSM) {
             for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
                 Attributes attributes = pair.getValue();
                 assert attributes != null;
@@ -255,26 +248,35 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
                 }
             }
-        }else {
+        } else {
             String sideWalkValue = null;
 
-            for (int i=0;i<mListWayData.getAttributesList().size();i++){
+            for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
                 Attributes attributes = mListWayData.getAttributesList().get(i);
-                if(attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK)){
-                    sideWalkValue=attributes.getValue(); // both,left,right
+                if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK)) {
+                    // both,left,right
+                    if (mStringChoosedSideWalk.isEmpty()) {
+                        sideWalkValue = attributes.getValue();
+                        tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + sideWalkValue + "\"/>\n");
+                    } else {
+                        sideWalkValue = mStringChoosedSideWalk;
+                        tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + sideWalkValue + "\"/>\n");
+
+                    }
+                }else {
+                    tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
+                }
+            }
+            if (mHashMapWay != null && mHashMapWay.get(0).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)) {
+                if (mHashMapWay.get(0).getValue() != null) {
+                    tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK + ":" + sideWalkValue + ":" + AppConstant.KEY_SURFACE + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(0).getValue()) + "\"/>\n");
                 }
 
-                tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
             }
-            if(mHashMapWay!=null && mHashMapWay.get(0).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)){
-                if(mHashMapWay.get(0).getValue()!=null){
-                    tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK+":"+sideWalkValue+":"+AppConstant.KEY_SURFACE + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(0).getValue()) + "\"/>\n");
-                }
+            if (mHashMapWay != null && mHashMapWay.get(3).getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
+                if (mHashMapWay.get(3).getValue() != null) {
+                    tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK + ":" + sideWalkValue + ":" + AppConstant.KEY_WIDTH + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(3).getValue()) + "\"/>\n");
 
-            }
-            if(mHashMapWay!=null && mHashMapWay.get(3).getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)){
-                if(mHashMapWay.get(3).getValue()!=null){
-                    tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK+":"+sideWalkValue+":"+AppConstant.KEY_WIDTH + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(3).getValue()) + "\"/>\n");
                 }
 
             }
@@ -282,8 +284,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
         StringBuilder nodes = new StringBuilder();
         for (int i = 0; i < mNodeList.size(); i++) {
-            if(mNodeList.get(i).getOSMNodeId() !=null && !mNodeList.get(i).getOSMNodeId().isEmpty())
-            nodes.append("<nd ref=\"" + mNodeList.get(i).getOSMNodeId() + "\"/>\n");
+            if (mNodeList.get(i).getOSMNodeId() != null && !mNodeList.get(i).getOSMNodeId().isEmpty())
+                nodes.append("<nd ref=\"" + mNodeList.get(i).getOSMNodeId() + "\"/>\n");
         }
         String requestString = "<osm>\n" +
                 " <way  id=\"" + mWayID + "\" changeset=\"" + mChangeSetID + "\" version=\"" + mVersionNumber + "\" >\n" +
@@ -364,7 +366,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 if (!isValid) {
                     if (Utility.isOnline(this)) {
                         showLoader();
-                        if(mChangeSetID!=null) {
+                        if (mChangeSetID != null) {
                             mRelativeLayoutProgress.setVisibility(View.VISIBLE);
                             if (!mListWayData.getOSMWayId().isEmpty()) {
                                 callToGetVersions();
@@ -382,7 +384,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             if (!isValidFORCall) {
                 if (Utility.isOnline(this)) {
                     showLoader();
-                    if(mChangeSetID!=null) {
+                    if (mChangeSetID != null) {
                         mRelativeLayoutProgress.setVisibility(View.VISIBLE);
                         if (!mNodeReference.getOSMNodeId().isEmpty()) {
                             callToGetVersions();
@@ -529,6 +531,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (mIsForWAY) {
             Attributes attributesSurfaceType = new Attributes();
             attributesSurfaceType.setKey(AppConstant.KEY_SURFACE);
+            attributesSurfaceType.setValid(false);
             mHashMapWay.put(0, attributesSurfaceType);
 
             Attributes attributesInclineType = new Attributes();
@@ -537,6 +540,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
             Attributes attributesWidthType = new Attributes();
             attributesWidthType.setKey(AppConstant.KEY_WIDTH);
+            attributesWidthType.setValid(false);
             mHashMapWay.put(3, attributesWidthType);
 
             for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
@@ -547,7 +551,11 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         attributesSurface.setKey(mListWayData.getAttributesList().get(i).getKey());
                         attributesSurface.setValue(mListWayData.getAttributesList().get(i).getValue());
                         attributesSurface.setValid(mListWayData.getAttributesList().get(i).isValid());
-                        mHashMapWay.put(0, attributesSurface);
+                        if(mISFromOSM){
+
+                        }else {
+                            mHashMapWay.put(0, attributesSurface);
+                        }
                         break;
 
                     case AppConstant.KEY_HIGHWAY:
@@ -588,7 +596,12 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
                         }
                         attributesWidth.setValid(mListWayData.getAttributesList().get(i).isValid());
-                        mHashMapWay.put(3, attributesWidth);
+
+                        if(mISFromOSM){
+
+                        }else {
+                            mHashMapWay.put(3, attributesWidth);
+                        }
                         break;
 
                     case AppConstant.KEY_FOOTWAY:
@@ -598,6 +611,23 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         attributesFootWay.setValid(mListWayData.getAttributesList().get(i).isValid());
                         mHashMapWay.put(4, attributesFootWay);
                         break;
+
+                    case AppConstant.KEY_SIDEWALK:
+                        if (mISFromOSM) {
+                            switch (mListWayData.getAttributesList().get(i).getValue()) {
+                                case "left":
+                                    mRadioButtonLeft.setChecked(true);
+                                    break;
+                                case "right":
+                                    mRadioButtonRight.setChecked(true);
+                                    break;
+                                case "both":
+                                    mRadioButtonBoth.setChecked(true);
+                                    break;
+                            }
+                        }
+                        break;
+
                     default:
                 }
 
@@ -619,6 +649,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         }
 
     }
+
     private void onUpdateNode() {
         showLoader();
         if (mIsForWAY) {
@@ -865,7 +896,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     @Override
     public void onFailureListData(String error) {
-       // mRelativeLayoutProgress.setVisibility(View.GONE);
+        // mRelativeLayoutProgress.setVisibility(View.GONE);
         hideLoader();
         Toast.makeText(SettingActivity.this, error, Toast.LENGTH_SHORT).show();
         finish();
@@ -1120,4 +1151,22 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     }
 
 
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId) {
+            case R.id.radioButtonLeft:
+                mStringChoosedSideWalk = "left";
+                break;
+
+            case R.id.radioButtonRight:
+                mStringChoosedSideWalk = "right";
+                break;
+
+            case R.id.radioButtonBoth:
+                mStringChoosedSideWalk = "both";
+                break;
+            default:
+        }
+
+    }
 }
