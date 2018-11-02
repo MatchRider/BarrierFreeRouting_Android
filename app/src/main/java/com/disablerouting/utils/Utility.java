@@ -397,7 +397,7 @@ public class Utility {
         for (int i = 0; i < lenWay; i++) {
             for (int j=0;j< listWay.get(i).getNdList().size();j++){
                 String nodeID=listWay.get(i).getNdList().get(j).getRef();
-                for (int k = 0; k < len; k++) {
+                for (int k = 0; k < len; k++) { // NODES iterate
                     Node node = nodes.item(k);
                     if(node.getAttributes().getNamedItem("id").getNodeValue().equalsIgnoreCase(nodeID)){
                         result.append(nodeToString(nodes.item(i)));
@@ -427,8 +427,6 @@ public class Utility {
                 NodeList nodeNodeList = root.getElementsByTagName("node");
                 try {
                     wayData = nodeListToStringWay(wayNodeList);
-                    //nodeData = nodeListToStringNode(nodeNodeList, getOSMNode.);
-
                     JSONObject jsonObjectWay = Utility.convertXMLtoJSON(wayData);
 
                     ObjectMapper objectMapper = new ObjectMapper();

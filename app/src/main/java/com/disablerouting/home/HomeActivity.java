@@ -328,25 +328,23 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            // Log.e("Nodes", String.valueOf(getOsmData.getOSM().getNode().size()));
             assert getOsmData != null;
             Log.e("Ways", String.valueOf(getOsmData.getOSM().getWays().size()));
+            Log.e("Nodes", String.valueOf(getOsmData.getOSM().getNode().size()));
+
 
             List<NodeReference> nodeReferenceList = new ArrayList<>();
             NodeReference nodeReference;
             if (getOsmData.getOSM() != null && getOsmData.getOSM().getNode() != null) {
                 for (int i = 0; i < getOsmData.getOSM().getNode().size(); i++) {
                     nodeReference = new NodeReference();
-
                     nodeReference.setOSMNodeId(getOsmData.getOSM().getNode().get(i).getID());
                     nodeReference.setLat(getOsmData.getOSM().getNode().get(i).getLatitude());
                     nodeReference.setLon(getOsmData.getOSM().getNode().get(i).getLongitude());
                     nodeReference.setVersion(getOsmData.getOSM().getNode().get(i).getVersion());
                     nodeReference.setIsForData(AppConstant.OSM_DATA);
-
-
                     List<Attributes> attributesList = new ArrayList<>();
-                    Attributes attributes = null;
+                    Attributes attributes ;
                     if (getOsmData.getOSM().getNode().get(i).getTag() != null &&
                             getOsmData.getOSM().getNode().get(i).getTag().size() != 0) {
                         for (int k = 0; k < getOsmData.getOSM().getNode().get(i).getTag().size(); k++) {
@@ -481,41 +479,13 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
             mNodeListNotValidatedDataOSM.clear();
 
             for (int i = 0; i < responseWay.getWayData().size(); i++) {
-
                 boolean isValidWay = Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
-                boolean isHaveSeparateGeometry = false;
-                boolean isHaveKeyHighway = false;
-                boolean isHaveKeyFootWay = false;
-                boolean isSideWalkPartOfWay = false;
-                boolean isSideWalkPartOfWayNOKey = false;
-                for (int k = 0; k < responseWay.getWayData().get(i).getAttributesList().size(); k++) {
-
-                    String key = responseWay.getWayData().get(i).getAttributesList().get(k).getKey();
-                    String value = responseWay.getWayData().get(i).getAttributesList().get(k).getValue();
-                    if (key.equalsIgnoreCase(AppConstant.KEY_HIGHWAY) && value.equalsIgnoreCase(AppConstant.KEY_FOOTWAY)) {
-                        isHaveKeyHighway = true;
-                    }
-                    if (key.equalsIgnoreCase(AppConstant.KEY_FOOTWAY) && value.equalsIgnoreCase(AppConstant.KEY_SIDEWALK)) {
-                        isHaveKeyFootWay = true;
-                    }
-                    if (isHaveKeyHighway && isHaveKeyFootWay) {
-                        isHaveSeparateGeometry = true;
-                    }
-                    if (key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK)) {
-                        isSideWalkPartOfWay = true;
-                    }
-                    if (key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK) && value.equalsIgnoreCase("NO")) {
-                        isSideWalkPartOfWayNOKey = true;
-                    }
-
+                if (isValidWay) {
+                    mWayListValidatedDataOSM.add(responseWay.getWayData().get(i));
+                } else {
+                    mWayListNotValidatedDataOSM.add(responseWay.getWayData().get(i));
                 }
-                if ((isHaveSeparateGeometry || isSideWalkPartOfWay) && !isSideWalkPartOfWayNOKey) {
-                    if (isValidWay) {
-                        mWayListValidatedDataOSM.add(responseWay.getWayData().get(i));
-                    } else {
-                        mWayListNotValidatedDataOSM.add(responseWay.getWayData().get(i));
-                    }
-                }
+
                 for (int j = 0; j < responseWay.getWayData().get(i).getNodeReference().size(); j++) {
                     if (responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes() != null) {
 

@@ -81,7 +81,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private Integer mNodeUpdate = 0;
     private boolean mISFromOSM = false;
 
-    private String mApiEndPoint= ApiEndPoint.SANDBOX_BASE_URL_OSM; //ApiEndPoint.LIVE_BASE_URL_OSM; //
+    private String mApiEndPoint=  ApiEndPoint.LIVE_BASE_URL_OSM; //ApiEndPoint.SANDBOX_BASE_URL_OSM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
