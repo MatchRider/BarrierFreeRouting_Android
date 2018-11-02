@@ -43,6 +43,7 @@ import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
 import com.disablerouting.utils.PermissionUtils;
 import com.disablerouting.utils.Utility;
 
+import java.io.IOException;
 import java.util.*;
 
 public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentCallback, IHomeView {
@@ -84,7 +85,6 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
         checkLocationStatus();
         getWayListData();
     }
-
 
 
     /**
@@ -322,89 +322,98 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
     @Override
     public void onOSMDataReceived(String responseBody) {
         if (responseBody != null) {
-            GetOsmData getOsmData = Utility.convertDataIntoModel(responseBody);
-            Log.e("Nodes", String.valueOf(getOsmData.getOSM().getNode().size()));
+            GetOsmData getOsmData = null;
+            try {
+                getOsmData = Utility.convertDataIntoModel(responseBody);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // Log.e("Nodes", String.valueOf(getOsmData.getOSM().getNode().size()));
+            assert getOsmData != null;
             Log.e("Ways", String.valueOf(getOsmData.getOSM().getWays().size()));
 
             List<NodeReference> nodeReferenceList = new ArrayList<>();
-            NodeReference nodeReference = null;
-            for (int i = 0; i < getOsmData.getOSM().getNode().size(); i++) {
-                nodeReference = new NodeReference();
+            NodeReference nodeReference;
+            if (getOsmData.getOSM() != null && getOsmData.getOSM().getNode() != null) {
+                for (int i = 0; i < getOsmData.getOSM().getNode().size(); i++) {
+                    nodeReference = new NodeReference();
 
-                nodeReference.setOSMNodeId(getOsmData.getOSM().getNode().get(i).getID());
-                nodeReference.setLat(getOsmData.getOSM().getNode().get(i).getLatitude());
-                nodeReference.setLon(getOsmData.getOSM().getNode().get(i).getLongitude());
-                nodeReference.setVersion(getOsmData.getOSM().getNode().get(i).getVersion());
-                nodeReference.setIsForData(AppConstant.OSM_DATA);
+                    nodeReference.setOSMNodeId(getOsmData.getOSM().getNode().get(i).getID());
+                    nodeReference.setLat(getOsmData.getOSM().getNode().get(i).getLatitude());
+                    nodeReference.setLon(getOsmData.getOSM().getNode().get(i).getLongitude());
+                    nodeReference.setVersion(getOsmData.getOSM().getNode().get(i).getVersion());
+                    nodeReference.setIsForData(AppConstant.OSM_DATA);
 
 
-                List<Attributes> attributesList = new ArrayList<>();
-                Attributes attributes = null;
-                if (getOsmData.getOSM().getNode().get(i).getTag() != null &&
-                        getOsmData.getOSM().getNode().get(i).getTag().size() != 0) {
-                    for (int k = 0; k < getOsmData.getOSM().getNode().get(i).getTag().size(); k++) {
-                        attributes = new Attributes();
-                        attributes.setKey(getOsmData.getOSM().getNode().get(i).getTag().get(k).getK());
-                        attributes.setValue(getOsmData.getOSM().getNode().get(i).getTag().get(k).getV());
-                        attributes.setValid(false);
-                        attributesList.add(attributes);
-                        nodeReference.setAttributes(attributesList);
+                    List<Attributes> attributesList = new ArrayList<>();
+                    Attributes attributes = null;
+                    if (getOsmData.getOSM().getNode().get(i).getTag() != null &&
+                            getOsmData.getOSM().getNode().get(i).getTag().size() != 0) {
+                        for (int k = 0; k < getOsmData.getOSM().getNode().get(i).getTag().size(); k++) {
+                            attributes = new Attributes();
+                            attributes.setKey(getOsmData.getOSM().getNode().get(i).getTag().get(k).getK());
+                            attributes.setValue(getOsmData.getOSM().getNode().get(i).getTag().get(k).getV());
+                            attributes.setValid(false);
+                            attributesList.add(attributes);
+                            nodeReference.setAttributes(attributesList);
+                        }
                     }
+                    nodeReferenceList.add(nodeReference);
                 }
-                nodeReferenceList.add(nodeReference);
             }
 
             List<ListWayData> listWayDataListCreated = new ArrayList<>();
-            ListWayData listWayData = null;
+            ListWayData listWayData;
 
+            if (getOsmData.getOSM() != null && getOsmData.getOSM().getWays() != null) {
+                for (int i = 0; i < getOsmData.getOSM().getWays().size(); i++) {
+                    listWayData = new ListWayData();
 
-            for (int i = 0; i < getOsmData.getOSM().getWays().size(); i++) {
-                listWayData = new ListWayData();
+                    listWayData.setOSMWayId(getOsmData.getOSM().getWays().get(i).getID());
+                    listWayData.setVersion(getOsmData.getOSM().getWays().get(i).getVersion());
+                    listWayData.setIsValid("false");
+                    listWayData.setColor(Utility.randomColor());
+                    listWayData.setIsForData(AppConstant.OSM_DATA);
+                    ParcelableArrayList stringListCoordinates;
 
-                listWayData.setOSMWayId(getOsmData.getOSM().getWays().get(i).getID());
-                listWayData.setVersion(getOsmData.getOSM().getWays().get(i).getVersion());
-                listWayData.setIsValid("false");
-                listWayData.setColor(Utility.randomColor());
-                listWayData.setIsForData(AppConstant.OSM_DATA);
-                ParcelableArrayList stringListCoordinates;
+                    List<NodeReference> nodeReferencesWay = new ArrayList<>();
+                    List<ParcelableArrayList> coordinatesList = new LinkedList<>();
 
-                List<NodeReference> nodeReferencesWay = new ArrayList<>();
-                List<ParcelableArrayList> coordinatesList = new LinkedList<>();
+                    for (int j = 0; getOsmData.getOSM().getWays().get(i).getNdList() != null &&
+                            getOsmData.getOSM().getWays().get(i).getNdList().size() != 0 &&
+                            j < getOsmData.getOSM().getWays().get(i).getNdList().size(); j++) {
 
-                for (int j = 0; getOsmData.getOSM().getWays().get(i).getNdList() != null &&
-                        getOsmData.getOSM().getWays().get(i).getNdList().size() != 0 &&
-                        j < getOsmData.getOSM().getWays().get(i).getNdList().size(); j++) {
+                        for (int k = 0; k < nodeReferenceList.size(); k++) {
+                            if (getOsmData.getOSM().getWays().get(i).getNdList().get(j).getRef()
+                                    .equalsIgnoreCase(nodeReferenceList.get(k).getOSMNodeId())) {
 
-                    for (int k = 0; k < nodeReferenceList.size(); k++) {
-                        if (getOsmData.getOSM().getWays().get(i).getNdList().get(j).getRef()
-                                .equalsIgnoreCase(nodeReferenceList.get(k).getOSMNodeId())) {
-
-                            nodeReferencesWay.add(nodeReferenceList.get(k));
-                            stringListCoordinates = new ParcelableArrayList();
-                            stringListCoordinates.add(0, nodeReferenceList.get(k).getLat());
-                            stringListCoordinates.add(1, nodeReferenceList.get(k).getLon());
-                            coordinatesList.add(stringListCoordinates);
-                            break;
+                                nodeReferencesWay.add(nodeReferenceList.get(k));
+                                stringListCoordinates = new ParcelableArrayList();
+                                stringListCoordinates.add(0, nodeReferenceList.get(k).getLat());
+                                stringListCoordinates.add(1, nodeReferenceList.get(k).getLon());
+                                coordinatesList.add(stringListCoordinates);
+                                break;
+                            }
                         }
+
                     }
+                    listWayData.setCoordinates(coordinatesList);
+                    listWayData.setNodeReference(nodeReferencesWay);
 
+                    List<Attributes> attributesArrayListWay = new ArrayList<>();
+                    for (int j = 0; getOsmData.getOSM().getWays().get(i).getTagList() != null &&
+                            getOsmData.getOSM().getWays().get(i).getTagList().size() != 0 &&
+                            j < getOsmData.getOSM().getWays().get(i).getTagList().size(); j++) {
+                        Attributes attributesWay = new Attributes();
+
+                        attributesWay.setKey(getOsmData.getOSM().getWays().get(i).getTagList().get(j).getK());
+                        attributesWay.setValue(getOsmData.getOSM().getWays().get(i).getTagList().get(j).getV());
+                        attributesWay.setValid(false);
+                        attributesArrayListWay.add(attributesWay);
+                    }
+                    listWayData.setAttributesList(attributesArrayListWay);
+                    listWayDataListCreated.add(listWayData);
                 }
-                listWayData.setCoordinates(coordinatesList);
-                listWayData.setNodeReference(nodeReferencesWay);
-
-                List<Attributes> attributesArrayListWay = new ArrayList<>();
-                for (int j = 0; getOsmData.getOSM().getWays().get(i).getTagList() != null &&
-                        getOsmData.getOSM().getWays().get(i).getTagList().size() != 0 &&
-                        j < getOsmData.getOSM().getWays().get(i).getTagList().size(); j++) {
-                    Attributes attributesWay = new Attributes();
-
-                    attributesWay.setKey(getOsmData.getOSM().getWays().get(i).getTagList().get(j).getK());
-                    attributesWay.setValue(getOsmData.getOSM().getWays().get(i).getTagList().get(j).getV());
-                    attributesWay.setValid(false);
-                    attributesArrayListWay.add(attributesWay);
-                }
-                listWayData.setAttributesList(attributesArrayListWay);
-                listWayDataListCreated.add(listWayData);
             }
 
             Log.e("List", String.valueOf(listWayDataListCreated.size()));
@@ -474,33 +483,33 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
             for (int i = 0; i < responseWay.getWayData().size(); i++) {
 
                 boolean isValidWay = Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
-                boolean isHaveSeparateGeometry=false;
-                boolean isHaveKeyHighway=false;
-                boolean isHaveKeyFootWay=false;
-                boolean isSideWalkPartOfWay=false;
-                boolean isSideWalkPartOfWayNOKey=false;
+                boolean isHaveSeparateGeometry = false;
+                boolean isHaveKeyHighway = false;
+                boolean isHaveKeyFootWay = false;
+                boolean isSideWalkPartOfWay = false;
+                boolean isSideWalkPartOfWayNOKey = false;
                 for (int k = 0; k < responseWay.getWayData().get(i).getAttributesList().size(); k++) {
 
                     String key = responseWay.getWayData().get(i).getAttributesList().get(k).getKey();
                     String value = responseWay.getWayData().get(i).getAttributesList().get(k).getValue();
-                    if(key.equalsIgnoreCase(AppConstant.KEY_HIGHWAY) && value.equalsIgnoreCase(AppConstant.KEY_FOOTWAY)){
-                        isHaveKeyHighway =true;
+                    if (key.equalsIgnoreCase(AppConstant.KEY_HIGHWAY) && value.equalsIgnoreCase(AppConstant.KEY_FOOTWAY)) {
+                        isHaveKeyHighway = true;
                     }
-                    if(key.equalsIgnoreCase(AppConstant.KEY_FOOTWAY) && value.equalsIgnoreCase(AppConstant.KEY_SIDEWALK)){
-                        isHaveKeyFootWay =true;
+                    if (key.equalsIgnoreCase(AppConstant.KEY_FOOTWAY) && value.equalsIgnoreCase(AppConstant.KEY_SIDEWALK)) {
+                        isHaveKeyFootWay = true;
                     }
-                    if(isHaveKeyHighway && isHaveKeyFootWay){
-                        isHaveSeparateGeometry=true;
+                    if (isHaveKeyHighway && isHaveKeyFootWay) {
+                        isHaveSeparateGeometry = true;
                     }
-                    if(key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK)){
-                        isSideWalkPartOfWay =true;
+                    if (key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK)) {
+                        isSideWalkPartOfWay = true;
                     }
-                    if(key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK) && value.equalsIgnoreCase("NO")){
-                        isSideWalkPartOfWayNOKey =true;
+                    if (key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK) && value.equalsIgnoreCase("NO")) {
+                        isSideWalkPartOfWayNOKey = true;
                     }
 
                 }
-                if((isHaveSeparateGeometry || isSideWalkPartOfWay) && !isSideWalkPartOfWayNOKey) {
+                if ((isHaveSeparateGeometry || isSideWalkPartOfWay) && !isSideWalkPartOfWayNOKey) {
                     if (isValidWay) {
                         mWayListValidatedDataOSM.add(responseWay.getWayData().get(i));
                     } else {

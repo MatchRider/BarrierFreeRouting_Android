@@ -12,4 +12,10 @@ public class GetOsmData {
     public GetOSM getOSM() {
         return mOSM;
     }
+    public GetOsmData() {
+    }
+
+    public void setOSM(GetOSM OSM) {
+        mOSM = OSM;
+    }
 }

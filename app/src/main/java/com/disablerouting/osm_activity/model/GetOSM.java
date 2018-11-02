@@ -17,10 +17,21 @@ public class GetOSM {
         return mNode;
     }
 
+    public GetOSM() {
+    }
+
     @JsonProperty("way")
-    private List<com.disablerouting.route_planner.model.Way> mWays;
+    private List<Way> mWays;
 
     public List<Way> getWays() {
         return mWays;
+    }
+
+    public void setNode(List<Node> node) {
+        mNode = node;
+    }
+
+    public void setWays(List<Way> ways) {
+        mWays = ways;
     }
 }

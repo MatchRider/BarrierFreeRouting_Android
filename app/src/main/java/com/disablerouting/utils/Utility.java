@@ -19,9 +19,12 @@ import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import com.disablerouting.api.ApiEndPoint;
+import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.model.NodeReference;
 import com.disablerouting.login.OSMApi;
+import com.disablerouting.osm_activity.model.GetOSM;
 import com.disablerouting.osm_activity.model.GetOsmData;
+import com.disablerouting.route_planner.model.Way;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -31,11 +34,23 @@ import org.json.JSONObject;
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -96,19 +111,19 @@ public class Utility {
     }
 
     public static JSONObject convertXMLtoJSON(String xmlString) {
-        JSONObject jsonObj = null;
+        JSONObject jsonObject = null;
         try {
 
             XmlToJson xmlToJson = new XmlToJson.Builder(xmlString).build();
-            jsonObj = xmlToJson.toJson();
-            if (jsonObj != null) {
-                Log.d("JSON", jsonObj.toString());
+            jsonObject = xmlToJson.toJson();
+            if (jsonObject != null) {
+                Log.d("JSON", jsonObject.toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return jsonObj;
+        return jsonObject;
     }
 
     public static OAuth10aService createOauth10a() {
@@ -306,20 +321,141 @@ public class Utility {
         return false;
     }
 
-    
-     public static GetOsmData convertDataIntoModel(String data) {
-        JSONObject jsonObject = Utility.convertXMLtoJSON(data);
-        ObjectMapper objectMapper = new ObjectMapper();
-         GetOsmData osmData = null;
-        try {
-             objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-             osmData = objectMapper.readValue(jsonObject.toString(), GetOsmData.class);
 
-        } catch (IOException e) {
+    public static void getElementValues(Node node) {
+        NodeList nodeList = node.getChildNodes();
+        for (int i = 0, len = nodeList.getLength(); i < len; i++) {
+            Node currentNode = nodeList.item(i);
+            if (len == 1 && currentNode.getNodeType() == Node.TEXT_NODE) {
+                System.out.println(node.getLocalName() + "=" + currentNode.getTextContent());
+            } else if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
+                getElementValues(currentNode);
+            }
+        }
+    }
+
+    private static String nodeToString(Node node) {
+        StringWriter sw = new StringWriter();
+        try {
+            Transformer t = TransformerFactory.newInstance().newTransformer();
+            t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            t.transform(new DOMSource(node), new StreamResult(sw));
+        } catch (TransformerException te) {
+            System.out.println("nodeToString Transformer Exception");
+        }
+        return sw.toString();
+    }
+
+    private static String nodeListToStringWay(NodeList nodes) throws TransformerException {
+        StringBuilder result = new StringBuilder();
+        int len = nodes.getLength();
+        for (int i = 0; i < len; ++i) {
+            Node node = nodes.item(i);
+            Element eElement = (Element) node;
+            NodeList cElementTag = eElement.getElementsByTagName("tag");
+
+            boolean isHaveSeparateGeometry = false;
+            boolean isHaveKeyHighway = false;
+            boolean isHaveKeyFootWay = false;
+            boolean isSideWalkPartOfWay = false;
+            boolean isSideWalkPartOfWayNOKey = false;
+
+            for (int j = 0; j < cElementTag.getLength(); j++) {
+
+                String key = cElementTag.item(j).getAttributes().getNamedItem("k").getNodeValue();
+                String value = cElementTag.item(j).getAttributes().getNamedItem("v").getNodeValue();
+                if (key.equalsIgnoreCase(AppConstant.KEY_HIGHWAY) && value.equalsIgnoreCase(AppConstant.KEY_FOOTWAY)) {
+                    isHaveKeyHighway = true;
+                }
+                if (key.equalsIgnoreCase(AppConstant.KEY_FOOTWAY) && value.equalsIgnoreCase(AppConstant.KEY_SIDEWALK)) {
+                    isHaveKeyFootWay = true;
+                }
+                if (isHaveKeyHighway && isHaveKeyFootWay) {
+                    isHaveSeparateGeometry = true;
+                }
+                if (key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK)) {
+                    isSideWalkPartOfWay = true;
+                }
+                if (key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK) && value.equalsIgnoreCase("NO")) {
+                    isSideWalkPartOfWayNOKey = true;
+                }
+
+            }
+            if ((isHaveSeparateGeometry || isSideWalkPartOfWay) && !isSideWalkPartOfWayNOKey) {
+                result.append(nodeToString(nodes.item(i)));
+            }
+
+        }
+        return result.toString();
+    }
+    private static String nodeListToStringNode(NodeList nodes, List<Way> listWay) throws TransformerException {
+        StringBuilder result = new StringBuilder();
+        int len = nodes.getLength();
+        int lenWay = listWay.size();
+
+        //FOR 311 items
+        for (int i = 0; i < lenWay; i++) {
+            for (int j=0;j< listWay.get(i).getNdList().size();j++){
+                String nodeID=listWay.get(i).getNdList().get(j).getRef();
+                for (int k = 0; k < len; k++) {
+                    Node node = nodes.item(k);
+                    if(node.getAttributes().getNamedItem("id").getNodeValue().equalsIgnoreCase(nodeID)){
+                        result.append(nodeToString(nodes.item(i)));
+                        break;
+                    }
+                }
+            }
+        }
+
+        return result.toString();
+    }
+
+    public static GetOsmData convertDataIntoModel(String data) throws IOException {
+        GetOsmData osmData = new GetOsmData();
+        GetOSM getOSM;
+        GetOSM getOSMNode;
+        try {
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            InputSource src = new InputSource();
+            src.setCharacterStream(new StringReader(data));
+            Document doc = builder.parse(src);
+            if (doc != null) {
+                Element root = doc.getDocumentElement();
+                String wayData;
+                String nodeData;
+                NodeList wayNodeList = root.getElementsByTagName("way");
+                NodeList nodeNodeList = root.getElementsByTagName("node");
+                try {
+                    wayData = nodeListToStringWay(wayNodeList);
+                    //nodeData = nodeListToStringNode(nodeNodeList, getOSMNode.);
+
+                    JSONObject jsonObjectWay = Utility.convertXMLtoJSON(wayData);
+
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    try {
+                        objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+                        getOSM = objectMapper.readValue(jsonObjectWay.toString(), GetOSM.class); // GET WAYS first
+
+                        nodeData = nodeListToStringNode(nodeNodeList, getOSM.getWays());
+                        JSONObject jsonObjectNode = Utility.convertXMLtoJSON(nodeData);
+
+                        getOSMNode = objectMapper.readValue(jsonObjectNode.toString(), GetOSM.class); //Get Nodes
+
+                        getOSM.setNode(getOSMNode.getNode());
+                        osmData.setOSM(getOSM);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } catch (TransformerException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
-         return osmData;
-     }
+
+        return osmData;
+    }
 
     public static String randomColor() {
         Random rnd = new Random();

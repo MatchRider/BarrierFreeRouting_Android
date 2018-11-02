@@ -43,6 +43,7 @@ import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.Polyline;
 
+import java.io.IOException;
 import java.util.*;
 
 public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDestinationListener, IRouteView,
@@ -490,7 +491,12 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void onOSMDataReceived(String responseBody) {
         if (responseBody != null) {
-            GetOsmData getOsmData = Utility.convertDataIntoModel(responseBody);
+            GetOsmData getOsmData = null;
+            try {
+                getOsmData = Utility.convertDataIntoModel(responseBody);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             Log.e("Nodes", String.valueOf(getOsmData.getOSM().getNode().size()));
             Log.e("Ways", String.valueOf(getOsmData.getOSM().getWays().size()));
 

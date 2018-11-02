@@ -9,6 +9,9 @@ public class Nd {
     @JsonProperty("ref")
     private String mRef;
 
+    public Nd() {
+    }
+
     public String getRef() {
         return mRef;
     }

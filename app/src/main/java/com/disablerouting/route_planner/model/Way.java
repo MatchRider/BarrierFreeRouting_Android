@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Way {
 
     @JsonProperty("nd")
@@ -19,6 +19,9 @@ public class Way {
 
     @JsonProperty("tag")
     private List<Tag> mTagList;
+
+    public Way() {
+    }
 
     public List<Nd> getNdList() {
         return mNdList;

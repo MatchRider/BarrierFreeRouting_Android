@@ -12,6 +12,9 @@ public class Tag {
     @JsonProperty("k")
     private String mK;
 
+    public Tag() {
+    }
+
     public String getV() {
         return mV;
     }
