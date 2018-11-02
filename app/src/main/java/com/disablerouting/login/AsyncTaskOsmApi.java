@@ -60,7 +60,9 @@ public class AsyncTaskOsmApi extends AsyncTask<String, Void, String> {
         final OAuth10aService service = Utility.createOauth10a();
         final OAuthRequest request = new OAuthRequest(mOauthData.getMethodType(), mOauthData.getStringUrl());
         request.addHeader("Content-Type", "application/xml;charset=UTF-8");
-        request.addHeader("Accept", "application/xml;versions=1");
+       // request.addHeader("Content-Type", "application/x-www-form-urlencoded");
+       // request.addHeader("Accept", "application/xml;versions=1");
+        request.addHeader("Accept", "text/xml; charset=utf-8");
         if (!mOauthData.getRequestBody().isEmpty()) {
             request.setPayload(mOauthData.getRequestBody());
         }

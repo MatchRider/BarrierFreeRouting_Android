@@ -50,7 +50,8 @@ public class LoginActivity extends BaseActivityImpl implements IAysncTaskOsm {
      * Api Call To Get user detail
      */
     private void callToGetUserDetails() {
-        String URLGetUserDetail = ApiEndPoint.SANDBOX_BASE_URL_OSM + "user/details";
+        //String URLGetUserDetail = ApiEndPoint.SANDBOX_BASE_URL_OSM + "user/details";
+        String URLGetUserDetail = ApiEndPoint.LIVE_BASE_URL_OSM + "user/details";
         OauthData oauthData = new OauthData(Verb.GET, "", URLGetUserDetail);
         asyncTaskOsmApi = new AsyncTaskOsmApi(this, oauthData, this, true, AppConstant.API_TYPE_GET_USER_DETAIL,true);
         asyncTaskOsmApi.execute("");
