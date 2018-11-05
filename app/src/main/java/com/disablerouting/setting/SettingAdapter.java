@@ -90,7 +90,26 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                 }
             } else {
                 if (mSelectionMap.get(checkPos) != null && mSelectionMap.get(checkPos).getValue() != null && !mSelectionMap.get(checkPos).getValue().isEmpty()) {
-                    subTitle = mSelectionMap.get(checkPos).getValue();
+                    if(mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)) {
+                        if(mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("asphalt")) {
+                            subTitle = mContext.getString(R.string.asphalt);
+                        }
+                        if(mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("concrete")) {
+                            subTitle = mContext.getString(R.string.concrete);
+                        }
+                        if(mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("paving_stones")) {
+                            subTitle = mContext.getString(R.string.paving_stones);
+                        }
+                        if(mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("cobblestone")) {
+                            subTitle = mContext.getString(R.string.cobblestone);
+                        }
+                        if(mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("compacted")) {
+                            subTitle = mContext.getString(R.string.compacted);
+                        }
+                    }else {
+                        subTitle = mSelectionMap.get(checkPos).getValue();
+
+                    }
                 }
             }
 

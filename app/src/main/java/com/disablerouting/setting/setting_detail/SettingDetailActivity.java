@@ -94,6 +94,15 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
         stringArrayList.add(getString(R.string.compacted));
          return stringArrayList;
     }
+    private ArrayList<String> prepareListDataSurfaceKey() {
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        stringArrayList.add(getString(R.string.asphalt_key));
+        stringArrayList.add(getString(R.string.concrete_key));
+        stringArrayList.add(getString(R.string.paving_stones_key));
+        stringArrayList.add(getString(R.string.cobbleston_key));
+        stringArrayList.add(getString(R.string.compacted_key));
+        return stringArrayList;
+    }
 
     private ArrayList<String> prepareListDataMaxSlope() {
         ArrayList<String> stringArrayList = new ArrayList<>();
@@ -138,7 +147,7 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
         if (mIsForWAY) {
             switch (mPositionOfTitle) {
                 case 0:
-                    setDataWhenFilterApplied(prepareListDataSurface().get(position), position);
+                    setDataWhenFilterApplied(prepareListDataSurfaceKey().get(position), position);
                     break;
                 case 1:
                     setDataWhenFilterApplied(prepareListDataMaxSlope().get(position), position);

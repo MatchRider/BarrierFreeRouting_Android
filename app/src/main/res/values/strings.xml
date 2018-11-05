@@ -80,6 +80,14 @@
     <string name="grass_paver">Grass Paver</string>
     <string name="gravel">Gravel</string>
 
+    <string name="asphalt_key">asphalt</string>
+    <string name="concrete_key">concrete</string>
+    <string name="paving_stones_key">paving_stones</string>
+    <string name="cobbleston_key">cobblestone</string>
+    <string name="compacted_key">compacted</string>
+    <string name="grass_paver_key">grass_paver</string>
+    <string name="gravel_key">gravel</string>
+
     <string name="walk_way_width">Walkway width (inches)</string>
 
     <string name="asphalt_filter">Asphalt or Concrete</string>

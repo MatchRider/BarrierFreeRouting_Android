@@ -263,6 +263,12 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 }
 
             }
+            if (mHashMapWay != null && mHashMapWay.get(2).getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)) {
+                if (mHashMapWay.get(2).getValue() != null) {
+                    tags.append("<tag k=\"" + AppConstant.KEY_INCLINE + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(2).getValue()) + "\"/>\n");
+                }
+
+            }
             if (mHashMapWay != null && mHashMapWay.get(3).getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
                 if (mHashMapWay.get(3).getValue() != null) {
                     if(!mStringChoosedSideWalk.isEmpty())
@@ -514,6 +520,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     }
 
 
+
     /**
      * Get Data from intent and set  values to attributes
      */
@@ -521,7 +528,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (mIsForWAY) {
             Attributes attributesSurfaceType = new Attributes();
             attributesSurfaceType.setKey(AppConstant.KEY_SURFACE);
-            attributesSurfaceType.setValid(false);
             mHashMapWay.put(0, attributesSurfaceType);
 
             Attributes attributesInclineType = new Attributes();
@@ -541,7 +547,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         attributesSurface.setKey(mListWayData.getAttributesList().get(i).getKey());
                         attributesSurface.setValue(mListWayData.getAttributesList().get(i).getValue());
                         attributesSurface.setValid(mListWayData.getAttributesList().get(i).isValid());
-                        mHashMapWay.put(0, attributesSurface);
+                        if(!mISFromOSM) {
+                            mHashMapWay.put(0, attributesSurface);
+                        }
                         break;
 
                     case AppConstant.KEY_HIGHWAY:
@@ -549,7 +557,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         attributesHighWay.setKey(mListWayData.getAttributesList().get(i).getKey());
                         attributesHighWay.setValue(mListWayData.getAttributesList().get(i).getValue());
                         attributesHighWay.setValid(mListWayData.getAttributesList().get(i).isValid());
-                        mHashMapWay.put(1, attributesHighWay);
+                        if(!mISFromOSM) {
+                            mHashMapWay.put(1, attributesHighWay);
+                        }
                         break;
 
 
@@ -568,7 +578,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         }
                         attributesIncline.setValue(value);
                         attributesIncline.setValid(mListWayData.getAttributesList().get(i).isValid());
-                        mHashMapWay.put(2, attributesIncline);
+                        if(!mISFromOSM) {
+                            mHashMapWay.put(2, attributesIncline);
+                        }
                         break;
 
                     case AppConstant.KEY_WIDTH:
@@ -582,7 +594,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
                         }
                         attributesWidth.setValid(mListWayData.getAttributesList().get(i).isValid());
-                        mHashMapWay.put(3, attributesWidth);
+                        if(!mISFromOSM) {
+                            mHashMapWay.put(3, attributesWidth);
+                        }
 
                         break;
 
@@ -591,7 +605,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         attributesFootWay.setKey(mListWayData.getAttributesList().get(i).getKey());
                         attributesFootWay.setValue(mListWayData.getAttributesList().get(i).getValue());
                         attributesFootWay.setValid(mListWayData.getAttributesList().get(i).isValid());
-                        mHashMapWay.put(4, attributesFootWay);
+                        if(!mISFromOSM) {
+                            mHashMapWay.put(4, attributesFootWay);
+                        }
                         break;
 
                     case AppConstant.KEY_SIDEWALK:
