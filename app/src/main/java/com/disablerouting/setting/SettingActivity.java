@@ -42,7 +42,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class SettingActivity extends BaseActivityImpl implements SettingAdapterListener, ISettingView,
-        IAysncTaskOsm, RadioGroup.OnCheckedChangeListener {
+        IAysncTaskOsm {
 
     @BindView(R.id.rcv_setting)
     RecyclerView mRecyclerView;
@@ -50,17 +50,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @BindView(R.id.rel_progress_bar)
     RelativeLayout mRelativeLayoutProgress;
 
-    @BindView(R.id.radioGroup)
-    RadioGroup mRadioGroup;
-
-    @BindView(R.id.radioButtonLeft)
-    RadioButton mRadioButtonLeft;
-
-    @BindView(R.id.radioButtonRight)
-    RadioButton mRadioButtonRight;
-
-    @BindView(R.id.radioButtonBoth)
-    RadioButton mRadioButtonBoth;
+    @BindView(R.id.txv_sidewalk)
+    TextView mTxvSideWalk;
 
     final int OPEN_SETTING_TYPE = 200;
     private SettingAdapter mSettingAdapter;
@@ -115,10 +106,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         mISFromOSM = !mListWayData.getIsForData().isEmpty() && mListWayData.getIsForData().equalsIgnoreCase(AppConstant.OSM_DATA);
                     }
                     if (mISFromOSM) {
-                        mRadioGroup.setVisibility(View.VISIBLE);
-                        mRadioGroup.setOnCheckedChangeListener(this);
+                        mTxvSideWalk.setVisibility(View.VISIBLE);
                     } else {
-                        mRadioGroup.setVisibility(View.GONE);
+                        mTxvSideWalk.setVisibility(View.GONE);
                     }
                     getDataFromWay();
                     setUpRecyclerView();
@@ -250,7 +240,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             }
         } else {
             String sideWalkValue = null;
-
             for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
                 Attributes attributes = mListWayData.getAttributesList().get(i);
                 if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK)) {
@@ -269,14 +258,15 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             }
             if (mHashMapWay != null && mHashMapWay.get(0).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)) {
                 if (mHashMapWay.get(0).getValue() != null) {
+                    if(!mStringChoosedSideWalk.isEmpty())
                     tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK + ":" + sideWalkValue + ":" + AppConstant.KEY_SURFACE + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(0).getValue()) + "\"/>\n");
                 }
 
             }
             if (mHashMapWay != null && mHashMapWay.get(3).getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
                 if (mHashMapWay.get(3).getValue() != null) {
-                    tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK + ":" + sideWalkValue + ":" + AppConstant.KEY_WIDTH + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(3).getValue()) + "\"/>\n");
-
+                    if(!mStringChoosedSideWalk.isEmpty())
+                        tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK + ":" + sideWalkValue + ":" + AppConstant.KEY_WIDTH + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(3).getValue()) + "\"/>\n");
                 }
 
             }
@@ -551,11 +541,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         attributesSurface.setKey(mListWayData.getAttributesList().get(i).getKey());
                         attributesSurface.setValue(mListWayData.getAttributesList().get(i).getValue());
                         attributesSurface.setValid(mListWayData.getAttributesList().get(i).isValid());
-                        if(mISFromOSM){
-
-                        }else {
-                            mHashMapWay.put(0, attributesSurface);
-                        }
+                        mHashMapWay.put(0, attributesSurface);
                         break;
 
                     case AppConstant.KEY_HIGHWAY:
@@ -596,12 +582,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
                         }
                         attributesWidth.setValid(mListWayData.getAttributesList().get(i).isValid());
+                        mHashMapWay.put(3, attributesWidth);
 
-                        if(mISFromOSM){
-
-                        }else {
-                            mHashMapWay.put(3, attributesWidth);
-                        }
                         break;
 
                     case AppConstant.KEY_FOOTWAY:
@@ -616,13 +598,16 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         if (mISFromOSM) {
                             switch (mListWayData.getAttributesList().get(i).getValue()) {
                                 case "left":
-                                    mRadioButtonLeft.setChecked(true);
+                                    mStringChoosedSideWalk = "left";
+                                    mTxvSideWalk.setText(getResources().getString(R.string.left));
                                     break;
                                 case "right":
-                                    mRadioButtonRight.setChecked(true);
+                                    mStringChoosedSideWalk = "right";
+                                    mTxvSideWalk.setText(getResources().getString(R.string.right));
                                     break;
                                 case "both":
-                                    mRadioButtonBoth.setChecked(true);
+                                    mStringChoosedSideWalk = "both";
+                                    mTxvSideWalk.setText(getResources().getString(R.string.both));
                                     break;
                             }
                         }
@@ -1151,22 +1136,4 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     }
 
 
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId) {
-            case R.id.radioButtonLeft:
-                mStringChoosedSideWalk = "left";
-                break;
-
-            case R.id.radioButtonRight:
-                mStringChoosedSideWalk = "right";
-                break;
-
-            case R.id.radioButtonBoth:
-                mStringChoosedSideWalk = "both";
-                break;
-            default:
-        }
-
-    }
 }

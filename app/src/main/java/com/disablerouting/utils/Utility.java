@@ -397,7 +397,7 @@ public class Utility {
         for (int i = 0; i < lenWay; i++) {
             for (int j=0;j< listWay.get(i).getNdList().size();j++){
                 String nodeID=listWay.get(i).getNdList().get(j).getRef();
-                for (int k = 0; k < len; k++) { // NODES iterate
+                for (int k = 0; k < len; k++) { // NODES iterate 45000
                     Node node = nodes.item(k);
                     if(node.getAttributes().getNamedItem("id").getNodeValue().equalsIgnoreCase(nodeID)){
                         result.append(nodeToString(nodes.item(i)));

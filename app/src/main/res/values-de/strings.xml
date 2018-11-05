@@ -191,9 +191,9 @@
     <string name="nodes">Wegpunkt</string>
     <string name="error_when_entry_not_saved">Deine Eingabe konnte nicht gespeichert werden.</string>
     <string name="mid_way">Mittlerer Weg</string>
-    <string name="left">Left</string>
-    <string name="right">Right</string>
-    <string name="both">Both</string>
+    <string name="left">Sidewalk : Left</string>
+    <string name="right">Sidewalk : Right</string>
+    <string name="both">Sidewalk : Both</string>
 
 
 </resources>

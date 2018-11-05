@@ -50,7 +50,6 @@
             android:layout_below="@id/ll_result"
             android:id="@+id/ll_question_correct"
             android:layout_width="match_parent"
-            android:padding="@dimen/padding_large"
             android:orientation="vertical"
             android:layout_height="wrap_content">
 
@@ -59,14 +58,28 @@
                   android:layout_marginBottom="@dimen/margin_normal"
                   android:textSize="@dimen/text_xxlarge"
                   android:gravity="start"
+                  android:padding="@dimen/padding_large"
                   android:paddingTop="@dimen/padding_normal"
                   android:paddingBottom="@dimen/padding_normal"
                   android:text="@string/is_the_following_correct"
                   android:layout_height="wrap_content"
                   android:fontFamily="@font/frutiger_lt_bold"
         />
+        <TextView android:layout_width="match_parent"
+                  android:id="@+id/txv_sidewalk"
+                  android:textColor="@android:color/black"
+                  android:layout_marginBottom="@dimen/margin_normal"
+                  android:textSize="@dimen/text_xxlarge"
+                  android:gravity="start"
+                  android:padding="@dimen/padding_large"
+                  android:paddingTop="@dimen/padding_normal"
+                  android:paddingBottom="@dimen/padding_normal"
+                  android:text="@string/left"
+                  android:layout_height="wrap_content"
+                  android:fontFamily="@font/frutiger_lt_bold"
+        />
 
-        <RadioGroup
+       <!-- <RadioGroup
                 android:id="@+id/radioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,7 +92,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/text_xxlarge"
+                    android:textSize="@dimen/text_large"
                     android:text="@string/left" />
 
             <RadioButton
@@ -87,19 +100,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimaryDark"
-                    android:layout_marginStart="@dimen/margin_normal"
-                    android:textSize="@dimen/text_xxlarge"
+                    android:layout_marginStart="@dimen/margin_small"
+                    android:textSize="@dimen/text_large"
                     android:text="@string/right" />
             <RadioButton
                     android:id="@+id/radioButtonBoth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimaryDark"
-                    android:layout_marginStart="@dimen/margin_normal"
-                    android:textSize="@dimen/text_xxlarge"
+                    android:layout_marginStart="@dimen/margin_small"
+                    android:textSize="@dimen/text_large"
                     android:text="@string/both" />
 
-        </RadioGroup>
+        </RadioGroup>-->
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
             android:id="@+id/rcv_setting"
