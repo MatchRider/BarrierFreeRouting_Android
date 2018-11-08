@@ -400,7 +400,7 @@ public class Utility {
                 for (int k = 0; k < len; k++) { // NODES iterate 45000
                     Node node = nodes.item(k);
                     if(node.getAttributes().getNamedItem("id").getNodeValue().equalsIgnoreCase(nodeID)){
-                        result.append(nodeToString(nodes.item(i)));
+                        result.append(nodeToString(nodes.item(k)));
                         break;
                     }
                 }
