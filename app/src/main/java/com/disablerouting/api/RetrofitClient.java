@@ -12,14 +12,12 @@ import java.util.concurrent.TimeUnit;
 
 public class RetrofitClient {
     private static Retrofit sRetrofit;
-    private static Retrofit sRetrofitOSM;
     private static Retrofit sRetrofitOSMCheck;
     private static Retrofit sRetrofitDirections;
     private static Retrofit sRetrofitWheelChair;
     private static Retrofit sRetrofitCURD;
 
     private static ApiService sApiService;
-    private static ApiService sApiServiceOSM;
     private static ApiService sApiServiceOSMCheck;
     private static ApiService sApiServiceDirections;
     private static ApiService sApiServiceWheelChair;
@@ -63,39 +61,9 @@ public class RetrofitClient {
      * Initialize retrofit client with base url
      * @return Instance if retrofit
      */
-    private static Retrofit getRetrofitForOsm(Context context) {
-        if (sRetrofitOSM == null) {
 
-            final String baseUrl = ApiEndPoint.SANDBOX_BASE_URL_OSM;
-            String osm = null;
-            if(UserPreferences.getInstance(context)!=null && UserPreferences.getInstance(context).getAccessToken()!=null){
-                osm= UserPreferences.getInstance(context).getAccessToken();
-            }
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            // set your desired log level
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-
-            final OkHttpClient client = new OkHttpClient.Builder()
-                    .followRedirects(true)
-                    .readTimeout(60, TimeUnit.SECONDS)
-                    .writeTimeout(60, TimeUnit.SECONDS)
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .addInterceptor(new ApiInterceptorOsm(osm))
-                    .addInterceptor(logging)
-                    .build();
-
-            sRetrofitOSM = new Retrofit.Builder()
-                    .client(client)
-                    .baseUrl(baseUrl)
-                    .addConverterFactory(SimpleXmlConverterFactory.create())
-                    .build();
-        }
-
-        return sRetrofitOSM;
-    }
     private static Retrofit getRetrofitForOsmCheck(Context context) {
-        if (sRetrofitOSM == null) {
+        if (sRetrofitOSMCheck == null) {
 
             final String baseUrl = ApiEndPoint.LIVE_BASE_URL_OSM;
             String osm = null;
@@ -116,14 +84,14 @@ public class RetrofitClient {
                     .addInterceptor(logging)
                     .build();
 
-            sRetrofitOSM = new Retrofit.Builder()
+            sRetrofitOSMCheck = new Retrofit.Builder()
                     .client(client)
                     .baseUrl(baseUrl)
                     .addConverterFactory(SimpleXmlConverterFactory.create())
                     .build();
         }
 
-        return sRetrofitOSM;
+        return sRetrofitOSMCheck;
     }
     private static Retrofit getRetrofitDirections() {
         if (sRetrofitDirections == null) {
@@ -220,12 +188,6 @@ public class RetrofitClient {
      * Get api retrofit object
      * @return Instance of api service
      */
-    public static ApiService getApiServiceOsm(Context context) {
-        if (sApiServiceOSM == null) {
-            sApiServiceOSM = getRetrofitForOsm(context).create(ApiService.class);
-        }
-        return sApiServiceOSM;
-    }
 
     public static ApiService getApiServiceOsmCheck(Context context) {
         if (sApiServiceOSMCheck == null) {

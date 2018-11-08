@@ -726,10 +726,13 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             if (aVoid != null) {
                 List<ListWayData> listWayData = aVoid.getListWayDataList();
                 List<NodeReference> nodeReferenceList = aVoid.getNodeReferenceList();
-                if (listWayData != null && listWayData.size() > 0) {
-                    setBoundingBox(listWayData.get(0).getGeoPoints().get(0), listWayData.get(listWayData.size() - 1).getGeoPoints().get(0));
+                if (listWayData != null && listWayData.size() > 0 && listWayData.get(0)!=null && listWayData.get(0).getGeoPoints()!=null) {
+                    if(listWayData.size()>0 && listWayData.get(0).getGeoPoints().size()>0 && listWayData.get(listWayData.size()-1).getGeoPoints().size() !=0) {
+                        setBoundingBox(listWayData.get(0).getGeoPoints().get(0),
+                                listWayData.get(listWayData.size() - 1).getGeoPoints().get(0));
+                    }
                 }
-                if (nodeReferenceList != null && nodeReferenceList.size() > 0) {
+                if (nodeReferenceList != null && nodeReferenceList.size() > 0 && nodeReferenceList.get(0)!=null) {
                     GeoPoint geoPointStart = new GeoPoint(Double.parseDouble(nodeReferenceList.get(0).getLat()),
                             Double.parseDouble(nodeReferenceList.get(0).getLon()));
                     GeoPoint geoPointEnd = new GeoPoint(Double.parseDouble(nodeReferenceList.get(nodeReferenceList.size() - 1).getLat()),
@@ -873,13 +876,21 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (!isChecked) {
             mButtonSelected = 1;
             // setZoomMap();
-            PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
-            mPlotWayDataTaskNotValidated.execute();
+            if(mWayListNotValidatedData.size()>0) {
+                PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
+                mPlotWayDataTaskNotValidated.execute();
+            }else {
+                showLoader();
+            }
         } else {
             mButtonSelected = 2;
             //setZoomMap();
-            PlotWayDataTask mPlotWayDataTaskValidated = new PlotWayDataTask();
-            mPlotWayDataTaskValidated.execute();
+            if(mWayListValidatedData.size()>0) {
+                PlotWayDataTask mPlotWayDataTaskValidated = new PlotWayDataTask();
+                mPlotWayDataTaskValidated.execute();
+            }else {
+                showLoader();
+            }
         }
     }
 
@@ -899,7 +910,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mImageCurrentPin.setVisibility(View.GONE);
                 mImageViewInfo.setVisibility(View.GONE);
                 // clearItemsFromMap();
-                if (mNodeListNotValidatedData.size() != 0) {
+                if (mWayListNotValidatedData.size() != 0) {
                     hideLoader();
                     // setZoomMap();
                     PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
