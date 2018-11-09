@@ -58,7 +58,7 @@
 
     <string name="surface_type">Oberflächentyp</string>
     <string name="maximum_sloped_filter">Maximale Bordsteinkantenhöhe (cm)</string>
-    <string name="maximum_sloped">Bordsteinkanten-höhe (cm)</string>
+    <string name="maximum_sloped">Bordsteinkantenhöhe (cm)</string>
     <string name="maximum_incline">Maximale Steigung (%)</string>
     <string name="sidewalk_width">Gehwegbreite (m)</string>
     <string name="permanent_obstacle">Hindernis liegt vor</string>
@@ -95,7 +95,7 @@
     <string name="greater_ten"><![CDATA[über 10 %]]></string>
 
     <string name="zero_curb">kein Bordstein</string>
-    <string name="zero_curb_inlcline">kein Steigung</string>
+    <string name="zero_curb_inlcline">keine Steigung</string>
 
 
     <string name="string_three">3 cm</string>
