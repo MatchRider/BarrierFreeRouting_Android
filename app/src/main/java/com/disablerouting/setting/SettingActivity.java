@@ -641,7 +641,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     case AppConstant.KEY_KERB_HEIGHT:
                         Attributes attributesKerb = new Attributes();
                         attributesKerb.setKey(mNodeReference.getAttributes().get(i).getKey());
-                        attributesKerb.setValue(Utility.changeMeterToCm(mNodeReference.getAttributes().get(i).getValue()));
+                        attributesKerb.setValue(mNodeReference.getAttributes().get(i).getValue());
                         attributesKerb.setValid(mNodeReference.getAttributes().get(i).isValid());
                         mHashMapWay.put(0, attributesKerb);
                         break;
@@ -802,7 +802,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
             attributesValidate.setKey(mHashMapWay.get(0).getKey());
             String value = Utility.covertValueRequired(mHashMapWay.get(0).getValue());
-            value = Utility.changeCmToMeter(value);
+            //value = Utility.changeCmToMeter(value);
             attributesValidate.setValue(value);
             attributesValidate.setValid(mHashMapWay.get(0).isValid());
         }
