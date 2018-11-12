@@ -121,11 +121,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     if (mNodeReference.getIsForData() != null) {
                         mISFromOSM = !mNodeReference.getIsForData().isEmpty() && mNodeReference.getIsForData().equalsIgnoreCase(AppConstant.OSM_DATA);
                     }
-                    if (mISFromOSM) {
-                        mTxvSideWalk.setVisibility(View.VISIBLE);
-                    } else {
-                        mTxvSideWalk.setVisibility(View.GONE);
-                    }
+
+                    mTxvSideWalk.setVisibility(View.GONE);
                     getDataFromWay();
                     setUpRecyclerView();
 

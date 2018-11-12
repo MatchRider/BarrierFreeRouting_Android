@@ -46,7 +46,7 @@ public class DirectionInstruction {
     }
   }
 
-    public static Drawable getEnumDrawable(Context context, int type) {
+    public static Drawable getEnumDrawable(Context context, int type,int coordinateSize) {
       DIRECTIONS directions= DIRECTIONS.valueOf(type);
       switch (directions) {
         case LEFT:
@@ -70,7 +70,11 @@ public class DirectionInstruction {
         case UTURN:
           return getImage(context,"ic_uturn");
         case GOAL:
-          return getImage(context,"ic_dest_b");
+          if(coordinateSize==2) {
+            return getImage(context, "ic_dest_b");
+          }else {
+            return getImage(context, "ic_mid_c");
+          }
         case DEPART:
           return getImage(context,"ic_source_a");
         case KEEPLEFT:
@@ -78,7 +82,9 @@ public class DirectionInstruction {
         case KEEPRIGHT:
           return getImage(context,"ic_keep_right");
         case MID_WAY:
-          return getImage(context,"ic_mid_c");
+          if(coordinateSize==3) {
+            return getImage(context, "ic_dest_b");
+          }
         default:
           return null;
       }

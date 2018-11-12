@@ -62,6 +62,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private HashMap<String, Features> mHashMapObjectFilterRoutingVia = new HashMap<>();
     private HashMap<String, String> mHashMapObjectFilter;
     private IRoutePlannerScreenPresenter mIRoutePlannerScreenPresenter;
+    private int mCoordinatesSize;
 
 
     @BindView(R.id.btn_go)
@@ -181,7 +182,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 //mSourceDestinationFragment.callForDestination(geoPoint, geoPointSource, geoPointDestination);
             } else {
                 if (!mISFromSuggestion && !mISFromOSM) {
-                    plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null, true);
+                    plotDataOfSourceDestination(null, mSourceAddress, mDestinationAddress, null, true,mCoordinatesSize);
                 }
 
             }
@@ -193,10 +194,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     }
 
     @Override
-    public void plotDataOnMap(List<List<Double>> geoPointList, List<Steps> stepsList) {
+    public void plotDataOnMap(List<List<Double>> geoPointList, List<Steps> stepsList, int coordinateSize) {
         if (geoPointList != null && stepsList != null) {
+            mCoordinatesSize =coordinateSize;
             for (int i = 0; i < stepsList.size(); i++) {
-                plotDataOfSourceDestination(geoPointList, mSourceAddress, mDestinationAddress, stepsList, true);
+                plotDataOfSourceDestination(geoPointList, mSourceAddress, mDestinationAddress, stepsList, true,coordinateSize);
             }
             if (!mStepListHasData) {
                 mStepsList.addAll(stepsList);
@@ -957,6 +959,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onInfo() {
         Intent intent = new Intent(this, InstructionsActivity.class);
         intent.putParcelableArrayListExtra(AppConstant.STEP_DATA, (ArrayList<? extends Parcelable>) mStepsList);
+        intent.putExtra(AppConstant.COORDINATE_LIST,mCoordinatesSize);
         launchActivity(intent);
     }
 

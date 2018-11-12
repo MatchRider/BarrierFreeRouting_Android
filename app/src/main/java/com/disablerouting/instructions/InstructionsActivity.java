@@ -23,6 +23,7 @@ public class InstructionsActivity extends BaseActivityImpl  implements Instructi
 
     private InstructionsAdapter mInstructionsAdapter;
     private List<Steps> mStepsList= new ArrayList<Steps>();
+    private int mCoordinateSize=0;
 
 
     @Override
@@ -34,13 +35,16 @@ public class InstructionsActivity extends BaseActivityImpl  implements Instructi
         if(getIntent().hasExtra(AppConstant.STEP_DATA)){
             mStepsList = getIntent().getParcelableArrayListExtra(AppConstant.STEP_DATA);
         }
+        if(getIntent().hasExtra(AppConstant.COORDINATE_LIST)){
+            mCoordinateSize = Integer.parseInt(getIntent().getStringExtra(AppConstant.COORDINATE_LIST));
+        }
         for (int i=0;i< mStepsList.size();i++){
             if(mStepsList.get(i).getType()==14){
                 mStepsList.remove(i+1);
                 mStepsList.remove(i-1);
             }
         }
-        mInstructionsAdapter =new InstructionsAdapter(this,mStepsList,this);
+        mInstructionsAdapter =new InstructionsAdapter(this,mStepsList,this,mCoordinateSize);
         setUpRecyclerView();
     }
 

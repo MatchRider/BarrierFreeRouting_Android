@@ -365,7 +365,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             mDirectionsResponse=data;
             for (int i = 0; i< data.getFeaturesList().get(0).getProperties().getSegmentList().size(); i++){
                     mOnSourceDestinationListener.plotDataOnMap(data.getFeaturesList().get(0).getGeometry().getCoordinates(),
-                            data.getFeaturesList().get(0).getProperties().getSegmentList().get(i).getStepsList());
+                            data.getFeaturesList().get(0).getProperties().getSegmentList().get(i).getStepsList(),
+                            data.getInfo().getQuery().getCoordinatesList().size());
 
             }
             if(data.getFeaturesList().get(0).getProperties().getSegmentList().size()>1 && data.getInfo()!=null &&

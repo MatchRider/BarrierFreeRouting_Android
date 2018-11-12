@@ -22,11 +22,13 @@ public class InstructionsAdapter extends RecyclerView.Adapter<InstructionsAdapte
     private Context mContext;
     private List<Steps> mStepsList= new ArrayList<>();
     private OnInstructionsClickListener mOnInstructionsClickListener;
+    private int mCoordinateSize;
 
-    InstructionsAdapter(Context context, List<Steps> stepsList, OnInstructionsClickListener onInstructionsClickListener) {
+    InstructionsAdapter(Context context, List<Steps> stepsList, OnInstructionsClickListener onInstructionsClickListener, int coordinateSize) {
         mContext = context;
         mStepsList = stepsList;
         mOnInstructionsClickListener = onInstructionsClickListener;
+        mCoordinateSize=coordinateSize;
     }
 
 
@@ -55,7 +57,7 @@ public class InstructionsAdapter extends RecyclerView.Adapter<InstructionsAdapte
                 holder.textViewDistance.setText("");
             }
             if (steps.getType() != -1) {
-                holder.imageViewDirection.setImageDrawable(DirectionInstruction.getEnumDrawable(mContext,steps.getType()));
+                holder.imageViewDirection.setImageDrawable(DirectionInstruction.getEnumDrawable(mContext,steps.getType(),mCoordinateSize));
 
             } else {
                   holder.imageViewDirection.setImageDrawable(

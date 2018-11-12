@@ -184,7 +184,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      * @param stepsList step list ways points
      * @param showFeedbackDialog show dialog on click polyline
      */
-    public void plotDataOfSourceDestination(List<List<Double>> geoPointList, String startAdd, String endAdd, List<Steps> stepsList, boolean showFeedbackDialog) {
+    public void plotDataOfSourceDestination(List<List<Double>> geoPointList, String startAdd, String endAdd,
+                                            List<Steps> stepsList, boolean showFeedbackDialog,int coordinateSize) {
         GeoPoint geoPointStart = null, geoPointEnd = null;
         mShowFeedbackDialog = showFeedbackDialog;
         if (geoPointList != null) {
@@ -199,7 +200,11 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             if (geoPointArrayList.size() != 0) {
                 geoPointStart = geoPointArrayList.get(0);
                 geoPointEnd = geoPointArrayList.get(geoPointArrayList.size() - 1);
-                addMarkers(geoPointStart, startAdd, geoPointEnd, endAdd);
+                if(coordinateSize==2) {
+                    addMarkers(geoPointStart, startAdd, geoPointEnd, endAdd);
+                }else if(coordinateSize==3){
+                    addMarkersIfViaPoint(geoPointStart, startAdd, geoPointEnd, endAdd);
+                }
             }
             setBoundingBox(geoPointStart, geoPointEnd);
 
@@ -376,6 +381,35 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mEndMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mMapView.getOverlays().add(mEndMarker);
                 mEndMarker.setIcon(getResources().getDrawable(R.drawable.ic_dest_b));
+                mEndMarker.setTitle(endAdd);
+            }
+        }
+        mFeedBackListener.onMapPlotted();
+
+    }
+
+
+    private void addMarkersIfViaPoint(GeoPoint start, String startAdd, GeoPoint end, String endAdd) {
+
+        if (mMapView != null) {
+            MapController myMapController = (MapController) mMapView.getController();
+            myMapController.setZoom(14);
+            myMapController.setCenter(start);
+
+            if (start != null) {
+                GeoPoint startPoint = new GeoPoint(start.getLatitude(), start.getLongitude());
+                mStartMarker.setPosition(startPoint);
+                mStartMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                mMapView.getOverlays().add(mStartMarker);
+                mStartMarker.setIcon(getResources().getDrawable(R.drawable.ic_source_a));
+                mStartMarker.setTitle(startAdd);
+            }
+            if (end != null) {
+                GeoPoint endPoint = new GeoPoint(end.getLatitude(), end.getLongitude());
+                mEndMarker.setPosition(endPoint);
+                mEndMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                mMapView.getOverlays().add(mEndMarker);
+                mEndMarker.setIcon(getResources().getDrawable(R.drawable.ic_mid_c));
                 mEndMarker.setTitle(endAdd);
             }
         }
@@ -674,7 +708,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 mMidMarker.setPosition(geoPointMid);
                 mMidMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mMapView.getOverlays().add(mMidMarker);
-                mMidMarker.setIcon(getResources().getDrawable(R.drawable.ic_mid_c));
+                mMidMarker.setIcon(getResources().getDrawable(R.drawable.ic_dest_b));
                 mMidMarker.setTitle(geoPointAddress);
             }
         }
