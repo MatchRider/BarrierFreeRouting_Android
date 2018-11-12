@@ -8,7 +8,7 @@
               android:baselineAligned="false">
 
     <LinearLayout android:layout_width="0dp"
-                  android:layout_weight="6"
+                  android:layout_weight="6.25"
                   android:orientation="vertical"
                   android:layout_gravity="center_vertical"
                   android:layout_height="wrap_content">
@@ -17,10 +17,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/margin_small"
-                android:paddingStart="@dimen/margin_small"
-                android:paddingEnd="@dimen/margin_small"
                 android:textSize="@dimen/text_xlarge"
-                tools:text="fsdfsd"
+                tools:text="gffhfhf"
                 android:drawablePadding="@dimen/padding_normal"
                 android:drawableStart="@drawable/ic_circular_shape"
                 android:fontFamily="@font/frutiger_lt_bold"
@@ -30,7 +28,7 @@
                 android:id="@+id/txv_list_sub_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/margin_xxx_large"
+                android:paddingStart="@dimen/margin_xx_large"
                 android:paddingEnd="@dimen/margin_small"
                 android:textSize="@dimen/text_xlarge"
                 tools:text="fsdfsd"
@@ -42,7 +40,7 @@
     </LinearLayout>
     <LinearLayout android:layout_width="0dp"
                   android:layout_gravity="center_vertical"
-                  android:layout_weight="1"
+                  android:layout_weight="0.75"
                   android:layout_margin="@dimen/margin_smaller"
                   android:layout_height="wrap_content">
 
