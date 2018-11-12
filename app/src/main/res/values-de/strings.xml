@@ -201,8 +201,8 @@
     <string name="mid_way">Mittlerer Weg</string>
 
     <string name="left">Gehwegseite: links</string>
-    <string name="right">Gehwegbreite: rechts</string>
-    <string name="both">Gehwegbreite: beide Seiten</string>
+    <string name="right">Gehwegseite: rechts</string>
+    <string name="both">Gehwegseite: beide Seiten</string>
 
 
 </resources>
