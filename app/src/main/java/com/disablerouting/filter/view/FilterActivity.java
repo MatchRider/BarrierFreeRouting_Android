@@ -256,16 +256,16 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         mListDataChildValue = new LinkedHashMap<>();
 
         mListDataHeaderKeyForFilter.add("surface_type"); //"surface_type"
-        mListDataHeaderKeyForFilter.add("maximum_sloped_curb");
+        mListDataHeaderKeyForFilter.add("maximum_sloped_kerb");
         mListDataHeaderKeyForFilter.add("maximum_incline");
-        mListDataHeaderKeyForFilter.add("width");
+        mListDataHeaderKeyForFilter.add("minimum_width");
 
         List<DataModelExpandableList> surfaceTypeData = new ArrayList<>();
-        surfaceTypeData.add(new DataModelExpandableList(getString(R.string.asphalt)));
-        surfaceTypeData.add(new DataModelExpandableList(getString(R.string.concrete)));
-        surfaceTypeData.add(new DataModelExpandableList(getString(R.string.paving_stones)));
-        surfaceTypeData.add(new DataModelExpandableList(getString(R.string.cobblestone)));
-        surfaceTypeData.add(new DataModelExpandableList(getString(R.string.compacted)));
+        surfaceTypeData.add(new DataModelExpandableList(getString(R.string.asphalt_key)));
+        surfaceTypeData.add(new DataModelExpandableList(getString(R.string.concrete_key)));
+        surfaceTypeData.add(new DataModelExpandableList(getString(R.string.paving_stones_key)));
+        surfaceTypeData.add(new DataModelExpandableList(getString(R.string.cobbleston_key)));
+        surfaceTypeData.add(new DataModelExpandableList(getString(R.string.compacted_key)));
 
         List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<>();
         maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.zero)));

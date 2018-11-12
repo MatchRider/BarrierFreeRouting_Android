@@ -14,16 +14,17 @@ import com.disablerouting.route_planner.model.Steps;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class InstructionsActivity extends BaseActivityImpl  implements InstructionsAdapter.OnInstructionsClickListener {
+public class InstructionsActivity extends BaseActivityImpl implements InstructionsAdapter.OnInstructionsClickListener {
 
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
     private InstructionsAdapter mInstructionsAdapter;
-    private List<Steps> mStepsList= new ArrayList<Steps>();
-    private int mCoordinateSize=0;
+    private List<Steps> mStepsList = new ArrayList<Steps>();
+    private int mCoordinateSize = 0;
 
 
     @Override
@@ -32,19 +33,19 @@ public class InstructionsActivity extends BaseActivityImpl  implements Instructi
         setContentView(R.layout.activity_instructions);
         ButterKnife.bind(this);
 
-        if(getIntent().hasExtra(AppConstant.STEP_DATA)){
+        if (getIntent().hasExtra(AppConstant.STEP_DATA)) {
             mStepsList = getIntent().getParcelableArrayListExtra(AppConstant.STEP_DATA);
         }
-        if(getIntent().hasExtra(AppConstant.COORDINATE_LIST)){
-            mCoordinateSize = Integer.parseInt(getIntent().getStringExtra(AppConstant.COORDINATE_LIST));
+        if (getIntent().hasExtra(AppConstant.COORDINATE_SIZE)) {
+            mCoordinateSize = Objects.requireNonNull(getIntent().getExtras()).getInt(AppConstant.COORDINATE_SIZE);
         }
-        for (int i=0;i< mStepsList.size();i++){
-            if(mStepsList.get(i).getType()==14){
-                mStepsList.remove(i+1);
-                mStepsList.remove(i-1);
+        for (int i = 0; i < mStepsList.size(); i++) {
+            if (mStepsList.get(i).getType() == 14) {
+                mStepsList.remove(i + 1);
+                mStepsList.remove(i - 1);
             }
         }
-        mInstructionsAdapter =new InstructionsAdapter(this,mStepsList,this,mCoordinateSize);
+        mInstructionsAdapter = new InstructionsAdapter(this, mStepsList, this, mCoordinateSize);
         setUpRecyclerView();
     }
 
@@ -63,7 +64,7 @@ public class InstructionsActivity extends BaseActivityImpl  implements Instructi
     }
 
     @OnClick(R.id.img_back)
-    public void onBackClick(){
+    public void onBackClick() {
         finish();
     }
 }

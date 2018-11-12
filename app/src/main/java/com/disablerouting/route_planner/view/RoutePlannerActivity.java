@@ -62,7 +62,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private HashMap<String, Features> mHashMapObjectFilterRoutingVia = new HashMap<>();
     private HashMap<String, String> mHashMapObjectFilter;
     private IRoutePlannerScreenPresenter mIRoutePlannerScreenPresenter;
-    private int mCoordinatesSize;
+    private int mCoordinatesSize=0;
 
 
     @BindView(R.id.btn_go)
@@ -959,7 +959,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onInfo() {
         Intent intent = new Intent(this, InstructionsActivity.class);
         intent.putParcelableArrayListExtra(AppConstant.STEP_DATA, (ArrayList<? extends Parcelable>) mStepsList);
-        intent.putExtra(AppConstant.COORDINATE_LIST,mCoordinatesSize);
+        intent.putExtra(AppConstant.COORDINATE_SIZE,mCoordinatesSize);
         launchActivity(intent);
     }
 

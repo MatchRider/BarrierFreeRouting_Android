@@ -54,7 +54,7 @@ public interface AppConstant {
     String NODE_UPDATE = "Node";
 
     String OSM_DATA = "OSM";
-    String COORDINATE_LIST = "CoordinateSize";
+    String COORDINATE_SIZE = "CoordinateSize";
 
 
 }
