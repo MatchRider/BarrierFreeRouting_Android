@@ -55,6 +55,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -293,6 +294,12 @@ public class Utility {
         if (stringUnitPassed.contains("inches")) {
             converted = converted.replace("inches", "");
         }
+        if (stringUnitPassed.contains("above")) {
+            converted = converted.replace("above", "");
+        }
+        if (stringUnitPassed.contains("below")) {
+            converted = converted.replace("below", "");
+        }
         return converted;
     }
 
@@ -459,6 +466,10 @@ public class Utility {
         Random rnd = new Random();
         int intColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
         return String.format("#%06X", (0xFFFFFF & intColor));
+    }
+
+    public static String getAppLanguage(){
+        return Locale.getDefault().getDisplayLanguage();
     }
 
 }

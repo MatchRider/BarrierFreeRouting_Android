@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.disablerouting.api.*;
 import com.disablerouting.route_planner.model.DirectionsResponse;
 import com.disablerouting.route_planner.presenter.IDirectionsResponseReceiver;
+import com.disablerouting.utils.Utility;
 import org.json.JSONObject;
 import retrofit2.Call;
 
@@ -17,6 +18,12 @@ public class DirectionsManager implements ResponseCallback<DirectionsResponse> {
         this.mIDirectionsResponseReceiver = receiver;
         String jsonString = null;
         String geoJson = "geojson";
+        String language= "";
+        if(Utility.getAppLanguage().equalsIgnoreCase("English")){
+            language="en";
+        }else if(Utility.getAppLanguage().equalsIgnoreCase("Deutsch")) {
+            language="de";
+        }
         if (jsonObject != null) {
             try {
                 jsonString = jsonObject.toString();
@@ -25,10 +32,10 @@ public class DirectionsManager implements ResponseCallback<DirectionsResponse> {
                 e.printStackTrace();
             }
             mDirectionsApiCall = RetrofitClient.getApiServiceDirections().getDirections(ApiEndPoint.API_KEY, coordinates, profileType, jsonString,
-                    true, geoJson,"de");
+                    true, geoJson,language);
         } else {
             mDirectionsApiCall = RetrofitClient.getApiService().getDirections(ApiEndPoint.API_KEY, coordinates, profileType,
-                    true, geoJson,"de");
+                    true, geoJson,language);
 
         }
         if (mDirectionsApiCall != null)

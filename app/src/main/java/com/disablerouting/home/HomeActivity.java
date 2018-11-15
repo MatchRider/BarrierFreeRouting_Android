@@ -86,6 +86,15 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
         getWayListData();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     /**
      * Check location services status
@@ -152,11 +161,6 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
     @OnClick(R.id.btn_osm)
     void redirectOSM() {
         redirectToOSMScreen();
-       /* if (UserPreferences.getInstance(this).getAccessToken() == null) {
-            Toast.makeText(this, "Login Required", Toast.LENGTH_SHORT).show();
-        } else {
-            mIHomeScreenPresenter.getOSMData();
-        }*/
     }
 
     /**
@@ -508,10 +512,7 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
                 WayDataPreference.getInstance(this).saveNotValidateDataNodeOSM(mNodeListNotValidatedDataOSM);
 
             }
-            Date currentTime = Calendar.getInstance().getTime();
-            Log.e("Time End", String.valueOf(currentTime));
 
-            // redirectToOSMScreen();
         }
     }
 

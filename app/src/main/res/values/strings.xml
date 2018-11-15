@@ -40,7 +40,7 @@
     <string name="enter_source">Enter Source</string>
     <string name="b">B</string>
     <string name="enter_destination">Enter Destination</string>
-    <string name="go">los!</string>
+    <string name="go">Go!</string>
     <string name="coming_soon">Coming soon</string>
     <string name="please_provide_feedback_for">Please provide feedback for</string>
     <string name="cancel" tools:ignore="ButtonCase">CANCEL</string>
@@ -65,7 +65,7 @@
     <string name="error_source_destination_same">Please select different source and destination
     </string>
     <string name="surface_type">Surface Type</string>
-    <string name="maximum_sloped_filter">Maximum sloped (inches)</string>
+    <string name="maximum_sloped_filter">Maximum kerb height (inches)</string>
     <string name="maximum_sloped">Maximum sloped curb (inches)</string>
     <string name="maximum_incline">Maximum Incline (%)</string>
     <string name="sidewalk_width">Walkway width (inches)</string>
@@ -101,24 +101,24 @@
     <string name="up_to_three">Up to 3%</string>
     <string name="up_to_six">Up to 6%</string>
     <string name="up_to_ten">Up to 10%</string>
-    <string name="greater_ten"><![CDATA[über 10 %]]></string>
+    <string name="greater_ten"><![CDATA[above 10 %]]></string>
 
     <string name="zero_curb">No curb</string>
     <string name="zero_curb_inlcline">No gradient</string>
 
     <string name="string_three">1.2 inches</string>
     <string name="string_six">2.4 inches</string>
-    <string name="string_greater_six"><![CDATA[über 2.4 inches]]></string>
+    <string name="string_greater_six"><![CDATA[above 2.4 inches]]></string>
 
     <string name="string_point_three">1.2</string>
     <string name="string_point_six">2.4</string>
     <string name="string_point_six_greater"><![CDATA[2.4]]></string>
 
-    <string name="string_less_nine"><![CDATA[unter 35.4 inches]]></string>
-    <string name="string_greater_nine"><![CDATA[über 35.4 inches]]></string>
+    <string name="string_less_nine"><![CDATA[below 35.4 inches]]></string>
+    <string name="string_greater_nine"><![CDATA[above 35.4 inches]]></string>
 
-    <string name="ninty_less"><![CDATA[unter 35.4 inches]]></string>
-    <string name="ninty_greater"><![CDATA[über 35.4 inches]]></string>
+    <string name="ninty_less"><![CDATA[below 35.4 inches]]></string>
+    <string name="ninty_greater"><![CDATA[above 35.4 inches]]></string>
 
     <string name="value_string_less_width"><![CDATA[35.4]]></string>
     <string name="value_string_greater_width"><![CDATA[35.4]]></string>
@@ -141,7 +141,7 @@
     <string name="parking_title">Disabled Parking Space</string>
     <string name="home">Home</string>
     <string name="no_address_found">No address found.</string>
-    <string name="hint_routing_via">Bitte Ort eingeben</string>
+    <string name="hint_routing_via">Enter location</string>
     <string name="you_want_to_enhance_the_routing">You want to enhance the routing ?</string>
     <string name="tell_us_where_you_are">Tell us where you are!</string>
     <string name="give_feedback_title">Do you want to give feedback for a certain way?</string>
@@ -186,10 +186,10 @@
         Sensoric data capture
         Streetguard GmbH\n (https://www.wolfert-gmbh.de)"
     </string>
-    <string name="legal_data">\n\nDer Programm-Code der gesamten\n Anwendung und Funktion unterliegt
-        der\n European Union Public Licence (EUPL).\n\n
-        Der Programm-Code ist via\n
-        https://www.github.com/MatchRider/Routing \n abrufbar.
+    <string name="legal_data">\nThe program code is subject to the entire application and function
+        the European Union Public License (EUPL). \n\n
+        The program code is via \n
+        https://www.github.com/MatchRider/Routing \n available.
     </string>
     <string name="please_choose">Please Choose</string>
     <string name="name">Name</string>
