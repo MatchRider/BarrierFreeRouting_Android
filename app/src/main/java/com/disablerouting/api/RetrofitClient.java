@@ -43,7 +43,7 @@ public class RetrofitClient {
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .connectTimeout(30, TimeUnit.SECONDS)
                     .addInterceptor(new ApiInterceptor(false))
-                    .addInterceptor(logging)
+                   // .addInterceptor(logging)
                     .build();
 
             sRetrofit = new Retrofit.Builder()
@@ -81,7 +81,7 @@ public class RetrofitClient {
                     .writeTimeout(60, TimeUnit.SECONDS)
                     .connectTimeout(60, TimeUnit.SECONDS)
                     .addInterceptor(new ApiInterceptorOsm(osm))
-                    .addInterceptor(logging)
+                  //  .addInterceptor(logging)
                     .build();
 
             sRetrofitOSMCheck = new Retrofit.Builder()
@@ -107,7 +107,7 @@ public class RetrofitClient {
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .connectTimeout(30, TimeUnit.SECONDS)
                     .addInterceptor(new ApiInterceptor(true))
-                    .addInterceptor(logging)
+                  //  .addInterceptor(logging)
                     .build();
 
             sRetrofitDirections = new Retrofit.Builder()
@@ -133,7 +133,7 @@ public class RetrofitClient {
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .connectTimeout(30, TimeUnit.SECONDS)
                     .addInterceptor(new ApiInterceptor(false))
-                    .addInterceptor(logging)
+                   // .addInterceptor(logging)
                     .build();
 
             sRetrofitWheelChair = new Retrofit.Builder()
