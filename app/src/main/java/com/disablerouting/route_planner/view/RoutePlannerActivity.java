@@ -119,6 +119,13 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (getIntent().hasExtra("FromOSM")) {
             mISFromOSM = getIntent().getBooleanExtra("FromOSM", false);
         }
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
         if (mISFromOSM) {
             if (WayDataPreference.getInstance(this) != null) {
                 mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayDataOSM();

@@ -324,7 +324,7 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
     }
 
     @Override
-    public void onOSMDataReceived(String responseBody) {
+    public void onOSMDataReceived(final String responseBody) {
         if (responseBody != null) {
             GetOsmData getOsmData = null;
             try {
@@ -348,7 +348,7 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
                     nodeReference.setVersion(getOsmData.getOSM().getNode().get(i).getVersion());
                     nodeReference.setIsForData(AppConstant.OSM_DATA);
                     List<Attributes> attributesList = new ArrayList<>();
-                    Attributes attributes ;
+                    Attributes attributes;
                     if (getOsmData.getOSM().getNode().get(i).getTag() != null &&
                             getOsmData.getOSM().getNode().get(i).getTag().size() != 0) {
                         for (int k = 0; k < getOsmData.getOSM().getNode().get(i).getTag().size(); k++) {
@@ -429,6 +429,7 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
             }
             createListData(responseListWay, true);
         }
+
     }
 
     public void createListData(ResponseListWay responseWay, boolean isForOsm) {
