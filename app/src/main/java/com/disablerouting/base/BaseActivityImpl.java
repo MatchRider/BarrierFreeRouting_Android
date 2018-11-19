@@ -18,7 +18,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.disablerouting.R;
 import com.disablerouting.network.NetworkChangeReceiver;
@@ -73,21 +72,14 @@ public class BaseActivityImpl extends AppCompatActivity implements UIBase, Netwo
     @Override
     public void showSnackBar(@StringRes int message, AppCompatActivity context) {
         if (message != 0) {
-            Snackbar snackbar = Snackbar.with(getApplicationContext()).type(SnackbarType.MULTI_LINE).text(message);
-            TextView textView = (TextView) snackbar.getRootView().findViewById(android.support.design.R.id.snackbar_text);
-            textView.setMaxLines(5);
-            snackbar.show(context);
-
+            Snackbar.with(getApplicationContext()).type(SnackbarType.MULTI_LINE).text(message).show(context);
         }
     }
 
     @Override
     public void showSnackBar(String message, AppCompatActivity context) {
         if (!message.equals("")) {
-            Snackbar snackbar = Snackbar.with(getApplicationContext()).type(SnackbarType.MULTI_LINE).text(message);
-            TextView textView = (TextView) snackbar.getRootView().findViewById(android.support.design.R.id.snackbar_text);
-            textView.setMaxLines(5);
-            snackbar.show(context);
+            Snackbar.with(getApplicationContext()).type(SnackbarType.MULTI_LINE).text(message).show(context);
         }
     }
 
