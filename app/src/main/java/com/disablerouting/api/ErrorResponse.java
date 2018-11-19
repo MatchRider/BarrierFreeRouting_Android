@@ -12,7 +12,8 @@ public class ErrorResponse {
     public ErrorResponse(String errorMessage) {
         mErrorMessage = errorMessage;
     }
-    
+
+
     /**
      * Gets the error message.
      *

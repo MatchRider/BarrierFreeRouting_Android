@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.disablerouting.R;
 import com.disablerouting.network.NetworkChangeReceiver;
@@ -28,7 +29,7 @@ import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.enums.SnackbarType;
 
 @SuppressLint("Registered")
-public class BaseActivityImpl extends AppCompatActivity implements UIBase, NetworkChangeReceiver.ConnectionChangeListener ,
+public class BaseActivityImpl extends AppCompatActivity implements UIBase, NetworkChangeReceiver.ConnectionChangeListener,
         ISideMenuFragmentCallback {
 
     private NetworkChangeReceiver mNetworkChangeReceiver = new NetworkChangeReceiver();
@@ -50,7 +51,7 @@ public class BaseActivityImpl extends AppCompatActivity implements UIBase, Netwo
         if (mLoader == null) {
             mLoader = new DRLoader(this);
             Window window = mLoader.getWindow();
-            if ( window != null ) {
+            if (window != null) {
                 window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             }
             mLoader.setCancelable(false);
@@ -72,14 +73,21 @@ public class BaseActivityImpl extends AppCompatActivity implements UIBase, Netwo
     @Override
     public void showSnackBar(@StringRes int message, AppCompatActivity context) {
         if (message != 0) {
-            Snackbar.with(getApplicationContext()).type(SnackbarType.MULTI_LINE).text(message).show(context);
+            Snackbar snackbar = Snackbar.with(getApplicationContext()).type(SnackbarType.MULTI_LINE).text(message);
+            TextView textView = (TextView) snackbar.getRootView().findViewById(android.support.design.R.id.snackbar_text);
+            textView.setMaxLines(5);
+            snackbar.show(context);
+
         }
     }
 
     @Override
     public void showSnackBar(String message, AppCompatActivity context) {
         if (!message.equals("")) {
-            Snackbar.with(getApplicationContext()).type(SnackbarType.MULTI_LINE).text(message).show(context);
+            Snackbar snackbar = Snackbar.with(getApplicationContext()).type(SnackbarType.MULTI_LINE).text(message);
+            TextView textView = (TextView) snackbar.getRootView().findViewById(android.support.design.R.id.snackbar_text);
+            textView.setMaxLines(5);
+            snackbar.show(context);
         }
     }
 
@@ -118,19 +126,21 @@ public class BaseActivityImpl extends AppCompatActivity implements UIBase, Netwo
         super.onDestroy();
         unregisterNetworkChanges();
     }
+
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        if(!isConnected) {
-            Toast.makeText(this, getResources().getString(R.string.no_internet),Toast.LENGTH_SHORT).show();
+        if (!isConnected) {
+            Toast.makeText(this, getResources().getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
         }
     }
+
     @Override
     public void onStart() {
         super.onStart();
         mNetworkChangeReceiver.setConnectionListener(this);
-        IntentFilter intentFilter= new IntentFilter();
+        IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-        registerReceiver(mNetworkChangeReceiver,intentFilter);
+        registerReceiver(mNetworkChangeReceiver, intentFilter);
     }
 
 
@@ -142,6 +152,7 @@ public class BaseActivityImpl extends AppCompatActivity implements UIBase, Netwo
 
     /**
      * Add side menu to your activity
+     *
      * @param frameLayout take layout of frame
      */
     protected void addNavigationMenu(FrameLayout frameLayout, ISideMenuFragmentCallback listener) {
@@ -160,6 +171,7 @@ public class BaseActivityImpl extends AppCompatActivity implements UIBase, Netwo
                 break;
         }
     }
+
     protected void addFragment(@IdRes int containerViewId,
                                @NonNull Fragment fragment,
                                @NonNull String fragmentTag) {

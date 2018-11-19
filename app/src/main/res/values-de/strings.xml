@@ -25,7 +25,6 @@
 
     <!--Expected Error Codes-->
     <string name="no_internet">Du bist nicht mit dem Internet verbunden. Bitte prüfe deine Verbindung!</string>
-    <string name="INTERNAL_SERVER_ERROR">Die Anfrage ist falsch und kann daher nicht bearbeitet werden.</string>
 
     <string name="text_skip">überspringen</string>
     <string name="close_drawer">Close</string>

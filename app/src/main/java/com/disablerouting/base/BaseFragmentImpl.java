@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.view.Window;
+import android.widget.TextView;
 import com.disablerouting.widget.DRLoader;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.enums.SnackbarType;
@@ -44,15 +45,23 @@ public class BaseFragmentImpl extends Fragment implements IFragmentBase {
 
     @Override
     public void showSnackBar(@StringRes int message) {
-        if (message != 0 && getContext() != null) {
-            Snackbar.with(getContext()).type(SnackbarType.MULTI_LINE).text(message).show(getActivity());
+        if (message != 0 && getContext() != null && getActivity()!=null) {
+            Snackbar snackbar = Snackbar.with(getContext()).type(SnackbarType.MULTI_LINE).text(message);
+            TextView textView = (TextView) snackbar.getRootView().findViewById(android.support.design.R.id.snackbar_text);
+            textView.setMaxLines(5);
+            snackbar.show(getActivity());
         }
     }
 
     @Override
     public void showSnackBar(String message) {
-        if(getContext() != null)
-        Snackbar.with(getContext()).type(SnackbarType.MULTI_LINE).text(message).show(getActivity());
+        if (getContext() != null && getActivity() != null) {
+            Snackbar snackbar = Snackbar.with(getContext()).type(SnackbarType.MULTI_LINE).text(message);
+            TextView textView = (TextView) snackbar.getRootView().findViewById(android.support.design.R.id.snackbar_text);
+            textView.setMaxLines(5);
+            snackbar.show(getActivity());
+        }
     }
 
 }
+

@@ -1,6 +1,7 @@
 package com.disablerouting.api;
 
 import android.support.annotation.NonNull;
+import com.disablerouting.utils.Utility;
 import org.json.JSONException;
 import org.json.JSONObject;
 import retrofit2.Call;
@@ -20,8 +21,6 @@ public class ResponseWrapper<T> implements Callback<T> {
 
     private final ResponseCallback<T> mResponseCallback;
 
-    //private String OPS_SOMETHING_WENT_WRONG ="Ops Something went wrong. Please try again after sometime.";
-    private String OPS_SOMETHING_WENT_WRONG ="Ops Etwas ging schief. Bitte versuchen Sie es später erneut.";
     /**
      * Creates an instance without the error mapper,
      * in case of all errors we would get the default response.
@@ -34,6 +33,12 @@ public class ResponseWrapper<T> implements Callback<T> {
     /** {@inheritDoc} */
     @Override
     public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
+        String OPS_SOMETHING_WENT_WRONG;
+        if(Utility.getAppLanguage().equalsIgnoreCase("English")){
+            OPS_SOMETHING_WENT_WRONG ="Ops Something went wrong. Please try again after sometime.";
+        }else {
+            OPS_SOMETHING_WENT_WRONG ="Ops Etwas ging schief. Bitte versuchen Sie es später erneut.";
+        }
 
         if (response.isSuccessful() && response.body()!= null) {
             mResponseCallback.onSuccess(response.body());
@@ -60,6 +65,12 @@ public class ResponseWrapper<T> implements Callback<T> {
     /** {@inheritDoc} */
     @Override
     public void onFailure(@NonNull Call<T> call, @NonNull Throwable throwable) {
+        String OPS_SOMETHING_WENT_WRONG;
+        if(Utility.getAppLanguage().equalsIgnoreCase("English")){
+            OPS_SOMETHING_WENT_WRONG ="Ops Something went wrong. Please try again after sometime.";
+        }else {
+            OPS_SOMETHING_WENT_WRONG ="Ops Etwas ging schief. Bitte versuchen Sie es später erneut.";
+        }
         ErrorResponse errorResponse;
         if (throwable instanceof ConnectException
                 || throwable instanceof UnknownHostException) {
@@ -73,6 +84,12 @@ public class ResponseWrapper<T> implements Callback<T> {
     }
 
     private ErrorResponse parseErrorNew(String errorBodyPayload) {
+        String OPS_SOMETHING_WENT_WRONG;
+        if(Utility.getAppLanguage().equalsIgnoreCase("English")){
+            OPS_SOMETHING_WENT_WRONG ="Ops Something went wrong. Please try again after sometime.";
+        }else {
+            OPS_SOMETHING_WENT_WRONG ="Ops Etwas ging schief. Bitte versuchen Sie es später erneut.";
+        }
         try {
             JSONObject jsonObject = new JSONObject(errorBodyPayload);
             JSONObject error=null;
@@ -80,10 +97,16 @@ public class ResponseWrapper<T> implements Callback<T> {
                 error = jsonObject.optJSONObject("error");
             }
             String errorMessage= null;
+            String errorCode= null;
             if(error!=null && error.has("message")) {
                 errorMessage = error.optString("message");
             }
-            if (errorMessage != null) {
+            if(error!=null && error.has("code"))
+               errorCode = error.optString("code");
+            if(errorCode!=null){
+               errorMessage = ApiErrorHandler.resolve(errorCode);
+            }
+            else if (errorMessage != null) {
                 return new ErrorResponse(errorMessage);
             } else {
                 errorMessage = OPS_SOMETHING_WENT_WRONG; // Unable to process request at this time, please try again in sometime.
