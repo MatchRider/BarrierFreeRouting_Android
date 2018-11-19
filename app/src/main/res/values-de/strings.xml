@@ -105,6 +105,8 @@
     <string name="string_point_three">0.03</string>
     <string name="string_point_six">0.06</string>
     <string name="string_point_six_greater"><![CDATA[0.06]]></string>
+    <string name="any">"any"</string>
+
 
     <string name="string_less_nine"><![CDATA[unter 0,9 m]]></string>
     <string name="string_greater_nine"><![CDATA[über 0,9 m]]></string>
@@ -114,6 +116,8 @@
 
     <string name="value_string_less_width"><![CDATA[0.9]]></string>
     <string name="value_string_greater_width"><![CDATA[0.9]]></string>
+
+    <string name="any_show">"Irgendein"</string>
 
 
     <string name="yes">Ja</string>

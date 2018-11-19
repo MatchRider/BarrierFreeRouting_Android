@@ -106,7 +106,7 @@ public class FilterExpandableListAdapter extends BaseExpandableListAdapter {
         txtSubTitle.setTypeface(null, Typeface.ITALIC);
 
         String subTitle = null;
-        if (mSelectionMap.containsKey(groupPosition)) {
+        if (mSelectionMap.get(groupPosition) !=null && mSelectionMap.containsKey(groupPosition)) {
             subTitle = getChild(groupPosition, mSelectionMap.get(groupPosition)).getValue();
         }
         if (!TextUtils.isEmpty(subTitle)) {

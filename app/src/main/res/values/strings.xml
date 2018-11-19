@@ -113,6 +113,8 @@
     <string name="string_point_three">1.2</string>
     <string name="string_point_six">2.4</string>
     <string name="string_point_six_greater"><![CDATA[2.4]]></string>
+    <string name="any">"any"</string>
+
 
     <string name="string_less_nine"><![CDATA[below 35.4 inches]]></string>
     <string name="string_greater_nine"><![CDATA[above 35.4 inches]]></string>
@@ -122,6 +124,8 @@
 
     <string name="value_string_less_width"><![CDATA[35.4]]></string>
     <string name="value_string_greater_width"><![CDATA[35.4]]></string>
+
+    <string name="any_show">"Any"</string>
 
 
     <string name="yes">Yes</string>

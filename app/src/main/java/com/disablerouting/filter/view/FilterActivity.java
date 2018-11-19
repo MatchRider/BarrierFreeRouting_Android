@@ -27,10 +27,7 @@ import com.disablerouting.route_planner.adapter.CustomListAdapter;
 import com.disablerouting.utils.Utility;
 import com.disablerouting.widget.CustomAutoCompleteTextView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 public class FilterActivity extends BaseActivityImpl implements IFilterView, AdapterView.OnItemClickListener {
 
@@ -261,28 +258,29 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         mListDataHeaderKeyForFilter.add("minimum_width");
 
         List<DataModelExpandableList> surfaceTypeData = new ArrayList<>();
-        surfaceTypeData.add(new DataModelExpandableList(getString(R.string.asphalt_key)));
+        surfaceTypeData.add(new DataModelExpandableList("concrete"));
         surfaceTypeData.add(new DataModelExpandableList(getString(R.string.concrete_key)));
         surfaceTypeData.add(new DataModelExpandableList(getString(R.string.paving_stones_key)));
         surfaceTypeData.add(new DataModelExpandableList(getString(R.string.cobbleston_key)));
-        surfaceTypeData.add(new DataModelExpandableList(getString(R.string.compacted_key)));
+        surfaceTypeData.add(new DataModelExpandableList(""));
 
         List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<>();
         maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.zero)));
         maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_point_three)));
         maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_point_six)));
-        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_point_six_greater)));
+        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.any)));
 
         List<DataModelExpandableList> maxInclineData = new ArrayList<>();
         maxInclineData.add(new DataModelExpandableList("0.00"));
         maxInclineData.add(new DataModelExpandableList("0.03"));
         maxInclineData.add(new DataModelExpandableList("0.06"));
         maxInclineData.add(new DataModelExpandableList("0.10"));
-        maxInclineData.add(new DataModelExpandableList("0.10"));
+        maxInclineData.add(new DataModelExpandableList(""));
 
         List<DataModelExpandableList> sideWalkWidthData = new ArrayList<>();
+        sideWalkWidthData.add(new DataModelExpandableList(""));
         sideWalkWidthData.add(new DataModelExpandableList(getString(R.string.value_string_less_width)));
-        sideWalkWidthData.add(new DataModelExpandableList(getString(R.string.value_string_less_width)));
+
 
         mListDataChildValue.put(mListDataHeaderKeyForFilter.get(0), surfaceTypeData);
         mListDataChildValue.put(mListDataHeaderKeyForFilter.get(1), maxSlopedCurvedData);
@@ -322,7 +320,7 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_three)));
         maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_six)));
         maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_ten)));
-        maxInclineData.add(new DataModelExpandableList(getString(R.string.greater_ten)));
+        maxInclineData.add(new DataModelExpandableList(getString(R.string.any_show)));
 
         List<DataModelExpandableList> sideWalkWidthData = new ArrayList<>();
         sideWalkWidthData.add(new DataModelExpandableList(getString(R.string.ninty_less)));
@@ -357,6 +355,19 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
 
     private void setDataWhenFilterApplied() {
         Intent returnIntent = new Intent();
+        for (Map.Entry<String, String> values : mHashMapResult.entrySet()) {
+            if(values.getKey().equalsIgnoreCase("surface_type") && values.getValue().equalsIgnoreCase("")){
+                mHashMapResult.remove("surface_type");
+            }
+            if(values.getKey().equalsIgnoreCase("maximum_incline") && values.getValue().equalsIgnoreCase("")){
+                mHashMapResult.remove("maximum_incline");
+            }
+            if(values.getKey().equalsIgnoreCase("minimum_width") && values.getValue().equalsIgnoreCase("")){
+                mHashMapResult.remove("minimum_width");
+            }
+
+
+        }
         returnIntent.putExtra(AppConstant.DATA_FILTER, mHashMapResult);
         returnIntent.putExtra(AppConstant.DATA_FILTER_ROUTING_VIA, mHashMapResultForRouting);
         returnIntent.putExtra(AppConstant.DATA_FILTER_SELECTED, mExpandableListAdapter.getSelectionMap());
