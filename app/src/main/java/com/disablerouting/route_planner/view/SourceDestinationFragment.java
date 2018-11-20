@@ -130,11 +130,9 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                     mListPopupWindow.dismiss();
                 }
                 if (mEditTextSource.hasFocus() && mEditTextSource != null && !mEditTextSource.getText().toString().equalsIgnoreCase("")) {
-                   // mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextSource.getText().toString(), "", 10);
                     mISourceDestinationScreenPresenter.getGeoCodeDataForward(mEditTextSource.getText().toString());
                 }
                 if (mEditTextDestination.hasFocus() && mEditTextDestination != null && !mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
-                    //mISourceDestinationScreenPresenter.getCoordinatesData(mEditTextDestination.getText().toString(), "", 10);
                     mISourceDestinationScreenPresenter.getGeoCodeDataForward(mEditTextDestination.getText().toString());
                 }
             }
@@ -334,7 +332,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mSourceAddressFetch.setVisibility(View.GONE);
         mEditTextSource.setText("");
         mOnSourceDestinationListener.onSourceClickWhileNavigationRunning();
-
+        mOnSourceDestinationListener.onClickField(true);
     }
 
     @OnClick(R.id.clear_destination_address)
@@ -343,7 +341,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mDestinationAddressFetch.setVisibility(View.GONE);
         mEditTextDestination.setText("");
         mOnSourceDestinationListener.onSourceClickWhileNavigationRunning();
-
+        mOnSourceDestinationListener.onClickField(true);
     }
 
     @Override
@@ -764,4 +762,5 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         }
 
     }
+
 }
