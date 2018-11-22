@@ -19,9 +19,10 @@
     <string name="LEGAL">Rechtliches</string>
     <string name="LOGOUT">Ausloggen</string>
 
+    <!--BUTTONS-->
     <string name="route_planner">Routenplaner</string>
     <string name="suggestions">Dateneingabe</string>
-
+    <string name="log_in_with_osm">Bei OpenStreetMap einloggen</string>
 
     <!--Expected Error Codes-->
     <string name="no_internet">Du bist nicht mit dem Internet verbunden. Bitte prüfe deine Verbindung!</string>
@@ -44,7 +45,6 @@
     <string name="hr">hr</string>
     <string name="km">km</string>
     <string name="meter">m</string>
-
     <string name="what_do_you_want_to_capture">Was möchten Sie erfassen?</string>
     <string name="information_about_a_waypoint_distance">1. Informationen über einen Wegpunkt / Entfernung?</string>
     <string name="information_about_a_temporary_obstacles">2. Informationen über temporäre Hindernisse?</string>
@@ -55,14 +55,15 @@
     <string name="thank_you_for_your_input">Danke für deinen Beitrag!</string>
     <string name="error_source_destination_same">Bitte wählen Sie eine andere Quelle und ein anderes Ziel</string>
 
+    <!--FILTER OPTIONS-->
     <string name="surface_type">Oberflächentyp</string>
     <string name="maximum_sloped_filter">Maximale Bordsteinkantenhöhe (cm)</string>
     <string name="maximum_sloped">Bordsteinkantenhöhe (cm)</string>
     <string name="maximum_incline">Maximale Steigung (%)</string>
     <string name="sidewalk_width">Gehwegbreite (m)</string>
-    <string name="permanent_obstacle">Hindernis liegt vor</string>
     <string name="routing_via" tools:ignore="TypographyEllipsis">Routing über...</string>
 
+    <!--VALIDATION OPTIONS SURFACE TYPE-->
     <string name="asphalt">Asphaltiert</string>
     <string name="concrete">Beton</string>
     <string name="paving_stones">Pflastersteine</string>
@@ -71,6 +72,7 @@
     <string name="grass_paver">Rasengittersteine</string>
     <string name="gravel">Schotter</string>
 
+    <!--FILTER VALUE SURFACE TYPE-->
     <string name="asphalt_key">asphalt</string>
     <string name="concrete_key">concrete</string>
     <string name="paving_stones_key">paving_stones</string>
@@ -79,14 +81,14 @@
     <string name="grass_paver_key">grass_paver</string>
     <string name="gravel_key">gravel</string>
 
-    <string name="walk_way_width">Gehwegbreite (inches)</string>
-
+    <!--FILTER OPTIONS SURFACE TYPE-->
     <string name="asphalt_filter">Asphaltiert oder Beton</string>
     <string name="paving_stones_filter">Pflastersteine oder besser</string>
     <string name="cobblestone_filter">Kopfsteinpflaster oder besser</string>
     <string name="compacted_filter">Schotter oder besser</string>
     <string name="all_filter">Alle Oberflächen</string>
 
+    <!--FILTER OPTIONS MAXIMUM INCLINE TYPE-->
     <string name="zero">0</string>
     <string name="up_to_three">bis 3 %</string>
     <string name="up_to_six">bis 6 %</string>
@@ -96,7 +98,7 @@
     <string name="zero_curb">kein Bordstein</string>
     <string name="zero_curb_inlcline">keine Steigung</string>
 
-
+    <!--FILTER OPTIONS MAXIMUM KERB HEIGHT TYPE-->
     <string name="string_three">3 cm</string>
     <string name="string_six">6 cm</string>
     <string name="string_greater_six"><![CDATA[über 6 cm]]></string>
@@ -123,6 +125,7 @@
     <string name="no">Nein</string>
     <string name="clear">Eingabe löschen</string>
     <string name="apply">Übernehmen</string>
+
     <string name="wheelchair_accessible">-</string>
     <string name="wheelchair_accessible_yes">barrierefrei</string>
     <string name="wheelchair_accessible_no">nicht barrierefrei</string>
@@ -186,7 +189,6 @@
     <string name="text">Dein Text</string>
     <string name="send">Absenden</string>
 
-    <string name="log_in_with_osm">Bei OpenStreetMap einloggen</string>
     <string name="validated">Überprüfte</string>
     <string name="not_validated">Nicht überprüfte</string>
     <string name="updated_info">Daten aktualisiert</string>
