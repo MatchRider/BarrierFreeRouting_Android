@@ -107,7 +107,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private List<Steps> mStepsList = new ArrayList<>();
     boolean mStepListHasData = false;
     private int mTabSelected = 1;
-
+    private PlotWayDataTask mPlotWayDataTask;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -234,6 +234,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onBackPress() {
         finish();
     }
+
 
     @Override
     public void onSourceDestinationSelected(Features featuresSource, Features featuresDestination) {
@@ -490,16 +491,16 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mTabSelected = 3;
                 mRadioButtonWays.setTextColor(getResources().getColor(R.color.colorWhite));
                 mRadioButtonNodes.setTextColor(getResources().getColor(R.color.colorPrimary));
-                PlotWayDataTask mPlotWayDataTaskWays = new PlotWayDataTask();
-                mPlotWayDataTaskWays.execute();
+                mPlotWayDataTask = new PlotWayDataTask();
+                mPlotWayDataTask.execute();
                 break;
 
             case R.id.radioButtonNodes:
                 mTabSelected = 4;
                 mRadioButtonNodes.setTextColor(getResources().getColor(R.color.colorWhite));
                 mRadioButtonWays.setTextColor(getResources().getColor(R.color.colorPrimary));
-                PlotWayDataTask mPlotWayDataTaskNodes = new PlotWayDataTask();
-                mPlotWayDataTaskNodes.execute();
+                mPlotWayDataTask = new PlotWayDataTask();
+                mPlotWayDataTask.execute();
                 break;
 
             default:
@@ -885,6 +886,9 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (pDialog != null) {
             pDialog.dismiss();
         }
+        if(mPlotWayDataTask!=null && !mPlotWayDataTask.isCancelled()){
+            mPlotWayDataTask.cancel(true);
+        }
     }
 
     @Override
@@ -896,8 +900,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mButtonSelected = 1;
             // setZoomMap();
             if(mWayListNotValidatedData.size()>0) {
-                PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
-                mPlotWayDataTaskNotValidated.execute();
+                mPlotWayDataTask = new PlotWayDataTask();
+                mPlotWayDataTask.execute();
             }else {
                 showLoader();
             }
@@ -905,8 +909,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mButtonSelected = 2;
             //setZoomMap();
             if(mWayListValidatedData.size()>0) {
-                PlotWayDataTask mPlotWayDataTaskValidated = new PlotWayDataTask();
-                mPlotWayDataTaskValidated.execute();
+                mPlotWayDataTask = new PlotWayDataTask();
+                mPlotWayDataTask.execute();
             }else {
                 showLoader();
             }
@@ -932,8 +936,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 if (mWayListNotValidatedData.size() != 0) {
                     hideLoader();
                     // setZoomMap();
-                    PlotWayDataTask mPlotWayDataTaskNotValidated = new PlotWayDataTask();
-                    mPlotWayDataTaskNotValidated.execute();
+                    mPlotWayDataTask = new PlotWayDataTask();
+                    mPlotWayDataTask.execute();
                 } else {
                     showLoader();
                 }

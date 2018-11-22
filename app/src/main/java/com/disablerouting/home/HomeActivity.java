@@ -44,7 +44,9 @@ import com.disablerouting.utils.PermissionUtils;
 import com.disablerouting.utils.Utility;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentCallback, IHomeView {
 
@@ -304,9 +306,7 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
      */
     private void getWayListData() {
         mIHomeScreenPresenter.getListWays();
-        //Once when completed
         mIHomeScreenPresenter.getOSMData();
-
     }
 
     @Override
@@ -325,6 +325,7 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
 
     @Override
     public void onOSMDataReceived(final String responseBody) {
+
         if (responseBody != null) {
             GetOsmData getOsmData = null;
             try {
