@@ -345,7 +345,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private ArrayList<SettingModel> prepareListDataNode() {
         ArrayList<SettingModel> modelArrayList = new ArrayList<>();
         SettingModel settingModel;
-        settingModel = new SettingModel(0, getString(R.string.maximum_sloped));
+        settingModel = new SettingModel(0, getString(R.string.maximum_sloped_kerb));
         modelArrayList.add(settingModel);
         return modelArrayList;
 

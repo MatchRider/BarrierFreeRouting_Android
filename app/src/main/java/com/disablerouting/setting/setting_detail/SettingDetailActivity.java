@@ -107,9 +107,17 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
     private ArrayList<String> prepareListDataMaxSlope() {
         ArrayList<String> stringArrayList = new ArrayList<>();
         stringArrayList.add(getString(R.string.zero_curb));
-        stringArrayList.add(getString(R.string.string_three));
-        stringArrayList.add(getString(R.string.string_six));
-        stringArrayList.add(getString(R.string.string_greater_six));
+        stringArrayList.add(getString(R.string.three_kerb));
+        stringArrayList.add(getString(R.string.six_kerb));
+        stringArrayList.add(getString(R.string.greater_six_kerb));
+        return stringArrayList;
+    }
+    private ArrayList<String> prepareListDataMaxSlopeKey() {
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        stringArrayList.add(getString(R.string.kerb_zero));
+        stringArrayList.add(getString(R.string.value_kerb_three));
+        stringArrayList.add(getString(R.string.value_kerb_six));
+        stringArrayList.add(getString(R.string.value_kerb_any));
         return stringArrayList;
     }
 
@@ -125,8 +133,8 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
 
     private ArrayList<String> prepareListDataSideWalk() {
         ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add(getString(R.string.string_less_nine));
-        stringArrayList.add(getString(R.string.string_greater_nine));
+        stringArrayList.add(getString(R.string.nine_less));
+        stringArrayList.add(getString(R.string.nine_greater));
         return stringArrayList;
     }
 
@@ -163,7 +171,7 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
         } else {
             switch (mPositionOfTitle) {
                 case 0:
-                    setDataWhenFilterApplied(prepareListDataMaxSlope().get(position), position);
+                    setDataWhenFilterApplied(prepareListDataMaxSlopeKey().get(position), position);
                     break;
             }
         }

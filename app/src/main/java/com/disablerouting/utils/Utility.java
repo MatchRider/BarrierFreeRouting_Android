@@ -270,6 +270,9 @@ public class Utility {
         if (stringUnitPassed.contains("bis")) {
             converted = converted.replace("bis", "");
         }
+        if (stringUnitPassed.contains("Up to")) {
+            converted = converted.replace("Up to", "");
+        }
         if (stringUnitPassed.contains("kein Bordstein")) {
             converted = converted.replace("kein Bordstein", "0");
         }

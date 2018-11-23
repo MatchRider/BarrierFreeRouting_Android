@@ -56,10 +56,11 @@
     <string name="thank_you_for_your_input">Thank you for your input!</string>
     <string name="error_source_destination_same">Please select different source and destination</string>
 
+    <!--FILTER SCREEN VALUES............................................-->
+
     <!--FILTER OPTIONS-->
     <string name="surface_type">Surface Type</string>
-    <string name="maximum_sloped_filter">Maximum sloped kerb (cm)</string>
-    <string name="maximum_sloped">Maximum sloped curb (cm)</string>
+    <string name="maximum_sloped_kerb">Maximum sloped kerb (cm)</string>
     <string name="maximum_incline">Maximum Incline (%)</string>
     <string name="sidewalk_width">Walkway width (cm)</string>
     <string name="routing_via" tools:ignore="TypographyEllipsis">Routing Via...</string>
@@ -78,7 +79,6 @@
     <string name="cobbleston_key">cobblestone</string>
     <string name="compacted_key">compacted</string>
 
-
     <!--FILTER OPTIONS SURFACE TYPE-->
     <string name="asphalt_filter">Asphalt or Concrete</string>
     <string name="paving_stones_filter">Paving stones or better</string>
@@ -88,11 +88,10 @@
 
     <!--FILTER OPTIONS MAXIMUM INCLINE TYPE-->
     <string name="incline_zero">0</string>
-    <string name="up_to_three">Up to 3%</string>
-    <string name="up_to_six">Up to 6%</string>
-    <string name="up_to_ten">Up to 10%</string>
+    <string name="up_to_three">Up to 3 %</string>
+    <string name="up_to_six">Up to 6 %</string>
+    <string name="up_to_ten">Up to 10 %</string>
     <string name="any_incline">Any incline</string>
-
     <string name="greater_ten"><![CDATA[above 10 %]]></string>
 
     <!--FILTER VALUE MAXIMUM INCLINE TYPE-->
@@ -117,31 +116,11 @@
     <string name="nine_less"><![CDATA[below 0.9 ]]></string>
     <string name="nine_greater"><![CDATA[above 0.9 ]]></string>
 
-    <!--FILTER OPTIONS MINIMUM WIDTH  VALUE TYPE-->
+    <!--FILTER VALUE MINIMUM WIDTH  VALUE TYPE-->
     <string name="value_nine_greater">0.9</string>
 
-    <string name="zero">0</string>
+    <!--CLOSED FILTER SCREEN VALUES............................................-->
 
-    <string name="string_three">1.2 inches</string>
-    <string name="string_six">2.4 inches</string>
-    <string name="string_greater_six"><![CDATA[above 2.4 inches]]></string>
-
-    <string name="string_point_three">1.2</string>
-    <string name="string_point_six">2.4</string>
-    <string name="string_point_six_greater"><![CDATA[2.4]]></string>
-    <string name="any">any</string>
-
-
-    <string name="string_less_nine"><![CDATA[below 35.4 inches]]></string>
-    <string name="string_greater_nine"><![CDATA[above 35.4 inches]]></string>
-
-    <string name="ninty_less"><![CDATA[below 35.4 inches]]></string>
-    <string name="ninty_greater"><![CDATA[above 35.4 inches]]></string>
-
-    <string name="value_less_width"><![CDATA[35.4]]></string>
-    <string name="value_string_greater_width"><![CDATA[35.4]]></string>
-
-    <string name="any_show">Any</string>
 
     <string name="yes">Yes</string>
     <string name="no">No</string>

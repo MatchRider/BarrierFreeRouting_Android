@@ -297,7 +297,7 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         mListDataChild = new LinkedHashMap<>();
 
         mListDataHeader.add(getString(R.string.surface_type));
-        mListDataHeader.add(getString(R.string.maximum_sloped_filter));
+        mListDataHeader.add(getString(R.string.maximum_sloped_kerb));
         mListDataHeader.add(getString(R.string.maximum_incline));
         mListDataHeader.add(getString(R.string.sidewalk_width));
 
