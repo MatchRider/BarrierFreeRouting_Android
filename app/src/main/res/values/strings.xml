@@ -216,5 +216,12 @@
     <string name="right">Sidewalk : Right</string>
     <string name="both">Sidewalk : Both</string>
 
+    <string name="validate_name_msg">Please enter your name to proceed.</string>
+    <string name="validate_email_message">Please enter your email to proceed.</string>
+    <string name="validate_message_enter">Please enter a message to proceed.</string>
+    <string name="send_mail">Send mail…</string>
+    <string name="error_contact">There is no email client installed.</string>
+    <string name="query_subject">Query barrier-free routing app</string>
+
 
 </resources>

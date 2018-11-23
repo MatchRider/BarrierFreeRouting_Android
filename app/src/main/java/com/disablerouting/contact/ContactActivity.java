@@ -3,7 +3,6 @@ package com.disablerouting.contact;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,13 +66,13 @@ public class ContactActivity extends BaseActivityImpl {
 
     private boolean validation() {
         if (NAME.isEmpty()) {
-            Toast.makeText(ContactActivity.this, "Please enter your name to proceed.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ContactActivity.this, getResources().getString(R.string.validate_name_msg), Toast.LENGTH_SHORT).show();
             return false;
         } else if (EMAIL.isEmpty()) {
-            Toast.makeText(ContactActivity.this, "Please enter your email to proceed.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ContactActivity.this, getResources().getString(R.string.validate_email_message), Toast.LENGTH_SHORT).show();
             return false;
         } else if (MESSAGE.isEmpty()) {
-            Toast.makeText(ContactActivity.this, "Please enter a message to proceed.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ContactActivity.this, getResources().getString(R.string.validate_message_enter), Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -87,7 +86,6 @@ public class ContactActivity extends BaseActivityImpl {
     }
 
     protected void sendEmail() {
-        Log.i("Send email", "");
         String[] TO = {"Buergerservice@Heidelberg.de"};
         //String[] TO = {"kirti.na@daffodilsw.coom"};
         String[] CC = {""};
@@ -97,14 +95,14 @@ public class ContactActivity extends BaseActivityImpl {
         emailIntent.setType("message/rfc822");
         emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
         emailIntent.putExtra(Intent.EXTRA_CC, CC);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Query");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.query_subject));
         emailIntent.putExtra(Intent.EXTRA_TEXT, NAME + "\n" + EMAIL + "\n" + MESSAGE);
 
         try {
-            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+            startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
             finish();
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(ContactActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ContactActivity.this, R.string.error_contact, Toast.LENGTH_SHORT).show();
         }
     }
 

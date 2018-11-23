@@ -209,5 +209,12 @@
     <string name="right">Gehwegseite: rechts</string>
     <string name="both">Gehwegseite: beide Seiten</string>
 
+    <string name="validate_name_msg">Bitte geben Sie Ihren Namen ein, um fortzufahren.</string>
+    <string name="validate_email_message">Bitte geben Sie Ihre E-Mail-Adresse ein, um fortzufahren.</string>
+    <string name="validate_message_enter">Bitte geben Sie eine Nachricht ein, um fortzufahren.</string>
+    <string name="send_mail">E-Mail senden…</string>
+    <string name="error_contact">Es ist kein E-Mail-Client installiert.</string>
+    <string name="query_subject">Anfrage App Hürdenlose Navigation</string>
+
 
 </resources>
