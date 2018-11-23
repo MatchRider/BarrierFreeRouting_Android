@@ -106,6 +106,21 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                         if(mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("compacted")) {
                             subTitle = mContext.getString(R.string.compacted);
                         }
+                    }
+                   else if(mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
+                        if(mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.kerb_zero))) {
+                            subTitle = mContext.getString(R.string.zero_curb);
+                        }
+                        if(mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_three))) {
+                            subTitle = mContext.getString(R.string.three_kerb);
+                        }
+                        if(mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_six))) {
+                            subTitle = mContext.getString(R.string.six_kerb);
+                        }
+                        if(mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_any))) {
+                            subTitle = mContext.getString(R.string.greater_six_kerb);
+                        }
+
                     }else {
                         subTitle = mSelectionMap.get(checkPos).getValue();
 
