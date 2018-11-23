@@ -120,12 +120,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mISFromOSM = getIntent().getBooleanExtra("FromOSM", false);
         }
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        });
         if (mISFromOSM) {
             if (WayDataPreference.getInstance(this) != null) {
                 mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayDataOSM();
@@ -169,15 +163,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         mTabSelected = 3;
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
     @Override
     protected int getView() {
@@ -388,10 +373,12 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 if (WayDataPreference.getInstance(this) != null) {
                     if (!mISFromOSM) {
                         showLoader();
-                        mIRoutePlannerScreenPresenter.getListData();
+                       // mIRoutePlannerScreenPresenter.getListData();
+                        startService(Utility.createCallingIntent(this,AppConstant.RUN_LIST));
                     } else {
                         showLoader();
-                        mIRoutePlannerScreenPresenter.getOSMData();
+                        startService(Utility.createCallingIntent(this,AppConstant.RUN_OSM));
+                       // mIRoutePlannerScreenPresenter.getOSMData();
                     }
                 }
             }

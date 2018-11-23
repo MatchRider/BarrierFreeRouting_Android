@@ -56,5 +56,11 @@ public interface AppConstant {
     String OSM_DATA = "OSM";
     String COORDINATE_SIZE = "CoordinateSize";
 
+    String RUN_BOTH = "both";
+    String RUN_LIST = "list";
+    String RUN_OSM = "osm";
+    String RUN_API = "RunAPI";
+
+
 
 }

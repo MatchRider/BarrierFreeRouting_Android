@@ -4,6 +4,7 @@ package com.disablerouting.utils;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import com.disablerouting.login.OSMApi;
 import com.disablerouting.osm_activity.model.GetOSM;
 import com.disablerouting.osm_activity.model.GetOsmData;
 import com.disablerouting.route_planner.model.Way;
+import com.disablerouting.service.OsmDataService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -473,6 +475,11 @@ public class Utility {
 
     public static String getAppLanguage(){
         return Locale.getDefault().getDisplayLanguage();
+    }
+    public static Intent createCallingIntent(Context context, String runTYPE) {
+        Intent intent = new Intent(context, OsmDataService.class);
+        intent.putExtra(AppConstant.RUN_API,runTYPE);
+        return intent;
     }
 
 }
