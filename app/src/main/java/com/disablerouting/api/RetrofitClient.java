@@ -107,7 +107,7 @@ public class RetrofitClient {
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .connectTimeout(30, TimeUnit.SECONDS)
                     .addInterceptor(new ApiInterceptor(true))
-                  //  .addInterceptor(logging)
+                    .addInterceptor(logging)
                     .build();
 
             sRetrofitDirections = new Retrofit.Builder()

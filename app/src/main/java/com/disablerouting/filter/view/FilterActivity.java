@@ -258,28 +258,28 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         mListDataHeaderKeyForFilter.add("minimum_width");
 
         List<DataModelExpandableList> surfaceTypeData = new ArrayList<>();
-        surfaceTypeData.add(new DataModelExpandableList("concrete"));
         surfaceTypeData.add(new DataModelExpandableList(getString(R.string.concrete_key)));
         surfaceTypeData.add(new DataModelExpandableList(getString(R.string.paving_stones_key)));
         surfaceTypeData.add(new DataModelExpandableList(getString(R.string.cobbleston_key)));
+        surfaceTypeData.add(new DataModelExpandableList(getString(R.string.compacted_key)));
         surfaceTypeData.add(new DataModelExpandableList(""));
 
         List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<>();
-        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.zero)));
-        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_point_three)));
-        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_point_six)));
-        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.any)));
+        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.kerb_zero)));
+        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.value_kerb_three)));
+        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.value_kerb_six)));
+        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.value_kerb_any)));
 
         List<DataModelExpandableList> maxInclineData = new ArrayList<>();
-        maxInclineData.add(new DataModelExpandableList("0.00"));
-        maxInclineData.add(new DataModelExpandableList("0.03"));
-        maxInclineData.add(new DataModelExpandableList("0.06"));
-        maxInclineData.add(new DataModelExpandableList("0.10"));
+        maxInclineData.add(new DataModelExpandableList(getString(R.string.incline_zero)));
+        maxInclineData.add(new DataModelExpandableList(getString(R.string.value_three)));
+        maxInclineData.add(new DataModelExpandableList(getString(R.string.value_six)));
+        maxInclineData.add(new DataModelExpandableList(getString(R.string.value_ten)));
         maxInclineData.add(new DataModelExpandableList(""));
 
         List<DataModelExpandableList> sideWalkWidthData = new ArrayList<>();
         sideWalkWidthData.add(new DataModelExpandableList(""));
-        sideWalkWidthData.add(new DataModelExpandableList(getString(R.string.value_string_less_width)));
+        sideWalkWidthData.add(new DataModelExpandableList(getString(R.string.value_nine_greater)));
 
 
         mListDataChildValue.put(mListDataHeaderKeyForFilter.get(0), surfaceTypeData);
@@ -311,20 +311,20 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
 
         List<DataModelExpandableList> maxSlopedCurvedData = new ArrayList<DataModelExpandableList>();
         maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.zero_curb)));
-        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_three)));
-        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_six)));
-        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.string_greater_six)));
+        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.three_kerb)));
+        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.six_kerb)));
+        maxSlopedCurvedData.add(new DataModelExpandableList(getString(R.string.greater_six_kerb)));
 
         List<DataModelExpandableList> maxInclineData = new ArrayList<>();
-        maxInclineData.add(new DataModelExpandableList(getString(R.string.zero_curb_inlcline)));
+        maxInclineData.add(new DataModelExpandableList(getString(R.string.zero_incline)));
         maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_three)));
         maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_six)));
         maxInclineData.add(new DataModelExpandableList(getString(R.string.up_to_ten)));
-        maxInclineData.add(new DataModelExpandableList(getString(R.string.any_show)));
+        maxInclineData.add(new DataModelExpandableList(getString(R.string.any_incline)));
 
         List<DataModelExpandableList> sideWalkWidthData = new ArrayList<>();
-        sideWalkWidthData.add(new DataModelExpandableList(getString(R.string.ninty_less)));
-        sideWalkWidthData.add(new DataModelExpandableList(getString(R.string.ninty_greater)));
+        sideWalkWidthData.add(new DataModelExpandableList(getString(R.string.nine_less)));
+        sideWalkWidthData.add(new DataModelExpandableList(getString(R.string.nine_greater)));
 
 
         mListDataChild.put(mListDataHeader.get(0), surfaceTypeData);
@@ -365,7 +365,6 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
             if(values.getKey().equalsIgnoreCase("minimum_width") && values.getValue().equalsIgnoreCase("")){
                 mHashMapResult.remove("minimum_width");
             }
-
 
         }
         returnIntent.putExtra(AppConstant.DATA_FILTER, mHashMapResult);

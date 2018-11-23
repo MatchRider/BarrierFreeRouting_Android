@@ -60,7 +60,7 @@
     <string name="maximum_sloped_filter">Maximale Bordsteinkantenhöhe (cm)</string>
     <string name="maximum_sloped">Bordsteinkantenhöhe (cm)</string>
     <string name="maximum_incline">Maximale Steigung (%)</string>
-    <string name="sidewalk_width">Gehwegbreite (m)</string>
+    <string name="sidewalk_width">Gehwegbreite (cm)</string>
     <string name="routing_via" tools:ignore="TypographyEllipsis">Routing über...</string>
 
     <!--VALIDATION OPTIONS SURFACE TYPE-->
@@ -69,8 +69,6 @@
     <string name="paving_stones">Pflastersteine</string>
     <string name="cobblestone">Kopfsteinpflaster</string>
     <string name="compacted">Schotter</string>
-    <string name="grass_paver">Rasengittersteine</string>
-    <string name="gravel">Schotter</string>
 
     <!--FILTER VALUE SURFACE TYPE-->
     <string name="asphalt_key">asphalt</string>
@@ -78,8 +76,6 @@
     <string name="paving_stones_key">paving_stones</string>
     <string name="cobbleston_key">cobblestone</string>
     <string name="compacted_key">compacted</string>
-    <string name="grass_paver_key">grass_paver</string>
-    <string name="gravel_key">gravel</string>
 
     <!--FILTER OPTIONS SURFACE TYPE-->
     <string name="asphalt_filter">Asphaltiert oder Beton</string>
@@ -89,24 +85,53 @@
     <string name="all_filter">Alle Oberflächen</string>
 
     <!--FILTER OPTIONS MAXIMUM INCLINE TYPE-->
-    <string name="zero">0</string>
+    <string name="incline_zero">0</string>
     <string name="up_to_three">bis 3 %</string>
     <string name="up_to_six">bis 6 %</string>
     <string name="up_to_ten">bis 10 %</string>
+    <string name="any_incline">Jede Steigung</string>
+
     <string name="greater_ten"><![CDATA[über 10 %]]></string>
 
-    <string name="zero_curb">kein Bordstein</string>
-    <string name="zero_curb_inlcline">keine Steigung</string>
+    <!--FILTER VALUE MAXIMUM INCLINE TYPE-->
+    <string name="zero_incline">keine Steigung</string>
+    <string name="value_three">3</string>
+    <string name="value_six">6</string>
+    <string name="value_ten">10</string>
 
     <!--FILTER OPTIONS MAXIMUM KERB HEIGHT TYPE-->
+    <string name="zero_curb">kein Bordstein</string>
+    <string name="three_kerb">3</string>
+    <string name="six_kerb">6</string>
+    <string name="greater_six_kerb">über 6</string>
+
+    <!--FILTER VALUE MAXIMUM KERB HEIGHT TYPE-->
+    <string name="kerb_zero">0</string>
+    <string name="value_kerb_three">0.03</string>
+    <string name="value_kerb_six">0.06</string>
+    <string name="value_kerb_any">0.1</string>
+
+
+    <!--FILTER OPTIONS MINIMUM WIDTH TYPE-->
+    <string name="nine_less"><![CDATA[unter 0,9 ]]></string>
+    <string name="nine_greater"><![CDATA[über 0,9 ]]></string>
+
+
+    <!--FILTER OPTIONS MINIMUM WIDTH  VALUE TYPE-->
+    <string name="value_nine_greater">0.9</string>
+
+    <string name="zero">0</string>
+
+
     <string name="string_three">3 cm</string>
     <string name="string_six">6 cm</string>
     <string name="string_greater_six"><![CDATA[über 6 cm]]></string>
 
+
     <string name="string_point_three">0.03</string>
     <string name="string_point_six">0.06</string>
     <string name="string_point_six_greater"><![CDATA[0.06]]></string>
-    <string name="any">"any"</string>
+    <string name="any">any</string>
 
 
     <string name="string_less_nine"><![CDATA[unter 0,9 m]]></string>
@@ -115,10 +140,10 @@
     <string name="ninty_less"><![CDATA[unter 0,9 m]]></string>
     <string name="ninty_greater"><![CDATA[über 0,9 m]]></string>
 
-    <string name="value_string_less_width"><![CDATA[0.9]]></string>
+    <string name="value_less_width"><![CDATA[0.9]]></string>
     <string name="value_string_greater_width"><![CDATA[0.9]]></string>
 
-    <string name="any_show">"Irgendein"</string>
+    <string name="any_show">Irgendein</string>
 
 
     <string name="yes">Ja</string>
