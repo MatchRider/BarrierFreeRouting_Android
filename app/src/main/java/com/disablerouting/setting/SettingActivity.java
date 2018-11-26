@@ -340,7 +340,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         modelArrayList.add(settingModel);
         settingModel = new SettingModel(2, getString(R.string.maximum_incline));
         modelArrayList.add(settingModel);
-        settingModel = new SettingModel(3, getString(R.string.sidewalk_width));
+        settingModel = new SettingModel(3, getString(R.string.sidewalk_width_m));
         modelArrayList.add(settingModel);
         return modelArrayList;
     }
@@ -348,7 +348,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private ArrayList<SettingModel> prepareListDataNode() {
         ArrayList<SettingModel> modelArrayList = new ArrayList<>();
         SettingModel settingModel;
-        settingModel = new SettingModel(0, getString(R.string.maximum_sloped_kerb));
+        settingModel = new SettingModel(0, getString(R.string.maximum_sloped_kerb_m));
         modelArrayList.add(settingModel);
         return modelArrayList;
 
@@ -593,11 +593,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         attributesWidth.setKey(mListWayData.getAttributesList().get(i).getKey());
                         if (mListWayData.getAttributesList().get(i).getValue().contains(".")) {
                             String stringValue = Utility.trimTWoDecimalPlaces(Double.parseDouble(mListWayData.getAttributesList().get(i).getValue()));
-                            if(Utility.getAppLanguage().equalsIgnoreCase("Deutsch")) {
-                                attributesWidth.setValue(Utility.changeDotToComma(stringValue));
-                            }else {
-                                attributesWidth.setValue(stringValue);
-                            }
+                            attributesWidth.setValue(Utility.convertDToCORCtoD(stringValue));
+
                         } else {
                             attributesWidth.setValue(mListWayData.getAttributesList().get(i).getValue());
 

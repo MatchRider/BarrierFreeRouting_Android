@@ -61,8 +61,10 @@
     <!--FILTER OPTIONS-->
     <string name="surface_type">Surface Type</string>
     <string name="maximum_sloped_kerb">Maximum sloped kerb (cm)</string>
+    <string name="maximum_sloped_kerb_m">Maximum sloped kerb (m)</string>
     <string name="maximum_incline">Maximum Incline (%)</string>
     <string name="sidewalk_width">Walkway width (cm)</string>
+    <string name="sidewalk_width_m">Walkway width (m)</string>
     <string name="routing_via" tools:ignore="TypographyEllipsis">Routing Via...</string>
 
     <!--VALIDATION OPTIONS SURFACE TYPE-->

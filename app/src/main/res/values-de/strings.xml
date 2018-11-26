@@ -60,8 +60,10 @@
     <!--FILTER OPTIONS-->
     <string name="surface_type">Oberflächentyp</string>
     <string name="maximum_sloped_kerb"> Maximale Bordsteinkantenhöhe (cm)</string>
+    <string name="maximum_sloped_kerb_m"> Maximale Bordsteinkantenhöhe (m)</string>
     <string name="maximum_incline">Maximale Steigung (%)</string>
     <string name="sidewalk_width">Gehwegbreite (cm)</string>
+    <string name="sidewalk_width_m">Gehwegbreite (m)</string>
     <string name="routing_via" tools:ignore="TypographyEllipsis">Routing über...</string>
 
     <!--VALIDATION OPTIONS SURFACE TYPE-->
