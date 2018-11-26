@@ -88,52 +88,40 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                         subTitle = mSelectionMap.get(checkPos).getValue();
                     }
                 }
-            } else if (mSelectionMap.get(checkPos) != null && mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
-                if (mSelectionMap.get(checkPos).getValue() != null) {
-
-                    if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("0")) {
-                        subTitle = mContext.getString(R.string.zero_curb);
-                    } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("0.03")) {
-                        subTitle = mContext.getString(R.string.three_kerb);
-                    } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("0.06")) {
-                        subTitle = mContext.getString(R.string.six_kerb);
-                    } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("0.1")) {
-                        subTitle = mContext.getString(R.string.greater_six_kerb);
-                    } else if (mSelectionMap.get(checkPos).getValue().contains(".") && Utility.isParsableAsDouble(mSelectionMap.get(checkPos).getValue())) {
-                        subTitle = Utility.trimTWoDecimalPlaces(Double.parseDouble(mSelectionMap.get(checkPos).getValue()));
-                    }
-                }
-
-            } else {
+            }
+            else {
                 if (mSelectionMap.get(checkPos) != null && mSelectionMap.get(checkPos).getValue() != null && !mSelectionMap.get(checkPos).getValue().isEmpty()) {
                     if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)) {
                         if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("asphalt")) {
                             subTitle = mContext.getString(R.string.asphalt);
                         }
-                        if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("concrete")) {
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("concrete")) {
                             subTitle = mContext.getString(R.string.concrete);
                         }
-                        if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("paving_stones")) {
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("paving_stones")) {
                             subTitle = mContext.getString(R.string.paving_stones);
                         }
-                        if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("cobblestone")) {
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("cobblestone")) {
                             subTitle = mContext.getString(R.string.cobblestone);
                         }
-                        if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("compacted")) {
+                       else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("compacted")) {
                             subTitle = mContext.getString(R.string.compacted);
                         }
                     } else if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
                         if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.kerb_zero))) {
                             subTitle = mContext.getString(R.string.zero_curb);
                         }
-                        if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_three))) {
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_three))) {
                             subTitle = mContext.getString(R.string.three_kerb);
                         }
-                        if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_six))) {
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_six))) {
                             subTitle = mContext.getString(R.string.six_kerb);
                         }
-                        if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_any))) {
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_any))) {
                             subTitle = mContext.getString(R.string.greater_six_kerb);
+                        }
+                        else if (mSelectionMap.get(checkPos).getValue().contains(".") && Utility.isParsableAsDouble(mSelectionMap.get(checkPos).getValue())) {
+                            subTitle = Utility.trimTWoDecimalPlaces(Double.parseDouble(mSelectionMap.get(checkPos).getValue()));
                         }
 
                     } else {
