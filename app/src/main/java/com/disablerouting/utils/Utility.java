@@ -400,6 +400,7 @@ public class Utility {
         }
         return result.toString();
     }
+
     private static String nodeListToStringNode(NodeList nodes, List<Way> listWay) throws TransformerException {
         StringBuilder result = new StringBuilder();
         int len = nodes.getLength();
@@ -407,11 +408,11 @@ public class Utility {
 
         //FOR 311 items
         for (int i = 0; i < lenWay; i++) {
-            for (int j=0;j< listWay.get(i).getNdList().size();j++){
-                String nodeID=listWay.get(i).getNdList().get(j).getRef();
+            for (int j = 0; j < listWay.get(i).getNdList().size(); j++) {
+                String nodeID = listWay.get(i).getNdList().get(j).getRef();
                 for (int k = 0; k < len; k++) { // NODES iterate 45000
                     Node node = nodes.item(k);
-                    if(node.getAttributes().getNamedItem("id").getNodeValue().equalsIgnoreCase(nodeID)){
+                    if (node.getAttributes().getNamedItem("id").getNodeValue().equalsIgnoreCase(nodeID)) {
                         result.append(nodeToString(nodes.item(k)));
                         break;
                     }
@@ -473,12 +474,28 @@ public class Utility {
         return String.format("#%06X", (0xFFFFFF & intColor));
     }
 
-    public static String getAppLanguage(){
+    public static String getAppLanguage() {
         return Locale.getDefault().getDisplayLanguage();
     }
+
+    public static String convertDToCORCtoD(String value) {
+        String string = value;
+        if (Locale.getDefault().getDisplayLanguage().equalsIgnoreCase("English")) {
+            if (value.contains(",")) {
+                string = value.replace(",", ".");
+            }
+
+        } else if (Locale.getDefault().getDisplayLanguage().equalsIgnoreCase("Deutsch")) {
+            if (value.contains(".")) {
+                string = value.replace(".", ",");
+            }
+        }
+        return string;
+    }
+
     public static Intent createCallingIntent(Context context, String runTYPE) {
         Intent intent = new Intent(context, OsmDataService.class);
-        intent.putExtra(AppConstant.RUN_API,runTYPE);
+        intent.putExtra(AppConstant.RUN_API, runTYPE);
         return intent;
     }
 

@@ -9,7 +9,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.*;
+import android.widget.CheckBox;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -35,7 +38,6 @@ import com.github.scribejava.core.model.Verb;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -591,7 +593,11 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         attributesWidth.setKey(mListWayData.getAttributesList().get(i).getKey());
                         if (mListWayData.getAttributesList().get(i).getValue().contains(".")) {
                             String stringValue = Utility.trimTWoDecimalPlaces(Double.parseDouble(mListWayData.getAttributesList().get(i).getValue()));
-                            attributesWidth.setValue(Utility.changeDotToComma(stringValue));
+                            if(Utility.getAppLanguage().equalsIgnoreCase("Deutsch")) {
+                                attributesWidth.setValue(Utility.changeDotToComma(stringValue));
+                            }else {
+                                attributesWidth.setValue(stringValue);
+                            }
                         } else {
                             attributesWidth.setValue(mListWayData.getAttributesList().get(i).getValue());
 
