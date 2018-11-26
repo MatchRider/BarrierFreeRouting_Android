@@ -113,6 +113,7 @@
                   android:theme="@style/AppTheme">
         </activity>
         <service android:name=".service.OsmDataService"/>
+
     </application>
 
 </manifest>

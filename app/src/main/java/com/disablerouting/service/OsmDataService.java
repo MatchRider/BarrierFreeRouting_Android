@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 import com.disablerouting.R;
@@ -291,6 +292,11 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
                 isSyncInProgress = (isOSMDataSynced);
                 break;
         }
+
+        Intent intent = new Intent("API_STATUS");
+        intent.putExtra("StringType",stringType);
+        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     @Override
@@ -309,7 +315,12 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
                 if (responseWay.getError() != null && responseWay.getError().get(0) != null &&
                         responseWay.getError().get(0).getMessage() != null) {
                     Toast.makeText(this, responseWay.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent("API_STATUS");
+                    intent.putExtra("StringType",responseWay.getError().get(0).getMessage());
+                    intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
                 }
+
             }
         }
     }
@@ -319,6 +330,11 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
         Toast.makeText(this, R.string.unable_to_get_data, Toast.LENGTH_SHORT).show();
         isLISTDatSynced = false;
         isSyncInProgress =false;
+        Intent intent = new Intent("API_STATUS");
+        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+
+        intent.putExtra("StringType",errorResponse.getErrorMessage());
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
     }
 }

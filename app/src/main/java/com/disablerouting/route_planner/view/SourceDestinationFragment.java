@@ -293,6 +293,11 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mEditTextDestination.addTextChangedListener(mDestWatcher);
     }
 
+    private void removeListener() {
+        mEditTextSource.removeTextChangedListener(mSourceWatcher);
+        mEditTextDestination.removeTextChangedListener(mDestWatcher);
+    }
+
     @OnClick(R.id.btn_filter)
     public void onGoFilter() {
         mOnSourceDestinationListener.onApplyFilter();
@@ -319,11 +324,11 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
     @OnClick(R.id.img_back)
     public void onBackClick() {
-        hideLoader();
-        mOnSourceDestinationListener.onBackPress();
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
-        clearSourceComplete();
-        clearDestinationComplete();
+      //  clearSourceComplete();
+       // clearDestinationComplete();
+        mOnSourceDestinationListener.onBackPress();
+        hideLoader();
     }
 
     @OnClick(R.id.clear_source_address)
@@ -494,6 +499,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         super.onDestroy();
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         mISourceDestinationScreenPresenter.disconnect();
+        removeListener();
     }
 
     @Override
