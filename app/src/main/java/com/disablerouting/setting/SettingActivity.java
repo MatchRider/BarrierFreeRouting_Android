@@ -249,7 +249,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK)) {
                     // both,left,right
                     if (mStringChoosedSideWalk.isEmpty()) {
-                        sideWalkValue = attributes.getValue();
+                        sideWalkValue = Utility.covertValueRequired(attributes.getValue());
                         tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + sideWalkValue + "\"/>\n");
                     } else {
                         sideWalkValue = mStringChoosedSideWalk;
@@ -263,7 +263,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             if (mHashMapWay != null && mHashMapWay.get(0).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)) {
                 if (mHashMapWay.get(0).getValue() != null) {
                     if (!mStringChoosedSideWalk.isEmpty())
-                        tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK + ":" + sideWalkValue + ":" + AppConstant.KEY_SURFACE + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(0).getValue()) + "\"/>\n");
+                        tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK + ":" + Utility.covertValueRequired(sideWalkValue) + ":" + AppConstant.KEY_SURFACE + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(0).getValue()) + "\"/>\n");
                 }
 
             }
@@ -275,8 +275,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             }
             if (mHashMapWay != null && mHashMapWay.get(3).getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
                 if (mHashMapWay.get(3).getValue() != null) {
-                    if (!mStringChoosedSideWalk.isEmpty())
-                        tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK + ":" + sideWalkValue + ":" + AppConstant.KEY_WIDTH + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(3).getValue()) + "\"/>\n");
+                    if (!mStringChoosedSideWalk.isEmpty()) {
+                        assert sideWalkValue != null;
+                        tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK + ":" + Utility.covertValueRequired(sideWalkValue) + ":" + AppConstant.KEY_WIDTH + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(3).getValue()) + "\"/>\n");
+                    }
                 }
 
             }
@@ -417,7 +419,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             //Case When node attributes are there
             StringBuilder tags = new StringBuilder();
             tags.append("<tag k=\"" + nodeReference.getAttributes().get(0).getKey() + "\" v=\"" +
-                    nodeReference.getAttributes().get(0).getValue() + "\"/>\n");
+                    Utility.covertValueRequired(nodeReference.getAttributes().get(0).getValue()) + "\"/>\n");
 
             requestString = "<osm>\n" +
                     " <node changeset=\"" + mChangeSetID + "\" lat=\"" + lat + "\" lon=\"" + lon + "\" >\n" +
@@ -459,7 +461,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             String attributesKey = attributes.getKey();
             String attributesValue = attributes.getValue();
             if (attributes.getKey() != null && attributes.getValue() != null) {
-                tags.append("<tag k=\"" + attributesKey + "\" v=\"" + attributesValue + "\"/>\n");
+                tags.append("<tag k=\"" + attributesKey + "\" v=\"" + Utility.covertValueRequired(attributesValue) + "\"/>\n");
             }
         }
 
@@ -676,7 +678,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     if (mListWayData.getNodeReference().get(i).getAttributes() != null &&
                             mListWayData.getNodeReference().get(i).getAttributes().size() != 0) {
                         attributesValidate.setKey(mListWayData.getNodeReference().get(i).getAttributes().get(0).getKey());
-                        attributesValidate.setValue(mListWayData.getNodeReference().get(i).getAttributes().get(0).getValue());
+                        attributesValidate.setValue(Utility.covertValueRequired(mListWayData.getNodeReference().get(i).getAttributes().get(0).getValue()));
                         attributesValidate.setValid(mListWayData.getNodeReference().get(i).getAttributes().get(0).isValid());
                     }
                     if (mListWayData.getNodeReference().get(i).getAttributes().size() != 0) {
@@ -704,7 +706,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             if (mNodeReference.getAttributes() != null &&
                     mNodeReference.getAttributes().size() != 0) {
                 attributesValidate.setKey(mHashMapWay.get(0).getKey());
-                attributesValidate.setValue(mHashMapWay.get(0).getValue());
+                attributesValidate.setValue(Utility.covertValueRequired(mHashMapWay.get(0).getValue()));
                 attributesValidate.setValid(mHashMapWay.get(0).isValid());
             }
             assert mNodeReference.getAttributes() != null;
