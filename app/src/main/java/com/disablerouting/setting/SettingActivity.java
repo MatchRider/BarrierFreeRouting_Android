@@ -18,7 +18,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.api.ApiEndPoint;
-import com.disablerouting.application.AppData;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.manager.ListGetWayManager;
@@ -257,14 +256,14 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + sideWalkValue + "\"/>\n");
 
                     }
-                }else {
+                } else {
                     tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
                 }
             }
             if (mHashMapWay != null && mHashMapWay.get(0).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)) {
                 if (mHashMapWay.get(0).getValue() != null) {
-                    if(!mStringChoosedSideWalk.isEmpty())
-                    tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK + ":" + sideWalkValue + ":" + AppConstant.KEY_SURFACE + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(0).getValue()) + "\"/>\n");
+                    if (!mStringChoosedSideWalk.isEmpty())
+                        tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK + ":" + sideWalkValue + ":" + AppConstant.KEY_SURFACE + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(0).getValue()) + "\"/>\n");
                 }
 
             }
@@ -276,7 +275,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             }
             if (mHashMapWay != null && mHashMapWay.get(3).getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
                 if (mHashMapWay.get(3).getValue() != null) {
-                    if(!mStringChoosedSideWalk.isEmpty())
+                    if (!mStringChoosedSideWalk.isEmpty())
                         tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK + ":" + sideWalkValue + ":" + AppConstant.KEY_WIDTH + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(3).getValue()) + "\"/>\n");
                 }
 
@@ -407,43 +406,46 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      */
     private void callToCreateNode(NodeReference nodeReference) {
         showLoader();
-        if (AppData.getNewInstance() != null && AppData.getNewInstance().getCurrentLoc() != null) {
-            double lat = AppData.getNewInstance().getCurrentLoc().latitude;
-            double lon = AppData.getNewInstance().getCurrentLoc().longitude;
-            String requestString;
-            if (nodeReference.getAttributes() != null && nodeReference.getAttributes().size() != 0) {
-                //Case When node attributes are there
-                StringBuilder tags = new StringBuilder();
-                tags.append("<tag k=\"" + nodeReference.getAttributes().get(0).getKey() + "\" v=\"" +
-                        nodeReference.getAttributes().get(0).getValue() + "\"/>\n");
-
-                requestString = "<osm>\n" +
-                        " <node changeset=\"" + mChangeSetID + "\" lat=\"" + lat + "\" lon=\"" + lon + "\" >\n" +
-                        tags +
-                        " </node>\n" +
-                        "</osm>";
-
-            } else {
-                //Case When no node attributes are there
-                requestString = "<osm>\n" +
-                        " <node changeset=\"" + mChangeSetID + "\" lat=\"" + lat + "\" lon=\"" + lon + "\" >\n" +
-                        " </node>\n" +
-                        "</osm>";
-            }
-
-            String URLCreateNode = mApiEndPoint + "node/create";
-            Log.e("API", URLCreateNode);
-            OauthData oauthData = new OauthData(Verb.PUT, requestString, URLCreateNode);
-            asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
-                    false, AppConstant.API_TYPE_CREATE_NODE, false);
-            try {
-                Object result = asyncTaskOsmApi.execute().get();
-                //asyncTaskOsmApi.execute("");
-
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
+        double lat = 0;
+        double lon=0;
+        if (!nodeReference.getLat().isEmpty() && !nodeReference.getLon().isEmpty()) {
+             lat = Double.parseDouble(nodeReference.getLat());
+             lon = Double.parseDouble(nodeReference.getLon());
         }
+        String requestString;
+        if (nodeReference.getAttributes() != null && nodeReference.getAttributes().size() != 0) {
+            //Case When node attributes are there
+            StringBuilder tags = new StringBuilder();
+            tags.append("<tag k=\"" + nodeReference.getAttributes().get(0).getKey() + "\" v=\"" +
+                    nodeReference.getAttributes().get(0).getValue() + "\"/>\n");
+
+            requestString = "<osm>\n" +
+                    " <node changeset=\"" + mChangeSetID + "\" lat=\"" + lat + "\" lon=\"" + lon + "\" >\n" +
+                    tags +
+                    " </node>\n" +
+                    "</osm>";
+
+        } else {
+            //Case When no node attributes are there
+            requestString = "<osm>\n" +
+                    " <node changeset=\"" + mChangeSetID + "\" lat=\"" + lat + "\" lon=\"" + lon + "\" >\n" +
+                    " </node>\n" +
+                    "</osm>";
+        }
+
+        String URLCreateNode = mApiEndPoint + "node/create";
+        Log.e("API", URLCreateNode);
+        OauthData oauthData = new OauthData(Verb.PUT, requestString, URLCreateNode);
+        asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
+                false, AppConstant.API_TYPE_CREATE_NODE, false);
+        try {
+            Object result = asyncTaskOsmApi.execute().get();
+            //asyncTaskOsmApi.execute("");
+
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -525,7 +527,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     }
 
 
-
     /**
      * Get Data from intent and set  values to attributes
      */
@@ -552,7 +553,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         attributesSurface.setKey(mListWayData.getAttributesList().get(i).getKey());
                         attributesSurface.setValue(mListWayData.getAttributesList().get(i).getValue());
                         attributesSurface.setValid(mListWayData.getAttributesList().get(i).isValid());
-                        if(!mISFromOSM) {
+                        if (!mISFromOSM) {
                             mHashMapWay.put(0, attributesSurface);
                         }
                         break;
@@ -562,7 +563,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         attributesHighWay.setKey(mListWayData.getAttributesList().get(i).getKey());
                         attributesHighWay.setValue(mListWayData.getAttributesList().get(i).getValue());
                         attributesHighWay.setValid(mListWayData.getAttributesList().get(i).isValid());
-                        if(!mISFromOSM) {
+                        if (!mISFromOSM) {
                             mHashMapWay.put(1, attributesHighWay);
                         }
                         break;
@@ -583,7 +584,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         }
                         attributesIncline.setValue(value);
                         attributesIncline.setValid(mListWayData.getAttributesList().get(i).isValid());
-                        if(!mISFromOSM) {
+                        if (!mISFromOSM) {
                             mHashMapWay.put(2, attributesIncline);
                         }
                         break;
@@ -600,7 +601,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
                         }
                         attributesWidth.setValid(mListWayData.getAttributesList().get(i).isValid());
-                        if(!mISFromOSM) {
+                        if (!mISFromOSM) {
                             mHashMapWay.put(3, attributesWidth);
                         }
 
@@ -611,7 +612,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         attributesFootWay.setKey(mListWayData.getAttributesList().get(i).getKey());
                         attributesFootWay.setValue(mListWayData.getAttributesList().get(i).getValue());
                         attributesFootWay.setValid(mListWayData.getAttributesList().get(i).isValid());
-                        if(!mISFromOSM) {
+                        if (!mISFromOSM) {
                             mHashMapWay.put(4, attributesFootWay);
                         }
                         break;
