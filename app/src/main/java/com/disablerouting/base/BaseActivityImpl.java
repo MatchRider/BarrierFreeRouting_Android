@@ -24,8 +24,6 @@ import com.disablerouting.network.NetworkChangeReceiver;
 import com.disablerouting.sidemenu.view.ISideMenuFragmentCallback;
 import com.disablerouting.sidemenu.view.SideMenuFragment;
 import com.disablerouting.widget.DRLoader;
-import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.enums.SnackbarType;
 
 @SuppressLint("Registered")
 public class BaseActivityImpl extends AppCompatActivity implements UIBase, NetworkChangeReceiver.ConnectionChangeListener,
@@ -70,16 +68,16 @@ public class BaseActivityImpl extends AppCompatActivity implements UIBase, Netwo
     }
 
     @Override
-    public void showSnackBar(@StringRes int message, AppCompatActivity context) {
+    public void showToast(@StringRes int message, AppCompatActivity context) {
         if (message != 0) {
-            Snackbar.with(getApplicationContext()).type(SnackbarType.MULTI_LINE).text(message).show(context);
+            Toast.makeText(context,message,Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
-    public void showSnackBar(String message, AppCompatActivity context) {
+    public void showToast(String message, AppCompatActivity context) {
         if (!message.equals("")) {
-            Snackbar.with(getApplicationContext()).type(SnackbarType.MULTI_LINE).text(message).show(context);
+            Toast.makeText(context,message,Toast.LENGTH_LONG).show();
         }
     }
 

@@ -111,14 +111,14 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                         if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.kerb_zero))) {
                             subTitle = mContext.getString(R.string.zero_curb);
                         }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_three))) {
-                            subTitle = mContext.getString(R.string.three_kerb);
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_three_validation))) {
+                            subTitle = mContext.getString(R.string.value_kerb_three_validation);
                         }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_six))) {
-                            subTitle = mContext.getString(R.string.six_kerb);
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_six_validation))) {
+                            subTitle = mContext.getString(R.string.value_kerb_six_validation);
                         }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_any))) {
-                            subTitle = mContext.getString(R.string.greater_six_kerb);
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_any_validation))) {
+                            subTitle = mContext.getString(R.string.value_kerb_any_validation);
                         }
                         else if (mSelectionMap.get(checkPos).getValue().contains(".") && Utility.isParsableAsDouble(mSelectionMap.get(checkPos).getValue())) {
                             subTitle = Utility.trimTWoDecimalPlaces(Double.parseDouble(mSelectionMap.get(checkPos).getValue()));

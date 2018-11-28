@@ -114,6 +114,11 @@
     <string name="value_kerb_six">0.06</string>
     <string name="value_kerb_any">0.1</string>
 
+    <!--VAlidation VALUE MAXIMUM KERB HEIGHT TYPE-->
+    <string name="value_kerb_three_validation">0.03</string>
+    <string name="value_kerb_six_validation">0.06</string>
+    <string name="value_kerb_any_validation">0.1</string>
+
     <!--FILTER OPTIONS MINIMUM WIDTH TYPE-->
     <string name="nine_less"><![CDATA[below 0.9 ]]></string>
     <string name="nine_greater"><![CDATA[above 0.9 ]]></string>

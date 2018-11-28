@@ -19,12 +19,12 @@ public interface IFragmentBase {
      *
      * @param message
      */
-    void showSnackBar(@StringRes int message);
+    void showToast(@StringRes int message);
     
     /**
      * Method to show Toast string message
      *
      * @param message
      */
-    void showSnackBar(String message);
+    void showToast(String message);
 }

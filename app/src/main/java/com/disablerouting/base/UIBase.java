@@ -22,14 +22,14 @@ public interface UIBase {
      *
      * @param message string message
      */
-    void showSnackBar(@StringRes int message, AppCompatActivity context);
+    void showToast(@StringRes int message, AppCompatActivity context);
     
     /**
      * Method to show Toast string message
      *
      * @param message string message
      */
-    void showSnackBar(String message, AppCompatActivity context);
+    void showToast(String message, AppCompatActivity context);
 
     /**
      * Method to launch another activity and finish current one without bundle

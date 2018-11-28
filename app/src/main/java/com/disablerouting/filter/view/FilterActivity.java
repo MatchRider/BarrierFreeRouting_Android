@@ -403,9 +403,9 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
     public void onFailureGeoCoding(String error) {
         Utility.hideSoftKeyboard(this);
         if (error.equalsIgnoreCase("No address found.")) {
-            showSnackBar(getResources().getString(R.string.no_address_found), this);
+            showToast(getResources().getString(R.string.no_address_found), this);
         } else {
-            showSnackBar(error, this);
+            showToast(error, this);
         }
     }
 

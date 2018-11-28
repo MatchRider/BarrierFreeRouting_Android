@@ -107,17 +107,17 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
     private ArrayList<String> prepareListDataMaxSlope() {
         ArrayList<String> stringArrayList = new ArrayList<>();
         stringArrayList.add(getString(R.string.zero_curb));
-        stringArrayList.add(getString(R.string.three_kerb));
-        stringArrayList.add(getString(R.string.six_kerb));
-        stringArrayList.add(getString(R.string.greater_six_kerb));
+        stringArrayList.add(getString(R.string.value_kerb_three_validation));
+        stringArrayList.add(getString(R.string.value_kerb_six_validation));
+        stringArrayList.add(getString(R.string.value_kerb_any_validation));
         return stringArrayList;
     }
     private ArrayList<String> prepareListDataMaxSlopeKey() {
         ArrayList<String> stringArrayList = new ArrayList<>();
         stringArrayList.add(getString(R.string.kerb_zero));
-        stringArrayList.add(getString(R.string.value_kerb_three));
-        stringArrayList.add(getString(R.string.value_kerb_six));
-        stringArrayList.add(getString(R.string.value_kerb_any));
+        stringArrayList.add(getString(R.string.value_kerb_three_validation));
+        stringArrayList.add(getString(R.string.value_kerb_six_validation));
+        stringArrayList.add(getString(R.string.value_kerb_any_validation));
         return stringArrayList;
     }
 
@@ -158,7 +158,7 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
                     setDataWhenFilterApplied(prepareListDataSurfaceKey().get(position), position);
                     break;
                 case 1:
-                    setDataWhenFilterApplied(prepareListDataMaxSlope().get(position), position);
+                    setDataWhenFilterApplied(prepareListDataMaxSlopeKey().get(position), position);
                     break;
                 case 2:
                     setDataWhenFilterApplied(prepareListDataMaxIncline().get(position), position);

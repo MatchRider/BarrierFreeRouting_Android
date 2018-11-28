@@ -3,16 +3,12 @@ package com.disablerouting.route_planner.view;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
@@ -112,7 +108,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     boolean mStepListHasData = false;
     private int mTabSelected = 1;
     private PlotWayDataTask mPlotWayDataTask;
-    private BroadcastReceiver mAPIStatusReceiver;
+   // private BroadcastReceiver mAPIStatusReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,7 +165,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         mTabSelected = 3;
         Log.e("Time", new Date(System.currentTimeMillis()).toString());
 
-        IntentFilter filter = new IntentFilter();
+       /* IntentFilter filter = new IntentFilter();
         filter.addAction("API_STATUS");
 
         mAPIStatusReceiver = new BroadcastReceiver() {
@@ -205,7 +201,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 }
             }
         };
-        LocalBroadcastManager.getInstance(this).registerReceiver(mAPIStatusReceiver, filter);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mAPIStatusReceiver, filter);*/
     }
 
 
@@ -418,12 +414,12 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 if (WayDataPreference.getInstance(this) != null) {
                     if (!mISFromOSM) {
                         showLoader();
-                        // mIRoutePlannerScreenPresenter.getListData();
-                        startService(Utility.createCallingIntent(this, AppConstant.RUN_LIST));
+                        //startService(Utility.createCallingIntent(this, AppConstant.RUN_LIST));
+                         mIRoutePlannerScreenPresenter.getListData();
                     } else {
                         showLoader();
-                        startService(Utility.createCallingIntent(this, AppConstant.RUN_OSM));
-                        // mIRoutePlannerScreenPresenter.getOSMData();
+                       // startService(Utility.createCallingIntent(this, AppConstant.RUN_OSM));
+                         mIRoutePlannerScreenPresenter.getOSMData();
                     }
                 }
             }
@@ -921,10 +917,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
         mIRoutePlannerScreenPresenter.disconnect();
 
-        if (mAPIStatusReceiver != null) {
+       /* if (mAPIStatusReceiver != null) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mAPIStatusReceiver);
             mAPIStatusReceiver = null;
-        }
+        }*/
     }
 
     @Override

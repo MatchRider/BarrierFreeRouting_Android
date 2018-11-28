@@ -317,7 +317,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 mFeaturesRouteVia = featuresRouteVia;
                 callForDestination(null, mGeoPointSource, mGeoPointDestination, mJSONObjectFilter,mFeaturesRouteVia);
             } else {
-                showSnackBar(Objects.requireNonNull(getContext()).getResources().getString(R.string.error_source_destination_same));
+                showToast(Objects.requireNonNull(getContext()).getResources().getString(R.string.error_source_destination_same));
             }
         }
     }
@@ -431,7 +431,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @Override
     public void onFailureDirection(String error) {
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
-        showSnackBar(error);
+        showToast(error);
     }
 
     @Override
@@ -470,9 +470,9 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     public void onFailureGeoCoding(String error) {
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
         if (error.equalsIgnoreCase("No address found.")) {
-            showSnackBar(getResources().getString(R.string.no_address_found));
+            showToast(getResources().getString(R.string.no_address_found));
         } else {
-            showSnackBar(error);
+            showToast(error);
         }
     }
 
@@ -490,7 +490,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @Override
     public void onFailureNode(String error) {
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
-        showSnackBar(error);
+        showToast(error);
 
     }
 
