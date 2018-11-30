@@ -65,8 +65,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private MyLocationNewOverlay mLocationOverlay;
 
     final String[] locationPermissions = new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
-            android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.ACCESS_NETWORK_STATE};
+            android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_NETWORK_STATE};
 
     private double mLatitude = 0;
     private double mLongitude = 0;

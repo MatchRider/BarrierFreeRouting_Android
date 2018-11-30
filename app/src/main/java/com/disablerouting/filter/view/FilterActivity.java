@@ -427,7 +427,7 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         mListPopupWindow.setAnchorView(anchor);
         mListPopupWindow.setAnimationStyle(R.style.popup_window_animation);
         int height = Utility.calculatePopUpHeight(this);
-        mListPopupWindow.setHeight(height / 4);
+        mListPopupWindow.setHeight(height / 2);
         mListPopupWindow.setWidth(android.support.v7.widget.ListPopupWindow.MATCH_PARENT);
         mListPopupWindow.setAdapter(mAddressListAdapter);
         mListPopupWindow.setOnItemClickListener(this);
