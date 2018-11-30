@@ -299,7 +299,7 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         mListDataHeader.add(getString(R.string.surface_type));
         mListDataHeader.add(getString(R.string.maximum_sloped_kerb));
         mListDataHeader.add(getString(R.string.maximum_incline));
-        mListDataHeader.add(getString(R.string.sidewalk_width));
+        mListDataHeader.add(getString(R.string.sidewalk_width_m));
 
 
         List<DataModelExpandableList> surfaceTypeData = new ArrayList<>();

@@ -104,9 +104,9 @@
 
     <!--FILTER OPTIONS MAXIMUM KERB HEIGHT TYPE-->
     <string name="zero_curb">No curb</string>
-    <string name="three_kerb">3</string>
-    <string name="six_kerb">6</string>
-    <string name="greater_six_kerb">Above 6</string>
+    <string name="three_kerb">3 cm</string>
+    <string name="six_kerb">6 cm</string>
+    <string name="greater_six_kerb">Above 6 cm</string>
 
     <!--FILTER VALUE MAXIMUM KERB HEIGHT TYPE-->
     <string name="kerb_zero">0</string>
@@ -120,8 +120,8 @@
     <string name="value_kerb_any_validation">0.1</string>
 
     <!--FILTER OPTIONS MINIMUM WIDTH TYPE-->
-    <string name="nine_less"><![CDATA[below 0.9 ]]></string>
-    <string name="nine_greater"><![CDATA[above 0.9 ]]></string>
+    <string name="nine_less"><![CDATA[below 0.9 m]]></string>
+    <string name="nine_greater"><![CDATA[above 0.9 m]]></string>
 
     <!--FILTER VALUE MINIMUM WIDTH  VALUE TYPE-->
     <string name="value_nine_greater">0.9</string>
