@@ -29,13 +29,16 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
     private HashMap<Integer, Attributes> mSelectionMap = new HashMap<>();
     private boolean mIsValidChoosed;
     private boolean mIsFromOSM;
+    private boolean mIsValidScreen=false;
 
 
-    SettingAdapter(Context context, List<SettingModel> stringArrayList, SettingAdapterListener settingAdapterListener, boolean isFromOSM) {
+    SettingAdapter(Context context, List<SettingModel> stringArrayList, SettingAdapterListener settingAdapterListener,
+                   boolean isFromOSM, boolean isValidScreen) {
         mContext = context;
         mStringArrayList = stringArrayList;
         mOnClickListener = settingAdapterListener;
         mIsFromOSM = isFromOSM;
+        mIsValidScreen= isValidScreen;
 
     }
 
@@ -144,14 +147,24 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                     holder.mImageViewEdit.setVisibility(View.GONE);
                 } else {
+                    if(mIsValidScreen){
+                        holder.mCheckBoxVerify.setChecked(false);
+                        holder.mCheckBoxVerify.setClickable(false);
+                        holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
+                        holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorBlack));
+                        holder.mImageViewEdit.setVisibility(View.VISIBLE);
+                        holder.mImageViewEdit.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_edit_black));
+                        holder.mImageViewEdit.setClickable(false);
 
-                    holder.mCheckBoxVerify.setChecked(false);
-                    holder.mCheckBoxVerify.setClickable(true);
-                    holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
-                    holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorBlack));
-                    holder.mImageViewEdit.setVisibility(View.VISIBLE);
-                    holder.mImageViewEdit.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_edit_black));
-                    holder.mImageViewEdit.setClickable(true);
+                    }else {
+                        holder.mCheckBoxVerify.setChecked(false);
+                        holder.mCheckBoxVerify.setClickable(true);
+                        holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
+                        holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorBlack));
+                        holder.mImageViewEdit.setVisibility(View.VISIBLE);
+                        holder.mImageViewEdit.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_edit_black));
+                        holder.mImageViewEdit.setClickable(true);
+                    }
                 }
             } else {
                 if (isValid) {

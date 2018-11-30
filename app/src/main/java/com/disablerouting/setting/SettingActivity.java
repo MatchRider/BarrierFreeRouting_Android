@@ -59,6 +59,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private SettingAdapter mSettingAdapter;
     private ListWayData mListWayData;
     private NodeReference mNodeReference;
+    private boolean mIsValidScreen=false;
 
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, Attributes> mHashMapWay = new HashMap<>();
@@ -104,6 +105,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 if (mListWayData != null) {
                     mWayID = mListWayData.getOSMWayId();
                     mNodeList = mListWayData.getNodeReference();
+                    mIsValidScreen = Boolean.parseBoolean(mListWayData.getIsValid());
                     if (mListWayData.getIsForData() != null) {
                         mISFromOSM = !mListWayData.getIsForData().isEmpty() && mListWayData.getIsForData().equalsIgnoreCase(AppConstant.OSM_DATA);
                     }
@@ -309,7 +311,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      */
     private void setUpRecyclerView() {
         if (mIsForWAY) {
-            mSettingAdapter = new SettingAdapter(this, prepareListDataWay(), this, mISFromOSM);
+            mSettingAdapter = new SettingAdapter(this, prepareListDataWay(), this, mISFromOSM , mIsValidScreen);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             mRecyclerView.setAdapter(mSettingAdapter);
             if (mHashMapWay != null) {
@@ -318,7 +320,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
             }
         } else {
-            mSettingAdapter = new SettingAdapter(this, prepareListDataNode(), this, mISFromOSM);
+            mSettingAdapter = new SettingAdapter(this, prepareListDataNode(), this, mISFromOSM , false);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             mRecyclerView.setAdapter(mSettingAdapter);
             if (mHashMapWay != null) {
