@@ -415,7 +415,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     if (!mISFromOSM) {
                         showLoader();
                         //startService(Utility.createCallingIntent(this, AppConstant.RUN_LIST));
-                         mIRoutePlannerScreenPresenter.getListData();
+                        mIRoutePlannerScreenPresenter.getListData();
+
                     } else {
                         showLoader();
                        // startService(Utility.createCallingIntent(this, AppConstant.RUN_OSM));
@@ -642,7 +643,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onListDataReceived(ResponseListWay responseWay) {
-        if (responseWay != null) {
+        if (responseWay != null && responseWay.getWayData()!=null && responseWay.getWayData().size()!=0) {
             if (responseWay.isStatus()) {
                 mWayListValidatedData = new ArrayList<>();
                 mWayListNotValidatedData = new ArrayList<>();
@@ -697,6 +698,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNode();
             mNodeListNotValidatedData = WayDataPreference.getInstance(this).getNotValidateDataNode();
             onToggleClickedBanner(false);
+            hideLoader();
+        }else {
             hideLoader();
         }
 

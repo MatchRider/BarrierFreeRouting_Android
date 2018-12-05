@@ -147,6 +147,7 @@ public interface ApiService {
      * @return list of ways
      */
     @GET("List")
+    @Headers("Cache-Control: no-cache")
     Call<ResponseListWay> getList();
 
     @Streaming

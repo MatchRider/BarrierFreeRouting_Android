@@ -150,17 +150,18 @@ public class RetrofitClient {
         if (sRetrofitCURD == null) {
 
             final String baseUrl = ApiEndPoint.BASE_URL_SALIL;
-           /* HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             // set your desired log level
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-*/
+
+
             final OkHttpClient client = new OkHttpClient.Builder()
                     .followRedirects(true)
                     .readTimeout(60, TimeUnit.SECONDS)
                     .writeTimeout(60, TimeUnit.SECONDS)
                     .connectTimeout(60, TimeUnit.SECONDS)
                     .addInterceptor(new ApiInterceptor(false))
-                  //  .addInterceptor(logging)
+                   // .addInterceptor(logging)
                     .build();
 
             sRetrofitCURD = new Retrofit.Builder()

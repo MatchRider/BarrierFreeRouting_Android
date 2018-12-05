@@ -140,7 +140,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      */
     private void callToGetChangeSet() {
         showLoader();
-        String string = "<osm><changeset><tag k=\"created_by\" v=\"JOSM 1.61\"/><tag k=\"comment\" v=\"Just adding some streetnames\"/></changeset></osm>";
+        String string = "<osm><changeset><tag k=\"created_by\" v=\" Barrierefrei Projekt\"/></changeset></osm>";
         String URLChangeSet = mApiEndPoint + "changeset/create";
         OauthData oauthData = new OauthData(Verb.PUT, string, URLChangeSet);
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
@@ -546,7 +546,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
             Attributes attributesWidthType = new Attributes();
             attributesWidthType.setKey(AppConstant.KEY_WIDTH);
-            attributesWidthType.setValid(false);
             mHashMapWay.put(3, attributesWidthType);
 
             for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
@@ -742,6 +741,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private void onUpdateWayOurServer(String updateVersionNumber) {
         showLoader();
         RequestWayInfo requestWayInfo = new RequestWayInfo();
+        boolean isValidEntireWay= false;
+        int count=0;
         RequestWayData wayDataValidate = new RequestWayData();
         if (mWayIdNew != null) {
             wayDataValidate.setOSMWayId(mWayIdNew);
@@ -751,7 +752,23 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         }
         wayDataValidate.setAPIWayId(mListWayData.getAPIWayId());
         wayDataValidate.setProjectId(mListWayData.getProjectId());
-        wayDataValidate.setValid(mListWayData.getIsValid());
+
+        for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
+            Attributes attributes = pair.getValue();
+            if (attributes != null && attributes.getValue() != null && !attributes.getValue().isEmpty()) {
+                if(!attributes.getKey().equalsIgnoreCase(AppConstant.KEY_FOOTWAY) && !attributes.getKey().equalsIgnoreCase(AppConstant.KEY_HIGHWAY)) {
+                    if(!attributes.isValid()){
+                     count = count+1;
+                    }
+                }
+            }
+
+        }
+        if(count==0){
+            isValidEntireWay = true;
+        }
+        wayDataValidate.setValid(String.valueOf(isValidEntireWay));
+
         wayDataValidate.setVersion(updateVersionNumber);
         List<AttributesValidate> attributesValidateList = new ArrayList<>();
         AttributesValidate attributesValidate;
@@ -766,7 +783,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_HIGHWAY);
             attributesValidate.setValue(Utility.covertValueRequired(mHashMapWay.get(1).getValue()));
-            attributesValidate.setValid(mHashMapWay.get(1).isValid());
+            attributesValidate.setValid(true);
             attributesValidateList.add(attributesValidate);
         }
         if (mHashMapWay.get(2) != null && !mHashMapWay.get(2).getKey().isEmpty() && mHashMapWay.get(2).getValue() != null && !mHashMapWay.get(2).getValue().isEmpty()) {
@@ -788,7 +805,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_FOOTWAY);
             attributesValidate.setValue(Utility.covertValueRequired(mHashMapWay.get(4).getValue()));
-            attributesValidate.setValid(mHashMapWay.get(4).isValid());
+            attributesValidate.setValid(true);
             attributesValidateList.add(attributesValidate);
         }
         wayDataValidate.setAttributesValidate(attributesValidateList);
