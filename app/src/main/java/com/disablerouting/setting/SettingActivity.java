@@ -237,7 +237,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
                 Attributes attributes = pair.getValue();
                 assert attributes != null;
-                if (attributes.getValue() != null) {
+                if (attributes.getValue() != null && !attributes.getValue().isEmpty()) {
                     if (attributes.isValid()) {
                         tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
                     }
@@ -462,7 +462,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         for (Attributes attributes : mListWayData.getAttributesList()) {
             String attributesKey = attributes.getKey();
             String attributesValue = attributes.getValue();
-            if (attributes.getKey() != null && attributes.getValue() != null) {
+            if (attributes.getKey() != null && attributes.getValue() != null && !attributes.getValue().isEmpty()) {
                 tags.append("<tag k=\"" + attributesKey + "\" v=\"" + Utility.covertValueRequired(attributesValue) + "\"/>\n");
             }
         }
@@ -708,7 +708,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             if (mNodeReference.getAttributes() != null &&
                     mNodeReference.getAttributes().size() != 0) {
                 attributesValidate.setKey(mHashMapWay.get(0).getKey());
-                attributesValidate.setValue(Utility.covertValueRequired(mHashMapWay.get(0).getValue()));
+                if(mHashMapWay.get(0).getValue()!=null && !mHashMapWay.get(0).getValue().isEmpty()) {
+                    attributesValidate.setValue(Utility.covertValueRequired(mHashMapWay.get(0).getValue()));
+                }
                 attributesValidate.setValid(mHashMapWay.get(0).isValid());
             }
             assert mNodeReference.getAttributes() != null;
@@ -753,28 +755,28 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         wayDataValidate.setVersion(updateVersionNumber);
         List<AttributesValidate> attributesValidateList = new ArrayList<>();
         AttributesValidate attributesValidate;
-        if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty() && mHashMapWay.get(0).getValue() != null) {
+        if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty() && mHashMapWay.get(0).getValue() != null && !mHashMapWay.get(0).getValue().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_SURFACE);
             attributesValidate.setValue(Utility.covertValueRequired(mHashMapWay.get(0).getValue()));
             attributesValidate.setValid(mHashMapWay.get(0).isValid());
             attributesValidateList.add(attributesValidate);
         }
-        if (mHashMapWay.get(1) != null && !mHashMapWay.get(1).getKey().isEmpty() && mHashMapWay.get(1).getValue() != null) {
+        if (mHashMapWay.get(1) != null && !mHashMapWay.get(1).getKey().isEmpty() && mHashMapWay.get(1).getValue() != null && !mHashMapWay.get(1).getValue().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_HIGHWAY);
             attributesValidate.setValue(Utility.covertValueRequired(mHashMapWay.get(1).getValue()));
             attributesValidate.setValid(mHashMapWay.get(1).isValid());
             attributesValidateList.add(attributesValidate);
         }
-        if (mHashMapWay.get(2) != null && !mHashMapWay.get(2).getKey().isEmpty() && mHashMapWay.get(2).getValue() != null) {
+        if (mHashMapWay.get(2) != null && !mHashMapWay.get(2).getKey().isEmpty() && mHashMapWay.get(2).getValue() != null && !mHashMapWay.get(2).getValue().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_INCLINE);
             attributesValidate.setValue(Utility.covertValueRequired(mHashMapWay.get(2).getValue()));
             attributesValidate.setValid(mHashMapWay.get(2).isValid());
             attributesValidateList.add(attributesValidate);
         }
-        if (mHashMapWay.get(3) != null && !mHashMapWay.get(3).getKey().isEmpty() && mHashMapWay.get(3).getValue() != null) {
+        if (mHashMapWay.get(3) != null && !mHashMapWay.get(3).getKey().isEmpty() && mHashMapWay.get(3).getValue() != null && !mHashMapWay.get(3).getValue().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_WIDTH);
             attributesValidate.setValue(Utility.covertValueRequired(mHashMapWay.get(3).getValue()));
@@ -782,7 +784,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             attributesValidateList.add(attributesValidate);
         }
 
-        if (mHashMapWay.get(4) != null && !mHashMapWay.get(4).getKey().isEmpty() && mHashMapWay.get(4).getValue() != null) {
+        if (mHashMapWay.get(4) != null && !mHashMapWay.get(4).getKey().isEmpty() && mHashMapWay.get(4).getValue() != null && !mHashMapWay.get(4).getValue().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_FOOTWAY);
             attributesValidate.setValue(Utility.covertValueRequired(mHashMapWay.get(4).getValue()));
@@ -808,7 +810,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         nodeReference.setVersion(updateVersionNumber);
         List<Attributes> attributesValidateList = new ArrayList<>();
         Attributes attributesValidate = new Attributes();
-        if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty()) {
+        if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty() && mHashMapWay.get(0).getValue()!=null && !mHashMapWay.get(0).getValue().isEmpty()) {
             attributesValidate.setKey(mHashMapWay.get(0).getKey());
             String value = Utility.covertValueRequired(mHashMapWay.get(0).getValue());
             //value = Utility.changeCmToMeter(value);
