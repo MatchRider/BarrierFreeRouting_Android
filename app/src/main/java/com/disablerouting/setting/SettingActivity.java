@@ -16,6 +16,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.disablerouting.BuildConfig;
 import com.disablerouting.R;
 import com.disablerouting.api.ApiEndPoint;
 import com.disablerouting.base.BaseActivityImpl;
@@ -140,7 +141,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      */
     private void callToGetChangeSet() {
         showLoader();
-        String string = "<osm><changeset><tag k=\"created_by\" v=\" Barrierefrei Projekt\"/></changeset></osm>";
+        String versionName = BuildConfig.VERSION_NAME;
+
+        String string = "<osm><changeset><tag k=\"created_by\" v=\" Barrierefrei Projekt\"/><tag k=\"comment\" v=\"Version Name:"+versionName+"\"/></changeset></osm>";
         String URLChangeSet = mApiEndPoint + "changeset/create";
         OauthData oauthData = new OauthData(Verb.PUT, string, URLChangeSet);
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
