@@ -142,8 +142,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private void callToGetChangeSet() {
         showLoader();
         String versionName = BuildConfig.VERSION_NAME;
+        String date = AppConstant.Date;
 
-        String string = "<osm><changeset><tag k=\"created_by\" v=\" Barrierefrei Projekt\"/><tag k=\"comment\" v=\"Version Name:"+versionName+"\"/></changeset></osm>";
+        String string = "<osm><changeset><tag k=\"created_by\" v=\" Barrierefrei Projekt\"/><tag k=\"comment\" v=\"Version Name:"+versionName+date+"\"/></changeset></osm>";
         String URLChangeSet = mApiEndPoint + "changeset/create";
         OauthData oauthData = new OauthData(Verb.PUT, string, URLChangeSet);
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
