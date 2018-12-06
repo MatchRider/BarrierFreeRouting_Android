@@ -158,6 +158,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         mRunningMarker = new Marker(mMapView);
         mCurrentMarker = new Marker(mMapView);
 
+
     }
 
     /**
@@ -507,7 +508,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 for (Location location : locationResult.getLocations()) {
                     if (mMapView != null) {
                         mLatitude = location.getLatitude();
-                        mLongitude = location.getLongitude();onUpdateLocation(location);
+                        mLongitude = location.getLongitude();
+                        onUpdateLocation(location);
                         AppData.getNewInstance().setCurrentLoc(new LatLng(mLatitude, mLongitude));
                     }
                 }

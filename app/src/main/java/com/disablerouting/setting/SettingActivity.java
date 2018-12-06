@@ -556,7 +556,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         Attributes attributesHighWay = new Attributes();
                         attributesHighWay.setKey(mListWayData.getAttributesList().get(i).getKey());
                         attributesHighWay.setValue(mListWayData.getAttributesList().get(i).getValue());
-                        attributesHighWay.setValid(mListWayData.getAttributesList().get(i).isValid());
+                        attributesHighWay.setValid(true);
                         if (!mISFromOSM) {
                             mHashMapWay.put(1, attributesHighWay);
                         }
@@ -605,7 +605,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         Attributes attributesFootWay = new Attributes();
                         attributesFootWay.setKey(mListWayData.getAttributesList().get(i).getKey());
                         attributesFootWay.setValue(mListWayData.getAttributesList().get(i).getValue());
-                        attributesFootWay.setValid(mListWayData.getAttributesList().get(i).isValid());
+                        attributesFootWay.setValid(true);
                         if (!mISFromOSM) {
                             mHashMapWay.put(4, attributesFootWay);
                         }
@@ -918,7 +918,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     @Override
     public void onFailureListData(String error) {
-        // mRelativeLayoutProgress.setVisibility(View.GONE);
         hideLoader();
         Toast.makeText(SettingActivity.this, error, Toast.LENGTH_SHORT).show();
         finish();
@@ -926,7 +925,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     @Override
     public void onFailure(String error) {
-        //mRelativeLayoutProgress.setVisibility(View.GONE);
         hideLoader();
         Toast.makeText(SettingActivity.this, getResources().getString(R.string.error_when_entry_not_saved), Toast.LENGTH_SHORT).show();
     }
@@ -949,6 +947,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             @Override
             public void run() {
                 hideProgress();
+                mRelativeLayoutProgress.setVisibility(View.GONE);
             }
         });
 
@@ -1024,11 +1023,12 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     public void onFailureAsyncTask(final String errorBody) {
         this.runOnUiThread(new Runnable() {
             public void run() {
-                Toast.makeText(SettingActivity.this, getResources().getString(R.string.error_when_entry_not_saved), Toast.LENGTH_SHORT).show();
                 hideLoader();
+                Toast.makeText(SettingActivity.this, getResources().getString(R.string.error_when_entry_not_saved), Toast.LENGTH_SHORT).show();
 
             }
         });
+
     }
 
     @Override
