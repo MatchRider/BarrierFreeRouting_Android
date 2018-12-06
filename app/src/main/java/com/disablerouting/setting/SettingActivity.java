@@ -38,10 +38,7 @@ import com.github.scribejava.core.model.Verb;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 public class SettingActivity extends BaseActivityImpl implements SettingAdapterListener, ISettingView,
@@ -60,7 +57,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private SettingAdapter mSettingAdapter;
     private ListWayData mListWayData;
     private NodeReference mNodeReference;
-    private boolean mIsValidScreen=false;
+    private boolean mIsValidScreen = false;
 
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, Attributes> mHashMapWay = new HashMap<>();
@@ -144,7 +141,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         String versionName = BuildConfig.VERSION_NAME;
         String date = AppConstant.Date;
 
-        String string = "<osm><changeset><tag k=\"created_by\" v=\" Barrierefrei Projekt\"/><tag k=\"comment\" v=\"Version Name:"+versionName+date+"\"/></changeset></osm>";
+        String string = "<osm><changeset><tag k=\"created_by\" v=\" Barrierefrei Projekt\"/><tag k=\"comment\" v=\"Version Name:" + versionName + date + "\"/></changeset></osm>";
         String URLChangeSet = mApiEndPoint + "changeset/create";
         OauthData oauthData = new OauthData(Verb.PUT, string, URLChangeSet);
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
@@ -249,43 +246,33 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 }
             }
         } else {
-            String sideWalkValue = null;
+            HashMap<String, String> hashMapTags = new HashMap<>();
             for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
-                Attributes attributes = mListWayData.getAttributesList().get(i);
-                if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK)) {
-                    // both,left,right
-                    if (mStringChoosedSideWalk.isEmpty()) {
-                        sideWalkValue = Utility.covertValueRequired(attributes.getValue());
-                        tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + sideWalkValue + "\"/>\n");
-                    } else {
-                        sideWalkValue = mStringChoosedSideWalk;
-                        tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + sideWalkValue + "\"/>\n");
+                hashMapTags.put(mListWayData.getAttributesList().get(i).getKey(),
+                        mListWayData.getAttributesList().get(i).getValue());
+            }
+            for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
+                Attributes attributes = pair.getValue();
+                if (attributes != null && attributes.getValue() != null) {
+                    if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
+                        hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE,
+                                Utility.covertValueRequired(attributes.getValue()));
+                    }
+                    if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) && !attributes.getValue().isEmpty()) {
+                        hashMapTags.put(AppConstant.KEY_INCLINE,
+                                Utility.covertValueRequired(attributes.getValue()));
 
                     }
-                } else {
-                    tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequired(attributes.getValue()) + "\"/>\n");
-                }
-            }
-            if (mHashMapWay != null && mHashMapWay.get(0).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)) {
-                if (mHashMapWay.get(0).getValue() != null) {
-                    if (!mStringChoosedSideWalk.isEmpty())
-                        tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK + ":" + Utility.covertValueRequired(sideWalkValue) + ":" + AppConstant.KEY_SURFACE + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(0).getValue()) + "\"/>\n");
-                }
-
-            }
-            if (mHashMapWay != null && mHashMapWay.get(2).getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)) {
-                if (mHashMapWay.get(2).getValue() != null) {
-                    tags.append("<tag k=\"" + AppConstant.KEY_INCLINE + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(2).getValue()) + "\"/>\n");
-                }
-
-            }
-            if (mHashMapWay != null && mHashMapWay.get(3).getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
-                if (mHashMapWay.get(3).getValue() != null) {
-                    if (!mStringChoosedSideWalk.isEmpty()) {
-                        assert sideWalkValue != null;
-                        tags.append("<tag k=\"" + AppConstant.KEY_SIDEWALK + ":" + Utility.covertValueRequired(sideWalkValue) + ":" + AppConstant.KEY_WIDTH + "\" v=\"" + Utility.covertValueRequired(mHashMapWay.get(3).getValue()) + "\"/>\n");
+                    if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
+                        hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH,
+                                Utility.covertValueRequired(attributes.getValue()));
                     }
+
                 }
+            }
+
+            for (Map.Entry<String, String> pair : hashMapTags.entrySet()) {
+                tags.append("<tag k=\"" + pair.getKey() + "\" v=\"" + pair.getValue() + "\"/>\n");
 
             }
         }
@@ -315,7 +302,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
      */
     private void setUpRecyclerView() {
         if (mIsForWAY) {
-            mSettingAdapter = new SettingAdapter(this, prepareListDataWay(), this, mISFromOSM , mIsValidScreen);
+            mSettingAdapter = new SettingAdapter(this, prepareListDataWay(), this, mISFromOSM, mIsValidScreen);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             mRecyclerView.setAdapter(mSettingAdapter);
             if (mHashMapWay != null) {
@@ -324,7 +311,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
             }
         } else {
-            mSettingAdapter = new SettingAdapter(this, prepareListDataNode(), this, mISFromOSM , false);
+            mSettingAdapter = new SettingAdapter(this, prepareListDataNode(), this, mISFromOSM, false);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             mRecyclerView.setAdapter(mSettingAdapter);
             if (mHashMapWay != null) {
@@ -415,10 +402,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private void callToCreateNode(NodeReference nodeReference) {
         showLoader();
         double lat = 0;
-        double lon=0;
+        double lon = 0;
         if (!nodeReference.getLat().isEmpty() && !nodeReference.getLon().isEmpty()) {
-             lat = Double.parseDouble(nodeReference.getLat());
-             lon = Double.parseDouble(nodeReference.getLon());
+            lat = Double.parseDouble(nodeReference.getLat());
+            lon = Double.parseDouble(nodeReference.getLon());
         }
         String requestString;
         if (nodeReference.getAttributes() != null && nodeReference.getAttributes().size() != 0) {
@@ -711,7 +698,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             if (mNodeReference.getAttributes() != null &&
                     mNodeReference.getAttributes().size() != 0) {
                 attributesValidate.setKey(mHashMapWay.get(0).getKey());
-                if(mHashMapWay.get(0).getValue()!=null && !mHashMapWay.get(0).getValue().isEmpty()) {
+                if (mHashMapWay.get(0).getValue() != null && !mHashMapWay.get(0).getValue().isEmpty()) {
                     attributesValidate.setValue(Utility.covertValueRequired(mHashMapWay.get(0).getValue()));
                 }
                 attributesValidate.setValid(mHashMapWay.get(0).isValid());
@@ -745,8 +732,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private void onUpdateWayOurServer(String updateVersionNumber) {
         showLoader();
         RequestWayInfo requestWayInfo = new RequestWayInfo();
-        boolean isValidEntireWay= false;
-        int count=0;
+        boolean isValidEntireWay = false;
+        int count = 0;
         RequestWayData wayDataValidate = new RequestWayData();
         if (mWayIdNew != null) {
             wayDataValidate.setOSMWayId(mWayIdNew);
@@ -760,15 +747,15 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
             Attributes attributes = pair.getValue();
             if (attributes != null && attributes.getValue() != null && !attributes.getValue().isEmpty()) {
-                if(!attributes.getKey().equalsIgnoreCase(AppConstant.KEY_FOOTWAY) && !attributes.getKey().equalsIgnoreCase(AppConstant.KEY_HIGHWAY)) {
-                    if(!attributes.isValid()){
-                     count = count+1;
+                if (!attributes.getKey().equalsIgnoreCase(AppConstant.KEY_FOOTWAY) && !attributes.getKey().equalsIgnoreCase(AppConstant.KEY_HIGHWAY)) {
+                    if (!attributes.isValid()) {
+                        count = count + 1;
                     }
                 }
             }
 
         }
-        if(count==0){
+        if (count == 0) {
             isValidEntireWay = true;
         }
         wayDataValidate.setValid(String.valueOf(isValidEntireWay));
@@ -831,7 +818,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         nodeReference.setVersion(updateVersionNumber);
         List<Attributes> attributesValidateList = new ArrayList<>();
         Attributes attributesValidate = new Attributes();
-        if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty() && mHashMapWay.get(0).getValue()!=null && !mHashMapWay.get(0).getValue().isEmpty()) {
+        if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty() && mHashMapWay.get(0).getValue() != null && !mHashMapWay.get(0).getValue().isEmpty()) {
             attributesValidate.setKey(mHashMapWay.get(0).getKey());
             String value = Utility.covertValueRequired(mHashMapWay.get(0).getValue());
             //value = Utility.changeCmToMeter(value);
