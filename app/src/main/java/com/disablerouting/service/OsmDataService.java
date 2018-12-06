@@ -123,7 +123,9 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
                             nodeReference.setAttributes(attributesList);
                         }
                     }
-                    nodeReferenceList.add(nodeReference);
+                    if(!nodeReference.getOSMNodeId().equalsIgnoreCase("4315552310")) {
+                        nodeReferenceList.add(nodeReference);
+                    }
                 }
             }
 
@@ -152,12 +154,13 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
                             if (getOsmData.getOSM().getWays().get(i).getNdList().get(j).getRef()
                                     .equalsIgnoreCase(nodeReferenceList.get(k).getOSMNodeId())) {
 
-                                nodeReferencesWay.add(nodeReferenceList.get(k));
-                                stringListCoordinates = new ParcelableArrayList();
-                                stringListCoordinates.add(0, nodeReferenceList.get(k).getLat());
-                                stringListCoordinates.add(1, nodeReferenceList.get(k).getLon());
-                                coordinatesList.add(stringListCoordinates);
-                                break;
+                                    nodeReferencesWay.add(nodeReferenceList.get(k));
+                                    stringListCoordinates = new ParcelableArrayList();
+                                    stringListCoordinates.add(0, nodeReferenceList.get(k).getLat());
+                                    stringListCoordinates.add(1, nodeReferenceList.get(k).getLon());
+                                    coordinatesList.add(stringListCoordinates);
+                                    break;
+
                             }
                         }
 
@@ -177,7 +180,9 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
                         attributesArrayListWay.add(attributesWay);
                     }
                     listWayData.setAttributesList(attributesArrayListWay);
-                    listWayDataListCreated.add(listWayData);
+                    if(!listWayData.getOSMWayId().equalsIgnoreCase("4305292042")) {
+                        listWayDataListCreated.add(listWayData);
+                    }
                 }
             }
 
