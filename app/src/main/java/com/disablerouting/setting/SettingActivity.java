@@ -279,7 +279,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
         StringBuilder nodes = new StringBuilder();
         for (int i = 0; i < mNodeList.size(); i++) {
-            if (mNodeList.get(i).getOSMNodeId() != null && !mNodeList.get(i).getOSMNodeId().isEmpty())
+            //if (mNodeList.get(i).getOSMNodeId() != null && !mNodeList.get(i).getOSMNodeId().isEmpty())
                 nodes.append("<nd ref=\"" + mNodeList.get(i).getOSMNodeId() + "\"/>\n");
         }
         String requestString = "<osm>\n" +
