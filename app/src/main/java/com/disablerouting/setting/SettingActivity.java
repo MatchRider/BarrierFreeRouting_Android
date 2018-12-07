@@ -492,6 +492,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     private void checkNodes() {
         if (mListWayData != null) {
+            showLoader();
             if (mListWayData.getNodeReference() != null && mListWayData.getNodeReference().size() != 0) {
                 for (int i = 0; i < mListWayData.getNodeReference().size(); i++) {
                     mNodeRefIndex = i;

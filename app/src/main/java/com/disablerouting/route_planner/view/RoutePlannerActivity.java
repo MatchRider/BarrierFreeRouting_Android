@@ -207,6 +207,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected int getView() {
         return R.layout.activity_route_planner;
     }
@@ -259,9 +264,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onBackPress() {
-        finish();
+        super.onBackPressed();
     }
-
 
     @Override
     public void onSourceDestinationSelected(Features featuresSource, Features featuresDestination) {
@@ -849,6 +853,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
                             }
                         }
+
                     }
                     if (mButtonSelected == 2) {
                         //For Way Data Validated
@@ -882,6 +887,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
                             }
                         }
+
                     }
                     if (mButtonSelected == 2) {
                         //For Node Data Not validated
@@ -947,28 +953,29 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onToggleClickedBanner(boolean isChecked) {
-//        clearItemsFromMap();
+        //clearItemsFromMap();
+        showLoader();
         mRadioGroup.setVisibility(View.VISIBLE);
         mImageCurrentPin.setVisibility(View.GONE);
         if (!isChecked) {
             mButtonSelected = 1;
-            // setZoomMap();
             if (mWayListNotValidatedData.size() > 0) {
                 mPlotWayDataTask = new PlotWayDataTask();
                 mPlotWayDataTask.execute();
             } else {
-                showLoader();
+                clearItemsFromMap();
             }
         } else {
             mButtonSelected = 2;
-            //setZoomMap();
             if (mWayListValidatedData.size() > 0) {
                 mPlotWayDataTask = new PlotWayDataTask();
                 mPlotWayDataTask.execute();
             } else {
-                showLoader();
+                clearItemsFromMap();
+
             }
         }
+        hideLoader();
     }
 
 
