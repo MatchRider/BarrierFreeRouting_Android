@@ -695,8 +695,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             nodeReference.setOSMNodeId(nodeOSMID);
             nodeReference.setAPINodeId(mNodeReference.getAPINodeId());
             nodeReference.setLat(mNodeReference.getLat());
-            nodeReference.setLon(mNodeReference.getLat());
-            nodeReference.setVersion(mNodeReference.getLon());
+            nodeReference.setLon(mNodeReference.getLon());
+            nodeReference.setVersion(mNodeReference.getVersion());
             List<Attributes> attributesValidateList = new ArrayList<>();
             Attributes attributesValidate = new Attributes();
             if (mNodeReference.getAttributes() != null &&

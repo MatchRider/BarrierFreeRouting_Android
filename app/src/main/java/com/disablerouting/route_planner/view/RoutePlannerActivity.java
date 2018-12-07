@@ -283,7 +283,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onApplyFilter() {
         Intent intentFilter = new Intent(this, FilterActivity.class);
         intentFilter.putExtra(AppConstant.IS_FILTER, true);
-        if (SearchPreferences.getInstance(this) != null) {
+        if (SearchPreferences.getInstance(this) != null && SearchPreferences.getInstance(this).getUserSearch()!=null) {
             if (SearchPreferences.getInstance(this).getUserSearch().getHashMapObjectFilterItem() != null) {
                 mHashMapObjectFilterItem = SearchPreferences.getInstance(this).getUserSearch().getHashMapObjectFilterItem();
                 intentFilter.putExtra(AppConstant.DATA_FILTER_SELECTED, mHashMapObjectFilterItem);
