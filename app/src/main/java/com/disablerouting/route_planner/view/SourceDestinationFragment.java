@@ -26,7 +26,7 @@ import com.disablerouting.common.AppConstant;
 import com.disablerouting.geo_coding.manager.GeoCodingManager;
 import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.geo_coding.model.GeoCodingResponse;
-import com.disablerouting.login.UserPreferences;
+import com.disablerouting.login.model.SearchPreferences;
 import com.disablerouting.map_base.OnFeedBackListener;
 import com.disablerouting.route_planner.adapter.CustomListAdapter;
 import com.disablerouting.route_planner.manager.DirectionsManager;
@@ -212,15 +212,15 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             }
         }
         if(!mIsFromSuggestion){
-            if(UserPreferences.getInstance(getContext())!=null && UserPreferences.getInstance(getContext()).getUserSearch()!=null){
-                mEditTextSource.setText(UserPreferences.getInstance(getContext()).getUserSearch().getSourceAdd());
-                mEditTextDestination.setText(UserPreferences.getInstance(getContext()).getUserSearch().getDestAdd());
-                mGeoPointSource=UserPreferences.getInstance(getContext()).getUserSearch().getSourceGeoPoint();
-                mGeoPointDestination=UserPreferences.getInstance(getContext()).getUserSearch().getDestGeoPoint();
-                mFeaturesSource = UserPreferences.getInstance(getContext()).getUserSearch().getFeaturesSource();
-                mFeaturesDestination  = UserPreferences.getInstance(getContext()).getUserSearch().getFeaturesDest();
-                //JSONObject jsonObject = UserPreferences.getInstance(getContext()).getUserSearch().getJSONObjectFiter();
-                //HashMap<String, Features> mRoutingVia = UserPreferences.getInstance(getContext()).getUserSearch().getHashMapFilterForRouting();
+            if(SearchPreferences.getInstance(getContext())!=null && SearchPreferences.getInstance(getContext()).getUserSearch()!=null){
+                mEditTextSource.setText(SearchPreferences.getInstance(getContext()).getUserSearch().getSourceAdd());
+                mEditTextDestination.setText(SearchPreferences.getInstance(getContext()).getUserSearch().getDestAdd());
+                mGeoPointSource=SearchPreferences.getInstance(getContext()).getUserSearch().getSourceGeoPoint();
+                mGeoPointDestination=SearchPreferences.getInstance(getContext()).getUserSearch().getDestGeoPoint();
+                mFeaturesSource = SearchPreferences.getInstance(getContext()).getUserSearch().getFeaturesSource();
+                mFeaturesDestination  = SearchPreferences.getInstance(getContext()).getUserSearch().getFeaturesDest();
+                //JSONObject jsonObject = SearchPreferences.getInstance(getContext()).getUserSearch().getJSONObjectFiter();
+                //HashMap<String, Features> mRoutingVia = SearchPreferences.getInstance(getContext()).getUserSearch().getHashMapFilterForRouting();
                 //Features features = mRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
                 //plotRoute(jsonObject,features);
             }

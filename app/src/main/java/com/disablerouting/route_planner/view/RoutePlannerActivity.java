@@ -25,6 +25,7 @@ import com.disablerouting.geo_coding.model.Features;
 import com.disablerouting.instructions.InstructionsActivity;
 import com.disablerouting.login.LoginActivity;
 import com.disablerouting.login.UserPreferences;
+import com.disablerouting.login.model.SearchPreferences;
 import com.disablerouting.login.model.UserSearchModel;
 import com.disablerouting.map_base.MapBaseActivity;
 import com.disablerouting.osm_activity.manager.OSMManager;
@@ -278,17 +279,17 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     public void onApplyFilter() {
         Intent intentFilter = new Intent(this, FilterActivity.class);
         intentFilter.putExtra(AppConstant.IS_FILTER, true);
-        if (UserPreferences.getInstance(this) != null && UserPreferences.getInstance(this).getUserSearch() != null) {
-            if (UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilterItem() != null) {
-                mHashMapObjectFilterItem = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilterItem();
+        if (SearchPreferences.getInstance(this) != null) {
+            if (SearchPreferences.getInstance(this).getUserSearch().getHashMapObjectFilterItem() != null) {
+                mHashMapObjectFilterItem = SearchPreferences.getInstance(this).getUserSearch().getHashMapObjectFilterItem();
                 intentFilter.putExtra(AppConstant.DATA_FILTER_SELECTED, mHashMapObjectFilterItem);
             }
-            if (UserPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting() != null) {
-                mHashMapObjectFilterRoutingVia = UserPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting();
+            if (SearchPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting() != null) {
+                mHashMapObjectFilterRoutingVia = SearchPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting();
                 intentFilter.putExtra(AppConstant.DATA_FILTER_ROUTING_VIA, mHashMapObjectFilterRoutingVia);
             }
-            if (UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter() != null) {
-                mHashMapObjectFilter = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter();
+            if (SearchPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter() != null) {
+                mHashMapObjectFilter = SearchPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter();
                 intentFilter.putExtra(AppConstant.DATA_FILTER, mHashMapObjectFilter);
             }
         } else {
@@ -377,7 +378,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     }
 
-
+    Features features;
     @OnClick(R.id.btn_go)
     public void goPlotMap() {
         // UI_HANDLER.post(updateMarker);
@@ -386,7 +387,22 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         mImageCurrentPin.setVisibility(View.GONE);
         getMapCenter(false);
         clearItemsFromMap();
-        Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
+
+        if(SearchPreferences.getInstance(this)!=null && SearchPreferences.getInstance(this).getUserSearch()!=null ) {
+            if (SearchPreferences.getInstance(this).getUserSearch().getHashMapObjectFilterItem() != null) {
+                mHashMapObjectFilterItem = SearchPreferences.getInstance(this).getUserSearch().getHashMapObjectFilterItem();
+            }
+            if (SearchPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting() != null) {
+                mHashMapObjectFilterRoutingVia = SearchPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting();
+                features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
+            }else {
+                features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
+            }
+            if (SearchPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter() != null) {
+                mHashMapObjectFilter = SearchPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter();
+                mJsonObjectFilter = createFilter(mHashMapObjectFilter);
+            }
+        }
         mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
         setUserSearchData();
     }
@@ -398,7 +414,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mHashMapObjectFilter = (HashMap<String, String>) data.getSerializableExtra(AppConstant.DATA_FILTER);
                 mHashMapObjectFilterItem = (HashMap<Integer, Integer>) data.getSerializableExtra(AppConstant.DATA_FILTER_SELECTED);
                 mHashMapObjectFilterRoutingVia = (HashMap<String, Features>) data.getSerializableExtra(AppConstant.DATA_FILTER_ROUTING_VIA);
-
                 mJsonObjectFilter = createFilter(mHashMapObjectFilter);
                 setUserSearchData();
             }
@@ -430,27 +445,27 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     private void setUserSearchData() {
         //Save Data in user Preferences
-        if (UserPreferences.getInstance(this) != null && UserPreferences.getInstance(this).getAccessToken() != null) {
-            if (mSourceAddress == null && UserPreferences.getInstance(this).getUserSearch() != null) {
-                mSourceAddress = UserPreferences.getInstance(this).getUserSearch().getSourceAdd();
+        if (SearchPreferences.getInstance(this) != null ) {
+            if (mSourceAddress == null && SearchPreferences.getInstance(this).getUserSearch() != null) {
+                mSourceAddress = SearchPreferences.getInstance(this).getUserSearch().getSourceAdd();
             }
-            if (mDestinationAddress == null && UserPreferences.getInstance(this).getUserSearch() != null) {
-                mDestinationAddress = UserPreferences.getInstance(this).getUserSearch().getDestAdd();
+            if (mDestinationAddress == null && SearchPreferences.getInstance(this).getUserSearch() != null) {
+                mDestinationAddress = SearchPreferences.getInstance(this).getUserSearch().getDestAdd();
             }
-            if (mFeaturesSourceAddress == null && UserPreferences.getInstance(this).getUserSearch() != null) {
-                mFeaturesSourceAddress = UserPreferences.getInstance(this).getUserSearch().getFeaturesSource();
+            if (mFeaturesSourceAddress == null && SearchPreferences.getInstance(this).getUserSearch() != null) {
+                mFeaturesSourceAddress = SearchPreferences.getInstance(this).getUserSearch().getFeaturesSource();
             }
-            if (mFeaturesDestinationAddress == null && UserPreferences.getInstance(this).getUserSearch() != null) {
-                mFeaturesDestinationAddress = UserPreferences.getInstance(this).getUserSearch().getFeaturesDest();
+            if (mFeaturesDestinationAddress == null && SearchPreferences.getInstance(this).getUserSearch() != null) {
+                mFeaturesDestinationAddress = SearchPreferences.getInstance(this).getUserSearch().getFeaturesDest();
             }
-            if (mHashMapObjectFilterRoutingVia == null && UserPreferences.getInstance(this).getUserSearch() != null) {
-                mHashMapObjectFilterRoutingVia = UserPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting();
+            if (mHashMapObjectFilterRoutingVia == null && SearchPreferences.getInstance(this).getUserSearch() != null) {
+                mHashMapObjectFilterRoutingVia = SearchPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting();
             }
-            if (mHashMapObjectFilterItem == null && UserPreferences.getInstance(this).getUserSearch() != null) {
-                mHashMapObjectFilterItem = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilterItem();
+            if (mHashMapObjectFilterItem == null && SearchPreferences.getInstance(this).getUserSearch() != null) {
+                mHashMapObjectFilterItem = SearchPreferences.getInstance(this).getUserSearch().getHashMapObjectFilterItem();
             }
-            if (mHashMapObjectFilter == null && UserPreferences.getInstance(this).getUserSearch() != null) {
-                mHashMapObjectFilter = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter();
+            if (mHashMapObjectFilter == null && SearchPreferences.getInstance(this).getUserSearch() != null) {
+                mHashMapObjectFilter = SearchPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter();
             }
             GeoPoint geoPointSource = null;
             if (mFeaturesSourceAddress != null && mFeaturesSourceAddress.getGeometry() != null) {
@@ -465,10 +480,14 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             if (mHashMapObjectFilter != null && mHashMapObjectFilter.size() != 0) {
                 mJsonObjectFilter = createFilter(mHashMapObjectFilter);
             }
+            if(mHashMapObjectFilterRoutingVia!=null && !mHashMapObjectFilterRoutingVia.isEmpty()) {
+                features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
+            }
+
             UserSearchModel userSearchModel = new UserSearchModel(mSourceAddress, mDestinationAddress,
                     geoPointSource, geoPointDestination, mFeaturesSourceAddress, mFeaturesDestinationAddress,
                     mHashMapObjectFilterRoutingVia, mHashMapObjectFilterItem, mJsonObjectFilter, mHashMapObjectFilter);
-            UserPreferences.getInstance(this).saveUserSearch(userSearchModel);
+            SearchPreferences.getInstance(this).saveUserSearch(userSearchModel);
         }
 
     }
@@ -982,17 +1001,17 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 clearItemsFromMap();
                 if (mISMapPlotted) {
                     if (mHashMapObjectFilterRoutingVia == null) {
-                        if (UserPreferences.getInstance(this) != null && UserPreferences.getInstance(this).getUserSearch() != null) {
-                            mHashMapObjectFilterRoutingVia = UserPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting();
+                        if (SearchPreferences.getInstance(this) != null && SearchPreferences.getInstance(this).getUserSearch() != null) {
+                            mHashMapObjectFilterRoutingVia = SearchPreferences.getInstance(this).getUserSearch().getHashMapFilterForRouting();
                         }
                     }
                     if (mHashMapObjectFilter == null) {
-                        if (UserPreferences.getInstance(this) != null && UserPreferences.getInstance(this).getUserSearch() != null) {
-                            mHashMapObjectFilter = UserPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter();
+                        if (SearchPreferences.getInstance(this) != null && SearchPreferences.getInstance(this).getUserSearch() != null) {
+                            mHashMapObjectFilter = SearchPreferences.getInstance(this).getUserSearch().getHashMapObjectFilter();
                         }
                     }
                     Features features = mHashMapObjectFilterRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
-                    if (UserPreferences.getInstance(this) != null && UserPreferences.getInstance(this).getUserSearch() != null) {
+                    if (SearchPreferences.getInstance(this) != null && SearchPreferences.getInstance(this).getUserSearch() != null) {
                         if (mHashMapObjectFilter != null) {
                             mJsonObjectFilter = createFilter(mHashMapObjectFilter);
                         }
