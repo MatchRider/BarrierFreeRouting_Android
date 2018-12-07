@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
     private HashMap<Integer, Attributes> mSelectionMap = new HashMap<>();
     private boolean mIsValidChoosed;
     private boolean mIsFromOSM;
-    private boolean mIsValidScreen=false;
+    private boolean mIsValidScreen = false;
 
 
     SettingAdapter(Context context, List<SettingModel> stringArrayList, SettingAdapterListener settingAdapterListener,
@@ -38,7 +39,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
         mStringArrayList = stringArrayList;
         mOnClickListener = settingAdapterListener;
         mIsFromOSM = isFromOSM;
-        mIsValidScreen= isValidScreen;
+        mIsValidScreen = isValidScreen;
 
     }
 
@@ -52,7 +53,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
 
     @SuppressLint("ResourceType")
     @Override
-    public void onBindViewHolder(@NonNull ViewHolderSetting holder, @SuppressLint("RecyclerView") final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolderSetting holder, @SuppressLint("RecyclerView") final int position) {
         String data = mStringArrayList.get(position).getKeyString();
         if (mIsFromOSM) {
             holder.mLinearLayoutVerify.setVisibility(View.GONE);
@@ -71,13 +72,20 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                 mOnClickListener.OnIconEditViewOnClick(view, position);
             }
         });
+
         holder.mCheckBoxVerify.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                mOnClickListener.OnIconCheckBoxOnClick(compoundButton, checkPos, b, getSelectionMap().get(checkPos));
-
+                if(TextUtils.isEmpty(holder.mTextViewSubTitle.getText().toString())) {
+                    holder.mCheckBoxVerify.setChecked(false);
+                }else {
+                    mOnClickListener.OnIconCheckBoxOnClick(compoundButton, checkPos, b, getSelectionMap().get(checkPos));
+                }
             }
+
+
         });
+
         String subTitle = "";
         boolean isValid;
 
@@ -91,39 +99,30 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                         subTitle = mSelectionMap.get(checkPos).getValue();
                     }
                 }
-            }
-            else {
+            } else {
                 if (mSelectionMap.get(checkPos) != null && mSelectionMap.get(checkPos).getValue() != null && !mSelectionMap.get(checkPos).getValue().isEmpty()) {
                     if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)) {
                         if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("asphalt")) {
                             subTitle = mContext.getString(R.string.asphalt);
-                        }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("concrete")) {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("concrete")) {
                             subTitle = mContext.getString(R.string.concrete);
-                        }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("paving_stones")) {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("paving_stones")) {
                             subTitle = mContext.getString(R.string.paving_stones);
-                        }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("cobblestone")) {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("cobblestone")) {
                             subTitle = mContext.getString(R.string.cobblestone);
-                        }
-                       else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("compacted")) {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("compacted")) {
                             subTitle = mContext.getString(R.string.compacted);
                         }
                     } else if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
                         if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.kerb_zero))) {
                             subTitle = mContext.getString(R.string.zero_curb);
-                        }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_three_validation))) {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_three_validation))) {
                             subTitle = mContext.getString(R.string.value_kerb_three_validation);
-                        }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_six_validation))) {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_six_validation))) {
                             subTitle = mContext.getString(R.string.value_kerb_six_validation);
-                        }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_any_validation))) {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_any_validation))) {
                             subTitle = mContext.getString(R.string.value_kerb_any_validation);
-                        }
-                        else if (mSelectionMap.get(checkPos).getValue().contains(".") && Utility.isParsableAsDouble(mSelectionMap.get(checkPos).getValue())) {
+                        } else if (mSelectionMap.get(checkPos).getValue().contains(".") && Utility.isParsableAsDouble(mSelectionMap.get(checkPos).getValue())) {
                             subTitle = Utility.trimTWoDecimalPlaces(Double.parseDouble(mSelectionMap.get(checkPos).getValue()));
                         }
 
@@ -147,7 +146,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                     holder.mImageViewEdit.setVisibility(View.GONE);
                 } else {
-                    if(mIsValidScreen){
+                    if (mIsValidScreen) {
                         holder.mCheckBoxVerify.setChecked(false);
                         holder.mCheckBoxVerify.setClickable(false);
                         holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));
@@ -156,7 +155,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                         holder.mImageViewEdit.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_edit_black));
                         holder.mImageViewEdit.setClickable(false);
 
-                    }else {
+                    } else {
                         holder.mCheckBoxVerify.setChecked(false);
                         holder.mCheckBoxVerify.setClickable(true);
                         holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.not_verify));

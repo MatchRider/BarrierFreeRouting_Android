@@ -38,7 +38,10 @@ import com.github.scribejava.core.model.Verb;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class SettingActivity extends BaseActivityImpl implements SettingAdapterListener, ISettingView,
@@ -280,7 +283,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         StringBuilder nodes = new StringBuilder();
         for (int i = 0; i < mNodeList.size(); i++) {
             //if (mNodeList.get(i).getOSMNodeId() != null && !mNodeList.get(i).getOSMNodeId().isEmpty())
-                nodes.append("<nd ref=\"" + mNodeList.get(i).getOSMNodeId() + "\"/>\n");
+            nodes.append("<nd ref=\"" + mNodeList.get(i).getOSMNodeId() + "\"/>\n");
         }
         String requestString = "<osm>\n" +
                 " <way  id=\"" + mWayID + "\" changeset=\"" + mChangeSetID + "\" version=\"" + mVersionNumber + "\" >\n" +
@@ -1125,21 +1128,22 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     @Override
     public void OnIconCheckBoxOnClick(View v, int position, boolean isChecked, Attributes
             attributes) {
-        switch (position) {
-            case 0:
-                changeCheckBox(v, isChecked, position, attributes);
-                break;
-            case 1:
-                changeCheckBox(v, isChecked, position, attributes);
-                break;
-            case 2:
-                changeCheckBox(v, isChecked, position, attributes);
-                break;
-            case 3:
-                changeCheckBox(v, isChecked, position, attributes);
-                break;
+            switch (position) {
+                case 0:
+                    changeCheckBox(v, isChecked, position, attributes);
+                    break;
+                case 1:
+                    changeCheckBox(v, isChecked, position, attributes);
+                    break;
+                case 2:
+                    changeCheckBox(v, isChecked, position, attributes);
+                    break;
+                case 3:
+                    changeCheckBox(v, isChecked, position, attributes);
+                    break;
 
-        }
+            }
+
     }
 
     /**
