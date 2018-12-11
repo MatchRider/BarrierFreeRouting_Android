@@ -101,9 +101,26 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     }
 
                 }
-            } else {
+            }
+            else if (mSelectionMap.get(checkPos) != null && mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:left:width")
+                    ||mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:right:width")
+                    ||mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:both:width")) {
+                if (mSelectionMap.get(checkPos).getValue() != null) {
+                    if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_nine_greater))) {
+                        subTitle = mContext.getString(R.string.nine_less);
+                    } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_nine_less))) {
+                        subTitle = mContext.getString(R.string.nine_greater);
+                    } else {
+                        subTitle = mSelectionMap.get(checkPos).getValue();
+                    }
+
+                }
+            }
+            else {
                 if (mSelectionMap.get(checkPos) != null && mSelectionMap.get(checkPos).getValue() != null) {
-                    if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)) {
+                    if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:left:surface")
+                            ||mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:right:surface")
+                            ||mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:both:surface")) {
                         if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("asphalt")) {
                             subTitle = mContext.getString(R.string.asphalt);
                         } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("concrete")) {
@@ -117,7 +134,23 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                         } else {
                             subTitle = mSelectionMap.get(checkPos).getValue();
                         }
-                    } else if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
+                    }
+                    else if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)) {
+                        if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("asphalt")) {
+                            subTitle = mContext.getString(R.string.asphalt);
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("concrete")) {
+                            subTitle = mContext.getString(R.string.concrete);
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("paving_stones")) {
+                            subTitle = mContext.getString(R.string.paving_stones);
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("cobblestone")) {
+                            subTitle = mContext.getString(R.string.cobblestone);
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("compacted")) {
+                            subTitle = mContext.getString(R.string.compacted);
+                        } else {
+                            subTitle = mSelectionMap.get(checkPos).getValue();
+                        }
+                    }
+                    else if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
                         if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.kerb_zero))) {
                             subTitle = mContext.getString(R.string.zero_curb);
                         } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_three_validation))) {
