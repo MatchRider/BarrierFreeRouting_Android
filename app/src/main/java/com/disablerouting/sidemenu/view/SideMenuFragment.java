@@ -10,13 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.disablerouting.R;
 import com.disablerouting.acknowledement.AcknowledgementActivity;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.contact.ContactActivity;
+import com.disablerouting.curd_operations.WayDataPreference;
 import com.disablerouting.disclaimer.DisclaimerActivity;
 import com.disablerouting.legal.LegalActivity;
 import com.disablerouting.login.UserPreferences;
@@ -130,6 +130,7 @@ public class SideMenuFragment extends Fragment implements ISideMenuView,
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 UserPreferences.getInstance(getContext()).destroySession();
+                                WayDataPreference.getInstance(getContext()).clearWayDataSharedPrefs();
                                 //Toast.makeText(getContext(),"Logout Clicked",Toast.LENGTH_SHORT).show();
                                 mSideMenuAdapter.remove(SideMenuData.LOGOUT);
                                 mSideMenuAdapter.notifyDataSetChanged();

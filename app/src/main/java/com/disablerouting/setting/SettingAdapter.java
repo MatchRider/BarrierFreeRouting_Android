@@ -76,9 +76,9 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
         holder.mCheckBoxVerify.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(TextUtils.isEmpty(holder.mTextViewSubTitle.getText().toString())) {
+                if (TextUtils.isEmpty(holder.mTextViewSubTitle.getText().toString())) {
                     holder.mCheckBoxVerify.setChecked(false);
-                }else {
+                } else {
                     mOnClickListener.OnIconCheckBoxOnClick(compoundButton, checkPos, b, getSelectionMap().get(checkPos));
                 }
             }
@@ -92,15 +92,17 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
         if (mSelectionMap.containsKey(mStringArrayList.get(position).getKeyPosition())) {
             if (mSelectionMap.get(checkPos) != null && mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
                 if (mSelectionMap.get(checkPos).getValue() != null) {
-                    if (mSelectionMap.get(checkPos).getValue().contains(".")
-                            && Utility.isParsableAsDouble(mSelectionMap.get(checkPos).getValue())) {
-                        subTitle = Utility.trimTWoDecimalPlaces(Double.parseDouble(mSelectionMap.get(checkPos).getValue()));
+                    if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_nine_greater))) {
+                        subTitle = mContext.getString(R.string.nine_less);
+                    } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_nine_less))) {
+                        subTitle = mContext.getString(R.string.nine_greater);
                     } else {
                         subTitle = mSelectionMap.get(checkPos).getValue();
                     }
+
                 }
             } else {
-                if (mSelectionMap.get(checkPos) != null && mSelectionMap.get(checkPos).getValue() != null && !mSelectionMap.get(checkPos).getValue().isEmpty()) {
+                if (mSelectionMap.get(checkPos) != null && mSelectionMap.get(checkPos).getValue() != null) {
                     if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)) {
                         if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("asphalt")) {
                             subTitle = mContext.getString(R.string.asphalt);
@@ -112,6 +114,8 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                             subTitle = mContext.getString(R.string.cobblestone);
                         } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("compacted")) {
                             subTitle = mContext.getString(R.string.compacted);
+                        } else {
+                            subTitle = mSelectionMap.get(checkPos).getValue();
                         }
                     } else if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
                         if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.kerb_zero))) {
@@ -124,8 +128,24 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                             subTitle = mContext.getString(R.string.value_kerb_any_validation);
                         } else if (mSelectionMap.get(checkPos).getValue().contains(".") && Utility.isParsableAsDouble(mSelectionMap.get(checkPos).getValue())) {
                             subTitle = Utility.trimTWoDecimalPlaces(Double.parseDouble(mSelectionMap.get(checkPos).getValue()));
+                        } else {
+                            subTitle = mSelectionMap.get(checkPos).getValue();
                         }
 
+                    } else if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)) {
+                        if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.incline_zero))) {
+                            subTitle = mContext.getString(R.string.zero_incline);
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_three))) {
+                            subTitle = mContext.getString(R.string.up_to_three);
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_six))) {
+                            subTitle = mContext.getString(R.string.up_to_six);
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_ten))) {
+                            subTitle = mContext.getString(R.string.up_to_ten);
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_eleven))) {
+                            subTitle = mContext.getString(R.string.greater_ten);
+                        } else {
+                            subTitle = mSelectionMap.get(checkPos).getValue();
+                        }
                     } else {
                         subTitle = mSelectionMap.get(checkPos).getValue();
 

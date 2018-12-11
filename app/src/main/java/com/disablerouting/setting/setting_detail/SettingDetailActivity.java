@@ -14,8 +14,7 @@ import butterknife.OnClick;
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
-
-import java.util.ArrayList;
+import com.disablerouting.utils.Utility;
 
 public class SettingDetailActivity extends BaseActivityImpl implements SettingDetailAdapterListener {
 
@@ -53,22 +52,22 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
         if (mIsForWAY) {
             switch (positionOfTitle) {
                 case 0:
-                    settingDetailAdapter = new SettingDetailAdapter(prepareListDataSurface(), this, true);
+                    settingDetailAdapter = new SettingDetailAdapter(Utility.prepareListDataSurface(this), this, true);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                     mRecyclerView.setAdapter(settingDetailAdapter);
                     break;
                 case 1:
-                    settingDetailAdapter = new SettingDetailAdapter(prepareListDataMaxSlope(), this, false);
+                    settingDetailAdapter = new SettingDetailAdapter(Utility.prepareListDataMaxSlope(this), this, false);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                     mRecyclerView.setAdapter(settingDetailAdapter);
                     break;
                 case 2:
-                    settingDetailAdapter = new SettingDetailAdapter(prepareListDataMaxIncline(), this, false);
+                    settingDetailAdapter = new SettingDetailAdapter(Utility.prepareListDataMaxIncline(this), this, false);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                     mRecyclerView.setAdapter(settingDetailAdapter);
                     break;
                 case 3:
-                    settingDetailAdapter = new SettingDetailAdapter(prepareListDataSideWalk(), this, false);
+                    settingDetailAdapter = new SettingDetailAdapter(Utility.prepareListDataSideWalk(this), this, false);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                     mRecyclerView.setAdapter(settingDetailAdapter);
                     break;
@@ -77,65 +76,12 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
         } else {
             switch (positionOfTitle) {
                 case 0:
-                    settingDetailAdapter = new SettingDetailAdapter(prepareListDataMaxSlope(), this, false);
+                    settingDetailAdapter = new SettingDetailAdapter(Utility.prepareListDataMaxSlope(this), this, false);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                     mRecyclerView.setAdapter(settingDetailAdapter);
                     break;
             }
         }
-    }
-
-    private ArrayList<String> prepareListDataSurface() {
-        ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add(getString(R.string.asphalt));
-        stringArrayList.add(getString(R.string.concrete));
-        stringArrayList.add(getString(R.string.paving_stones));
-        stringArrayList.add(getString(R.string.cobblestone));
-        stringArrayList.add(getString(R.string.compacted));
-         return stringArrayList;
-    }
-    private ArrayList<String> prepareListDataSurfaceKey() {
-        ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add(getString(R.string.asphalt_key));
-        stringArrayList.add(getString(R.string.concrete_key));
-        stringArrayList.add(getString(R.string.paving_stones_key));
-        stringArrayList.add(getString(R.string.cobbleston_key));
-        stringArrayList.add(getString(R.string.compacted_key));
-        return stringArrayList;
-    }
-
-    private ArrayList<String> prepareListDataMaxSlope() {
-        ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add(getString(R.string.zero_curb));
-        stringArrayList.add(getString(R.string.value_kerb_three_validation));
-        stringArrayList.add(getString(R.string.value_kerb_six_validation));
-        stringArrayList.add(getString(R.string.value_kerb_any_validation));
-        return stringArrayList;
-    }
-    private ArrayList<String> prepareListDataMaxSlopeKey() {
-        ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add(getString(R.string.kerb_zero));
-        stringArrayList.add(getString(R.string.value_kerb_three_validation));
-        stringArrayList.add(getString(R.string.value_kerb_six_validation));
-        stringArrayList.add(getString(R.string.value_kerb_any_validation));
-        return stringArrayList;
-    }
-
-    private ArrayList<String> prepareListDataMaxIncline() {
-        ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add(getString(R.string.zero_incline));
-        stringArrayList.add(getString(R.string.up_to_three));
-        stringArrayList.add(getString(R.string.up_to_six));
-        stringArrayList.add(getString(R.string.up_to_ten));
-        stringArrayList.add(getString(R.string.greater_ten));
-        return stringArrayList;
-    }
-
-    private ArrayList<String> prepareListDataSideWalk() {
-        ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add(getString(R.string.nine_less));
-        stringArrayList.add(getString(R.string.nine_greater));
-        return stringArrayList;
     }
 
     @OnClick(R.id.img_back)
@@ -155,23 +101,23 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
         if (mIsForWAY) {
             switch (mPositionOfTitle) {
                 case 0:
-                    setDataWhenFilterApplied(prepareListDataSurfaceKey().get(position), position);
+                    setDataWhenFilterApplied(Utility.prepareListDataSurfaceKey(this).get(position), position);
                     break;
                 case 1:
-                    setDataWhenFilterApplied(prepareListDataMaxSlopeKey().get(position), position);
+                    setDataWhenFilterApplied(Utility.prepareListDataMaxSlopeKey(this).get(position), position);
                     break;
                 case 2:
-                    setDataWhenFilterApplied(prepareListDataMaxIncline().get(position), position);
+                    setDataWhenFilterApplied(Utility.prepareListDataMaxInclineKey(this).get(position), position);
                     break;
                 case 3:
-                    setDataWhenFilterApplied(prepareListDataSideWalk().get(position), position);
+                    setDataWhenFilterApplied(Utility.prepareListDataSideWalkKey(this).get(position), position);
                     break;
 
             }
         } else {
             switch (mPositionOfTitle) {
                 case 0:
-                    setDataWhenFilterApplied(prepareListDataMaxSlopeKey().get(position), position);
+                    setDataWhenFilterApplied(Utility.prepareListDataMaxSlopeKey(this).get(position), position);
                     break;
             }
         }

@@ -100,6 +100,7 @@
     <string name="value_three">3</string>
     <string name="value_six">6</string>
     <string name="value_ten">10</string>
+    <string name="value_eleven">11</string>
 
     <!--FILTER OPTIONS MAXIMUM KERB HEIGHT TYPE-->
     <string name="zero_curb">kein Bordstein</string>
@@ -125,7 +126,9 @@
 
 
     <!--FILTER VALUE MINIMUM WIDTH  VALUE TYPE-->
-    <string name="value_nine_greater">0.9</string>
+    <string name="value_nine_greater">0.90</string>
+    <string name="value_nine_less">1.00</string>
+
 
     <!--CLOSED FILTER SCREEN VALUES............................................-->
 

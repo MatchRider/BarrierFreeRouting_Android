@@ -345,9 +345,11 @@ public class WayDataPreference {
     }
 
     //clear data
-    public void clearWayDataSharedPrefsData() {
+    public void clearWayDataSharedPrefs() {
         editor.clear();
         editor.commit();
+        preferences.edit().clear().apply();
+
     }
     protected void checkForInitialization() {
         if (preferences == null) {

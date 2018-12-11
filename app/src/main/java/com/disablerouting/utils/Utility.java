@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+import com.disablerouting.R;
 import com.disablerouting.api.ApiEndPoint;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.model.NodeReference;
@@ -252,8 +253,43 @@ public class Utility {
         return String.valueOf(Double.parseDouble(stringUnitPassed) / 100);
     }
 
-    public static String covertValueRequired(String stringUnitPassed) {
+    public static String covertValueRequiredWhenSend(Context context, String key, String stringUnitPassed) {
         String converted = stringUnitPassed;
+        int index = -1;
+        switch (key) {
+            case AppConstant.KEY_SURFACE:
+                String str = convertStringToName(stringUnitPassed);
+                index = prepareListDataSurface(context).indexOf(str);
+                if (index != -1) {
+                    converted = prepareListDataSurfaceKey(context).get(index);
+                }
+                break;
+            case AppConstant.KEY_INCLINE:
+                index = prepareListDataMaxIncline(context).indexOf(stringUnitPassed);
+                if (index != -1) {
+                    converted = prepareListDataMaxInclineKey(context).get(index);
+                }
+                break;
+            case AppConstant.KEY_WIDTH:
+                index = prepareListDataSideWalk(context).indexOf(stringUnitPassed);
+                if (index != -1) {
+                    converted = prepareListDataSideWalkKey(context).get(index);
+                }
+                break;
+            case AppConstant.KEY_KERB_HEIGHT:
+                index = prepareListDataMaxSlope(context).indexOf(stringUnitPassed);
+                if (index != -1) {
+                    converted = prepareListDataMaxSlopeKey(context).get(index);
+                }
+                break;
+            case AppConstant.KEY_HIGHWAY:
+                converted = stringUnitPassed;
+                break;
+            case AppConstant.KEY_FOOTWAY:
+                converted = stringUnitPassed;
+                break;
+        }
+        /*String converted = stringUnitPassed;
         if (stringUnitPassed.contains(",")) {
             converted = converted.replace(",", ".");
         }
@@ -304,8 +340,46 @@ public class Utility {
         }
         if (stringUnitPassed.contains("below")) {
             converted = converted.replace("below", "");
+        }*/
+        return converted.trim();
+    }
+    public static String covertValueRequiredWhenReceive(Context context, String key, String stringUnitPassed) {
+        String converted = stringUnitPassed;
+        int index = -1;
+        switch (key) {
+            case AppConstant.KEY_SURFACE:
+                String str = convertStringToName(stringUnitPassed);
+                index = prepareListDataSurfaceKey(context).indexOf(str);
+                if (index != -1) {
+                    converted = prepareListDataSurface(context).get(index);
+                }
+                break;
+            case AppConstant.KEY_INCLINE:
+                index = prepareListDataMaxInclineKey(context).indexOf(stringUnitPassed);
+                if (index != -1) {
+                    converted = prepareListDataMaxIncline(context).get(index);
+                }
+                break;
+            case AppConstant.KEY_WIDTH:
+                index = prepareListDataSideWalkKey(context).indexOf(stringUnitPassed);
+                if (index != -1) {
+                    converted = prepareListDataSideWalk(context).get(index);
+                }
+                break;
+            case AppConstant.KEY_KERB_HEIGHT:
+                index = prepareListDataMaxSlopeKey(context).indexOf(stringUnitPassed);
+                if (index != -1) {
+                    converted = prepareListDataMaxSlope(context).get(index);
+                }
+                break;
+            case AppConstant.KEY_HIGHWAY:
+                converted = stringUnitPassed;
+                break;
+            case AppConstant.KEY_FOOTWAY:
+                converted = stringUnitPassed;
+                break;
         }
-        return converted;
+       return converted.trim();
     }
 
     public static String changeDotToComma(String stringUnitPassed) {
@@ -499,5 +573,90 @@ public class Utility {
         return intent;
     }
 
+    public static ArrayList<String> prepareListDataSurface(Context context) {
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        stringArrayList.add(context.getString(R.string.asphalt));
+        stringArrayList.add(context.getString(R.string.concrete));
+        stringArrayList.add(context.getString(R.string.paving_stones));
+        stringArrayList.add(context.getString(R.string.cobblestone));
+        stringArrayList.add(context.getString(R.string.compacted));
+        return stringArrayList;
+    }
+
+    public static ArrayList<String> prepareListDataSurfaceKey(Context context) {
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        stringArrayList.add(context.getString(R.string.asphalt_key));
+        stringArrayList.add(context.getString(R.string.concrete_key));
+        stringArrayList.add(context.getString(R.string.paving_stones_key));
+        stringArrayList.add(context.getString(R.string.cobbleston_key));
+        stringArrayList.add(context.getString(R.string.compacted_key));
+        return stringArrayList;
+    }
+
+    public static ArrayList<String> prepareListDataMaxSlope(Context context) {
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        stringArrayList.add(context.getString(R.string.zero_curb));
+        stringArrayList.add(context.getString(R.string.value_kerb_three_validation));
+        stringArrayList.add(context.getString(R.string.value_kerb_six_validation));
+        stringArrayList.add(context.getString(R.string.value_kerb_any_validation));
+        return stringArrayList;
+    }
+
+    public static ArrayList<String> prepareListDataMaxSlopeKey(Context context) {
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        stringArrayList.add(context.getString(R.string.kerb_zero));
+        stringArrayList.add(context.getString(R.string.value_kerb_three_validation));
+        stringArrayList.add(context.getString(R.string.value_kerb_six_validation));
+        stringArrayList.add(context.getString(R.string.value_kerb_any_validation));
+        return stringArrayList;
+    }
+
+    public static ArrayList<String> prepareListDataMaxIncline(Context context) {
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        stringArrayList.add(context.getString(R.string.zero_incline));
+        stringArrayList.add(context.getString(R.string.up_to_three));
+        stringArrayList.add(context.getString(R.string.up_to_six));
+        stringArrayList.add(context.getString(R.string.up_to_ten));
+        stringArrayList.add(context.getString(R.string.greater_ten));
+        return stringArrayList;
+    }
+
+    public static ArrayList<String> prepareListDataMaxInclineKey(Context context) {
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        stringArrayList.add(context.getString(R.string.incline_zero));
+        stringArrayList.add(context.getString(R.string.value_three));
+        stringArrayList.add(context.getString(R.string.value_six));
+        stringArrayList.add(context.getString(R.string.value_ten));
+        stringArrayList.add(context.getString(R.string.value_eleven));
+        return stringArrayList;
+    }
+
+    public static ArrayList<String> prepareListDataSideWalk(Context context) {
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        stringArrayList.add(context.getString(R.string.nine_less));
+        stringArrayList.add(context.getString(R.string.nine_greater));
+        return stringArrayList;
+    }
+
+    public static ArrayList<String> prepareListDataSideWalkKey(Context context) {
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        stringArrayList.add(context.getString(R.string.value_nine_greater));
+        stringArrayList.add(context.getString(R.string.value_nine_less));
+        return stringArrayList;
+    }
+
+    private static String convertStringToName(String name) {
+        name = name.trim();
+        String[] words = name.split(" ");
+        StringBuilder sb = new StringBuilder();
+        if (words[0].length() > 0) {
+            sb.append(Character.toUpperCase(words[0].charAt(0)) + words[0].subSequence(1, words[0].length()).toString().toLowerCase());
+            for (int i = 1; i < words.length; i++) {
+                sb.append(" ");
+                sb.append(Character.toUpperCase(words[i].charAt(0)) + words[i].subSequence(1, words[i].length()).toString().toLowerCase());
+            }
+        }
+        return sb.toString();
+    }
 }
 
