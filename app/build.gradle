@@ -25,6 +25,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
         }
     }
     packagingOptions {
@@ -67,6 +68,8 @@ dependencies {
     implementation 'com.github.scribejava:scribejava-apis:5.4.0'
     implementation 'com.github.smart-fun:XmlToJson:1.4.4'
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.android.support:multidex:1.0.3'
+
 
 
 }
