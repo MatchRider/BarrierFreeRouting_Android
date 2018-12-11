@@ -86,7 +86,6 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
         addListener();
         checkLocationStatus();
         //getWayListData();
-
         startService(Utility.createCallingIntent(this,AppConstant.RUN_BOTH));
     }
 
