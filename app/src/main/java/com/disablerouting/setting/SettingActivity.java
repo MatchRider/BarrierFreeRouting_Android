@@ -184,7 +184,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
                 true, "", false);
         asyncTaskOsmApi.execute("");
-        Log.e("API", URLWayGet);
+        Log.e("API_Get_Way", URLWayGet);
 
     }
 
@@ -236,7 +236,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData,
                 this, false, AppConstant.API_TYPE_UPDATE_WAY_OR_NODE, false);
         asyncTaskOsmApi.execute("");
-        Log.e("API", URLNodePUT);
+        Log.e("API_node_put_osm", URLNodePUT);
 
     }
 
@@ -267,16 +267,32 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     if (mISFromOSM) {
                         if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
                             hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE,
-                                    attributes.getValue());
+                                    Utility.covertValueRequiredWhenSend(this,attributes.getKey(),attributes.getValue()));
+                        }else {
+                            if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
+                                hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE,
+                                        Utility.covertValueRequiredWhenSend(this,attributes.getKey(),attributes.getValue()));
+                            }
                         }
                         if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
                             hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH,
-                                    attributes.getValue());
+                                    Utility.covertValueRequiredWhenSend(this,attributes.getKey(),attributes.getValue()));
+                        }else {
+                            if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
+                                hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH,
+                                        Utility.covertValueRequiredWhenSend(this,attributes.getKey(),attributes.getValue()));
+                            }
                         }
                         if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) && !attributes.getValue().isEmpty()) {
                             hashMapTags.put(AppConstant.KEY_INCLINE,
-                                    attributes.getValue());
+                                    Utility.covertValueRequiredWhenSend(this,attributes.getKey(),attributes.getValue()));
 
+                        }else {
+                            if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) && !attributes.getValue().isEmpty()) {
+                                hashMapTags.put(AppConstant.KEY_INCLINE,
+                                        Utility.covertValueRequiredWhenSend(this,attributes.getKey(),attributes.getValue()));
+
+                            }
                         }
 
                     } else {
@@ -327,7 +343,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData,
                 this, false, AppConstant.API_TYPE_UPDATE_WAY_OR_NODE, false);
         asyncTaskOsmApi.execute("");
-        Log.e("API", URLWayPUT);
+        Log.e("API_way_put_osm", URLWayPUT);
 
     }
 
@@ -541,7 +557,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
 
         String URLCreateWay = mApiEndPoint + "way/create";
-        Log.e("API", URLCreateWay);
+        Log.e("API_way_create", URLCreateWay);
 
         OauthData oauthData = new OauthData(Verb.PUT, requestString, URLCreateWay);
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
