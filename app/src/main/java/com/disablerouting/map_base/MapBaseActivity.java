@@ -961,11 +961,11 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         Log.e("Zoom Level Changed", String.valueOf(event.getZoomLevel()));
         int zoomLevel = event.getZoomLevel();
         if (zoomLevel >= 16) {
-            removeMarkerNode();
-        } else {
             if (mNodeItemList != null && mNodeItemList.size() != 0) {
                 plotDataOfNodes(mNodeItemList);
             }
+        } else {
+            removeMarkerNode();
         }
         return false;
     }
