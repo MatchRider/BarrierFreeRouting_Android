@@ -28,8 +28,8 @@ public class GeoCodingManager implements ResponseCallback<GeoCodingResponse> {
             //String countryISO= "IND"; // ALPHA 3 CODE India CODE
             String layers="venue,address";
             int radius=5;
-            double static_latitude =  49.4100344; // Galeria Kaufhauf
-            double static_longitude = 8.6612393;
+            double static_latitude =  49.4059022; // CENTER
+            double static_longitude = 8.6762875;
             mGeoCodingResponseCall = RetrofitClient.getApiService().getGeoCodeForward(ApiEndPoint.API_KEY, queryString,
                     static_latitude,static_longitude,layers,countryISO,radius);
         }
