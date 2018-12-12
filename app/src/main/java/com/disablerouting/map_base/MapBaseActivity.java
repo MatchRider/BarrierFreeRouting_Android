@@ -59,7 +59,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeedBackListener, MapEventsReceiver  {
+public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeedBackListener, MapEventsReceiver, MapListener {
 
     private MapView mMapView = null;
     private MyLocationNewOverlay mLocationOverlay;
@@ -91,6 +91,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private int previousColor = 0;
     private AlertDialog mAlertDialogEnhance;
     private Marker mPreviousNodeMarker;
+    private List<NodeItem> mNodeItemList;
+    private boolean mIsFetchDragAdd;
 
 
     //Runnable marker data
@@ -157,8 +159,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         mMidMarker = new Marker(mMapView);
         mRunningMarker = new Marker(mMapView);
         mCurrentMarker = new Marker(mMapView);
-
-
+        mMapView.setMapListener(new DelayedMapListener(this));
     }
 
     /**
@@ -185,7 +186,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      * @param showFeedbackDialog show dialog on click polyline
      */
     public void plotDataOfSourceDestination(List<List<Double>> geoPointList, String startAdd, String endAdd,
-                                            List<Steps> stepsList, boolean showFeedbackDialog,int coordinateSize) {
+                                            List<Steps> stepsList, boolean showFeedbackDialog, int coordinateSize) {
         GeoPoint geoPointStart = null, geoPointEnd = null;
         mShowFeedbackDialog = showFeedbackDialog;
         if (geoPointList != null) {
@@ -200,9 +201,9 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             if (geoPointArrayList.size() != 0) {
                 geoPointStart = geoPointArrayList.get(0);
                 geoPointEnd = geoPointArrayList.get(geoPointArrayList.size() - 1);
-                if(coordinateSize==2) {
+                if (coordinateSize == 2) {
                     addMarkers(geoPointStart, startAdd, geoPointEnd, endAdd);
-                }else if(coordinateSize==3){
+                } else if (coordinateSize == 3) {
                     addMarkersIfViaPoint(geoPointStart, startAdd, geoPointEnd, endAdd);
                 }
             }
@@ -247,7 +248,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                 int indexFirst = stepsList.get(i).getDoublesWayPoints().get(0);
                 int indexLast = stepsList.get(i).getDoublesWayPoints().get(1);
 
-                List<GeoPoint> geoPointsToSet = new ArrayList<>(geoPointList.subList(indexFirst, indexLast+1));
+                List<GeoPoint> geoPointsToSet = new ArrayList<>(geoPointList.subList(indexFirst, indexLast + 1));
                 final Polyline mPolyline = new Polyline();
                 mPolyline.setPoints(geoPointsToSet);
                 mPolyline.setWidth(20);
@@ -328,15 +329,15 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      */
     public void addCurrentLocation(int zoom) {
         if (mMapView != null) {
-            if(zoom==0){
-               // mMapView.getOverlays().remove(mCurrentMarker);
+            if (zoom == 0) {
+                // mMapView.getOverlays().remove(mCurrentMarker);
                 GeoPoint currentGeoPoints = new GeoPoint(mLatitude, mLongitude); //49.3988,8.6724
-               // mCurrentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                // mCurrentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                 mCurrentMarker.setPosition(currentGeoPoints);
-               // mMapView.getOverlays().add(mCurrentMarker);
+                // mMapView.getOverlays().add(mCurrentMarker);
                 mCurrentMarker.setIcon(getResources().getDrawable(R.drawable.ic_current_loc));
                 mCurrentMarker.setTitle("Your Current location");
-            }else {
+            } else {
                 mMapView.getOverlays().remove(mCurrentMarker);
                 GeoPoint currentGeoPoints = new GeoPoint(mLatitude, mLongitude); //49.3988,8.6724
                 mCurrentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
@@ -601,44 +602,57 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     }
 
     public void plotDataOfNodes(List<NodeItem> nodeItemList) {
-        for (NodeItem nodeItem : nodeItemList) {
-            switch (nodeItem.getNodeType().getIdentifier()) {
-                case AppConstant.publicTramStop:
-                    if (nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicTramStop)) {
-                        GeoPoint geoPoint = new GeoPoint(nodeItem.getLatitude(),
-                                nodeItem.getLongitude());
-                        addMarkerNode(geoPoint, nodeItem.getNodeType().getIdentifier(), nodeItem.getWheelChair().toUpperCase());
-                    }
-                    break;
-                case AppConstant.publicToilets:
-                    if (nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicToilets)) {
-                        GeoPoint geoPoint = new GeoPoint(nodeItem.getLatitude(),
-                                nodeItem.getLongitude());
-                        addMarkerNode(geoPoint, nodeItem.getNodeType().getIdentifier(), nodeItem.getWheelChair().toUpperCase());
-                    }
-                    break;
-                case AppConstant.publicBusStop:
-                    if (nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicBusStop)) {
-                        GeoPoint geoPoint = new GeoPoint(nodeItem.getLatitude(),
-                                nodeItem.getLongitude());
-                        addMarkerNode(geoPoint, nodeItem.getNodeType().getIdentifier(), nodeItem.getWheelChair().toUpperCase());
-                    }
-                    break;
-                case AppConstant.publicParking:
-                    if (nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicParking)) {
-                        GeoPoint geoPoint = new GeoPoint(nodeItem.getLatitude(),
-                                nodeItem.getLongitude());
-                        addMarkerNode(geoPoint, nodeItem.getNodeType().getIdentifier(), nodeItem.getWheelChair().toUpperCase());
-                    }
-                    break;
-            }
+        mNodeItemList = new ArrayList<>();
+        if (nodeItemList != null && nodeItemList.size() != 0) {
+            mNodeItemList.addAll(nodeItemList);
+            for (NodeItem nodeItem : nodeItemList) {
+                switch (nodeItem.getNodeType().getIdentifier()) {
+                    case AppConstant.publicTramStop:
+                        if (nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicTramStop)) {
+                            GeoPoint geoPoint = new GeoPoint(nodeItem.getLatitude(),
+                                    nodeItem.getLongitude());
+                            addMarkerNode(geoPoint, nodeItem.getNodeType().getIdentifier(), nodeItem.getWheelChair().toUpperCase());
+                        }
+                        break;
+                    case AppConstant.publicToilets:
+                        if (nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicToilets)) {
+                            GeoPoint geoPoint = new GeoPoint(nodeItem.getLatitude(),
+                                    nodeItem.getLongitude());
+                            addMarkerNode(geoPoint, nodeItem.getNodeType().getIdentifier(), nodeItem.getWheelChair().toUpperCase());
+                        }
+                        break;
+                    case AppConstant.publicBusStop:
+                        if (nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicBusStop)) {
+                            GeoPoint geoPoint = new GeoPoint(nodeItem.getLatitude(),
+                                    nodeItem.getLongitude());
+                            addMarkerNode(geoPoint, nodeItem.getNodeType().getIdentifier(), nodeItem.getWheelChair().toUpperCase());
+                        }
+                        break;
+                    case AppConstant.publicParking:
+                        if (nodeItem.getNodeType().getIdentifier().contains(AppConstant.publicParking)) {
+                            GeoPoint geoPoint = new GeoPoint(nodeItem.getLatitude(),
+                                    nodeItem.getLongitude());
+                            addMarkerNode(geoPoint, nodeItem.getNodeType().getIdentifier(), nodeItem.getWheelChair().toUpperCase());
+                        }
+                        break;
+                }
 
+            }
         }
 
     }
 
+    private void removeMarkerNode() {
+        if(mMarkerList!=null && mMarkerList.size()!=0) {
+            mMapView.getOverlays().removeAll(mMarkerList);
+        }
+
+    }
+
+    private List<Marker> mMarkerList = new ArrayList<>();
+
     private void addMarkerNode(GeoPoint geoPoint, String category, String wheelChair) {
-        String wheelChairAccessible = wheelChair;
+        String wheelChairAccessible;
         if (wheelChair.equalsIgnoreCase("Yes")) {
             wheelChairAccessible = getResources().getString(R.string.wheelchair_accessible_yes);
         } else if (wheelChair.equalsIgnoreCase("No")) {
@@ -649,6 +663,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             wheelChairAccessible = getResources().getString(R.string.wheelchair_accessible_limited);
         }
         Marker nodeMarker = new Marker(mMapView);
+        mMarkerList.add(nodeMarker);
         GeoPoint nodePoints = new GeoPoint(geoPoint.getLatitude(), geoPoint.getLongitude());
         switch (category) {
             case AppConstant.publicTramStop:
@@ -750,7 +765,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      * @param valid       valid data or not
      */
     public void addPolyLineForWays(final ListWayData listWayData, final boolean valid) {
-        if(listWayData!=null && listWayData.getGeoPoints()!=null) {
+        if (listWayData != null && listWayData.getGeoPoints() != null) {
             Polyline polylineWays = new Polyline();
             polylineWays.setPoints(listWayData.getGeoPoints());
             polylineWays.setRelatedObject(listWayData);
@@ -759,7 +774,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             if (valid) {
                 polylineWays.setColor(getResources().getColor(R.color.colorGreen));
             } else {
-                if(listWayData.getColor() != null) {
+                if (listWayData.getColor() != null) {
                     colorValue = listWayData.getColor();
                     polylineWays.setColor(Color.parseColor(colorValue));
                 }
@@ -783,8 +798,8 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         }
     }
 
-    public void addNodeForWays(final NodeReference nodeReference , final boolean isValid) {
-        if(nodeReference!=null && nodeReference.getAttributes()!=null) {
+    public void addNodeForWays(final NodeReference nodeReference, final boolean isValid) {
+        if (nodeReference != null && nodeReference.getAttributes() != null) {
             for (int i = 0; i < nodeReference.getAttributes().size(); i++) {
                 if (nodeReference.getAttributes().size() > 0) {
                     for (int j = 0; j < nodeReference.getAttributes().size(); j++) {
@@ -825,9 +840,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     }
 
 
-
-
-    public void checkForWay(Polyline polyline, ListWayData way, boolean valid , boolean isForWay,NodeReference nodeReference) {
+    public void checkForWay(Polyline polyline, ListWayData way, boolean valid, boolean isForWay, NodeReference nodeReference) {
     }
         /*protected Runnable updateMarker = new Runnable() {
         @Override
@@ -882,7 +895,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         LayoutInflater layoutInflater = getLayoutInflater();
         View customView = layoutInflater.inflate(R.layout.enchance_feedback_pop_up, null);
         Button btnTitle = (Button) customView.findViewById(R.id.btn_title);
-        if(!isForWay){
+        if (!isForWay) {
             btnTitle.setText(getResources().getString(R.string.please_take_look_at_node));
         }
         Button btnNo = (Button) customView.findViewById(R.id.btn_no);
@@ -910,7 +923,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         btnYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkForWay(polyline, listWayData, valid ,isForWay,nodeReference);
+                checkForWay(polyline, listWayData, valid, isForWay, nodeReference);
                 mAlertDialogEnhance.dismiss();
             }
         });
@@ -924,36 +937,38 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     }
 
 
+    public void setMapCenter(final boolean isFetchDragAdd) {
+        this.mIsFetchDragAdd = isFetchDragAdd;
 
-    public void getMapCenter(boolean isFetchDragAdd) {
-        if(isFetchDragAdd) {
-            final GeoPoint[] geoPoint = {null};
-            final IGeoPoint[] mapViewMapCenter = {null};
-            if (mMapView != null) {
-                mMapView.setMapListener(new DelayedMapListener(new MapListener() {
-
-                    @Override
-                    public boolean onScroll(ScrollEvent paramScrollEvent) {
-                        mapViewMapCenter[0] = mMapView.getMapCenter();
-                        geoPoint[0] = new GeoPoint(mapViewMapCenter[0].getLatitude(), mapViewMapCenter[0].getLongitude());
-                        mFeedBackListener.onDragClicked(geoPoint[0]);
-                        return true;
-                    }
-
-                    @Override
-                    public boolean onZoom(ZoomEvent event) {
-                        return false;
-                    }
-
-                }));
-            }
-        }else {
-            if(mMapView!=null){
-                mMapView.setMapListener(null);
-            }
-        }
     }
 
+
+    @Override
+    public boolean onScroll(ScrollEvent paramScrollEvent) {
+        if (mIsFetchDragAdd) {
+            final GeoPoint[] geoPoint = {null};
+            final IGeoPoint[] mapViewMapCenter = {null};
+            mapViewMapCenter[0] = mMapView.getMapCenter();
+            geoPoint[0] = new GeoPoint(mapViewMapCenter[0].getLatitude(), mapViewMapCenter[0].getLongitude());
+            mFeedBackListener.onDragClicked(geoPoint[0]);
+            mIsFetchDragAdd = false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onZoom(ZoomEvent event) {
+        Log.e("Zoom Level Changed", String.valueOf(event.getZoomLevel()));
+        int zoomLevel = event.getZoomLevel();
+        if (zoomLevel >= 16) {
+            removeMarkerNode();
+        } else {
+            if (mNodeItemList != null && mNodeItemList.size() != 0) {
+                plotDataOfNodes(mNodeItemList);
+            }
+        }
+        return false;
+    }
 
 }
 

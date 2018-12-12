@@ -59,7 +59,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     ;
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, Integer> mHashMapObjectFilterItem = new HashMap<>();
-    private List<NodeItem> mNodeItemListFiltered = new ArrayList<>();
+    private List<NodeItem> mNodeItemListFiltered ;
     private HashMap<String, Features> mHashMapObjectFilterRoutingVia = new HashMap<>();
     private HashMap<String, String> mHashMapObjectFilter;
     private IRoutePlannerScreenPresenter mIRoutePlannerScreenPresenter;
@@ -305,6 +305,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void plotNodesOnMap(List<NodeItem> mNodes) {
+        mNodeItemListFiltered = new ArrayList<>();
         for (NodeItem nodeItem : mNodes) {
             assert nodeItem.getNodeType() != null;
             if (nodeItem.getNodeType() != null && (nodeItem.getNodeType() != null && nodeItem.getNodeType().getIdentifier() != null &&
@@ -389,7 +390,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         mStepsList.clear();
         mStepListHasData = false;
         mImageCurrentPin.setVisibility(View.GONE);
-        getMapCenter(false);
+        setMapCenter(false);
         clearItemsFromMap();
 
         if(SearchPreferences.getInstance(this)!=null && SearchPreferences.getInstance(this).getUserSearch()!=null ) {
@@ -1056,14 +1057,14 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (onStart) {
             if (mButtonGo.getVisibility() == View.VISIBLE) {
                 mImageCurrentPin.setVisibility(View.VISIBLE);
-                getMapCenter(true);
+                setMapCenter(true);
             } else {
                 mImageCurrentPin.setVisibility(View.GONE);
-                getMapCenter(false);
+                setMapCenter(false);
             }
         } else {
             mImageCurrentPin.setVisibility(View.GONE);
-            getMapCenter(false);
+            setMapCenter(false);
         }
     }
 
