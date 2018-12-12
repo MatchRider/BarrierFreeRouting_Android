@@ -477,6 +477,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     }
 
+    boolean mIsCalledCreateWay=false;
     /**
      * Api Call To CREATE WAY
      */
@@ -545,7 +546,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         OauthData oauthData = new OauthData(Verb.PUT, requestString, URLCreateWay);
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
                 false, AppConstant.API_TYPE_CREATE_WAY, false);
-        asyncTaskOsmApi.execute("");
+        if(!mIsCalledCreateWay) {
+            asyncTaskOsmApi.execute("");
+            mIsCalledCreateWay=true;
+        }
 
     }
 
@@ -557,6 +561,13 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     mNodeRefIndex = i;
                     if (i == mListWayData.getNodeReference().size() - 1) {
                         mCallForWay = true;
+                    }else {
+                        mCallForWay = false;
+                    }
+                    if (mListWayData.getNodeReference().get(i).getOSMNodeId().isEmpty()) {
+                        //Create Node
+                        hideLoader();
+                        callToCreateNode(mListWayData.getNodeReference().get(i));
                     }
                     if (mCallForWay) {
                         runOnUiThread(new Runnable() {
@@ -566,12 +577,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
                             }
                         });
-
-                    }
-                    if (mListWayData.getNodeReference().get(i).getOSMNodeId().isEmpty()) {
-                        //Create Node
-                        hideLoader();
-                        callToCreateNode(mListWayData.getNodeReference().get(i));
                     }
                 }
 
