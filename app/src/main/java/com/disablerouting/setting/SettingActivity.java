@@ -264,36 +264,36 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
                 Attributes attributes = pair.getValue();
                 if (attributes != null && attributes.getValue() != null) {
-                   if(mISFromOSM) {
-                       if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
-                           hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE,
-                                   attributes.getValue());
-                       }
-                       if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
-                           hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH,
-                                   attributes.getValue());
-                       }
-                       if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) && !attributes.getValue().isEmpty()) {
-                           hashMapTags.put(AppConstant.KEY_INCLINE,
-                                   attributes.getValue());
+                    if (mISFromOSM) {
+                        if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
+                            hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE,
+                                    attributes.getValue());
+                        }
+                        if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
+                            hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH,
+                                    attributes.getValue());
+                        }
+                        if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) && !attributes.getValue().isEmpty()) {
+                            hashMapTags.put(AppConstant.KEY_INCLINE,
+                                    attributes.getValue());
 
-                       }
+                        }
 
-                   }else {
-                       if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
-                           hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE,
-                                   attributes.getValue());
-                       }
-                       if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) && !attributes.getValue().isEmpty()) {
-                           hashMapTags.put(AppConstant.KEY_INCLINE,
-                                   attributes.getValue());
+                    } else {
+                        if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
+                            hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE,
+                                    attributes.getValue());
+                        }
+                        if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) && !attributes.getValue().isEmpty()) {
+                            hashMapTags.put(AppConstant.KEY_INCLINE,
+                                    attributes.getValue());
 
-                       }
-                       if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
-                           hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH,
-                                   attributes.getValue());
-                       }
-                   }
+                        }
+                        if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
+                            hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH,
+                                    attributes.getValue());
+                        }
+                    }
 
                 }
             }
@@ -307,7 +307,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         StringBuilder nodes = new StringBuilder();
         if (mJSONObjectOSM != null && mJSONObjectOSM.getJSONObject("way") != null &&
                 mJSONObjectOSM.getJSONObject("way").getJSONArray("nd") != null
-                && mJSONObjectOSM.getJSONObject("way").getJSONArray("nd").length()!=0) {
+                && mJSONObjectOSM.getJSONObject("way").getJSONArray("nd").length() != 0) {
             for (int i = 0; i < mJSONObjectOSM.getJSONObject("way").getJSONArray("nd").length(); i++) {
 
                 String ref = mJSONObjectOSM.getJSONObject("way").getJSONArray("nd")
@@ -600,7 +600,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     /**
      * Get Data from intent and set  values to attributes
      */
-     private void getDataFromWay() {
+    private void getDataFromWay() {
         if (mIsForWAY) {
             Attributes attributesSurfaceType = new Attributes();
             attributesSurfaceType.setKey(AppConstant.KEY_SURFACE);
@@ -615,12 +615,11 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             mHashMapWay.put(3, attributesWidthType);
 
 
-
             for (int i = 0; i < mListWayData.getAttributesList().size(); i++)
                 switch (mListWayData.getAttributesList().get(i).getKey()) {
 
                     case AppConstant.KEY_SURFACE:
-                        if(!mISFromOSM) {
+                        if (!mISFromOSM) {
                             Attributes attributesSurface = new Attributes();
                             attributesSurface.setKey(mListWayData.getAttributesList().get(i).getKey());
                             attributesSurface.setValue(mListWayData.getAttributesList().get(i).getValue().trim());
@@ -659,7 +658,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         break;
 
                     case AppConstant.KEY_WIDTH:
-                        if(!mISFromOSM) {
+                        if (!mISFromOSM) {
                             Attributes attributesWidth = new Attributes();
                             attributesWidth.setKey(mListWayData.getAttributesList().get(i).getKey());
                             if (mListWayData.getAttributesList().get(i).getValue().contains(".")) {
@@ -703,7 +702,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         }
                         break;
                     case "sidewalk:left:surface":
-                        if(mISFromOSM) {
+                        if (mISFromOSM) {
                             Attributes attributesSurface = new Attributes();
                             attributesSurface.setKey(mListWayData.getAttributesList().get(i).getKey());
                             attributesSurface.setValue(mListWayData.getAttributesList().get(i).getValue().trim());
@@ -712,7 +711,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         }
                         break;
                     case "sidewalk:right:surface":
-                        if(mISFromOSM) {
+                        if (mISFromOSM) {
                             Attributes attributesSurface = new Attributes();
                             attributesSurface.setKey(mListWayData.getAttributesList().get(i).getKey());
                             attributesSurface.setValue(mListWayData.getAttributesList().get(i).getValue().trim());
@@ -721,18 +720,18 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         }
                         break;
 
-                        case "sidewalk:both:surface":
-                            if(mISFromOSM) {
-                                Attributes attributesSurface = new Attributes();
-                                attributesSurface.setKey(mListWayData.getAttributesList().get(i).getKey());
-                                attributesSurface.setValue(mListWayData.getAttributesList().get(i).getValue().trim());
-                                attributesSurface.setValid(mListWayData.getAttributesList().get(i).isValid());
-                                mHashMapWay.put(0, attributesSurface);
-                            }
+                    case "sidewalk:both:surface":
+                        if (mISFromOSM) {
+                            Attributes attributesSurface = new Attributes();
+                            attributesSurface.setKey(mListWayData.getAttributesList().get(i).getKey());
+                            attributesSurface.setValue(mListWayData.getAttributesList().get(i).getValue().trim());
+                            attributesSurface.setValid(mListWayData.getAttributesList().get(i).isValid());
+                            mHashMapWay.put(0, attributesSurface);
+                        }
                         break;
 
                     case "sidewalk:left:width":
-                        if(mISFromOSM) {
+                        if (mISFromOSM) {
                             Attributes attributesWidth = new Attributes();
                             attributesWidth.setKey(mListWayData.getAttributesList().get(i).getKey());
                             if (mListWayData.getAttributesList().get(i).getValue().contains(".")) {
@@ -749,7 +748,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
                         break;
                     case "sidewalk:right:width":
-                        if(mISFromOSM) {
+                        if (mISFromOSM) {
                             Attributes attributesWidth = new Attributes();
                             attributesWidth.setKey(mListWayData.getAttributesList().get(i).getKey());
                             if (mListWayData.getAttributesList().get(i).getValue().contains(".")) {
@@ -766,7 +765,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
                         break;
                     case "sidewalk:both:width":
-                        if(mISFromOSM) {
+                        if (mISFromOSM) {
                             Attributes attributesWidth = new Attributes();
                             attributesWidth.setKey(mListWayData.getAttributesList().get(i).getKey());
                             if (mListWayData.getAttributesList().get(i).getValue().contains(".")) {
@@ -783,7 +782,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         break;
 
                     default:
-                    break;
+                        break;
                 }
         } else {
             for (int i = 0; i < mNodeReference.getAttributes().size(); i++) {
