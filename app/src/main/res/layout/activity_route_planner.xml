@@ -20,8 +20,8 @@
     <ImageView
             android:layout_below="@id/contentContainer"
             android:id="@+id/image_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:visibility="gone"
             android:layout_margin="@dimen/margin_normal"
             android:src="@drawable/ic_dialog_info"
@@ -103,17 +103,17 @@
     <ImageView
             android:id="@+id/img_re_center"
             android:layout_width="wrap_content"
-            android:src="@drawable/ic_recenter"
+            android:src="@drawable/ic_re_center"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:padding="@dimen/padding_xxx_large"
+            android:padding="@dimen/padding_xlarge"
             android:visibility="visible"
             android:layout_alignParentStart="true"
             android:contentDescription="@string/app_name"/>
     <Button
             android:id="@+id/btn_go"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:text="@string/go"
             android:layout_margin="@dimen/margin_xxlarge"
             android:layout_alignParentBottom="true"
