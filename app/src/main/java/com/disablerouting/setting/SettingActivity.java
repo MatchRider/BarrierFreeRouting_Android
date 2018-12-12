@@ -804,9 +804,11 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     private void onUpdateNode() {
         showLoader();
+        boolean isNodeNeedToUpdate=false;
         if (mIsForWAY) {
             for (int i = 0; i < mListWayData.getNodeReference().size(); i++) {
                 if (mListWayData.getNodeReference().get(i).getOSMNodeId().isEmpty()) {
+                    isNodeNeedToUpdate=true;
                     RequestNodeInfo requestNodeInfo = new RequestNodeInfo();
                     NodeReference nodeReference = new NodeReference();
                     String nodeOSMID = mNodeIdsCreated.get(i);
@@ -820,7 +822,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     if (mListWayData.getNodeReference().get(i).getAttributes() != null &&
                             mListWayData.getNodeReference().get(i).getAttributes().size() != 0) {
                         attributesValidate.setKey(mListWayData.getNodeReference().get(i).getAttributes().get(0).getKey());
-                        attributesValidate.setValue(Utility.covertValueRequiredWhenSend(this, mListWayData.getNodeReference().get(i).getAttributes().get(0).getKey(),
+                        attributesValidate.setValue(Utility.covertValueRequiredWhenSend(this,
+                                mListWayData.getNodeReference().get(i).getAttributes().get(0).getKey(),
                                 mListWayData.getNodeReference().get(i).getAttributes().get(0).getValue()));
                         attributesValidate.setValid(mListWayData.getNodeReference().get(i).getAttributes().get(0).isValid());
                     }
@@ -834,7 +837,13 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     }
                     mISettingScreenPresenter.onUpdateNode(requestNodeInfo, AppConstant.NODE_UPDATE);
                 }
+
             }
+            if(!isNodeNeedToUpdate){
+                hideLoader();
+                onUpdateWayOurServer(mListWayData.getVersion());
+            }
+
         } else {
             RequestNodeInfo requestNodeInfo = new RequestNodeInfo();
             NodeReference nodeReference = new NodeReference();
@@ -938,7 +947,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (mHashMapWay.get(3) != null && !mHashMapWay.get(3).getKey().isEmpty() && mHashMapWay.get(3).getValue() != null && !mHashMapWay.get(3).getValue().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_WIDTH);
-            attributesValidate.setValue(mHashMapWay.get(3).getValue());
+            attributesValidate.setValue(Utility.covertValueRequiredWhenSend(this, mHashMapWay.get(3).getKey(),mHashMapWay.get(3).getValue()));
             attributesValidate.setValid(mHashMapWay.get(3).isValid());
             attributesValidateList.add(attributesValidate);
         }
@@ -969,10 +978,11 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         nodeReference.setVersion(updateVersionNumber);
         List<Attributes> attributesValidateList = new ArrayList<>();
         Attributes attributesValidate = new Attributes();
-        if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty() && mHashMapWay.get(0).getValue() != null && !mHashMapWay.get(0).getValue().isEmpty()) {
+        if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty() && mHashMapWay.get(0).getValue() != null &&
+                !mHashMapWay.get(0).getValue().isEmpty()) {
             attributesValidate.setKey(mHashMapWay.get(0).getKey());
-            String value = mHashMapWay.get(0).getValue();
-            attributesValidate.setValue(value);
+            attributesValidate.setValue(Utility.covertValueRequiredWhenSend(this,mHashMapWay.get(0).getKey(),
+                    mHashMapWay.get(0).getValue()));
             attributesValidate.setValid(mHashMapWay.get(0).isValid());
         }
         nodeReference.setAttributes(attributesValidateList);
@@ -997,7 +1007,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 }
                 setResult(RESULT_OK);
                 hideLoader();
-                //mRelativeLayoutProgress.setVisibility(View.GONE);
                 finish();
             } else {
                 if (responseUpdate.isStatus()) {
@@ -1010,7 +1019,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 }
                 setResult(RESULT_OK);
                 hideLoader();
-                //mRelativeLayoutProgress.setVisibility(View.GONE);
                 finish();
 
             }
@@ -1039,7 +1047,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     }
                     setResult(RESULT_OK);
                     hideLoader();
-                    //mRelativeLayoutProgress.setVisibility(View.GONE);
                     finish();
                 }
             } else {
@@ -1054,7 +1061,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 }
                 setResult(RESULT_OK);
                 hideLoader();
-                // mRelativeLayoutProgress.setVisibility(View.GONE);
                 finish();
             }
         }
@@ -1133,15 +1139,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 Log.e("ResponseNode:", responseBody);
                 if (mIsForWAY) {
                     mNodeIdsCreated.put(mNodeRefIndex, responseBody);
-                    /*if (mCallForWay) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                callToCreateWay();
-
-                            }
-                        });
-                    }*/
                 }
                 if (!mIsForWAY) {
                     mNodeIdsCreated.put(0, responseBody);

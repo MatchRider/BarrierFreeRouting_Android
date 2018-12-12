@@ -223,12 +223,12 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     holder.mTextViewSubTitle.setText(subTitle);
                     holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
                     holder.mCheckBoxVerify.setChecked(true);
-                    holder.mCheckBoxVerify.setClickable(true);
+                    holder.mCheckBoxVerify.setClickable(false);
                     holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.verified));
                     holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
-                    holder.mImageViewEdit.setVisibility(View.VISIBLE);
+                    holder.mImageViewEdit.setVisibility(View.GONE);
                     holder.mImageViewEdit.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_edit_black));
-                    holder.mImageViewEdit.setClickable(true);
+                    holder.mImageViewEdit.setClickable(false);
 
                 } else {
                     holder.mTextViewSubTitle.setText(subTitle);

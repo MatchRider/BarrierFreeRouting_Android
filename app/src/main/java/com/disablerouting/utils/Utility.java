@@ -269,17 +269,26 @@ public class Utility {
                 if (index != -1) {
                     converted = prepareListDataMaxInclineKey(context).get(index);
                 }
+                if(stringUnitPassed.contains(",")){
+                    converted = stringUnitPassed.replace(",",".");
+                }
                 break;
             case AppConstant.KEY_WIDTH:
                 index = prepareListDataSideWalk(context).indexOf(stringUnitPassed);
                 if (index != -1) {
                     converted = prepareListDataSideWalkKey(context).get(index);
                 }
+                if(stringUnitPassed.contains(",")){
+                    converted = stringUnitPassed.replace(",",".");
+                }
                 break;
             case AppConstant.KEY_KERB_HEIGHT:
                 index = prepareListDataMaxSlope(context).indexOf(stringUnitPassed);
                 if (index != -1) {
                     converted = prepareListDataMaxSlopeKey(context).get(index);
+                }
+                if(stringUnitPassed.contains(",")){
+                    converted = stringUnitPassed.replace(",",".");
                 }
                 break;
             case AppConstant.KEY_HIGHWAY:
@@ -289,58 +298,7 @@ public class Utility {
                 converted = stringUnitPassed;
                 break;
         }
-        /*String converted = stringUnitPassed;
-        if (stringUnitPassed.contains(",")) {
-            converted = converted.replace(",", ".");
-        }
-        if (stringUnitPassed.contains(">")) {
-            converted = converted.replace(">", "");
-        }
-        if (stringUnitPassed.contains("<")) {
-            converted = converted.replace("<", "");
-        }
-        if (stringUnitPassed.contains("unter")) {
-            converted = converted.replace("unter", "");
-        }
-        if (stringUnitPassed.contains("über")) {
-            converted = converted.replace("über", "");
-        }
-        if (stringUnitPassed.contains("bis")) {
-            converted = converted.replace("bis", "");
-        }
-        if (stringUnitPassed.contains("Up to")) {
-            converted = converted.replace("Up to", "");
-        }
-        if (stringUnitPassed.contains("kein Bordstein")) {
-            converted = converted.replace("kein Bordstein", "0");
-        }
-        if (stringUnitPassed.contains("keine Steigung")) {
-            converted = converted.replace("keine Steigung", "0");
-        }
-        if (stringUnitPassed.contains("No curb")) {
-            converted = converted.replace("No curb", "0");
-        }
-        if (stringUnitPassed.contains("No gradient")) {
-            converted = converted.replace("No gradient", "0");
-        }
-        if (stringUnitPassed.contains("%")) {
-            converted = converted.replace("%", "");
-        }
-        if (stringUnitPassed.contains("m")) {
-            converted = converted.replace("m", "");
-        }
-        if (stringUnitPassed.contains("cm")) {
-            converted = converted.replace("cm", "");
-        }
-        if (stringUnitPassed.contains("inches")) {
-            converted = converted.replace("inches", "");
-        }
-        if (stringUnitPassed.contains("above")) {
-            converted = converted.replace("above", "");
-        }
-        if (stringUnitPassed.contains("below")) {
-            converted = converted.replace("below", "");
-        }*/
+
         return converted.trim();
     }
     public static String covertValueRequiredWhenReceive(Context context, String key, String stringUnitPassed) {
