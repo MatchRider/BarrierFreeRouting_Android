@@ -85,7 +85,6 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
         addNavigationMenu(navigationDrawerLayout, this);
         addListener();
         checkLocationStatus();
-        //getWayListData();
         WayDataPreference.getInstance(this).clearWayDataSharedPrefs();
         startService(Utility.createCallingIntent(this,AppConstant.RUN_BOTH));
     }
@@ -185,7 +184,7 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
             case AppConstant.REQUEST_CODE: {
                 for (String permission : permissions) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
-                        finish();
+                        //finish();
                         break;
                     } else {
                         if (ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
