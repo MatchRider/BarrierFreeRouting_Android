@@ -543,5 +543,5 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
         super.onDestroy();
         hideLoader();
     }
-    
+
 }

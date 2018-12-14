@@ -121,8 +121,8 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
         }
         mIFilterScreenPresenter = new FilterScreenPresenter(this, new GeoCodingManager());
 
-        if (AppData.getNewInstance().getCurrentLoc() != null) {
-            mCurrentLocation = AppData.getNewInstance().getCurrentLoc().longitude + "," + AppData.getNewInstance().getCurrentLoc().latitude;
+        if (AppData.getInstance().getCurrentLoc() != null) {
+            mCurrentLocation = AppData.getInstance().getCurrentLoc().longitude + "," + AppData.getInstance().getCurrentLoc().latitude;
         }
         prepareListDataForKeyValue();
         prepareListData();

@@ -511,7 +511,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                         mLatitude = location.getLatitude();
                         mLongitude = location.getLongitude();
                         onUpdateLocation(location);
-                        AppData.getNewInstance().setCurrentLoc(new LatLng(mLatitude, mLongitude));
+                        AppData.getInstance().setCurrentLoc(new LatLng(mLatitude, mLongitude));
                     }
                 }
             }
@@ -941,7 +941,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
         this.mIsFetchDragAdd = isFetchDragAdd;
 
     }
-
 
     @Override
     public boolean onScroll(ScrollEvent paramScrollEvent) {

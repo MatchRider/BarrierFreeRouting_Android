@@ -122,7 +122,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (getIntent().hasExtra("FromOSM")) {
             mISFromOSM = getIntent().getBooleanExtra("FromOSM", false);
         }
-        Log.e("Time", new Date(System.currentTimeMillis()).toString());
+
+
         if (mISFromOSM) {
             if (WayDataPreference.getInstance(this) != null) {
                 mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayDataOSM();
@@ -146,7 +147,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 new OSMManager(), new ListGetWayManager(), this);
 
         if (mISFromSuggestion) {
-            addCurrentLocation(18);
+           // addCurrentLocation(18);
             mSourceDestinationFragment.OnFromSuggestion(true);
             mButtonGo.setVisibility(View.GONE);
             mSwitchCompatToogle.setVisibility(View.GONE);
@@ -155,7 +156,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
 
         if (mISFromOSM) {
-            addCurrentLocation(18);
+           // addCurrentLocation(18);
             mSourceDestinationFragment.OnFromSuggestion(false);
             mButtonGo.setVisibility(View.GONE);
             mSwitchCompatToogle.setVisibility(View.GONE);
@@ -164,7 +165,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
         mRadioGroup.setOnCheckedChangeListener(this);
         mTabSelected = 3;
-        Log.e("Time", new Date(System.currentTimeMillis()).toString());
 
        /* IntentFilter filter = new IntentFilter();
         filter.addAction("API_STATUS");
@@ -955,6 +955,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void onToggleClickedBanner(boolean isChecked) {
         //clearItemsFromMap();
+        addCurrentLocation(18);
         showLoader();
         mRadioGroup.setVisibility(View.VISIBLE);
         mImageCurrentPin.setVisibility(View.GONE);

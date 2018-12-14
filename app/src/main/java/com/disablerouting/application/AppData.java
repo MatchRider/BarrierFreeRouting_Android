@@ -8,7 +8,7 @@ public final class AppData {
     private LatLng mCurrentLoc;
 
 
-    public static AppData getNewInstance() {
+    public static AppData getInstance() {
         if (sInstance == null) {
             sInstance = new AppData();
         }

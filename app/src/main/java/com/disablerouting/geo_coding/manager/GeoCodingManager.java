@@ -21,9 +21,9 @@ public class GeoCodingManager implements ResponseCallback<GeoCodingResponse> {
 
     public void getGeoCodeForward(IGeoCodingResponseReceiver receiver, String queryString) {
         this.mIGeoCodingResponseReceiver = receiver;
-        if(AppData.getNewInstance()!=null && AppData.getNewInstance().getCurrentLoc()!=null) {
-            double latitude= AppData.getNewInstance().getCurrentLoc().latitude;
-            double longitude= AppData.getNewInstance().getCurrentLoc().longitude;
+        if(AppData.getInstance()!=null && AppData.getInstance().getCurrentLoc()!=null) {
+            double latitude= AppData.getInstance().getCurrentLoc().latitude;
+            double longitude= AppData.getInstance().getCurrentLoc().longitude;
             String countryISO= "DEU"; // ALPHA 3 CODE GERMANY CODE
             //String countryISO= "IND"; // ALPHA 3 CODE India CODE
             String layers="venue,address";
