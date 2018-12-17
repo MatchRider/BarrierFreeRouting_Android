@@ -146,7 +146,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 showLoader();
                 EventBus.getDefault().register(this);
             }
-        } else {
+        } else  if(mISFromSuggestion){
             if (WayDataPreference.getInstance(this) != null) {
                 mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayData();
                 mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayData();
@@ -162,6 +162,13 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     mNodeListValidatedData.size() == 0 && mNodeListNotValidatedData.size() == 0) {
                 showLoader();
                 EventBus.getDefault().register(this);
+            }
+        }else {
+            if (WayDataPreference.getInstance(this) != null) {
+                mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayData();
+                mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayData();
+                mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNode();
+                mNodeListNotValidatedData = WayDataPreference.getInstance(this).getNotValidateDataNode();
             }
         }
         if(!mISFromOSM && !mISFromSuggestion) {

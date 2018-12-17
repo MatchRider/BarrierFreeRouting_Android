@@ -728,11 +728,14 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     public void onToggleView(boolean isToggled) {
         if(isToggled){
             mOnSourceDestinationListener.onClickField(false); //Adding pin fetch address
+
             Utility.collapse(mLinearLayoutSourceDestination);
-            Utility.collapse(mLinearLayoutSource);
+            mLinearLayoutSourceDestination.setVisibility(View.GONE);
+           /* Utility.collapse(mLinearLayoutSource);
             Utility.collapse(mLinearLayoutDestination);
             Utility.collapse(mImgSwap);
             Utility.collapse(mBtnFilter);
+           */
             if(mLinearLayoutTimeDistance.getVisibility()==View.VISIBLE) {
                 Utility.collapse(mLinearLayoutTimeDistance);
             }
@@ -741,11 +744,13 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
         }else {
             Utility.expand(mLinearLayoutSourceDestination);
-            Utility.expand(mLinearLayoutSource);
+            mLinearLayoutSourceDestination.setVisibility(View.VISIBLE);
+
+           /* Utility.expand(mLinearLayoutSource);
             Utility.expand(mLinearLayoutDestination);
             Utility.expand(mImgSwap);
             Utility.expand(mBtnFilter);
-
+*/
             if(mDirectionsResponse!=null) {
                 Utility.expand(mLinearLayoutTimeDistance);
             }
