@@ -120,9 +120,9 @@ public class Utility {
 
             XmlToJson xmlToJson = new XmlToJson.Builder(xmlString).build();
             jsonObject = xmlToJson.toJson();
-            if (jsonObject != null) {
+            /*if (jsonObject != null) {
                 Log.d("JSON", jsonObject.toString());
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
