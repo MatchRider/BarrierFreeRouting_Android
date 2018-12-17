@@ -94,8 +94,14 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @BindView(R.id.ll_source)
     LinearLayout mLinearLayoutSource;
 
+    @BindView(R.id.btn_filter)
+    ImageView mBtnFilter;
+
     @BindView(R.id.ll_dest)
     LinearLayout mLinearLayoutDestination;
+
+    @BindView(R.id.img_swap)
+    ImageView mImgSwap;
 
     @BindView(R.id.ll_source_dest)
     LinearLayout mLinearLayoutSourceDestination;
@@ -723,6 +729,10 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         if(isToggled){
             mOnSourceDestinationListener.onClickField(false); //Adding pin fetch address
             Utility.collapse(mLinearLayoutSourceDestination);
+            Utility.collapse(mLinearLayoutSource);
+            Utility.collapse(mLinearLayoutDestination);
+            Utility.collapse(mImgSwap);
+            Utility.collapse(mBtnFilter);
             if(mLinearLayoutTimeDistance.getVisibility()==View.VISIBLE) {
                 Utility.collapse(mLinearLayoutTimeDistance);
             }
@@ -731,6 +741,11 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
         }else {
             Utility.expand(mLinearLayoutSourceDestination);
+            Utility.expand(mLinearLayoutSource);
+            Utility.expand(mLinearLayoutDestination);
+            Utility.expand(mImgSwap);
+            Utility.expand(mBtnFilter);
+
             if(mDirectionsResponse!=null) {
                 Utility.expand(mLinearLayoutTimeDistance);
             }

@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.disablerouting.R;
 import com.disablerouting.api.ErrorResponse;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.common.MessageEvent;
 import com.disablerouting.curd_operations.WayDataPreference;
 import com.disablerouting.curd_operations.manager.IListGetWayResponseReceiver;
 import com.disablerouting.curd_operations.manager.ListGetWayManager;
@@ -18,6 +19,8 @@ import com.disablerouting.osm_activity.manager.OSMManager;
 import com.disablerouting.osm_activity.model.GetOsmData;
 import com.disablerouting.osm_activity.presenter.IOSMResponseReceiver;
 import com.disablerouting.utils.Utility;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -246,7 +249,7 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
 
             }
             isLISTDatSynced =false;
-
+            EventBus.getDefault().post(new MessageEvent("LIST_DATA"));
         }
         if (isForOsm) {
             mWayListValidatedDataOSM.clear();
@@ -285,6 +288,7 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
 
             }
             isOSMDataSynced =false;
+            EventBus.getDefault().post(new MessageEvent("OSM_DATA"));
         }
 
         switch (stringType){

@@ -19,6 +19,7 @@ import butterknife.OnClick;
 
 import com.disablerouting.R;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.common.MessageEvent;
 import com.disablerouting.curd_operations.WayDataPreference;
 import com.disablerouting.curd_operations.manager.ListGetWayManager;
 import com.disablerouting.curd_operations.model.*;
@@ -42,6 +43,9 @@ import com.disablerouting.setting.SettingActivity;
 import com.disablerouting.utils.Utility;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
@@ -117,12 +121,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
 
+
         if (getIntent().hasExtra("FromSuggestion")) {
-            showLoader();
             mISFromSuggestion = getIntent().getBooleanExtra("FromSuggestion", false);
         }
         if (getIntent().hasExtra("FromOSM")) {
-            showLoader();
             mISFromOSM = getIntent().getBooleanExtra("FromOSM", false);
         }
 
@@ -133,6 +136,15 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNodeOSM();
                 mNodeListNotValidatedData = WayDataPreference.getInstance(this).getNotValidateDataNodeOSM();
 
+                mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
+                addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
+                mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this,
+                        new OSMManager(), new ListGetWayManager(), this);
+            }
+            if (mWayListValidatedData.size() == 0 && mWayListNotValidatedData.size() == 0 &&
+                    mNodeListValidatedData.size() == 0 && mNodeListNotValidatedData.size() == 0) {
+                showLoader();
+                EventBus.getDefault().register(this);
             }
         } else {
             if (WayDataPreference.getInstance(this) != null) {
@@ -141,15 +153,24 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNode();
                 mNodeListNotValidatedData = WayDataPreference.getInstance(this).getNotValidateDataNode();
 
+                mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
+                addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
+                mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this,
+                        new OSMManager(), new ListGetWayManager(), this);
+            }
+            if (mWayListValidatedData.size() == 0 && mWayListNotValidatedData.size() == 0 &&
+                    mNodeListValidatedData.size() == 0 && mNodeListNotValidatedData.size() == 0) {
+                showLoader();
+                EventBus.getDefault().register(this);
             }
         }
-        mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
-        addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
-        mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this,
-                new OSMManager(), new ListGetWayManager(), this);
-
+        if(!mISFromOSM && !mISFromSuggestion) {
+            mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
+            addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
+            mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this,
+                    new OSMManager(), new ListGetWayManager(), this);
+        }
         if (mISFromSuggestion) {
-            // addCurrentLocation(18);
             setZoomMap();
             mSourceDestinationFragment.OnFromSuggestion(true);
             mButtonGo.setVisibility(View.GONE);
@@ -159,7 +180,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
 
         if (mISFromOSM) {
-            // addCurrentLocation(18);
             setZoomMap();
             mSourceDestinationFragment.OnFromSuggestion(false);
             mButtonGo.setVisibility(View.GONE);
@@ -171,6 +191,57 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         mTabSelected = 3;
 
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent event) {
+        Log.e("event",event.getMessage());
+        if (mISFromSuggestion) {
+            hideLoader();
+
+            if (event.getMessage().equalsIgnoreCase("LIST_DATA")) {
+                if (WayDataPreference.getInstance(this) != null) {
+                    mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayData();
+                    mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayData();
+                    mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNode();
+                    mNodeListNotValidatedData = WayDataPreference.getInstance(this).getNotValidateDataNode();
+
+                }
+                mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
+                addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
+                mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this,
+                        new OSMManager(), new ListGetWayManager(), this);
+
+                setZoomMap();
+                mSourceDestinationFragment.OnFromSuggestion(true);
+
+            }
+        }
+        if(mISFromOSM){
+            hideLoader();
+            if (event.getMessage().equalsIgnoreCase("OSM_DATA")) {
+                if (WayDataPreference.getInstance(this) != null) {
+                    mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayDataOSM();
+                    mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayDataOSM();
+                    mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNodeOSM();
+                    mNodeListNotValidatedData = WayDataPreference.getInstance(this).getNotValidateDataNodeOSM();
+
+                }
+                mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
+                addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
+                mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this,
+                        new OSMManager(), new ListGetWayManager(), this);
+
+                setZoomMap();
+                mSourceDestinationFragment.OnFromSuggestion(false);
+
+            }
+
+        }
+
+    }
+
+
+
 
 
     @Override
@@ -936,13 +1007,14 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mPlotWayDataTask.cancel(true);
         }
         mIRoutePlannerScreenPresenter.disconnect();
+        EventBus.getDefault().unregister(this);
+
     }
 
     @Override
     public void onToggleClickedBanner(boolean isChecked) {
         //clearItemsFromMap();
         //addCurrentLocation(18);
-        showLoader();
         mRadioGroup.setVisibility(View.VISIBLE);
         mImageCurrentPin.setVisibility(View.GONE);
         if (!isChecked) {
