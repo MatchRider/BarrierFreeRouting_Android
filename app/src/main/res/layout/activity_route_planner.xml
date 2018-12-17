@@ -32,6 +32,7 @@
                     android:layout_below="@id/contentContainer"
                     android:layout_marginTop="@dimen/margin_large"
                     android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginEnd="@dimen/margin_normal"
                     android:layout_height="wrap_content">
         <RadioGroup
                 android:layout_width="match_parent"
@@ -80,7 +81,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="@dimen/padding_small"
-                android:paddingEnd="@dimen/padding_normal"
+                android:paddingEnd="@dimen/padding_xminor"
                 android:visibility="visible"
                 android:track="@drawable/switch_selector_track"
                 android:thumb="@drawable/switch_selector_thumb"
