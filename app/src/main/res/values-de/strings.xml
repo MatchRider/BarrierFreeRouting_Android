@@ -126,6 +126,7 @@
 
 
     <!--FILTER VALUE MINIMUM WIDTH  VALUE TYPE-->
+    <string name="value_nine_greater_filter">0.90</string>
     <string name="value_nine_greater">0,90</string>
     <string name="value_nine_less">1,00</string>
 

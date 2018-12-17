@@ -279,7 +279,7 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
 
         List<DataModelExpandableList> sideWalkWidthData = new ArrayList<>();
         sideWalkWidthData.add(new DataModelExpandableList(""));
-        sideWalkWidthData.add(new DataModelExpandableList(getString(R.string.value_nine_greater)));
+        sideWalkWidthData.add(new DataModelExpandableList(getString(R.string.value_nine_greater_filter)));
 
 
         mListDataChildValue.put(mListDataHeaderKeyForFilter.get(0), surfaceTypeData);
