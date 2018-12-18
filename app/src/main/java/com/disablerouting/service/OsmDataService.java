@@ -213,6 +213,7 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
             mNodeListNotValidatedData.clear();
 
             for (int i = 0; i < responseWay.getWayData().size(); i++) {
+                responseWay.getWayData().get(i).setmIndex(i);
                 boolean isValidWay = Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
                 if (isValidWay) {
                     mWayListValidatedData.add(responseWay.getWayData().get(i));
@@ -220,11 +221,10 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
                     mWayListNotValidatedData.add(responseWay.getWayData().get(i));
                 }
                 for (int j = 0; j < responseWay.getWayData().get(i).getNodeReference().size(); j++) {
+                    responseWay.getWayData().get(i).getNodeReference().get(j).setmIndex(j);
                     if (responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes() != null) {
-
                         for (int k = 0; k < responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().size(); k++) {
                             if (!responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().get(k).isValid()) {
-
                                 if (!Utility.isListContainId(mNodeListNotValidatedData, responseWay.getWayData().get(i).getNodeReference()
                                         .get(j).getAPINodeId())) {
                                     mNodeListNotValidatedData.add(responseWay.getWayData().get(i).getNodeReference().get(j));
@@ -258,6 +258,7 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
             mNodeListNotValidatedDataOSM.clear();
 
             for (int i = 0; i < responseWay.getWayData().size(); i++) {
+                responseWay.getWayData().get(i).setmIndex(i);
                 boolean isValidWay = Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
                 if (isValidWay) {
                     mWayListValidatedDataOSM.add(responseWay.getWayData().get(i));
@@ -266,6 +267,7 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
                 }
 
                 for (int j = 0; j < responseWay.getWayData().get(i).getNodeReference().size(); j++) {
+                    responseWay.getWayData().get(i).getNodeReference().get(j).setmIndex(j);
                     if (responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes() != null) {
 
                         for (int k = 0; k < responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().size(); k++) {

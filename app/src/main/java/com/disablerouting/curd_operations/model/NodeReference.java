@@ -40,6 +40,8 @@ public class NodeReference implements Parcelable {
 
     private String mIsForData;
 
+    private int mIndex;
+
     public NodeReference() {
     }
 
@@ -51,6 +53,7 @@ public class NodeReference implements Parcelable {
         mVersion = in.readString();
         mAttributes = in.createTypedArrayList(Attributes.CREATOR);
         mIsForData = in.readString();
+        mIndex = in.readInt();
 
     }
 
@@ -63,6 +66,7 @@ public class NodeReference implements Parcelable {
         dest.writeString(mVersion);
         dest.writeTypedList(mAttributes);
         dest.writeString(mIsForData);
+        dest.writeInt(mIndex);
 
     }
 
@@ -137,5 +141,13 @@ public class NodeReference implements Parcelable {
 
     public void setIsForData(String isForData) {
         mIsForData = isForData;
+    }
+
+    public int getmIndex() {
+        return mIndex;
+    }
+
+    public void setmIndex(int mIndex) {
+        this.mIndex = mIndex;
     }
 }

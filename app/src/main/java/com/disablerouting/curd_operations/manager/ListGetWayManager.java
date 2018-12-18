@@ -33,15 +33,6 @@ public class ListGetWayManager implements ResponseCallback<ResponseListWay> {
     public void onSuccess(@NonNull ResponseListWay data) {
         if (mIListGetWayResponseReceiver != null) {
             mIListGetWayResponseReceiver.onSuccessGetList(data);
-
-            /*ObjectMapper objectMapper = new ObjectMapper();
-            try {
-                ResponseListWay responseListWay = objectMapper.readValue(data.string(), ResponseListWay.class); // GET WAYS first
-                mIListGetWayResponseReceiver.onSuccessGetList(responseListWay);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
         }
     }
 
