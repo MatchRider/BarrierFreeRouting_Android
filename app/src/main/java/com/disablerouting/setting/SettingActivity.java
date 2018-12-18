@@ -217,13 +217,17 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 if (!mISFromOSM) {
                     if (attributes.isValid()) {
                         tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()) + "\"/>\n");
+
                     }
                 } else {
                     tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()) + "\"/>\n");
+                    for (int i=0;i<mNodeRefSEND.getAttributes().size();i++){
+                        mNodeRefSEND.getAttributes().get(i).setValue(Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
+                    }
                 }
             }
-
         }
+
         StringBuilder nodes = new StringBuilder();
         if (mNodeReference.getOSMNodeId() != null && !mNodeReference.getOSMNodeId().isEmpty()) {
             nodes.append("<nd ref=\"" + mNodeReference.getOSMNodeId() + "\"/>\n");
@@ -260,6 +264,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             }
         } else {
             HashMap<String, String> hashMapTags = new HashMap<>();
+            List<Attributes> attributesListSend= mListWayData.getAttributesList();
             for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
                 hashMapTags.put(mListWayData.getAttributesList().get(i).getKey(),
                         mListWayData.getAttributesList().get(i).getValue());
@@ -298,7 +303,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
                             }
                         }
-
                     } else {
                         if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
                             hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE,
@@ -315,16 +319,27 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         }
                     }
 
+
                 }
             }
 
             for (Map.Entry<String, String> pair : hashMapTags.entrySet()) {
                 tags.append("<tag k=\"" + pair.getKey() + "\" v=\"" + pair.getValue() + "\"/>\n");
 
+                Attributes attributes= new Attributes();
+                attributes.setKey(pair.getKey());
+                attributes.setValue(pair.getValue());
+                attributesListSend.add(attributes);
+
             }
+            if(mISFromOSM) {
+                mListDataSEND.setAttributesList(attributesListSend);
+            }
+
         }
 
         StringBuilder nodes = new StringBuilder();
+        List<NodeReference> nodeRefListSend= new ArrayList<>();
         if (mJSONObjectOSM != null && mJSONObjectOSM.getJSONObject("way") != null &&
                 mJSONObjectOSM.getJSONObject("way").getJSONArray("nd") != null
                 && mJSONObjectOSM.getJSONObject("way").getJSONArray("nd").length() != 0) {
@@ -336,6 +351,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 nodes.append("<nd ref=\"" + ref + "\"/>\n");
             }
         }
+
         String requestString = "<osm>\n" +
                 " <way  id=\"" + mWayID + "\" changeset=\"" + mChangeSetID + "\" version=\"" + mVersionNumber + "\" >\n" +
                 nodes +
@@ -1213,13 +1229,21 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     public void run() {
                         if (mISFromOSM) {
                             if (mIsForWAY) {
+                                Intent resultIntent = new Intent();
+                                resultIntent.putExtra("DATA_OSM_WAY", mListDataSEND);
+                                setResult(RESULT_OK, resultIntent);
+                                finish();
                                 Toast.makeText(SettingActivity.this, getResources().getString(R.string.updated_info), Toast.LENGTH_SHORT).show();
                             } else {
+                                Intent resultIntent = new Intent();
+                                resultIntent.putExtra("DATA_OSM_NODE", mNodeReference);
+                                setResult(RESULT_OK, resultIntent);
+                                finish();
                                 Toast.makeText(SettingActivity.this, getResources().getString(R.string.updated_node_info), Toast.LENGTH_SHORT).show();
 
                             }
-                            setResult(RESULT_OK);
-                            finish();
+                            //setResult(RESULT_OK);
+                           // finish();
                         } else {
                             onUpdateWay(mUpdateVersionNumber);
                         }

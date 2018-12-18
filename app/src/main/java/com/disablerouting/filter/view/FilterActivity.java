@@ -355,18 +355,36 @@ public class FilterActivity extends BaseActivityImpl implements IFilterView, Ada
 
     private void setDataWhenFilterApplied() {
         Intent returnIntent = new Intent();
+        List<String> keysToDel = new ArrayList<>();
+
         for (Map.Entry<String, String> values : mHashMapResult.entrySet()) {
             if(values.getKey().equalsIgnoreCase("surface_type") && values.getValue().equalsIgnoreCase("")){
-                mHashMapResult.remove("surface_type");
+                keysToDel.add("surface_type");
             }
             if(values.getKey().equalsIgnoreCase("maximum_incline") && values.getValue().equalsIgnoreCase("")){
-                mHashMapResult.remove("maximum_incline");
+                keysToDel.add("maximum_incline");
             }
             if(values.getKey().equalsIgnoreCase("minimum_width") && values.getValue().equalsIgnoreCase("")){
-                mHashMapResult.remove("minimum_width");
+                keysToDel.add("minimum_width");
+
             }
 
         }
+
+        for (int i=0;i< keysToDel.size();i++){
+            switch (keysToDel.get(i)){
+                case "surface_type":
+                    mHashMapResult.remove("surface_type");
+                    break;
+                case "maximum_incline":
+                    mHashMapResult.remove("maximum_incline");
+                    break;
+                case "minimum_width":
+                    mHashMapResult.remove("minimum_width");
+                    break;
+            }
+        }
+
         returnIntent.putExtra(AppConstant.DATA_FILTER, mHashMapResult);
         returnIntent.putExtra(AppConstant.DATA_FILTER_ROUTING_VIA, mHashMapResultForRouting);
         returnIntent.putExtra(AppConstant.DATA_FILTER_SELECTED, mExpandableListAdapter.getSelectionMap());

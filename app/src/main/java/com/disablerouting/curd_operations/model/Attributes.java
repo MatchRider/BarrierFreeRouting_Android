@@ -24,6 +24,12 @@ public class Attributes implements Parcelable {
     public Attributes() {
     }
 
+    public Attributes(String mKey, String mValue, boolean mIsValid) {
+        this.mKey = mKey;
+        this.mValue = mValue;
+        this.mIsValid = mIsValid;
+    }
+
     protected Attributes(Parcel in) {
         mKey = in.readString();
         mValue = in.readString();

@@ -482,15 +482,15 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             if (resultCode == Activity.RESULT_OK) {
                 ListWayData listWayDataUpdate = null;
                 NodeReference nodeReferenceUpdate = null;
-                if (data.hasExtra("DATA_WAY")) {
-                    listWayDataUpdate = data.getParcelableExtra("DATA_WAY");
-                } else if (data.hasExtra("DATA_NODE")) {
-                    nodeReferenceUpdate = data.getParcelableExtra("DATA_NODE");
-                }
-
                 int inDexToRemove = -1;
                 if (WayDataPreference.getInstance(this) != null) {
                     if (!mISFromOSM) {
+                        if (data!=null && data.hasExtra("DATA_WAY")) {
+                            listWayDataUpdate = data.getParcelableExtra("DATA_WAY");
+                        } else if (data!=null && data.hasExtra("DATA_NODE")) {
+                            nodeReferenceUpdate = data.getParcelableExtra("DATA_NODE");
+                        }
+
                         showLoader();
                         if (listWayDataUpdate != null && listWayDataUpdate.getIsValid() != null) {
                             boolean isValid = Boolean.parseBoolean(listWayDataUpdate.getIsValid());
@@ -547,9 +547,59 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                         hideLoader();
 
                     } else {
+                        if (data!=null && data.hasExtra("DATA_OSM_WAY")) {
+                            listWayDataUpdate = data.getParcelableExtra("DATA_OSM_WAY");
+                        } else if (data!=null && data.hasExtra("DATA_OSM_NODE")) {
+                            nodeReferenceUpdate = data.getParcelableExtra("DATA_OSM_NODE");
+                        }
                         showLoader();
-                        // startService(Utility.createCallingIntent(this, AppConstant.RUN_OSM));
-                        //mIRoutePlannerScreenPresenter.getOSMData();
+
+                        if (listWayDataUpdate != null && listWayDataUpdate.getIsValid() != null) {
+                            boolean isValid = Boolean.parseBoolean(listWayDataUpdate.getIsValid());
+                            for (int i = 0; i < mWayListNotValidatedData.size(); i++)//Iterate through each item.
+                            {
+                                if (mWayListNotValidatedData.get(i).getmIndex() ==
+                                        listWayDataUpdate.getmIndex()) {
+                                    inDexToRemove = i;
+                                    break;
+                                }
+
+                            }
+                            if (isValid) {
+                                mWayListNotValidatedData.remove(inDexToRemove);
+                                mWayListValidatedData.add(listWayDataUpdate);
+                            } else {
+                                mWayListNotValidatedData.remove(inDexToRemove);
+                                mWayListNotValidatedData.add(listWayDataUpdate);
+                            }
+
+                        }
+                        if (nodeReferenceUpdate != null && nodeReferenceUpdate.getAttributes() != null &&
+                                nodeReferenceUpdate.getAttributes().size() != 0) {
+                            boolean isValid = false;
+                            for (int i = 0; i < nodeReferenceUpdate.getAttributes().size(); i++) {
+                                if(nodeReferenceUpdate.getAttributes().get(i)!=null) {
+                                    isValid = nodeReferenceUpdate.getAttributes().get(i).isValid();
+                                }
+                                for (int j = 0; j < mNodeListNotValidatedData.size(); i++) {
+                                    if (mNodeListNotValidatedData.get(j).getmIndex() ==
+                                            nodeReferenceUpdate.getmIndex()) {
+                                        inDexToRemove = j;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (isValid) {
+                                mNodeListNotValidatedData.remove(inDexToRemove);
+                                mNodeListValidatedData.add(nodeReferenceUpdate);
+                            } else {
+                                mNodeListNotValidatedData.remove(inDexToRemove);
+                                mNodeListNotValidatedData.add(nodeReferenceUpdate);
+                            }
+
+                        }
+
+
                         if (WayDataPreference.getInstance(this) != null) {
                             WayDataPreference.getInstance(this).saveValidateWayDataOSM(mWayListValidatedData);
                             WayDataPreference.getInstance(this).saveNotValidatedWayDataOSM(mWayListNotValidatedData);
@@ -558,6 +608,9 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                         }
                         onToggleClickedBanner(false);
                         hideLoader();
+                        // startService(Utility.createCallingIntent(this, AppConstant.RUN_OSM));
+                        //mIRoutePlannerScreenPresenter.getOSMData();
+
                     }
                 }
             }
