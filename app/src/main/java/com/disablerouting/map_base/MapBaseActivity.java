@@ -950,7 +950,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
             mapViewMapCenter[0] = mMapView.getMapCenter();
             geoPoint[0] = new GeoPoint(mapViewMapCenter[0].getLatitude(), mapViewMapCenter[0].getLongitude());
             mFeedBackListener.onDragClicked(geoPoint[0]);
-            mIsFetchDragAdd = false;
+            //mIsFetchDragAdd = false;
         }
         return true;
     }

@@ -17,9 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import com.disablerouting.R;
 import com.disablerouting.base.BaseFragmentImpl;
 import com.disablerouting.common.AppConstant;
@@ -37,6 +39,7 @@ import com.disablerouting.route_planner.presenter.ISourceDestinationScreenPresen
 import com.disablerouting.route_planner.presenter.SourceDestinationScreenPresenter;
 import com.disablerouting.utils.Utility;
 import com.disablerouting.widget.CustomAutoCompleteTextView;
+
 import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
 
@@ -44,7 +47,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class SourceDestinationFragment extends BaseFragmentImpl implements ISourceDestinationViewFragment,
-        TextView.OnEditorActionListener, AdapterView.OnItemClickListener, OnFeedBackListener  {
+        TextView.OnEditorActionListener, AdapterView.OnItemClickListener, OnFeedBackListener {
 
     @BindView(R.id.edt_source_add)
     CustomAutoCompleteTextView mEditTextSource;
@@ -123,8 +126,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     private JSONObject mJSONObjectFilter;
     private Features mFeaturesRouteVia;
     private boolean mIsFromSuggestion;
-    private boolean mIsFromOSM=false;
-    private DirectionsResponse mDirectionsResponse=null;
+    private boolean mIsFromOSM = false;
+    private DirectionsResponse mDirectionsResponse = null;
 
     @SuppressLint("HandlerLeak")
     final Handler handler = new Handler() {
@@ -159,8 +162,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     public void fetchCurrentSourceAdd() {
         mIsTextInputManually = false;
         if (mEditTextSource.hasFocus() && mEditTextSource != null && mEditTextSource.getText().toString().equalsIgnoreCase("")) {
-           // mISourceDestinationScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
-            if(mCurrentLocation!=null) {
+            // mISourceDestinationScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
+            if (mCurrentLocation != null) {
                 String[] location = mCurrentLocation.split(",");
                 mISourceDestinationScreenPresenter.getGeoCodeDataReverse(Double.parseDouble(location[1]), Double.parseDouble(location[0]));
             }
@@ -173,8 +176,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mIsTextInputManually = false;
         handler.removeMessages(SEARCH_TEXT_CHANGED);
         if (mEditTextDestination.hasFocus() && mEditTextDestination != null && mEditTextDestination.getText().toString().equalsIgnoreCase("")) {
-           // mISourceDestinationScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
-            if(mCurrentLocation!=null) {
+            // mISourceDestinationScreenPresenter.getCoordinatesData("", mCurrentLocation, 0);
+            if (mCurrentLocation != null) {
                 String[] location = mCurrentLocation.split(",");
                 mISourceDestinationScreenPresenter.getGeoCodeDataReverse(Double.parseDouble(location[1]), Double.parseDouble(location[0]));
             }
@@ -202,14 +205,13 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         ButterKnife.bind(this, view);
         addFocusChangeListener();
         addListener();
-        if(mIsFromSuggestion) {
+        if (mIsFromSuggestion) {
             mLinearLayoutSourceDestination.setVisibility(View.GONE);
             mRelativeLayoutToogle.setVisibility(View.VISIBLE);
             mOnSourceDestinationListener.onToggleClickedBanner(false);
             mTextViewTitle.setText(getResources().getString(R.string.not_validated));
-        }
-        else {
-            if(mIsFromOSM) {
+        } else {
+            if (mIsFromOSM) {
                 mLinearLayoutSourceDestination.setVisibility(View.GONE);
                 mRelativeLayoutToogle.setVisibility(View.VISIBLE);
                 mToogleWAY.setVisibility(View.INVISIBLE);
@@ -217,14 +219,14 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 mTextViewTitle.setText(getResources().getString(R.string.not_validated));
             }
         }
-        if(!mIsFromSuggestion){
-            if(SearchPreferences.getInstance(getContext())!=null && SearchPreferences.getInstance(getContext()).getUserSearch()!=null){
+        if (!mIsFromSuggestion) {
+            if (SearchPreferences.getInstance(getContext()) != null && SearchPreferences.getInstance(getContext()).getUserSearch() != null) {
                 mEditTextSource.setText(SearchPreferences.getInstance(getContext()).getUserSearch().getSourceAdd());
                 mEditTextDestination.setText(SearchPreferences.getInstance(getContext()).getUserSearch().getDestAdd());
-                mGeoPointSource=SearchPreferences.getInstance(getContext()).getUserSearch().getSourceGeoPoint();
-                mGeoPointDestination=SearchPreferences.getInstance(getContext()).getUserSearch().getDestGeoPoint();
+                mGeoPointSource = SearchPreferences.getInstance(getContext()).getUserSearch().getSourceGeoPoint();
+                mGeoPointDestination = SearchPreferences.getInstance(getContext()).getUserSearch().getDestGeoPoint();
                 mFeaturesSource = SearchPreferences.getInstance(getContext()).getUserSearch().getFeaturesSource();
-                mFeaturesDestination  = SearchPreferences.getInstance(getContext()).getUserSearch().getFeaturesDest();
+                mFeaturesDestination = SearchPreferences.getInstance(getContext()).getUserSearch().getFeaturesDest();
                 //JSONObject jsonObject = SearchPreferences.getInstance(getContext()).getUserSearch().getJSONObjectFiter();
                 //HashMap<String, Features> mRoutingVia = SearchPreferences.getInstance(getContext()).getUserSearch().getHashMapFilterForRouting();
                 //Features features = mRoutingVia.get(AppConstant.DATA_FILTER_ROUTING_VIA);
@@ -275,12 +277,12 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                     mEditTextDestination != null && !mEditTextDestination.getText().toString().isEmpty()) {
 
                 String coordinates = null;
-                if(featuresRouteVia!=null && featuresRouteVia.getGeometry()!=null && featuresRouteVia.getGeometry().getCoordinates()!=null){
-                   GeoPoint geoPointRouteVia = new GeoPoint(featuresRouteVia.getGeometry().getCoordinates().get(0),
-                           featuresRouteVia.getGeometry().getCoordinates().get(1));
-                    coordinates = mGeoPointSource + "|" +geoPointRouteVia+ "|"+mGeoPointDestination;
+                if (featuresRouteVia != null && featuresRouteVia.getGeometry() != null && featuresRouteVia.getGeometry().getCoordinates() != null) {
+                    GeoPoint geoPointRouteVia = new GeoPoint(featuresRouteVia.getGeometry().getCoordinates().get(0),
+                            featuresRouteVia.getGeometry().getCoordinates().get(1));
+                    coordinates = mGeoPointSource + "|" + geoPointRouteVia + "|" + mGeoPointDestination;
 
-                }else {
+                } else {
                     coordinates = mGeoPointSource + "|" + mGeoPointDestination;
                 }
                 String profileType = AppConstant.PROFILE_WHEEL_CHAIR;
@@ -310,7 +312,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     }
 
 
-    public void plotRoute(JSONObject jsonObject , Features featuresRouteVia) {
+    public void plotRoute(JSONObject jsonObject, Features featuresRouteVia) {
         if (!mEditTextSource.getText().toString().isEmpty() && !mEditTextDestination.getText().toString().isEmpty()) {
             if (mGeoPointSource != null && mGeoPointDestination != null && mGeoPointSource.getLatitude() != mGeoPointDestination.getLatitude() &&
                     mGeoPointSource.getLongitude() != mGeoPointDestination.getLongitude()) {
@@ -321,7 +323,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 getNodes(bBox); // API call for set markers of amenity
                 mJSONObjectFilter = jsonObject;
                 mFeaturesRouteVia = featuresRouteVia;
-                callForDestination(null, mGeoPointSource, mGeoPointDestination, mJSONObjectFilter,mFeaturesRouteVia);
+                callForDestination(null, mGeoPointSource, mGeoPointDestination, mJSONObjectFilter, mFeaturesRouteVia);
             } else {
                 showToast(Objects.requireNonNull(getContext()).getResources().getString(R.string.error_source_destination_same));
             }
@@ -331,8 +333,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @OnClick(R.id.img_back)
     public void onBackClick() {
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
-      //  clearSourceComplete();
-       // clearDestinationComplete();
+        //  clearSourceComplete();
+        // clearDestinationComplete();
         mOnSourceDestinationListener.onBackPress();
         hideLoader();
     }
@@ -371,17 +373,17 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     public void onDirectionDataReceived(DirectionsResponse data) {
         if (data != null && data.getFeaturesList() != null && data.getFeaturesList().size() != 0
                 && data.getFeaturesList().get(0).getGeometry() != null && data.getFeaturesList().get(0).getProperties().getSegmentList().get(0).getStepsList() != null) {
-            mDirectionsResponse=data;
-            for (int i = 0; i< data.getFeaturesList().get(0).getProperties().getSegmentList().size(); i++){
-                    mOnSourceDestinationListener.plotDataOnMap(data.getFeaturesList().get(0).getGeometry().getCoordinates(),
-                            data.getFeaturesList().get(0).getProperties().getSegmentList().get(i).getStepsList(),
-                            data.getInfo().getQuery().getCoordinatesList().size());
+            mDirectionsResponse = data;
+            for (int i = 0; i < data.getFeaturesList().get(0).getProperties().getSegmentList().size(); i++) {
+                mOnSourceDestinationListener.plotDataOnMap(data.getFeaturesList().get(0).getGeometry().getCoordinates(),
+                        data.getFeaturesList().get(0).getProperties().getSegmentList().get(i).getStepsList(),
+                        data.getInfo().getQuery().getCoordinatesList().size());
 
             }
-            if(data.getFeaturesList().get(0).getProperties().getSegmentList().size()>1 && data.getInfo()!=null &&
-                    data.getInfo().getQuery()!=null &&
-                    data.getInfo().getQuery().getCoordinatesList()!=null &&
-                    data.getInfo().getQuery().getCoordinatesList().get(1)!=null) {
+            if (data.getFeaturesList().get(0).getProperties().getSegmentList().size() > 1 && data.getInfo() != null &&
+                    data.getInfo().getQuery() != null &&
+                    data.getInfo().getQuery().getCoordinatesList() != null &&
+                    data.getInfo().getQuery().getCoordinatesList().get(1) != null) {
                 GeoPoint geoPointMid = new GeoPoint(data.getInfo().getQuery().getCoordinatesList().get(1).get(1),
                         data.getInfo().getQuery().getCoordinatesList().get(1).get(0));
 
@@ -410,19 +412,19 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                     mTextViewKM.setText(new StringBuilder().append("--").append(" ").append(getContext().getResources().getString(R.string.km)).toString());
                 }
 
-                if(data.getFeaturesList().get(0).getProperties().getSummary().get(0).getAscent()!=0){
-                    String ascent = String.valueOf(Utility.trimTWoDecimalPlaces(data.getFeaturesList().get(0).getProperties().getSummary().get(0).getAscent()/100));
+                if (data.getFeaturesList().get(0).getProperties().getSummary().get(0).getAscent() != 0) {
+                    String ascent = String.valueOf(Utility.trimTWoDecimalPlaces(data.getFeaturesList().get(0).getProperties().getSummary().get(0).getAscent() / 100));
                     mTextViewAccent.setText(new StringBuilder().append(ascent).append(" ").append(getContext().getResources().getString(R.string.meter)).toString());
 
-                }else {
+                } else {
                     mTextViewAccent.setText(new StringBuilder().append("--").append(" ").append(getContext().getResources().getString(R.string.meter)).toString());
 
                 }
-                if(data.getFeaturesList().get(0).getProperties().getSummary().get(0).getDescent()!=0){
-                    String descent = String.valueOf(Utility.trimTWoDecimalPlaces(data.getFeaturesList().get(0).getProperties().getSummary().get(0).getDescent()/100));
+                if (data.getFeaturesList().get(0).getProperties().getSummary().get(0).getDescent() != 0) {
+                    String descent = String.valueOf(Utility.trimTWoDecimalPlaces(data.getFeaturesList().get(0).getProperties().getSummary().get(0).getDescent() / 100));
                     mTextViewDecent.setText(new StringBuilder().append(descent).append(" ").append(getContext().getResources().getString(R.string.meter)).toString());
 
-                }else {
+                } else {
                     mTextViewDecent.setText(new StringBuilder().append("--").append(" ").append(getContext().getResources().getString(R.string.meter)).toString());
 
                 }
@@ -567,7 +569,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         mGeoPointSource = mGeoPointDestination;
         mGeoPointDestination = geoPoint;
 
-        plotRoute(mJSONObjectFilter , mFeaturesRouteVia);
+        plotRoute(mJSONObjectFilter, mFeaturesRouteVia);
 
     }
 
@@ -726,32 +728,21 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
 
     public void onToggleView(boolean isToggled) {
-        if(isToggled){
+        if (isToggled) {
             mOnSourceDestinationListener.onClickField(false); //Adding pin fetch address
 
             Utility.collapse(mLinearLayoutSourceDestination);
             mLinearLayoutSourceDestination.setVisibility(View.GONE);
-           /* Utility.collapse(mLinearLayoutSource);
-            Utility.collapse(mLinearLayoutDestination);
-            Utility.collapse(mImgSwap);
-            Utility.collapse(mBtnFilter);
-           */
-            if(mLinearLayoutTimeDistance.getVisibility()==View.VISIBLE) {
+            if (mLinearLayoutTimeDistance.getVisibility() == View.VISIBLE) {
                 Utility.collapse(mLinearLayoutTimeDistance);
             }
 
             Utility.expand(mRelativeLayoutToogle);
 
-        }else {
+        } else {
             Utility.expand(mLinearLayoutSourceDestination);
             mLinearLayoutSourceDestination.setVisibility(View.VISIBLE);
-
-           /* Utility.expand(mLinearLayoutSource);
-            Utility.expand(mLinearLayoutDestination);
-            Utility.expand(mImgSwap);
-            Utility.expand(mBtnFilter);
-*/
-            if(mDirectionsResponse!=null) {
+            if (mDirectionsResponse != null) {
                 Utility.expand(mLinearLayoutTimeDistance);
             }
             Utility.collapse(mRelativeLayoutToogle);
@@ -761,11 +752,11 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     }
 
     @OnClick(R.id.toggle_way_sd)
-    public void onTitleToggleClicked(){
-        if(!mToogleWAY.isChecked()) {
+    public void onTitleToggleClicked() {
+        if (!mToogleWAY.isChecked()) {
             mOnSourceDestinationListener.onToggleClickedBanner(false);
             mTextViewTitle.setText(getResources().getString(R.string.not_validated));
-        }else {
+        } else {
             mOnSourceDestinationListener.onToggleClickedBanner(true);
             mTextViewTitle.setText(getResources().getString(R.string.validated));
 
@@ -774,16 +765,16 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     }
 
     public void OnFromSuggestion(boolean isFromSuggestion) {
-        if(isFromSuggestion) {
+        if (isFromSuggestion) {
             mIsFromSuggestion = true;
-            mIsFromOSM=false;
-        }else {
+            mIsFromOSM = false;
+        } else {
             mIsFromOSM = true;
         }
     }
 
-    public void setDataWhenDragging(GeoPoint geoPoint ){
-        if(geoPoint!=null){
+    public void setDataWhenDragging(GeoPoint geoPoint) {
+        if (geoPoint != null) {
             mISourceDestinationScreenPresenter.getGeoCodeDataReverse(geoPoint.getLatitude(), geoPoint.getLongitude());
         }
 
