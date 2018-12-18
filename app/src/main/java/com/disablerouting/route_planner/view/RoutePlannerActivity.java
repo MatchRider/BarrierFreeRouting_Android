@@ -102,10 +102,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     private boolean mISMapPlotted = false;
     private boolean mIsUpdateAgain = false;
-    private List<ListWayData> mWayListValidatedData = new ArrayList<>();
-    private List<ListWayData> mWayListNotValidatedData = new ArrayList<>();
-    private List<NodeReference> mNodeListValidatedData = new ArrayList<>();
-    private List<NodeReference> mNodeListNotValidatedData = new ArrayList<>();
+    private ArrayList<ListWayData> mWayListValidatedData = new ArrayList<>();
+    private ArrayList<ListWayData> mWayListNotValidatedData = new ArrayList<>();
+    private ArrayList<NodeReference> mNodeListValidatedData = new ArrayList<>();
+    private ArrayList<NodeReference> mNodeListNotValidatedData = new ArrayList<>();
 
     private int mButtonSelected = 1;
     private ProgressDialog pDialog;
@@ -131,10 +131,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
         if (mISFromOSM) {
             if (WayDataPreference.getInstance(this) != null) {
-                mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayDataOSM();
-                mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayDataOSM();
-                mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNodeOSM();
-                mNodeListNotValidatedData = WayDataPreference.getInstance(this).getNotValidateDataNodeOSM();
+                mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayDataOSM());
+                mWayListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidatedWayDataOSM());
+                mNodeListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateDataNodeOSM());
+                mNodeListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidateDataNodeOSM());
 
                 mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
                 addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
@@ -146,12 +146,12 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 showLoader();
                 EventBus.getDefault().register(this);
             }
-        } else  if(mISFromSuggestion){
+        } else if (mISFromSuggestion) {
             if (WayDataPreference.getInstance(this) != null) {
-                mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayData();
-                mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayData();
-                mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNode();
-                mNodeListNotValidatedData = WayDataPreference.getInstance(this).getNotValidateDataNode();
+                mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayData());
+                mWayListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidatedWayData());
+                mNodeListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateDataNode());
+                mNodeListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidateDataNode());
 
                 mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
                 addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
@@ -163,15 +163,15 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 showLoader();
                 EventBus.getDefault().register(this);
             }
-        }else {
+        } else {
             if (WayDataPreference.getInstance(this) != null) {
-                mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayData();
-                mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayData();
-                mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNode();
-                mNodeListNotValidatedData = WayDataPreference.getInstance(this).getNotValidateDataNode();
+                mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayData());
+                mWayListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidatedWayData());
+                mNodeListValidatedData = new ArrayList<>( WayDataPreference.getInstance(this).getValidateDataNode());
+                mNodeListNotValidatedData =new ArrayList<>( WayDataPreference.getInstance(this).getNotValidateDataNode());
             }
         }
-        if(!mISFromOSM && !mISFromSuggestion) {
+        if (!mISFromOSM && !mISFromSuggestion) {
             mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
             addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
             mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this,
@@ -201,16 +201,16 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MessageEvent event) {
-        Log.e("event",event.getMessage());
+        Log.e("event", event.getMessage());
         if (mISFromSuggestion) {
             hideLoader();
 
             if (event.getMessage().equalsIgnoreCase("LIST_DATA")) {
                 if (WayDataPreference.getInstance(this) != null) {
-                    mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayData();
-                    mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayData();
-                    mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNode();
-                    mNodeListNotValidatedData = WayDataPreference.getInstance(this).getNotValidateDataNode();
+                    mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayData());
+                    mWayListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidatedWayData());
+                    mNodeListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateDataNode());
+                    mNodeListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidateDataNode());
 
                 }
                 mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
@@ -223,14 +223,14 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
             }
         }
-        if(mISFromOSM){
+        if (mISFromOSM) {
             hideLoader();
             if (event.getMessage().equalsIgnoreCase("OSM_DATA")) {
                 if (WayDataPreference.getInstance(this) != null) {
-                    mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayDataOSM();
-                    mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayDataOSM();
-                    mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNodeOSM();
-                    mNodeListNotValidatedData = WayDataPreference.getInstance(this).getNotValidateDataNodeOSM();
+                    mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayDataOSM());
+                    mWayListNotValidatedData =new ArrayList<>( WayDataPreference.getInstance(this).getNotValidatedWayDataOSM());
+                    mNodeListValidatedData =new ArrayList<>( WayDataPreference.getInstance(this).getValidateDataNodeOSM());
+                    mNodeListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidateDataNodeOSM());
 
                 }
                 mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
@@ -246,9 +246,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
 
     }
-
-
-
 
 
     @Override
@@ -312,7 +309,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (pDialog != null) {
             pDialog.dismiss();
         }
-        if (mPlotWayDataTask != null && mPlotWayDataTask.getStatus() == AsyncTask.Status.RUNNING ) {
+        if (mPlotWayDataTask != null && mPlotWayDataTask.getStatus() == AsyncTask.Status.RUNNING) {
             mPlotWayDataTask.cancel(true);
         }
         finish();
@@ -483,16 +480,84 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
         if (requestCode == AppConstant.REQUEST_CODE_UPDATE_MAP_DATA) {
             if (resultCode == Activity.RESULT_OK) {
+                ListWayData listWayDataUpdate = null;
+                NodeReference nodeReferenceUpdate = null;
+                if (data.hasExtra("DATA_WAY")) {
+                    listWayDataUpdate = data.getParcelableExtra("DATA_WAY");
+                } else if (data.hasExtra("DATA_NODE")) {
+                    nodeReferenceUpdate = data.getParcelableExtra("DATA_NODE");
+                }
+
+                int inDexToRemove = -1;
                 if (WayDataPreference.getInstance(this) != null) {
                     if (!mISFromOSM) {
                         showLoader();
+                        if (listWayDataUpdate != null && listWayDataUpdate.getIsValid() != null) {
+                            boolean isValid = Boolean.parseBoolean(listWayDataUpdate.getIsValid());
+                            for (int i = 0; i < mWayListNotValidatedData.size(); i++)//Iterate through each item.
+                            {
+                                if (mWayListNotValidatedData.get(i).getmIndex() ==
+                                        listWayDataUpdate.getmIndex()) {
+                                    inDexToRemove = i;
+                                    break;
+                                }
+
+                            }
+                            if (isValid) {
+                                mWayListNotValidatedData.remove(inDexToRemove);
+                                mWayListValidatedData.add(listWayDataUpdate);
+                            } else {
+                                mWayListNotValidatedData.remove(inDexToRemove);
+                                mWayListNotValidatedData.add(listWayDataUpdate);
+                            }
+
+                        }
+                        if (nodeReferenceUpdate != null && nodeReferenceUpdate.getAttributes() != null &&
+                                nodeReferenceUpdate.getAttributes().size() != 0) {
+                            boolean isValid = false;
+                            for (int i = 0; i < nodeReferenceUpdate.getAttributes().size(); i++) {
+                                isValid = nodeReferenceUpdate.getAttributes().get(i).isValid();
+                                for (int j = 0; j < mNodeListNotValidatedData.size(); i++) {
+                                    if (mNodeListNotValidatedData.get(j).getmIndex() ==
+                                            nodeReferenceUpdate.getmIndex()) {
+                                        inDexToRemove = j;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (isValid) {
+                                mNodeListNotValidatedData.remove(inDexToRemove);
+                                mNodeListValidatedData.add(nodeReferenceUpdate);
+                            } else {
+                                mNodeListNotValidatedData.remove(inDexToRemove);
+                                mNodeListNotValidatedData.add(nodeReferenceUpdate);
+                            }
+
+                        }
                         //startService(Utility.createCallingIntent(this, AppConstant.RUN_LIST));
-                        mIRoutePlannerScreenPresenter.getListData();
+                        // mIRoutePlannerScreenPresenter.getListData();
+                        if (WayDataPreference.getInstance(this) != null) {
+                            WayDataPreference.getInstance(this).saveValidateWayData(mWayListValidatedData);
+                            WayDataPreference.getInstance(this).saveNotValidatedWayData(mWayListNotValidatedData);
+                            WayDataPreference.getInstance(this).saveValidateDataNode(mNodeListValidatedData);
+                            WayDataPreference.getInstance(this).saveNotValidateDataNode(mNodeListNotValidatedData);
+
+                        }
+                        onToggleClickedBanner(false);
+                        hideLoader();
 
                     } else {
                         showLoader();
                         // startService(Utility.createCallingIntent(this, AppConstant.RUN_OSM));
-                        mIRoutePlannerScreenPresenter.getOSMData();
+                        //mIRoutePlannerScreenPresenter.getOSMData();
+                        if (WayDataPreference.getInstance(this) != null) {
+                            WayDataPreference.getInstance(this).saveValidateWayDataOSM(mWayListValidatedData);
+                            WayDataPreference.getInstance(this).saveNotValidatedWayDataOSM(mWayListNotValidatedData);
+                            WayDataPreference.getInstance(this).saveValidateDataNodeOSM(mNodeListValidatedData);
+                            WayDataPreference.getInstance(this).saveNotValidateDataNodeOSM(mNodeListNotValidatedData);
+                        }
+                        onToggleClickedBanner(false);
+                        hideLoader();
                     }
                 }
             }
@@ -824,10 +889,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     }
                 }
                 if (WayDataPreference.getInstance(this) != null) {
-                    mWayListNotValidatedData = WayDataPreference.getInstance(this).getNotValidatedWayData();
-                    mWayListValidatedData = WayDataPreference.getInstance(this).getValidateWayData();
-                    mNodeListValidatedData = WayDataPreference.getInstance(this).getValidateDataNode();
-                    mNodeListNotValidatedData = WayDataPreference.getInstance(this).getNotValidateDataNode();
+                    mWayListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidatedWayData());
+                    mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayData());
+                    mNodeListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateDataNode());
+                    mNodeListNotValidatedData =new ArrayList<>( WayDataPreference.getInstance(this).getNotValidateDataNode());
                 }
                 onToggleClickedBanner(false);
                 hideLoader();
@@ -1010,7 +1075,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         if (pDialog != null) {
             pDialog.dismiss();
         }
-        if (mPlotWayDataTask != null && mPlotWayDataTask.getStatus() == AsyncTask.Status.RUNNING ) {
+        if (mPlotWayDataTask != null && mPlotWayDataTask.getStatus() == AsyncTask.Status.RUNNING) {
             mPlotWayDataTask.cancel(true);
         }
         mIRoutePlannerScreenPresenter.disconnect();
