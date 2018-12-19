@@ -70,7 +70,19 @@ public class TutorialActivity extends BaseActivityImpl implements ViewPager.OnPa
                 R.layout.tutorial_page7,
                 R.layout.tutorial_page8,
                 R.layout.tutorial_page9,
-                R.layout.tutorial_page10};
+                R.layout.tutorial_page10,
+                R.layout.tutorial_page11,
+                R.layout.tutorial_page12,
+                R.layout.tutorial_page13,
+                R.layout.tutorial_page14,
+                R.layout.tutorial_page15,
+                R.layout.tutorial_page16,
+                R.layout.tutorial_page17,
+                R.layout.tutorial_page18,
+                R.layout.tutorial_page19,
+                R.layout.tutorial_page20,
+                R.layout.tutorial_page21,
+        };
     }
 
 
@@ -136,7 +148,7 @@ public class TutorialActivity extends BaseActivityImpl implements ViewPager.OnPa
 
     @OnClick(R.id.view_skip)
     public void onClickSkip() {
-        if(mPositionScreen==0 || mPositionScreen==9){
+        if(mPositionScreen==0 || mPositionScreen==20){
             launchHomeScreen();
             finish();
         }
