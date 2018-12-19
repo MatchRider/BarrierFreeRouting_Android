@@ -255,6 +255,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 Utility.clearAnimationFromView(mImageRefresh);
             }
         }
+        if(!mISFromOSM && !mISFromSuggestion){
+            if(mImageRefresh.getVisibility()==View.VISIBLE){
+                Utility.clearAnimationFromView(mImageRefresh);
+            }
+        }
 
     }
 

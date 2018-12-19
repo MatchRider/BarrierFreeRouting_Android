@@ -4,7 +4,7 @@
     android:fillEnabled="true"
     android:interpolator="@android:anim/linear_interpolator">
     <rotate
-        android:duration="800"
+        android:duration="1000"
         android:fromDegrees="0"
         android:pivotX="50%"
         android:pivotY="50%"
