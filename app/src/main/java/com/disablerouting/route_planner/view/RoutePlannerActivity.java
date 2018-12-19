@@ -39,6 +39,7 @@ import com.disablerouting.route_planner.model.Steps;
 import com.disablerouting.route_planner.presenter.IRoutePlannerScreenPresenter;
 import com.disablerouting.route_planner.presenter.IRouteView;
 import com.disablerouting.route_planner.presenter.RoutePlannerScreenPresenter;
+import com.disablerouting.service.OsmDataService;
 import com.disablerouting.setting.SettingActivity;
 import com.disablerouting.utils.Utility;
 import com.google.android.gms.maps.model.LatLng;
@@ -96,6 +97,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @BindView(R.id.img_current_pin)
     ImageView mImageCurrentPin;
 
+    @BindView(R.id.img_re_fresh)
+    ImageView mImageRefresh;
 
     @BindView(R.id.contentContainer)
     FrameLayout mFrameLayout;
@@ -129,6 +132,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mISFromOSM = getIntent().getBooleanExtra("FromOSM", false);
         }
 
+        EventBus.getDefault().register(this);
         if (mISFromOSM) {
             if (WayDataPreference.getInstance(this) != null) {
                 mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayDataOSM());
@@ -144,7 +148,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             if (mWayListValidatedData.size() == 0 && mWayListNotValidatedData.size() == 0 &&
                     mNodeListValidatedData.size() == 0 && mNodeListNotValidatedData.size() == 0) {
                 showLoader();
-                EventBus.getDefault().register(this);
             }
         } else if (mISFromSuggestion) {
             if (WayDataPreference.getInstance(this) != null) {
@@ -161,7 +164,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             if (mWayListValidatedData.size() == 0 && mWayListNotValidatedData.size() == 0 &&
                     mNodeListValidatedData.size() == 0 && mNodeListNotValidatedData.size() == 0) {
                 showLoader();
-                EventBus.getDefault().register(this);
             }
         } else {
             if (WayDataPreference.getInstance(this) != null) {
@@ -181,6 +183,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             setZoomMap();
             mSourceDestinationFragment.OnFromSuggestion(true);
             mButtonGo.setVisibility(View.GONE);
+            mImageRefresh.setVisibility(View.VISIBLE);
             mSwitchCompatToogle.setVisibility(View.GONE);
             mRadioGroup.setVisibility(View.VISIBLE);
             mImageCurrentPin.setVisibility(View.GONE);
@@ -190,6 +193,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             setZoomMap();
             mSourceDestinationFragment.OnFromSuggestion(false);
             mButtonGo.setVisibility(View.GONE);
+            mImageRefresh.setVisibility(View.VISIBLE);
             mSwitchCompatToogle.setVisibility(View.GONE);
             mRadioGroup.setVisibility(View.VISIBLE);
             mImageCurrentPin.setVisibility(View.GONE);
@@ -199,8 +203,9 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     }
 
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(MessageEvent event) {
+    public void onEventMainThread(MessageEvent event) {
         Log.e("event", event.getMessage());
         if (mISFromSuggestion) {
             hideLoader();
@@ -220,6 +225,10 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
                 setZoomMap();
                 mSourceDestinationFragment.OnFromSuggestion(true);
+
+            }
+            if(mImageRefresh.getVisibility()==View.VISIBLE ){
+                Utility.clearAnimationFromView(mImageRefresh);
 
             }
         }
@@ -242,7 +251,9 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mSourceDestinationFragment.OnFromSuggestion(false);
 
             }
-
+            if(mImageRefresh.getVisibility()==View.VISIBLE){
+                Utility.clearAnimationFromView(mImageRefresh);
+            }
         }
 
     }
@@ -410,6 +421,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @OnClick(R.id.img_re_center)
     public void reCenter() {
         // clearItemsFromMap();
+
         addCurrentLocation(18);
     }
 
@@ -1122,6 +1134,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onDestroy() {
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
         if (pDialog != null) {
             pDialog.dismiss();
@@ -1130,7 +1143,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mPlotWayDataTask.cancel(true);
         }
         mIRoutePlannerScreenPresenter.disconnect();
-        EventBus.getDefault().unregister(this);
 
     }
 
@@ -1174,6 +1186,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mRadioGroup.setVisibility(View.VISIBLE);
                 mSourceDestinationFragment.onToggleView(true);
                 mButtonGo.setVisibility(View.GONE);
+                mImageRefresh.setVisibility(View.VISIBLE);
                 mImageCurrentPin.setVisibility(View.GONE);
                 mImageViewInfo.setVisibility(View.GONE);
                 // clearItemsFromMap();
@@ -1209,6 +1222,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     mSourceDestinationFragment.plotRoute(mJsonObjectFilter, features);
                 }
                 mButtonGo.setVisibility(View.VISIBLE);
+                mImageRefresh.setVisibility(View.GONE);
+
                 if (mISMapPlotted) {
                     mImageViewInfo.setVisibility(View.GONE);
                 } else {
@@ -1250,5 +1265,26 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
     }
 
+    @OnClick(R.id.img_re_fresh)
+    public void onRefreshClick(){
+        if(mISFromOSM) {
+            if(!OsmDataService.isSyncInProgress){
+                Utility.applyAnimationOnView(this,mImageRefresh);
+                startService(Utility.createCallingIntent(this, AppConstant.RUN_OSM));
+            }
+        }
+        if(mISFromSuggestion){
+            if(!OsmDataService.isSyncInProgress){
+                Utility.applyAnimationOnView(this,mImageRefresh);
+                startService(Utility.createCallingIntent(this, AppConstant.RUN_LIST));
+            }
+        }
+        if(!mISFromSuggestion && !mISFromOSM){
+            if(!OsmDataService.isSyncInProgress){
+                Utility.applyAnimationOnView(this,mImageRefresh);
+                startService(Utility.createCallingIntent(this, AppConstant.RUN_LIST));
+            }
+        }
+    }
 
 }

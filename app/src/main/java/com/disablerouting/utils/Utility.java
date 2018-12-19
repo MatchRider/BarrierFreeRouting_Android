@@ -16,6 +16,14 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
@@ -666,5 +674,46 @@ public class Utility {
         }
         return sb.toString();
     }
+
+    public static  Animation getRefreshAnimation(View view){
+        Animation mRotateAnimation = new RotateAnimation(
+                0, 360,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f
+        );
+        mRotateAnimation.setRepeatCount(0);
+
+        AnimationSet mAnimations = new AnimationSet(true);
+        mAnimations.setDuration(2000);
+        mAnimations.addAnimation(mRotateAnimation);
+        view.setAnimation(mAnimations);
+
+        return mRotateAnimation;
+    }
+    public static void applyAnimationOnView(Context context,View view) {
+        Animation connectingAnimation = AnimationUtils.loadAnimation(context, R.anim.anim_rotate);
+       // connectingAnimation.setInterpolator( new LinearInterpolator());
+        view.startAnimation(connectingAnimation);
+        /*Animation mScaleAnimation = new ScaleAnimation(0, 1, 0, 1,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        Animation mRotateAnimation = new RotateAnimation(
+                0, 360,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f
+        );
+        mRotateAnimation.setRepeatCount(-1);
+
+        AnimationSet mAnimations = new AnimationSet(true);
+        mAnimations.setDuration(500);
+        mAnimations.setFillAfter(true);
+        mAnimations.setInterpolator(new LinearInterpolator());
+        mAnimations.addAnimation(mScaleAnimation);
+        mAnimations.addAnimation(mRotateAnimation);
+        view.startAnimation(mAnimations);*/
+    }
+    public static void clearAnimationFromView(View view) {
+        view.clearAnimation();
+    }
+
 }
 

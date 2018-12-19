@@ -43,6 +43,8 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
     private List<NodeReference> mNodeListValidatedDataOSM = new ArrayList<>();
     private List<NodeReference> mNodeListNotValidatedDataOSM = new ArrayList<>();
     public String stringType;
+    private boolean mIsShownList=false;
+    private boolean mIsShownOSM=false;
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -68,14 +70,17 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
                 callOSMAPI();
                 isOSMDataSynced = true;
                 isLISTDatSynced = true;
+                isSyncInProgress = true;
                 break;
             case AppConstant.RUN_LIST:
                 callListAPI();
                 isLISTDatSynced = true;
+                isSyncInProgress = true;
                 break;
             case AppConstant.RUN_OSM:
                 callOSMAPI();
                 isOSMDataSynced = true;
+                isSyncInProgress = true;
                 break;
         }
 
@@ -249,7 +254,6 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
 
             }
             isLISTDatSynced =false;
-            EventBus.getDefault().post(new MessageEvent("LIST_DATA"));
         }
         if (isForOsm) {
             mWayListValidatedDataOSM.clear();
@@ -290,18 +294,30 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
 
             }
             isOSMDataSynced =false;
-            EventBus.getDefault().post(new MessageEvent("OSM_DATA"));
         }
 
         switch (stringType){
             case AppConstant.RUN_BOTH:
-                isSyncInProgress = (!isLISTDatSynced && !isOSMDataSynced);
+                if(!isLISTDatSynced && !mIsShownList){
+                    EventBus.getDefault().post(new MessageEvent("LIST_DATA"));
+                    mIsShownList=true;
+                }
+                if(!isOSMDataSynced && !mIsShownOSM){
+                    EventBus.getDefault().post(new MessageEvent("OSM_DATA"));
+                    mIsShownOSM=true;
+
+                }
+                if((!isLISTDatSynced && !isOSMDataSynced)){
+                    isSyncInProgress=false;
+                }
                 break;
             case AppConstant.RUN_LIST:
                 isSyncInProgress = (isLISTDatSynced);
+                EventBus.getDefault().post(new MessageEvent("LIST_DATA"));
                 break;
             case AppConstant.RUN_OSM:
                 isSyncInProgress = (isOSMDataSynced);
+                EventBus.getDefault().post(new MessageEvent("OSM_DATA"));
                 break;
         }
 
