@@ -19,13 +19,6 @@ public interface ISettingScreenPresenter {
     void onUpdateNode(RequestNodeInfo requestNodeInfo,String isForNode);
 
     /**
-     * On validate Request
-     * @param requestWayInfo request validate data
-     */
-    void onValidate(RequestWayInfo requestWayInfo);
-
-    void getLisData();
-    /**
      * Disconnect ongoing calls on network
      */
     void disconnect();

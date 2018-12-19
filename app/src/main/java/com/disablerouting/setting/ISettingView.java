@@ -14,18 +14,12 @@ public interface ISettingView extends ILoader {
     void onUpdateDataReceived(ResponseUpdate responseUpdate,String updateType);
 
 
-    void onListDataSuccess(ResponseListWay listWayData);
-
     /**
      * To show relevant error to user
      * @param error Error message
      */
 
     void onFailure(String error);
-
-
-    void onFailureListData(String error);
-
 
 
 }

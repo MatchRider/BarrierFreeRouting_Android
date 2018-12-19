@@ -581,7 +581,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                                 if(nodeReferenceUpdate.getAttributes().get(i)!=null) {
                                     isValid = nodeReferenceUpdate.getAttributes().get(i).isValid();
                                 }
-                                for (int j = 0; j < mNodeListNotValidatedData.size(); i++) {
+                                for (int j = 0; j < mNodeListNotValidatedData.size(); j++) {
                                     if (mNodeListNotValidatedData.get(j).getmIndex() ==
                                             nodeReferenceUpdate.getmIndex()) {
                                         inDexToRemove = j;
@@ -596,7 +596,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                                 mNodeListNotValidatedData.remove(inDexToRemove);
                                 mNodeListNotValidatedData.add(nodeReferenceUpdate);
                             }
-
                         }
 
 
@@ -610,7 +609,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                         hideLoader();
                         // startService(Utility.createCallingIntent(this, AppConstant.RUN_OSM));
                         //mIRoutePlannerScreenPresenter.getOSMData();
-
                     }
                 }
             }

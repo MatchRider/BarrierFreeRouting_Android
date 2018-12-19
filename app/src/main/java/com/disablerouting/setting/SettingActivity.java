@@ -13,17 +13,17 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import com.disablerouting.BuildConfig;
 import com.disablerouting.R;
 import com.disablerouting.api.ApiEndPoint;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
-import com.disablerouting.curd_operations.manager.ListGetWayManager;
 import com.disablerouting.curd_operations.manager.UpdateWayManager;
-import com.disablerouting.curd_operations.manager.ValidateWayManager;
 import com.disablerouting.curd_operations.model.*;
 import com.disablerouting.login.AsyncTaskOsmApi;
 import com.disablerouting.login.IAysncTaskOsm;
@@ -35,6 +35,7 @@ import com.disablerouting.setting.presenter.SettingScreenPresenter;
 import com.disablerouting.setting.setting_detail.SettingDetailActivity;
 import com.disablerouting.utils.Utility;
 import com.github.scribejava.core.model.Verb;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -75,20 +76,19 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
     private String mNodeID;
     private AsyncTaskOsmApi asyncTaskOsmApi;
     private int mPositionClicked = -1;
-    private List<NodeReference> mNodeList;
     private boolean mIsForWAY = false;
     private boolean isValidFORCall;
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer, String> mNodeIdsCreated = new HashMap<>();
     private String mWayIdNew = null;
     private Integer mNodeRefIndex = -1;
-    private boolean mCallForWay = false;
     private boolean mWayIdAvailable = false;
     private Handler mHandler = new Handler();
     private Integer mNodeUpdate = 0;
     private boolean mISFromOSM = false;
     private String mStringChoosedSideWalk = "";
     private String mApiEndPoint = ApiEndPoint.LIVE_BASE_URL_OSM; //ApiEndPoint.SANDBOX_BASE_URL_OSM;
+    private JSONObject mJSONObjectOSM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,16 +100,15 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             showLoader();
             callToGetChangeSet();
         }
-        mISettingScreenPresenter = new SettingScreenPresenter(this, new UpdateWayManager(),
-                new ValidateWayManager(), new ListGetWayManager());
+        mISettingScreenPresenter = new SettingScreenPresenter(this, new UpdateWayManager());
         if (getIntent().hasExtra(AppConstant.WAY_DATA)) {
             mIsForWAY = getIntent().getBooleanExtra(AppConstant.IS_FOR_WAY, false);
             if (mIsForWAY) {
                 mListWayData = getIntent().getParcelableExtra(AppConstant.WAY_DATA);
-                mListDataSEND= mListWayData;
+                mListDataSEND = mListWayData;
                 if (mListWayData != null) {
                     mWayID = mListWayData.getOSMWayId();
-                    mNodeList = mListWayData.getNodeReference();
+                    List<NodeReference> mNodeList = mListWayData.getNodeReference();
                     mIsValidScreen = Boolean.parseBoolean(mListWayData.getIsValid());
                     if (mListWayData.getIsForData() != null) {
                         mISFromOSM = !mListWayData.getIsForData().isEmpty() && mListWayData.getIsForData().equalsIgnoreCase(AppConstant.OSM_DATA);
@@ -125,7 +124,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 }
             } else {
                 mNodeReference = getIntent().getParcelableExtra(AppConstant.WAY_DATA);
-                mNodeRefSEND= mNodeReference;
+                mNodeRefSEND = mNodeReference;
                 if (mNodeReference != null) {
                     isValidFORCall = mNodeReference.getAttributes().get(0).isValid();
                     mNodeID = mNodeReference.getOSMNodeId();
@@ -221,13 +220,14 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     }
                 } else {
                     tags.append("<tag k=\"" + attributes.getKey() + "\" v=\"" + Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()) + "\"/>\n");
-                    for (int i=0;i<mNodeRefSEND.getAttributes().size();i++){
+                    for (int i = 0; i < mNodeRefSEND.getAttributes().size(); i++) {
                         mNodeRefSEND.getAttributes().get(i).setValue(Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
                     }
                 }
             }
         }
 
+        mNodeRefSEND.setVersion(mVersionNumber);
         StringBuilder nodes = new StringBuilder();
         if (mNodeReference.getOSMNodeId() != null && !mNodeReference.getOSMNodeId().isEmpty()) {
             nodes.append("<nd ref=\"" + mNodeReference.getOSMNodeId() + "\"/>\n");
@@ -264,7 +264,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             }
         } else {
             HashMap<String, String> hashMapTags = new HashMap<>();
-            List<Attributes> attributesListSend= mListWayData.getAttributesList();
+            List<Attributes> attributesListSend = mListWayData.getAttributesList();
             for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
                 hashMapTags.put(mListWayData.getAttributesList().get(i).getKey(),
                         mListWayData.getAttributesList().get(i).getValue());
@@ -276,30 +276,30 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     if (mISFromOSM) {
                         if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
                             hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE,
-                                    Utility.covertValueRequiredWhenSend(this,attributes.getKey(),attributes.getValue()));
-                        }else {
+                                    Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
+                        } else {
                             if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
                                 hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE,
-                                        Utility.covertValueRequiredWhenSend(this,attributes.getKey(),attributes.getValue()));
+                                        Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
                             }
                         }
                         if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
                             hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH,
-                                    Utility.covertValueRequiredWhenSend(this,attributes.getKey(),attributes.getValue()));
-                        }else {
+                                    Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
+                        } else {
                             if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
                                 hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH,
-                                        Utility.covertValueRequiredWhenSend(this,attributes.getKey(),attributes.getValue()));
+                                        Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
                             }
                         }
                         if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) && !attributes.getValue().isEmpty()) {
                             hashMapTags.put(AppConstant.KEY_INCLINE,
-                                    Utility.covertValueRequiredWhenSend(this,attributes.getKey(),attributes.getValue()));
+                                    Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
 
-                        }else {
+                        } else {
                             if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) && !attributes.getValue().isEmpty()) {
                                 hashMapTags.put(AppConstant.KEY_INCLINE,
-                                        Utility.covertValueRequiredWhenSend(this,attributes.getKey(),attributes.getValue()));
+                                        Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
 
                             }
                         }
@@ -326,20 +326,21 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             for (Map.Entry<String, String> pair : hashMapTags.entrySet()) {
                 tags.append("<tag k=\"" + pair.getKey() + "\" v=\"" + pair.getValue() + "\"/>\n");
 
-                Attributes attributes= new Attributes();
+                Attributes attributes = new Attributes();
                 attributes.setKey(pair.getKey());
                 attributes.setValue(pair.getValue());
                 attributesListSend.add(attributes);
 
             }
-            if(mISFromOSM) {
+            if (mISFromOSM) {
                 mListDataSEND.setAttributesList(attributesListSend);
             }
 
         }
 
+        mListDataSEND.setVersion(mVersionNumber);
         StringBuilder nodes = new StringBuilder();
-        List<NodeReference> nodeRefListSend= new ArrayList<>();
+        List<NodeReference> nodeRefListSend = new ArrayList<>();
         if (mJSONObjectOSM != null && mJSONObjectOSM.getJSONObject("way") != null &&
                 mJSONObjectOSM.getJSONObject("way").getJSONArray("nd") != null
                 && mJSONObjectOSM.getJSONObject("way").getJSONArray("nd").length() != 0) {
@@ -347,7 +348,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
                 String ref = mJSONObjectOSM.getJSONObject("way").getJSONArray("nd")
                         .getJSONObject(i).getString("ref");
-                //if (mNodeList.get(i).getOSMNodeId() != null && !mNodeList.get(i).getOSMNodeId().isEmpty())
                 nodes.append("<nd ref=\"" + ref + "\"/>\n");
             }
         }
@@ -513,7 +513,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     }
 
-    boolean mIsCalledCreateWay=false;
+    boolean mIsCalledCreateWay = false;
+
     /**
      * Api Call To CREATE WAY
      */
@@ -582,9 +583,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         OauthData oauthData = new OauthData(Verb.PUT, requestString, URLCreateWay);
         asyncTaskOsmApi = new AsyncTaskOsmApi(SettingActivity.this, oauthData, this,
                 false, AppConstant.API_TYPE_CREATE_WAY, false);
-        if(!mIsCalledCreateWay) {
+        if (!mIsCalledCreateWay) {
             asyncTaskOsmApi.execute("");
-            mIsCalledCreateWay=true;
+            mIsCalledCreateWay = true;
         }
 
     }
@@ -595,9 +596,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             if (mListWayData.getNodeReference() != null && mListWayData.getNodeReference().size() != 0) {
                 for (int i = 0; i < mListWayData.getNodeReference().size(); i++) {
                     mNodeRefIndex = i;
+                    boolean mCallForWay = false;
                     if (i == mListWayData.getNodeReference().size() - 1) {
                         mCallForWay = true;
-                    }else {
+                    } else {
                         mCallForWay = false;
                     }
                     if (mListWayData.getNodeReference().get(i).getOSMNodeId().isEmpty()) {
@@ -845,11 +847,11 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     private void onUpdateNode() {
         showLoader();
-        boolean isNodeNeedToUpdate=false;
+        boolean isNodeNeedToUpdate = false;
         if (mIsForWAY) {
             for (int i = 0; i < mListWayData.getNodeReference().size(); i++) {
                 if (mListWayData.getNodeReference().get(i).getOSMNodeId().isEmpty()) {
-                    isNodeNeedToUpdate=true;
+                    isNodeNeedToUpdate = true;
                     RequestNodeInfo requestNodeInfo = new RequestNodeInfo();
                     NodeReference nodeReference = new NodeReference();
                     String nodeOSMID = mNodeIdsCreated.get(i);
@@ -883,7 +885,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 }
 
             }
-            if(!isNodeNeedToUpdate){
+            if (!isNodeNeedToUpdate) {
                 hideLoader();
                 onUpdateWayOurServer(mListWayData.getVersion());
             }
@@ -1020,13 +1022,13 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (mHashMapWay.get(3) != null && !mHashMapWay.get(3).getKey().isEmpty() && mHashMapWay.get(3).getValue() != null && !mHashMapWay.get(3).getValue().isEmpty()) {
             attributesValidate = new AttributesValidate();
             attributesValidate.setKey(AppConstant.KEY_WIDTH);
-            attributesValidate.setValue(Utility.covertValueRequiredWhenSend(this, mHashMapWay.get(3).getKey(),mHashMapWay.get(3).getValue()));
+            attributesValidate.setValue(Utility.covertValueRequiredWhenSend(this, mHashMapWay.get(3).getKey(), mHashMapWay.get(3).getValue()));
             attributesValidate.setValid(mHashMapWay.get(3).isValid());
             attributesValidateList.add(attributesValidate);
 
             attributes = new Attributes();
             attributes.setKey(AppConstant.KEY_WIDTH);
-            attributes.setValue(Utility.covertValueRequiredWhenSend(this, mHashMapWay.get(3).getKey(),mHashMapWay.get(3).getValue()));
+            attributes.setValue(Utility.covertValueRequiredWhenSend(this, mHashMapWay.get(3).getKey(), mHashMapWay.get(3).getValue()));
             attributes.setValid(mHashMapWay.get(3).isValid());
             attributesList.add(attributes);
         }
@@ -1078,7 +1080,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         if (mHashMapWay.get(0) != null && !mHashMapWay.get(0).getKey().isEmpty() && mHashMapWay.get(0).getValue() != null &&
                 !mHashMapWay.get(0).getValue().isEmpty()) {
             attributesValidate.setKey(mHashMapWay.get(0).getKey());
-            attributesValidate.setValue(Utility.covertValueRequiredWhenSend(this,mHashMapWay.get(0).getKey(),
+            attributesValidate.setValue(Utility.covertValueRequiredWhenSend(this, mHashMapWay.get(0).getKey(),
                     mHashMapWay.get(0).getValue()));
             attributesValidate.setValid(mHashMapWay.get(0).isValid());
         }
@@ -1128,8 +1130,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         Intent resultIntent = new Intent();
                         resultIntent.putExtra("DATA_WAY", mListDataSEND);
                         setResult(RESULT_OK, resultIntent);
-
-                        //setResult(RESULT_OK);
                         Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
                         hideLoader();
                         finish();
@@ -1165,26 +1165,12 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("DATA_NODE", mNodeRefSEND);
                 setResult(RESULT_OK, resultIntent);
-
-               // setResult(RESULT_OK);
                 hideLoader();
                 finish();
             }
         }
     }
 
-    @Override
-    public void onListDataSuccess(ResponseListWay responseWay) {
-        if (responseWay != null) {
-        }
-    }
-
-    @Override
-    public void onFailureListData(String error) {
-        hideLoader();
-        Toast.makeText(SettingActivity.this, error, Toast.LENGTH_SHORT).show();
-        finish();
-    }
 
     @Override
     public void onFailure(String error) {
@@ -1243,7 +1229,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
                             }
                             //setResult(RESULT_OK);
-                           // finish();
+                            // finish();
                         } else {
                             onUpdateWay(mUpdateVersionNumber);
                         }
@@ -1293,7 +1279,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     }
 
-    private JSONObject mJSONObjectOSM;
 
     @Override
     public void onSuccessAsyncTaskForGetWay(String responseBody) {
@@ -1428,15 +1413,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             attributes.setValid(false);
             mHashMapWay.put(positionClicked, attributes);
         }
-    }
-
-    /**
-     * API call to get List data.
-     */
-    private void getListData() {
-        mRelativeLayoutProgress.setVisibility(View.VISIBLE);
-        mISettingScreenPresenter.getLisData();
-
     }
 
 
