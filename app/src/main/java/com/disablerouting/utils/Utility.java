@@ -297,6 +297,56 @@ public class Utility {
             case AppConstant.KEY_FOOTWAY:
                 converted = stringUnitPassed;
                 break;
+
+            case AppConstant.KEY_SIDEWALK + ":" + "left" + ":" + AppConstant.KEY_SURFACE:
+                String str1 = convertStringToName(stringUnitPassed);
+                index = prepareListDataSurface(context).indexOf(str1);
+                if (index != -1) {
+                    converted = prepareListDataSurfaceKey(context).get(index);
+                }
+                break;
+            case AppConstant.KEY_SIDEWALK + ":" + "right" + ":" + AppConstant.KEY_SURFACE:
+                String str2 = convertStringToName(stringUnitPassed);
+                index = prepareListDataSurface(context).indexOf(str2);
+                if (index != -1) {
+                    converted = prepareListDataSurfaceKey(context).get(index);
+                }
+                break;
+            case AppConstant.KEY_SIDEWALK + ":" + "both" + ":" + AppConstant.KEY_SURFACE:
+                String str3 = convertStringToName(stringUnitPassed);
+                index = prepareListDataSurface(context).indexOf(str3);
+                if (index != -1) {
+                    converted = prepareListDataSurfaceKey(context).get(index);
+                }
+                break;
+
+            case AppConstant.KEY_SIDEWALK + ":" + "left" + ":" + AppConstant.KEY_WIDTH:
+                index = prepareListDataSideWalk(context).indexOf(stringUnitPassed);
+                if (index != -1) {
+                    converted = prepareListDataSideWalkKey(context).get(index);
+                }
+                if(stringUnitPassed.contains(",")){
+                    converted = stringUnitPassed.replace(",",".");
+                }
+                break;
+            case AppConstant.KEY_SIDEWALK + ":" + "right" + ":" + AppConstant.KEY_WIDTH:
+                index = prepareListDataSideWalk(context).indexOf(stringUnitPassed);
+                if (index != -1) {
+                    converted = prepareListDataSideWalkKey(context).get(index);
+                }
+                if(stringUnitPassed.contains(",")){
+                    converted = stringUnitPassed.replace(",",".");
+                }
+                break;
+            case AppConstant.KEY_SIDEWALK + ":" + "both" + ":" + AppConstant.KEY_WIDTH:
+                index = prepareListDataSideWalk(context).indexOf(stringUnitPassed);
+                if (index != -1) {
+                    converted = prepareListDataSideWalkKey(context).get(index);
+                }
+                if(stringUnitPassed.contains(",")){
+                    converted = stringUnitPassed.replace(",",".");
+                }
+                break;
         }
 
         return converted.trim();

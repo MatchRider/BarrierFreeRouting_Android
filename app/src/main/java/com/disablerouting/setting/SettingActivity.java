@@ -115,10 +115,35 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     }
 
                     if (mISFromOSM) {
-                        mTxvSideWalk.setVisibility(View.VISIBLE);
+                        for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
+                            switch (mListWayData.getAttributesList().get(i).getKey()) {
+                                case AppConstant.KEY_SIDEWALK:
+                                        switch (mListWayData.getAttributesList().get(i).getValue()) {
+                                            case "left":
+                                                mStringChoosedSideWalk = "left";
+                                                mTxvSideWalk.setText(getResources().getString(R.string.left));
+                                                break;
+                                            case "right":
+                                                mStringChoosedSideWalk = "right";
+                                                mTxvSideWalk.setText(getResources().getString(R.string.right));
+                                                break;
+                                            case "both":
+                                                mStringChoosedSideWalk = "both";
+                                                mTxvSideWalk.setText(getResources().getString(R.string.both));
+                                                break;
+                                        }
+                            }
+                        }
+                        if(!mStringChoosedSideWalk.isEmpty()){
+                            mTxvSideWalk.setVisibility(View.VISIBLE);
+
+                        }else {
+                            mTxvSideWalk.setVisibility(View.GONE);
+                        }
                     } else {
                         mTxvSideWalk.setVisibility(View.GONE);
                     }
+
                     getDataFromWay();
                     setUpRecyclerView();
                 }
@@ -264,7 +289,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             }
         } else {
             HashMap<String, String> hashMapTags = new HashMap<>();
-            List<Attributes> attributesListSend = mListWayData.getAttributesList();
+            List<Attributes> attributesListSend = new ArrayList<>();
             for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
                 hashMapTags.put(mListWayData.getAttributesList().get(i).getKey(),
                         mListWayData.getAttributesList().get(i).getValue());
@@ -274,48 +299,80 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 Attributes attributes = pair.getValue();
                 if (attributes != null && attributes.getValue() != null) {
                     if (mISFromOSM) {
-                        if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
-                            hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE,
-                                    Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
-                        } else {
-                            if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
+                        if (!mStringChoosedSideWalk.isEmpty()) {
+                            if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
                                 hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE,
                                         Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
+                            } else {
+                                if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
+                                    hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE,
+                                            Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
+                                }
                             }
-                        }
-                        if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
-                            hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH,
-                                    Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
-                        } else {
-                            if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
+                            if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
                                 hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH,
                                         Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
+                            } else {
+                                if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
+                                    hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH,
+                                            Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
+                                }
                             }
-                        }
-                        if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) && !attributes.getValue().isEmpty()) {
-                            hashMapTags.put(AppConstant.KEY_INCLINE,
-                                    Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
+                            if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) && !attributes.getValue().isEmpty()) {
+                                hashMapTags.put(AppConstant.KEY_INCLINE,
+                                        Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
 
+                            } else {
+                                if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) && !attributes.getValue().isEmpty()) {
+                                    hashMapTags.put(AppConstant.KEY_INCLINE,
+                                            Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
+
+                                }
+                            }
                         } else {
+                            if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
+                                hashMapTags.put(AppConstant.KEY_SURFACE,
+                                        Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
+                            }
                             if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) && !attributes.getValue().isEmpty()) {
                                 hashMapTags.put(AppConstant.KEY_INCLINE,
                                         Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
 
                             }
+                            if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
+                                hashMapTags.put(AppConstant.KEY_WIDTH,
+                                        Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
+                            }
                         }
                     } else {
-                        if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
-                            hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE,
-                                    attributes.getValue());
-                        }
-                        if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) && !attributes.getValue().isEmpty()) {
-                            hashMapTags.put(AppConstant.KEY_INCLINE,
-                                    attributes.getValue());
+                        if(!mStringChoosedSideWalk.isEmpty()) {
+                            if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
+                                hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE,
+                                        attributes.getValue());
+                            }
+                            if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) && !attributes.getValue().isEmpty()) {
+                                hashMapTags.put(AppConstant.KEY_INCLINE,
+                                        attributes.getValue());
 
-                        }
-                        if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
-                            hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH,
-                                    attributes.getValue());
+                            }
+                            if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
+                                hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH,
+                                        attributes.getValue());
+                            }
+                        }else {
+                            if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
+                                hashMapTags.put(AppConstant.KEY_SURFACE,
+                                        Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
+                            }
+                            if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE) && !attributes.getValue().isEmpty()) {
+                                hashMapTags.put(AppConstant.KEY_INCLINE,
+                                        Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
+
+                            }
+                            if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH) && !attributes.getValue().isEmpty()) {
+                                hashMapTags.put(AppConstant.KEY_WIDTH,
+                                        Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
+                            }
                         }
                     }
 
@@ -332,15 +389,17 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 attributesListSend.add(attributes);
 
             }
+
+
             if (mISFromOSM) {
                 mListDataSEND.setAttributesList(attributesListSend);
+                mListDataSEND.setVersion(mVersionNumber);
+
             }
 
         }
 
-        mListDataSEND.setVersion(mVersionNumber);
         StringBuilder nodes = new StringBuilder();
-        List<NodeReference> nodeRefListSend = new ArrayList<>();
         if (mJSONObjectOSM != null && mJSONObjectOSM.getJSONObject("way") != null &&
                 mJSONObjectOSM.getJSONObject("way").getJSONArray("nd") != null
                 && mJSONObjectOSM.getJSONObject("way").getJSONArray("nd").length() != 0) {
@@ -669,6 +728,13 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                             attributesSurface.setValid(mListWayData.getAttributesList().get(i).isValid());
                             mHashMapWay.put(0, attributesSurface);
                         }
+                        if (mISFromOSM && mStringChoosedSideWalk.isEmpty()) {
+                            Attributes attributesSurface = new Attributes();
+                            attributesSurface.setKey(mListWayData.getAttributesList().get(i).getKey());
+                            attributesSurface.setValue(mListWayData.getAttributesList().get(i).getValue().trim());
+                            attributesSurface.setValid(mListWayData.getAttributesList().get(i).isValid());
+                            mHashMapWay.put(0, attributesSurface);
+                        }
                         break;
 
                     case AppConstant.KEY_HIGHWAY:
@@ -715,6 +781,21 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                             attributesWidth.setValid(mListWayData.getAttributesList().get(i).isValid());
                             mHashMapWay.put(3, attributesWidth);
                         }
+
+                        if (mISFromOSM && mStringChoosedSideWalk.isEmpty()) {
+                            Attributes attributesWidth = new Attributes();
+                            attributesWidth.setKey(mListWayData.getAttributesList().get(i).getKey());
+                            if (mListWayData.getAttributesList().get(i).getValue().contains(".")) {
+                                String stringValue = Utility.trimTWoDecimalPlaces(Double.parseDouble(mListWayData.getAttributesList().get(i).getValue()));
+                                attributesWidth.setValue(Utility.convertDToCORCtoD(stringValue).trim());
+
+                            } else {
+                                attributesWidth.setValue(mListWayData.getAttributesList().get(i).getValue());
+
+                            }
+                            attributesWidth.setValid(mListWayData.getAttributesList().get(i).isValid());
+                            mHashMapWay.put(3, attributesWidth);
+                        }
                         break;
 
                     case AppConstant.KEY_FOOTWAY:
@@ -723,27 +804,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         attributesFootWay.setValue(mListWayData.getAttributesList().get(i).getValue().trim());
                         attributesFootWay.setValid(true);
                         mHashMapWay.put(4, attributesFootWay);
-
                         break;
 
-                    case AppConstant.KEY_SIDEWALK:
-                        if (mISFromOSM) {
-                            switch (mListWayData.getAttributesList().get(i).getValue()) {
-                                case "left":
-                                    mStringChoosedSideWalk = "left";
-                                    mTxvSideWalk.setText(getResources().getString(R.string.left));
-                                    break;
-                                case "right":
-                                    mStringChoosedSideWalk = "right";
-                                    mTxvSideWalk.setText(getResources().getString(R.string.right));
-                                    break;
-                                case "both":
-                                    mStringChoosedSideWalk = "both";
-                                    mTxvSideWalk.setText(getResources().getString(R.string.both));
-                                    break;
-                            }
-                        }
-                        break;
                     case "sidewalk:left:surface":
                         if (mISFromOSM) {
                             Attributes attributesSurface = new Attributes();
