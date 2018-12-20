@@ -208,14 +208,15 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         if (mIsFromSuggestion) {
             mLinearLayoutSourceDestination.setVisibility(View.GONE);
             mRelativeLayoutToogle.setVisibility(View.VISIBLE);
-            mOnSourceDestinationListener.onToggleClickedBanner(false);
+            //mOnSourceDestinationListener.onToggleClickedBanner(false);
             mTextViewTitle.setText(getResources().getString(R.string.not_validated));
-        } else {
+        }
+        else {
             if (mIsFromOSM) {
                 mLinearLayoutSourceDestination.setVisibility(View.GONE);
                 mRelativeLayoutToogle.setVisibility(View.VISIBLE);
                 mToogleWAY.setVisibility(View.INVISIBLE);
-                mOnSourceDestinationListener.onToggleClickedBanner(false);
+               // mOnSourceDestinationListener.onToggleClickedBanner(false);
                 mTextViewTitle.setText(getResources().getString(R.string.not_validated));
             }
         }
@@ -771,6 +772,8 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
         } else {
             mIsFromOSM = true;
         }
+        mOnSourceDestinationListener.onToggleClickedBanner(false);
+
     }
 
     public void setDataWhenDragging(GeoPoint geoPoint) {

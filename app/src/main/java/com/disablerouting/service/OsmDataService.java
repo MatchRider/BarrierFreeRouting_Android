@@ -276,11 +276,16 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
 
                         for (int k = 0; k < responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().size(); k++) {
                             if (!responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().get(k).isValid()) {
-                                mNodeListNotValidatedDataOSM.add(responseWay.getWayData().get(i).getNodeReference().get(j));
+                                if (!Utility.isListContainId(mNodeListNotValidatedDataOSM,
+                                        responseWay.getWayData().get(i).getNodeReference().get(j).getOSMNodeId())) {
+                                    mNodeListNotValidatedDataOSM.add(responseWay.getWayData().get(i).getNodeReference().get(j));
+                                }
 
                             } else {
-                                mNodeListValidatedDataOSM.add(responseWay.getWayData().get(i).getNodeReference().get(j));
-
+                                if (!Utility.isListContainId(mNodeListValidatedDataOSM, responseWay.getWayData().get(i).getNodeReference()
+                                        .get(j).getOSMNodeId())) {
+                                    mNodeListValidatedDataOSM.add(responseWay.getWayData().get(i).getNodeReference().get(j));
+                                }
                             }
                         }
                     }

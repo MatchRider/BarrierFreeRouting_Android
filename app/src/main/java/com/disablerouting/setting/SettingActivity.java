@@ -1187,18 +1187,17 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
         } else {
             if (mIsForWAY) {
                 if (responseUpdate.isStatus()) {
-                    mRelativeLayoutProgress.setVisibility(View.GONE);
+                    //mRelativeLayoutProgress.setVisibility(View.GONE);
                     if (updateType.equalsIgnoreCase(AppConstant.WAY_UPDATE)) {
                         Intent resultIntent = new Intent();
                         resultIntent.putExtra("DATA_WAY", mListDataSEND);
                         setResult(RESULT_OK, resultIntent);
                         Toast.makeText(SettingActivity.this, R.string.updated_info, Toast.LENGTH_SHORT).show();
-                        hideLoader();
                         finish();
+                        hideLoader();
                     } else {
                         mNodeUpdate = mNodeUpdate + 1;
                         if (mNodeUpdate == mNodeIdsCreated.size()) {
-                            hideLoader();
                             Toast.makeText(SettingActivity.this, R.string.updated_node_info, Toast.LENGTH_SHORT).show();
                             onUpdateWayOurServer(mListWayData.getVersion());
                         }
@@ -1210,8 +1209,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         Toast.makeText(this, responseUpdate.getError().get(0).getMessage(), Toast.LENGTH_SHORT).show();
                     }
                     setResult(RESULT_OK);
-                    hideLoader();
                     finish();
+                    hideLoader();
+
                 }
             } else {
                 if (responseUpdate.isStatus()) {
@@ -1227,8 +1227,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("DATA_NODE", mNodeRefSEND);
                 setResult(RESULT_OK, resultIntent);
-                hideLoader();
                 finish();
+                hideLoader();
+
             }
         }
     }
@@ -1246,6 +1247,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             @Override
             public void run() {
                 if (!isFinishing()) {
+                    mRelativeLayoutProgress.setVisibility(View.VISIBLE);
                     showProgress();
                 }
             }
@@ -1276,6 +1278,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 this.runOnUiThread(new Runnable() {
                     public void run() {
                         if (mISFromOSM) {
+                            hideLoader();
                             if (mIsForWAY) {
                                 Intent resultIntent = new Intent();
                                 resultIntent.putExtra("DATA_OSM_WAY", mListDataSEND);

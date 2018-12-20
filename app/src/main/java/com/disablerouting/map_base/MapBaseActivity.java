@@ -551,7 +551,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
                         break;
                     } else {
                         if (ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
-                            Log.e("allowed", permission);
+                            //Log.e("allowed", permission);
                         } else {
                             openSettingDialog();
                             break;
@@ -957,7 +957,6 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
 
     @Override
     public boolean onZoom(ZoomEvent event) {
-        Log.e("Zoom Level Changed", String.valueOf(event.getZoomLevel()));
         int zoomLevel = event.getZoomLevel();
         if (zoomLevel >= 16) {
             if (mNodeItemList != null && mNodeItemList.size() != 0) {

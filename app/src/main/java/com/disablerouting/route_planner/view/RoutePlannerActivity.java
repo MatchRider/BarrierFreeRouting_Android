@@ -118,12 +118,13 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     boolean mStepListHasData = false;
     private int mTabSelected = 1;
     private PlotWayDataTask mPlotWayDataTask;
+    private boolean mIsResumeExecuted= false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-
+        EventBus.getDefault().register(this);
 
         if (getIntent().hasExtra("FromSuggestion")) {
             mISFromSuggestion = getIntent().getBooleanExtra("FromSuggestion", false);
@@ -132,54 +133,14 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mISFromOSM = getIntent().getBooleanExtra("FromOSM", false);
         }
 
-        EventBus.getDefault().register(this);
-        if (mISFromOSM) {
-            if (WayDataPreference.getInstance(this) != null) {
-                mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayDataOSM());
-                mWayListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidatedWayDataOSM());
-                mNodeListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateDataNodeOSM());
-                mNodeListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidateDataNodeOSM());
+        mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
+        addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
+        mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this,
+                new OSMManager(), new ListGetWayManager(), this);
 
-                mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
-                addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
-                mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this,
-                        new OSMManager(), new ListGetWayManager(), this);
-            }
-            if (mWayListValidatedData.size() == 0 && mWayListNotValidatedData.size() == 0 &&
-                    mNodeListValidatedData.size() == 0 && mNodeListNotValidatedData.size() == 0) {
-                showLoader();
-            }
-        } else if (mISFromSuggestion) {
-            if (WayDataPreference.getInstance(this) != null) {
-                mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayData());
-                mWayListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidatedWayData());
-                mNodeListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateDataNode());
-                mNodeListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidateDataNode());
 
-                mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
-                addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
-                mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this,
-                        new OSMManager(), new ListGetWayManager(), this);
-            }
-            if (mWayListValidatedData.size() == 0 && mWayListNotValidatedData.size() == 0 &&
-                    mNodeListValidatedData.size() == 0 && mNodeListNotValidatedData.size() == 0) {
-                showLoader();
-            }
-        } else {
-            if (WayDataPreference.getInstance(this) != null) {
-                mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayData());
-                mWayListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidatedWayData());
-                mNodeListValidatedData = new ArrayList<>( WayDataPreference.getInstance(this).getValidateDataNode());
-                mNodeListNotValidatedData =new ArrayList<>( WayDataPreference.getInstance(this).getNotValidateDataNode());
-            }
-        }
-        if (!mISFromOSM && !mISFromSuggestion) {
-            mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
-            addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
-            mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this,
-                    new OSMManager(), new ListGetWayManager(), this);
-        }
         if (mISFromSuggestion) {
+            showLoader();
             setZoomMap();
             mSourceDestinationFragment.OnFromSuggestion(true);
             mButtonGo.setVisibility(View.GONE);
@@ -187,9 +148,12 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mSwitchCompatToogle.setVisibility(View.GONE);
             mRadioGroup.setVisibility(View.VISIBLE);
             mImageCurrentPin.setVisibility(View.GONE);
+
+
         }
 
         if (mISFromOSM) {
+            showLoader();
             setZoomMap();
             mSourceDestinationFragment.OnFromSuggestion(false);
             mButtonGo.setVisibility(View.GONE);
@@ -203,38 +167,118 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("Resume" , "executed_outside");
+        if(!mIsResumeExecuted){
+            if(!OsmDataService.isSyncInProgress){
+                Log.e("Resume" , "executed_inside");
+                if (mISFromOSM) {
+                    if (WayDataPreference.getInstance(this) != null) {
+                        mWayListValidatedData.clear();
+                        mWayListNotValidatedData.clear();
+                        mNodeListValidatedData.clear();
+                        mNodeListNotValidatedData.clear();
 
+                        mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayDataOSM());
+                        mWayListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidatedWayDataOSM());
+                        mNodeListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateDataNodeOSM());
+                        mNodeListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidateDataNodeOSM());
+
+                    }
+                    if (mWayListValidatedData.size() != 0 || mWayListNotValidatedData.size() != 0 ||
+                            mNodeListValidatedData.size() == 0 || mNodeListNotValidatedData.size() != 0) {
+                        hideLoader();
+                        mSourceDestinationFragment.OnFromSuggestion(false);
+                        mIsResumeExecuted=true;
+                    }
+                    if (mWayListValidatedData.size() == 0 && mWayListNotValidatedData.size() == 0 &&
+                            mNodeListValidatedData.size() == 0 && mNodeListNotValidatedData.size() == 0) {
+                        showLoader();
+                    }
+                } else if (mISFromSuggestion) {
+                    if (WayDataPreference.getInstance(this) != null) {
+                        mWayListValidatedData.clear();
+                        mWayListNotValidatedData.clear();
+                        mNodeListValidatedData.clear();
+                        mNodeListNotValidatedData.clear();
+
+                        mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayData());
+                        mWayListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidatedWayData());
+                        mNodeListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateDataNode());
+                        mNodeListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidateDataNode());
+
+                    }
+                    if (mWayListValidatedData.size() != 0 || mWayListNotValidatedData.size() != 0 ||
+                            mNodeListValidatedData.size() == 0 || mNodeListNotValidatedData.size() != 0) {
+                        hideLoader();
+                        mSourceDestinationFragment.OnFromSuggestion(true);
+                        mIsResumeExecuted=true;
+
+                    }
+                    if (mWayListValidatedData.size() == 0 && mWayListNotValidatedData.size() == 0 &&
+                            mNodeListValidatedData.size() == 0 && mNodeListNotValidatedData.size() == 0) {
+                        showLoader();
+                    }
+                }
+
+                if(!mISFromOSM && !mISFromSuggestion){
+                    if (WayDataPreference.getInstance(this) != null) {
+                        mWayListValidatedData.clear();
+                        mWayListNotValidatedData.clear();
+                        mNodeListValidatedData.clear();
+                        mNodeListNotValidatedData.clear();
+
+                        mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayData());
+                        mWayListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidatedWayData());
+                        mNodeListValidatedData = new ArrayList<>( WayDataPreference.getInstance(this).getValidateDataNode());
+                        mNodeListNotValidatedData =new ArrayList<>( WayDataPreference.getInstance(this).getNotValidateDataNode());
+                    }
+                    if (mWayListValidatedData.size() != 0 || mWayListNotValidatedData.size() != 0 ||
+                            mNodeListValidatedData.size() == 0 || mNodeListNotValidatedData.size() != 0) {
+
+                        hideLoader();
+                        mIsResumeExecuted=true;
+
+                    }
+
+                }
+            }
+        }
+    }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageEvent event) {
         Log.e("event", event.getMessage());
         if (mISFromSuggestion) {
-            hideLoader();
-
             if (event.getMessage().equalsIgnoreCase("LIST_DATA")) {
                 if (WayDataPreference.getInstance(this) != null) {
+                    mWayListValidatedData.clear();
+                    mWayListNotValidatedData.clear();
+                    mNodeListValidatedData.clear();
+                    mNodeListNotValidatedData.clear();
+
                     mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayData());
                     mWayListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidatedWayData());
                     mNodeListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateDataNode());
                     mNodeListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidateDataNode());
+                }
+                mSourceDestinationFragment.OnFromSuggestion(true);
+                hideLoader();
+                if(mImageRefresh.getVisibility()==View.VISIBLE ){
+                    Utility.clearAnimationFromView(mImageRefresh);
 
                 }
-                mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
-                addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
-                mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this,
-                        new OSMManager(), new ListGetWayManager(), this);
-
-                setZoomMap();
-                mSourceDestinationFragment.OnFromSuggestion(true);
-
             }
-            if(mImageRefresh.getVisibility()==View.VISIBLE ){
-                Utility.clearAnimationFromView(mImageRefresh);
 
-            }
         }
         if (mISFromOSM) {
-            hideLoader();
             if (event.getMessage().equalsIgnoreCase("OSM_DATA")) {
+                mWayListValidatedData.clear();
+                mWayListNotValidatedData.clear();
+                mNodeListValidatedData.clear();
+                mNodeListNotValidatedData.clear();
+
                 if (WayDataPreference.getInstance(this) != null) {
                     mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayDataOSM());
                     mWayListNotValidatedData =new ArrayList<>( WayDataPreference.getInstance(this).getNotValidatedWayDataOSM());
@@ -242,32 +286,41 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     mNodeListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidateDataNodeOSM());
 
                 }
-                mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
-                addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
-                mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this,
-                        new OSMManager(), new ListGetWayManager(), this);
 
-                setZoomMap();
                 mSourceDestinationFragment.OnFromSuggestion(false);
+                hideLoader();
+                if(mImageRefresh.getVisibility()==View.VISIBLE){
+                    Utility.clearAnimationFromView(mImageRefresh);
+                }
+            }
 
-            }
-            if(mImageRefresh.getVisibility()==View.VISIBLE){
-                Utility.clearAnimationFromView(mImageRefresh);
-            }
         }
         if(!mISFromOSM && !mISFromSuggestion){
-            if(mImageRefresh.getVisibility()==View.VISIBLE){
-                Utility.clearAnimationFromView(mImageRefresh);
+            if (event.getMessage().equalsIgnoreCase("LIST_DATA")) {
+                if (WayDataPreference.getInstance(this) != null) {
+                    mWayListValidatedData.clear();
+                    mWayListNotValidatedData.clear();
+                    mNodeListValidatedData.clear();
+                    mNodeListNotValidatedData.clear();
+
+                    mWayListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateWayData());
+                    mWayListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidatedWayData());
+                    mNodeListValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getValidateDataNode());
+                    mNodeListNotValidatedData = new ArrayList<>(WayDataPreference.getInstance(this).getNotValidateDataNode());
+                }
+                hideLoader();
+                if(mImageRefresh.getVisibility()==View.VISIBLE){
+                    Utility.clearAnimationFromView(mImageRefresh);
+                }
             }
+
         }
 
+
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
+
 
     @Override
     protected int getView() {
@@ -1153,8 +1206,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onToggleClickedBanner(boolean isChecked) {
-        //clearItemsFromMap();
-        //addCurrentLocation(18);
         mRadioGroup.setVisibility(View.VISIBLE);
         mImageCurrentPin.setVisibility(View.GONE);
         if (!isChecked) {
@@ -1272,6 +1323,11 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @OnClick(R.id.img_re_fresh)
     public void onRefreshClick(){
+        mWayListValidatedData.clear();
+        mWayListNotValidatedData.clear();
+        mNodeListValidatedData.clear();
+        mNodeListNotValidatedData.clear();
+
         if(mISFromOSM) {
             if(!OsmDataService.isSyncInProgress){
                 Utility.applyAnimationOnView(this,mImageRefresh);

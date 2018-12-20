@@ -30,6 +30,7 @@ import android.widget.TextView;
 import com.disablerouting.R;
 import com.disablerouting.api.ApiEndPoint;
 import com.disablerouting.common.AppConstant;
+import com.disablerouting.curd_operations.WayDataPreference;
 import com.disablerouting.curd_operations.model.NodeReference;
 import com.disablerouting.login.OSMApi;
 import com.disablerouting.osm_activity.model.GetOSM;
