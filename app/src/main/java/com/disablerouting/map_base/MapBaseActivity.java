@@ -243,7 +243,7 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private void addPolyLine(final List<GeoPoint> geoPointList, final List<Steps> stepsList) {
         //resetRunningMarker();
         mPolylineArrayList.clear();
-        if (geoPointList.size() > 1 && stepsList != null && stepsList.size() > 2) {
+        if (geoPointList.size() > 1 && stepsList != null && stepsList.size() >= 2) {
             for (int i = 0; i < stepsList.size(); i++) {
                 int indexFirst = stepsList.get(i).getDoublesWayPoints().get(0);
                 int indexLast = stepsList.get(i).getDoublesWayPoints().get(1);
