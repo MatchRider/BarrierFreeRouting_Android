@@ -598,6 +598,9 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
      */
     public void clearItemsFromMap() {
         mMapView.getOverlays().clear();
+        if(mNodeItemList!=null && mNodeItemList.size()!=0){
+            mNodeItemList.clear();
+        }
         // mMapView.invalidate();
     }
 
