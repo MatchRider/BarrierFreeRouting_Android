@@ -44,7 +44,10 @@ import com.disablerouting.utils.PermissionUtils;
 import com.disablerouting.utils.Utility;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -87,19 +90,6 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
         checkLocationStatus();
         WayDataPreference.getInstance(this).clearWayDataSharedPrefs();
         startService(Utility.createCallingIntent(this,AppConstant.RUN_BOTH));
-    }
-
-
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     /**
@@ -156,7 +146,7 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
     void redirectRoutePlanner() {
         Intent intent = new Intent(this, RoutePlannerActivity.class);
         startActivityForResult(intent, AppConstant.REQUEST_CODE_SCREEN);
-    }
+        }
 
     @OnClick(R.id.btn_suggestion)
     void redirectSuggestions() {
