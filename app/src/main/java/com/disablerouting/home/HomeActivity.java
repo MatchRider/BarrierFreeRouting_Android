@@ -146,7 +146,8 @@ public class HomeActivity extends BaseActivityImpl implements ISideMenuFragmentC
     void redirectRoutePlanner() {
         Intent intent = new Intent(this, RoutePlannerActivity.class);
         startActivityForResult(intent, AppConstant.REQUEST_CODE_SCREEN);
-        }
+
+    }
 
     @OnClick(R.id.btn_suggestion)
     void redirectSuggestions() {
