@@ -12,16 +12,13 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import com.disablerouting.R;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.common.MessageEvent;
 import com.disablerouting.curd_operations.WayDataPreference;
-import com.disablerouting.curd_operations.manager.ListGetWayManager;
 import com.disablerouting.curd_operations.model.*;
 import com.disablerouting.filter.view.FilterActivity;
 import com.disablerouting.geo_coding.model.Features;
@@ -31,8 +28,6 @@ import com.disablerouting.login.UserPreferences;
 import com.disablerouting.login.model.SearchPreferences;
 import com.disablerouting.login.model.UserSearchModel;
 import com.disablerouting.map_base.MapBaseActivity;
-import com.disablerouting.osm_activity.manager.OSMManager;
-import com.disablerouting.osm_activity.model.GetOsmData;
 import com.disablerouting.route_planner.model.NodeItem;
 import com.disablerouting.route_planner.model.ProgressModel;
 import com.disablerouting.route_planner.model.Steps;
@@ -43,7 +38,6 @@ import com.disablerouting.service.OsmDataService;
 import com.disablerouting.setting.SettingActivity;
 import com.disablerouting.utils.Utility;
 import com.google.android.gms.maps.model.LatLng;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -51,8 +45,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.Polyline;
-
-import java.io.IOException;
 import java.util.*;
 
 public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDestinationListener, IRouteView,
@@ -71,7 +63,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private HashMap<String, String> mHashMapObjectFilter;
     private IRoutePlannerScreenPresenter mIRoutePlannerScreenPresenter;
     private int mCoordinatesSize = 0;
-
 
     @BindView(R.id.btn_go)
     Button mButtonGo;
@@ -119,6 +110,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private int mTabSelected = 1;
     private PlotWayDataTask mPlotWayDataTask;
     private boolean mIsResumeExecuted= false;
+    private Features features;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,8 +129,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         mSourceDestinationFragment = SourceDestinationFragment.newInstance(this);
         addFragment(R.id.contentContainer, mSourceDestinationFragment, "");
         mIRoutePlannerScreenPresenter = new RoutePlannerScreenPresenter(this,
-                new OSMManager(), new ListGetWayManager(), this);
-
+               this);
 
         if (mISFromSuggestion) {
             showLoader();
@@ -501,7 +493,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     }
 
-    Features features;
 
     @OnClick(R.id.btn_go)
     public void goPlotMap() {
@@ -604,9 +595,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                             }
 
                         }
-                        //startService(Utility.createCallingIntent(this, AppConstant.RUN_LIST));
-                        // mIRoutePlannerScreenPresenter.getListData();
-                        if (WayDataPreference.getInstance(this) != null) {
+                         if (WayDataPreference.getInstance(this) != null) {
                             WayDataPreference.getInstance(this).saveValidateWayData(mWayListValidatedData);
                             WayDataPreference.getInstance(this).saveNotValidatedWayData(mWayListNotValidatedData);
                             WayDataPreference.getInstance(this).saveValidateDataNode(mNodeListValidatedData);
@@ -677,8 +666,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                         }
                         onToggleClickedBanner(false);
                         hideLoader();
-                        // startService(Utility.createCallingIntent(this, AppConstant.RUN_OSM));
-                        //mIRoutePlannerScreenPresenter.getOSMData();
                     }
                 }
             }
@@ -797,129 +784,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
     }
 
-    @Override
-    public void onOSMDataReceived(final String responseBody) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (responseBody != null) {
-                    GetOsmData getOsmData = null;
-                    try {
-                        getOsmData = Utility.convertDataIntoModel(responseBody);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    assert getOsmData != null;
-                    Log.e("Nodes", String.valueOf(getOsmData.getOSM().getNode().size()));
-                    Log.e("Ways", String.valueOf(getOsmData.getOSM().getWays().size()));
-
-                    List<NodeReference> nodeReferenceList = new ArrayList<>();
-                    NodeReference nodeReference = null;
-                    for (int i = 0; i < getOsmData.getOSM().getNode().size(); i++) {
-                        nodeReference = new NodeReference();
-
-                        nodeReference.setOSMNodeId(getOsmData.getOSM().getNode().get(i).getID());
-                        nodeReference.setLat(getOsmData.getOSM().getNode().get(i).getLatitude());
-                        nodeReference.setLon(getOsmData.getOSM().getNode().get(i).getLongitude());
-                        nodeReference.setVersion(getOsmData.getOSM().getNode().get(i).getVersion());
-                        nodeReference.setIsForData(AppConstant.OSM_DATA);
-
-
-                        List<Attributes> attributesList = new ArrayList<>();
-                        Attributes attributes = null;
-                        if (getOsmData.getOSM().getNode().get(i).getTag() != null &&
-                                getOsmData.getOSM().getNode().get(i).getTag().size() != 0) {
-                            for (int k = 0; k < getOsmData.getOSM().getNode().get(i).getTag().size(); k++) {
-                                attributes = new Attributes();
-                                attributes.setKey(getOsmData.getOSM().getNode().get(i).getTag().get(k).getK());
-                                attributes.setValue(getOsmData.getOSM().getNode().get(i).getTag().get(k).getV());
-                                attributes.setValid(false);
-                                attributesList.add(attributes);
-                                nodeReference.setAttributes(attributesList);
-                            }
-                        }
-                        nodeReferenceList.add(nodeReference);
-                    }
-
-                    List<ListWayData> listWayDataListCreated = new ArrayList<>();
-                    ListWayData listWayData = null;
-
-
-                    for (int i = 0; i < getOsmData.getOSM().getWays().size(); i++) {
-                        listWayData = new ListWayData();
-
-                        listWayData.setOSMWayId(getOsmData.getOSM().getWays().get(i).getID());
-                        listWayData.setVersion(getOsmData.getOSM().getWays().get(i).getVersion());
-                        listWayData.setIsValid("false");
-                        listWayData.setColor(Utility.randomColor());
-                        listWayData.setIsForData(AppConstant.OSM_DATA);
-                        ParcelableArrayList stringListCoordinates;
-
-                        List<NodeReference> nodeReferencesWay = new ArrayList<>();
-                        List<ParcelableArrayList> coordinatesList = new LinkedList<>();
-
-                        for (int j = 0; getOsmData.getOSM().getWays().get(i).getNdList() != null &&
-                                getOsmData.getOSM().getWays().get(i).getNdList().size() != 0 &&
-                                j < getOsmData.getOSM().getWays().get(i).getNdList().size(); j++) {
-
-                            for (int k = 0; k < nodeReferenceList.size(); k++) {
-                                if (getOsmData.getOSM().getWays().get(i).getNdList().get(j).getRef()
-                                        .equalsIgnoreCase(nodeReferenceList.get(k).getOSMNodeId())) {
-
-                                    nodeReferencesWay.add(nodeReferenceList.get(k));
-                                    stringListCoordinates = new ParcelableArrayList();
-                                    stringListCoordinates.add(0, nodeReferenceList.get(k).getLat());
-                                    stringListCoordinates.add(1, nodeReferenceList.get(k).getLon());
-                                    coordinatesList.add(stringListCoordinates);
-                                    break;
-                                }
-                            }
-
-                        }
-                        listWayData.setCoordinates(coordinatesList);
-                        listWayData.setNodeReference(nodeReferencesWay);
-
-                        List<Attributes> attributesArrayListWay = new ArrayList<>();
-                        for (int j = 0; getOsmData.getOSM().getWays().get(i).getTagList() != null &&
-                                getOsmData.getOSM().getWays().get(i).getTagList().size() != 0 &&
-                                j < getOsmData.getOSM().getWays().get(i).getTagList().size(); j++) {
-                            Attributes attributesWay = new Attributes();
-                            attributesWay.setKey(getOsmData.getOSM().getWays().get(i).getTagList().get(j).getK());
-                            attributesWay.setValue(getOsmData.getOSM().getWays().get(i).getTagList().get(j).getV());
-                            attributesWay.setValid(false);
-                            attributesArrayListWay.add(attributesWay);
-                        }
-                        listWayData.setAttributesList(attributesArrayListWay);
-                        listWayDataListCreated.add(listWayData);
-                    }
-
-                    Log.e("List", String.valueOf(listWayDataListCreated.size()));
-
-                    ResponseListWay responseListWay = new ResponseListWay();
-                    responseListWay.setWayData(listWayDataListCreated);
-                    if (listWayDataListCreated.size() > 0) {
-                        responseListWay.setStatus(true);
-                    } else {
-                        responseListWay.setStatus(false);
-                    }
-                    createListData(responseListWay, true);
-                }
-            }
-        });
-
-    }
-
-    @Override
-    public void onListDataReceived(final ResponseListWay responseWay) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                createListData(responseWay, false);
-            }
-        });
-
-    }
-
     private void createListData(ResponseListWay responseWay, boolean b) {
         if (b) {
             mWayListValidatedData = new ArrayList<>();
@@ -1024,13 +888,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
 
     }
-
-    @Override
-    public void onFailure(String error) {
-        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
-        hideLoader();
-    }
-
 
     @SuppressLint("StaticFieldLeak")
     private class PlotWayDataTask extends AsyncTask<Void, ProgressModel, CommonModel> {
@@ -1201,7 +1058,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
             mPlotWayDataTask.cancel(true);
         }
         mIRoutePlannerScreenPresenter.disconnect();
-
     }
 
     @Override
@@ -1245,7 +1101,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 mImageRefresh.setVisibility(View.VISIBLE);
                 mImageCurrentPin.setVisibility(View.GONE);
                 mImageViewInfo.setVisibility(View.GONE);
-                // clearItemsFromMap();
+                 clearItemsFromMap();
                 if (mWayListNotValidatedData.size() != 0) {
                     hideLoader();
                     // setZoomMap();
