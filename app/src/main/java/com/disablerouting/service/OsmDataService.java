@@ -131,19 +131,41 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
                                     nodeReference.setAttributes(attributesList);
                                 }
                             }
-                            if(!nodeReference.getOSMNodeId().equalsIgnoreCase("4315552310")) {
-                                nodeReferenceList.add(nodeReference);
-                            }
+                            nodeReferenceList.add(nodeReference);
                         }
                     }
 
+                    List<NodeReference> nodeReferenceListForWay = new ArrayList<>();
+                    NodeReference nodeReferenceForWay;
+                    if (getOsmData.getOSM() != null && getOsmData.getOSM().getNodeForWays() != null) {
+                        for (int i = 0; i < getOsmData.getOSM().getNodeForWays().size(); i++) {
+                            nodeReferenceForWay = new NodeReference();
+                            nodeReferenceForWay.setOSMNodeId(getOsmData.getOSM().getNodeForWays().get(i).getID());
+                            nodeReferenceForWay.setLat(getOsmData.getOSM().getNodeForWays().get(i).getLatitude());
+                            nodeReferenceForWay.setLon(getOsmData.getOSM().getNodeForWays().get(i).getLongitude());
+                            nodeReferenceForWay.setVersion(getOsmData.getOSM().getNodeForWays().get(i).getVersion());
+                            nodeReferenceForWay.setIsForData(AppConstant.OSM_DATA);
+                            List<Attributes> attributesList = new ArrayList<>();
+                            Attributes attributes;
+                            if (getOsmData.getOSM().getNodeForWays().get(i).getTag() != null &&
+                                    getOsmData.getOSM().getNodeForWays().get(i).getTag().size() != 0) {
+                                for (int k = 0; k < getOsmData.getOSM().getNodeForWays().get(i).getTag().size(); k++) {
+                                    attributes = new Attributes();
+                                    attributes.setKey(getOsmData.getOSM().getNodeForWays().get(i).getTag().get(k).getK());
+                                    attributes.setValue(getOsmData.getOSM().getNodeForWays().get(i).getTag().get(k).getV());
+                                    attributes.setValid(false);
+                                    attributesList.add(attributes);
+                                    nodeReferenceForWay.setAttributes(attributesList);
+                                }
+                            }
+                            nodeReferenceListForWay.add(nodeReferenceForWay);
+                        }
+                    }
                     List<ListWayData> listWayDataListCreated = new ArrayList<>();
                     ListWayData listWayData;
-
                     if (getOsmData.getOSM() != null && getOsmData.getOSM().getWays() != null) {
                         for (int i = 0; i < getOsmData.getOSM().getWays().size(); i++) {
                             listWayData = new ListWayData();
-
                             listWayData.setOSMWayId(getOsmData.getOSM().getWays().get(i).getID());
                             listWayData.setVersion(getOsmData.getOSM().getWays().get(i).getVersion());
                             listWayData.setIsValid("false");
@@ -158,14 +180,14 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
                                     getOsmData.getOSM().getWays().get(i).getNdList().size() != 0 &&
                                     j < getOsmData.getOSM().getWays().get(i).getNdList().size(); j++) {
 
-                                for (int k = 0; k < nodeReferenceList.size(); k++) {
+                                for (int k = 0; k < nodeReferenceListForWay.size(); k++) {
                                     if (getOsmData.getOSM().getWays().get(i).getNdList().get(j).getRef()
-                                            .equalsIgnoreCase(nodeReferenceList.get(k).getOSMNodeId())) {
+                                            .equalsIgnoreCase(getOsmData.getOSM().getNodeForWays().get(k).getID())) {
 
-                                        nodeReferencesWay.add(nodeReferenceList.get(k));
+                                        nodeReferencesWay.add(nodeReferenceListForWay.get(k));
                                         stringListCoordinates = new ParcelableArrayList();
-                                        stringListCoordinates.add(0, nodeReferenceList.get(k).getLat());
-                                        stringListCoordinates.add(1, nodeReferenceList.get(k).getLon());
+                                        stringListCoordinates.add(0, nodeReferenceListForWay.get(k).getLat());
+                                        stringListCoordinates.add(1, nodeReferenceListForWay.get(k).getLon());
                                         coordinatesList.add(stringListCoordinates);
                                         break;
 
@@ -188,119 +210,66 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
                                 attributesArrayListWay.add(attributesWay);
                             }
                             listWayData.setAttributesList(attributesArrayListWay);
-                            if(!listWayData.getOSMWayId().equalsIgnoreCase("4305292042")) {
-                                listWayDataListCreated.add(listWayData);
-                            }
+                            listWayDataListCreated.add(listWayData);
                         }
                     }
 
-                    Log.e("List", String.valueOf(listWayDataListCreated.size()));
+                    Log.e("ListWay", String.valueOf(listWayDataListCreated.size()));
                     ResponseListWay responseListWay = new ResponseListWay();
                     responseListWay.setWayData(listWayDataListCreated);
+
                     if (listWayDataListCreated.size() > 0) {
                         responseListWay.setStatus(true);
                     } else {
                         responseListWay.setStatus(false);
                     }
-                    createListData(responseListWay, true);
-                }
 
+                    mWayListValidatedDataOSM.clear();
+                    mWayListNotValidatedDataOSM.clear();
+                    mNodeListValidatedDataOSM.clear();
+                    mNodeListNotValidatedDataOSM.clear();
+
+                    for (int j = 0; j < nodeReferenceList.size(); j++) {
+                        for (int k = 0; k < nodeReferenceList.get(j).getAttributes().size(); k++) {
+                            if (!nodeReferenceList.get(j).getAttributes().get(k).isValid()) {
+                                if (!Utility.isListContainId(mNodeListNotValidatedDataOSM, nodeReferenceList.get(j).getOSMNodeId())) {
+                                    mNodeListNotValidatedDataOSM.add(nodeReferenceList.get(j));
+                                }
+
+                            } else {
+                                if (!Utility.isListContainId(mNodeListValidatedDataOSM, nodeReferenceList
+                                        .get(j).getOSMNodeId())) {
+                                    mNodeListValidatedDataOSM.add(nodeReferenceList.get(j));
+                                }
+                            }
+                        }
+                    }
+                    for (int i = 0; i < listWayDataListCreated.size(); i++) {
+                        listWayDataListCreated.get(i).setmIndex(i);
+                        boolean isValidWay = Boolean.parseBoolean(listWayDataListCreated.get(i).getIsValid());
+                        if (isValidWay) {
+                            mWayListValidatedDataOSM.add(listWayDataListCreated.get(i));
+                        } else {
+                            mWayListNotValidatedDataOSM.add(listWayDataListCreated.get(i));
+                        }
+                    }
+                    if (WayDataPreference.getInstance(getApplicationContext()) != null) {
+                        WayDataPreference.getInstance(getApplicationContext()).saveValidateWayDataOSM(mWayListValidatedDataOSM);
+                        WayDataPreference.getInstance(getApplicationContext()).saveNotValidatedWayDataOSM(mWayListNotValidatedDataOSM);
+                        WayDataPreference.getInstance(getApplicationContext()).saveValidateDataNodeOSM(mNodeListValidatedDataOSM);
+                        WayDataPreference.getInstance(getApplicationContext()).saveNotValidateDataNodeOSM(mNodeListNotValidatedDataOSM);
+
+                    }
+                    isOSMDataSynced = false;
+                }
+                setSyncData();
             }
+
         });
 
     }
 
-    public void createListData(ResponseListWay responseWay, boolean isForOsm) {
-        if (!isForOsm) {
-            mWayListValidatedData.clear();
-            mWayListNotValidatedData.clear();
-            mNodeListValidatedData.clear();
-            mNodeListNotValidatedData.clear();
-
-            for (int i = 0; i < responseWay.getWayData().size(); i++) {
-                responseWay.getWayData().get(i).setmIndex(i);
-                boolean isValidWay = Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
-                if (isValidWay) {
-                    mWayListValidatedData.add(responseWay.getWayData().get(i));
-                } else {
-                    mWayListNotValidatedData.add(responseWay.getWayData().get(i));
-                }
-                for (int j = 0; j < responseWay.getWayData().get(i).getNodeReference().size(); j++) {
-                    responseWay.getWayData().get(i).getNodeReference().get(j).setmIndex(j);
-                    if (responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes() != null) {
-                        for (int k = 0; k < responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().size(); k++) {
-                            if (!responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().get(k).isValid()) {
-                                if (!Utility.isListContainId(mNodeListNotValidatedData, responseWay.getWayData().get(i).getNodeReference()
-                                        .get(j).getAPINodeId())) {
-                                    mNodeListNotValidatedData.add(responseWay.getWayData().get(i).getNodeReference().get(j));
-
-                                }
-
-                            } else {
-                                if (!Utility.isListContainId(mNodeListValidatedData, responseWay.getWayData().get(i).getNodeReference()
-                                        .get(j).getAPINodeId())) {
-                                    mNodeListValidatedData.add(responseWay.getWayData().get(i).getNodeReference().get(j));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (WayDataPreference.getInstance(this) != null) {
-                WayDataPreference.getInstance(this).saveValidateWayData(mWayListValidatedData);
-                WayDataPreference.getInstance(this).saveNotValidatedWayData(mWayListNotValidatedData);
-                WayDataPreference.getInstance(this).saveValidateDataNode(mNodeListValidatedData);
-                WayDataPreference.getInstance(this).saveNotValidateDataNode(mNodeListNotValidatedData);
-
-            }
-            isLISTDatSynced =false;
-        }
-        if (isForOsm) {
-            mWayListValidatedDataOSM.clear();
-            mWayListNotValidatedDataOSM.clear();
-            mNodeListValidatedDataOSM.clear();
-            mNodeListNotValidatedDataOSM.clear();
-
-            for (int i = 0; i < responseWay.getWayData().size(); i++) {
-                responseWay.getWayData().get(i).setmIndex(i);
-                boolean isValidWay = Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
-                if (isValidWay) {
-                    mWayListValidatedDataOSM.add(responseWay.getWayData().get(i));
-                } else {
-                    mWayListNotValidatedDataOSM.add(responseWay.getWayData().get(i));
-                }
-
-                for (int j = 0; j < responseWay.getWayData().get(i).getNodeReference().size(); j++) {
-                    responseWay.getWayData().get(i).getNodeReference().get(j).setmIndex(j);
-                    if (responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes() != null) {
-
-                        for (int k = 0; k < responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().size(); k++) {
-                            if (!responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().get(k).isValid()) {
-                                if (!Utility.isListContainId(mNodeListNotValidatedDataOSM,
-                                        responseWay.getWayData().get(i).getNodeReference().get(j).getOSMNodeId())) {
-                                    mNodeListNotValidatedDataOSM.add(responseWay.getWayData().get(i).getNodeReference().get(j));
-                                }
-
-                            } else {
-                                if (!Utility.isListContainId(mNodeListValidatedDataOSM, responseWay.getWayData().get(i).getNodeReference()
-                                        .get(j).getOSMNodeId())) {
-                                    mNodeListValidatedDataOSM.add(responseWay.getWayData().get(i).getNodeReference().get(j));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (WayDataPreference.getInstance(this) != null) {
-                WayDataPreference.getInstance(this).saveValidateWayDataOSM(mWayListValidatedDataOSM);
-                WayDataPreference.getInstance(this).saveNotValidatedWayDataOSM(mWayListNotValidatedDataOSM);
-                WayDataPreference.getInstance(this).saveValidateDataNodeOSM(mNodeListValidatedDataOSM);
-                WayDataPreference.getInstance(this).saveNotValidateDataNodeOSM(mNodeListNotValidatedDataOSM);
-
-            }
-            isOSMDataSynced =false;
-        }
-
+    public void setSyncData() {
         switch (stringType){
             case AppConstant.RUN_BOTH:
                 if(!isLISTDatSynced && !mIsShownList){
@@ -342,7 +311,49 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
-                        createListData(responseWay, false);
+                        mWayListValidatedData.clear();
+                        mWayListNotValidatedData.clear();
+                        mNodeListValidatedData.clear();
+                        mNodeListNotValidatedData.clear();
+
+                        for (int i = 0; i < responseWay.getWayData().size(); i++) {
+                            responseWay.getWayData().get(i).setmIndex(i);
+                            boolean isValidWay = Boolean.parseBoolean(responseWay.getWayData().get(i).getIsValid());
+                            if (isValidWay) {
+                                mWayListValidatedData.add(responseWay.getWayData().get(i));
+                            } else {
+                                mWayListNotValidatedData.add(responseWay.getWayData().get(i));
+                            }
+                            for (int j = 0; j < responseWay.getWayData().get(i).getNodeReference().size(); j++) {
+                                responseWay.getWayData().get(i).getNodeReference().get(j).setmIndex(j);
+                                if (responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes() != null) {
+                                    for (int k = 0; k < responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().size(); k++) {
+                                        if (!responseWay.getWayData().get(i).getNodeReference().get(j).getAttributes().get(k).isValid()) {
+                                            if (!Utility.isListContainId(mNodeListNotValidatedData, responseWay.getWayData().get(i).getNodeReference()
+                                                    .get(j).getAPINodeId())) {
+                                                mNodeListNotValidatedData.add(responseWay.getWayData().get(i).getNodeReference().get(j));
+
+                                            }
+
+                                        } else {
+                                            if (!Utility.isListContainId(mNodeListValidatedData, responseWay.getWayData().get(i).getNodeReference()
+                                                    .get(j).getAPINodeId())) {
+                                                mNodeListValidatedData.add(responseWay.getWayData().get(i).getNodeReference().get(j));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (WayDataPreference.getInstance(getApplicationContext()) != null) {
+                            WayDataPreference.getInstance(getApplicationContext()).saveValidateWayData(mWayListValidatedData);
+                            WayDataPreference.getInstance(getApplicationContext()).saveNotValidatedWayData(mWayListNotValidatedData);
+                            WayDataPreference.getInstance(getApplicationContext()).saveValidateDataNode(mNodeListValidatedData);
+                            WayDataPreference.getInstance(getApplicationContext()).saveNotValidateDataNode(mNodeListNotValidatedData);
+
+                        }
+                        isLISTDatSynced =false;
+                        setSyncData();
                     }
                 });
             } else {

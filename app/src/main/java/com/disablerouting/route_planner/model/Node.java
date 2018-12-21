@@ -24,6 +24,9 @@ public class Node {
     @JsonProperty("tag")
     private List<Tag> mTag;
 
+    public Node() {
+    }
+
     public String getID() {
         return mID;
     }

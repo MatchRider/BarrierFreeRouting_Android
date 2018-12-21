@@ -13,15 +13,25 @@ public class GetOSM {
     @JsonProperty("node")
     private List<Node> mNode;
 
+    @JsonProperty("way")
+    private List<Way> mWays;
+
+    private List<Node> mNodeForWays;
+
+    public List<Node> getNodeForWays() {
+        return mNodeForWays;
+    }
+
+    public void setmNodeForWays(List<Node> mNodeForWays) {
+        this.mNodeForWays = mNodeForWays;
+    }
+
     public List<Node> getNode() {
         return mNode;
     }
 
     public GetOSM() {
     }
-
-    @JsonProperty("way")
-    private List<Way> mWays;
 
     public List<Way> getWays() {
         return mWays;

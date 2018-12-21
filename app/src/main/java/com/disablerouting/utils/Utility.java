@@ -452,7 +452,7 @@ public class Utility {
     private static String nodeListToStringWay(NodeList nodes) throws TransformerException {
         StringBuilder result = new StringBuilder();
         int len = nodes.getLength();
-        for (int i = 0; i < len; ++i) {
+        for (int i = 0; i < len; i++) {
             Node node = nodes.item(i);
             Element eElement = (Element) node;
             NodeList cElementTag = eElement.getElementsByTagName("tag");
@@ -476,15 +476,12 @@ public class Utility {
                 if (isHaveKeyHighway && isHaveKeyFootWay) {
                     isHaveSeparateGeometry = true;
                 }
-                if (key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK)) {
+                if (key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK) && !value.equalsIgnoreCase("NO")) {
                     isSideWalkPartOfWay = true;
-                }
-                if (key.equalsIgnoreCase(AppConstant.KEY_SIDEWALK) && value.equalsIgnoreCase("NO")) {
-                    isSideWalkPartOfWayNOKey = true;
                 }
 
             }
-            if ((isHaveSeparateGeometry || isSideWalkPartOfWay) && !isSideWalkPartOfWayNOKey) {
+            if (isHaveSeparateGeometry || isSideWalkPartOfWay) {
                 result.append(nodeToString(nodes.item(i)));
             }
 
@@ -492,7 +489,7 @@ public class Utility {
         return result.toString();
     }
 
-    private static String nodeListToStringNode(NodeList nodes, List<Way> listWay) throws TransformerException {
+    private static String nodeListToStringNodeForWays(NodeList nodes, List<Way> listWay) throws TransformerException {
         StringBuilder result = new StringBuilder();
         int len = nodes.getLength();
         int lenWay = listWay.size();
@@ -510,14 +507,34 @@ public class Utility {
                 }
             }
         }
+       return  result.toString();
+    }
+    private static String nodeListToStringNode(NodeList nodes) throws TransformerException {
+        StringBuilder result = new StringBuilder();
+        int len = nodes.getLength();
+
+        for (int i=0 ;i<len;i++){
+            Element eElement = (Element) nodes.item(i);
+            NodeList cElementTag = eElement.getElementsByTagName("tag");
+            for (int j = 0; j < cElementTag.getLength(); j++) {
+                String key = cElementTag.item(j).getAttributes().getNamedItem("k").getNodeValue();
+                //String value = cElementTag.item(j).getAttributes().getNamedItem("v").getNodeValue();
+                if (key.equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
+                    result.append(nodeToString(nodes.item(i)));
+                    break;
+                }
+            }
+
+        }
 
         return result.toString();
     }
 
     public static GetOsmData convertDataIntoModel(String data) throws IOException {
         GetOsmData osmData = new GetOsmData();
-        GetOSM getOSM;
+        GetOSM getOSMWay;
         GetOSM getOSMNode;
+        GetOSM getOSMNodeForWay;
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             InputSource src = new InputSource();
@@ -527,24 +544,29 @@ public class Utility {
                 Element root = doc.getDocumentElement();
                 String wayData;
                 String nodeData;
+                String nodeDataWay;
                 NodeList wayNodeList = root.getElementsByTagName("way");
                 NodeList nodeNodeList = root.getElementsByTagName("node");
                 try {
                     wayData = nodeListToStringWay(wayNodeList);
                     JSONObject jsonObjectWay = Utility.convertXMLtoJSON(wayData);
-
                     ObjectMapper objectMapper = new ObjectMapper();
+
                     try {
                         objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-                        getOSM = objectMapper.readValue(jsonObjectWay.toString(), GetOSM.class); // GET WAYS first
+                        getOSMWay = objectMapper.readValue(jsonObjectWay.toString(), GetOSM.class); // GET WAYS first
 
-                        nodeData = nodeListToStringNode(nodeNodeList, getOSM.getWays());
+                        nodeDataWay = nodeListToStringNodeForWays(nodeNodeList, getOSMWay.getWays());
+                        JSONObject jsonObjectNodeForWay = Utility.convertXMLtoJSON(nodeDataWay);
+                        getOSMNodeForWay = objectMapper.readValue(jsonObjectNodeForWay.toString(), GetOSM.class); //Get Nodes
+                        getOSMWay.setmNodeForWays(getOSMNodeForWay.getNode());
+
+                        nodeData = nodeListToStringNode(nodeNodeList);
                         JSONObject jsonObjectNode = Utility.convertXMLtoJSON(nodeData);
-
                         getOSMNode = objectMapper.readValue(jsonObjectNode.toString(), GetOSM.class); //Get Nodes
+                        getOSMWay.setNode(getOSMNode.getNode());
 
-                        getOSM.setNode(getOSMNode.getNode());
-                        osmData.setOSM(getOSM);
+                        osmData.setOSM(getOSMWay);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
