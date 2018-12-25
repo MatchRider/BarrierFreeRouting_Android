@@ -166,17 +166,39 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                         }
 
                     } else if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)) {
-                        if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.incline_zero))) {
+                        if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.incline_zero_percentage))) {
                             subTitle = mContext.getString(R.string.zero_incline);
-                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_three))) {
-                            subTitle = mContext.getString(R.string.up_to_three);
-                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_six))) {
-                            subTitle = mContext.getString(R.string.up_to_six);
-                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_ten))) {
-                            subTitle = mContext.getString(R.string.up_to_ten);
-                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_eleven))) {
-                            subTitle = mContext.getString(R.string.greater_ten);
-                        } else {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.zero_to_one_value))) {
+                            subTitle = mContext.getString(R.string.zero_to_one);
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.one_to_two_value))) {
+                            subTitle = mContext.getString(R.string.one_to_two);
+                        }else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.two_to_three_value))) {
+                            subTitle = mContext.getString(R.string.two_to_three);
+                        }
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.three_to_four_value))) {
+                            subTitle = mContext.getString(R.string.three_to_four);
+                        }
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.four_to_five_value))) {
+                            subTitle = mContext.getString(R.string.four_to_five);
+                        }
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.five_to_six_value))) {
+                            subTitle = mContext.getString(R.string.five_to_six);
+                        }
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.six_to_seven_value))) {
+                            subTitle = mContext.getString(R.string.six_to_seven);
+                        }
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.seven_to_eight_value))) {
+                            subTitle = mContext.getString(R.string.seven_to_eight);
+                        }
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.eight_to_nine_value))) {
+                            subTitle = mContext.getString(R.string.eight_to_nine);
+                        }
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.nine_to_ten_value))) {
+                            subTitle = mContext.getString(R.string.nine_to_ten);
+                        }
+                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.ten_to_fifteen_value))) {
+                            subTitle = mContext.getString(R.string.ten_to_fifteen);
+                        }else {
                             subTitle = mSelectionMap.get(checkPos).getValue();
                         }
                     } else {

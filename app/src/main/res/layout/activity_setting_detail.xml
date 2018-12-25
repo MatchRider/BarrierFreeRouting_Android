@@ -79,11 +79,18 @@
                 android:fontFamily="@font/frutiger_lt_bold"
         />
     </LinearLayout>
-    <android.support.v7.widget.RecyclerView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/rcv_setting"
             android:padding="@dimen/padding_large"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:scrollbars="vertical"
+            android:fadeScrollbars="false"
+            android:layout_height="0dp"
+            android:layout_weight="5"/>
 
     <RelativeLayout
         android:id="@+id/rel_width"
@@ -91,7 +98,8 @@
         android:padding="@dimen/padding_large"
         android:orientation="vertical"
         android:visibility="gone"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="5">
         <TextView
             android:id="@+id/txv_width_title"
             android:layout_width="wrap_content"
@@ -125,5 +133,6 @@
             android:inputType="numberDecimal"
             android:ellipsize="end"/>
     </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

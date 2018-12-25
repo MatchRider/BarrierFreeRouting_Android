@@ -103,6 +103,34 @@
     <string name="value_ten">10</string>
     <string name="value_eleven">11</string>
 
+    <!--DATA EDITOR OPTIONS MAXIMUM INCLINE TYPE-->
+    <string name="incline_zero_percentage">0%</string>
+    <string name="zero_to_one">0% - 1%</string>
+    <string name="one_to_two">1% - 2%</string>
+    <string name="two_to_three">2% - 3%</string>
+    <string name="three_to_four">3% - 4%</string>
+    <string name="four_to_five">4% - 5%</string>
+    <string name="five_to_six">5% - 6%</string>
+    <string name="six_to_seven">6% - 7%</string>
+    <string name="seven_to_eight">7% - 8%</string>
+    <string name="eight_to_nine">8% - 9%</string>
+    <string name="nine_to_ten">9% - 10%</string>
+    <string name="ten_to_fifteen">10% - 15%</string>
+
+
+    <!--DATA EDITOR VALUES MAXIMUM INCLINE TYPE-->
+    <string name="zero_to_one_value">1%</string>
+    <string name="one_to_two_value">2%</string>
+    <string name="two_to_three_value">3%</string>
+    <string name="three_to_four_value">4%</string>
+    <string name="four_to_five_value">5%</string>
+    <string name="five_to_six_value">6%</string>
+    <string name="six_to_seven_value">7%</string>
+    <string name="seven_to_eight_value">8%</string>
+    <string name="eight_to_nine_value">9%</string>
+    <string name="nine_to_ten_value">10%</string>
+    <string name="ten_to_fifteen_value">15%</string>
+
     <!--FILTER OPTIONS MAXIMUM KERB HEIGHT TYPE-->
     <string name="zero_curb">No curb</string>
     <string name="three_kerb">3 cm</string>
@@ -126,8 +154,8 @@
 
     <!--FILTER VALUE MINIMUM WIDTH  VALUE TYPE-->
     <string name="value_nine_greater_filter">0.90</string>
-    <string name="value_nine_greater">2.0</string>
-    <string name="value_nine_less">0.5</string>
+    <string name="value_nine_greater">0.91</string>
+    <string name="value_nine_less">0.89</string>
 
     <!--CLOSED FILTER SCREEN VALUES............................................-->
 
@@ -233,7 +261,7 @@
     <string name="send_mail">Send mail…</string>
     <string name="error_contact">There is no email client installed.</string>
     <string name="query_subject">Query barrier-free routing app</string>
-    <string name="other_value">Other Value(m)</string>
+    <string name="other_value">Other Value</string>
     <string name="add_some_width">Add some width</string>
 
 

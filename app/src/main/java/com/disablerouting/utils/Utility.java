@@ -653,20 +653,34 @@ public class Utility {
     public static ArrayList<String> prepareListDataMaxIncline(Context context) {
         ArrayList<String> stringArrayList = new ArrayList<>();
         stringArrayList.add(context.getString(R.string.zero_incline));
-        stringArrayList.add(context.getString(R.string.up_to_three));
-        stringArrayList.add(context.getString(R.string.up_to_six));
-        stringArrayList.add(context.getString(R.string.up_to_ten));
-        stringArrayList.add(context.getString(R.string.greater_ten));
+        stringArrayList.add(context.getString(R.string.zero_to_one));
+        stringArrayList.add(context.getString(R.string.one_to_two));
+        stringArrayList.add(context.getString(R.string.two_to_three));
+        stringArrayList.add(context.getString(R.string.three_to_four));
+        stringArrayList.add(context.getString(R.string.four_to_five));
+        stringArrayList.add(context.getString(R.string.five_to_six));
+        stringArrayList.add(context.getString(R.string.six_to_seven));
+        stringArrayList.add(context.getString(R.string.seven_to_eight));
+        stringArrayList.add(context.getString(R.string.eight_to_nine));
+        stringArrayList.add(context.getString(R.string.nine_to_ten));
+        stringArrayList.add(context.getString(R.string.ten_to_fifteen));
         return stringArrayList;
     }
 
     public static ArrayList<String> prepareListDataMaxInclineKey(Context context) {
         ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add(context.getString(R.string.incline_zero));
-        stringArrayList.add(context.getString(R.string.value_three));
-        stringArrayList.add(context.getString(R.string.value_six));
-        stringArrayList.add(context.getString(R.string.value_ten));
-        stringArrayList.add(context.getString(R.string.value_eleven));
+        stringArrayList.add(context.getString(R.string.incline_zero_percentage));
+        stringArrayList.add(context.getString(R.string.zero_to_one_value));
+        stringArrayList.add(context.getString(R.string.one_to_two_value));
+        stringArrayList.add(context.getString(R.string.two_to_three_value));
+        stringArrayList.add(context.getString(R.string.three_to_four_value));
+        stringArrayList.add(context.getString(R.string.four_to_five_value));
+        stringArrayList.add(context.getString(R.string.five_to_six_value));
+        stringArrayList.add(context.getString(R.string.six_to_seven_value));
+        stringArrayList.add(context.getString(R.string.seven_to_eight_value));
+        stringArrayList.add(context.getString(R.string.eight_to_nine_value));
+        stringArrayList.add(context.getString(R.string.nine_to_ten_value));
+        stringArrayList.add(context.getString(R.string.ten_to_fifteen_value));
         return stringArrayList;
     }
 

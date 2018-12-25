@@ -73,6 +73,7 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
                     settingDetailAdapter = new SettingDetailAdapter(Utility.prepareListDataMaxIncline(this), this, false);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                     mRecyclerView.setAdapter(settingDetailAdapter);
+                    mRelativeLayoutWidth.setVisibility(View.VISIBLE);
                     break;
                 case 3:
                     settingDetailAdapter = new SettingDetailAdapter(Utility.prepareListDataSideWalk(this), this, false);
