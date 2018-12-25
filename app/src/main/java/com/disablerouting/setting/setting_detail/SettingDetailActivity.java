@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +25,9 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
 
     @BindView(R.id.txv_title_community)
     TextView mTxvTitle;
+
+    @BindView(R.id.ll_width)
+    LinearLayout mLinearLayoutWidth;
 
     private int mPositionOfTitle;
     private boolean mIsForWAY = false;
@@ -70,6 +74,7 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
                     settingDetailAdapter = new SettingDetailAdapter(Utility.prepareListDataSideWalk(this), this, false);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                     mRecyclerView.setAdapter(settingDetailAdapter);
+                    mLinearLayoutWidth.setVisibility(View.VISIBLE);
                     break;
 
             }

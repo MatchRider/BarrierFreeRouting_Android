@@ -1,119 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.disablerouting">
+    package="com.disablerouting">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
 
     <application
-            android:name=".application.DisableRouteApp"
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher"
-            android:supportsRtl="true"
-            android:largeHeap="true"
-            android:hardwareAccelerated="true"
-            android:theme="@style/AppTheme">
+        android:name=".application.DisableRouteApp"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
         <activity
-                android:name=".splash.SplashActivity"
-                android:screenOrientation="portrait"
-                android:theme="@style/Theme.AppCompat.NoActionBar"
-                android:windowSoftInputMode="stateHidden|adjustNothing">
+            android:name=".splash.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustNothing">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-                android:name=".tutorial.TutorialActivity"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="stateHidden|adjustNothing">
-        </activity>
+            android:name=".tutorial.TutorialActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustNothing"></activity>
         <activity
-                android:name=".home.HomeActivity"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="stateHidden|adjustNothing">
-        </activity>
+            android:name=".home.HomeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustNothing"></activity>
 
         <receiver
-                android:name=".network.NetworkChangeReceiver"
-                android:label="NetworkChangeReceiver">
-        </receiver>
+            android:name=".network.NetworkChangeReceiver"
+            android:label="NetworkChangeReceiver"></receiver>
 
         <activity
-                android:name=".route_planner.view.RoutePlannerActivity"
-                android:launchMode="singleTask"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustNothing"
-                android:theme="@style/AppTheme">
-        </activity>
+            android:name=".route_planner.view.RoutePlannerActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustNothing"></activity>
         <activity
-                android:name=".filter.view.FilterActivity"
-                android:screenOrientation="portrait"
-                android:theme="@style/AppTheme"
-                android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:name=".filter.view.FilterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
-                android:name=".setting.SettingActivity"
-                android:screenOrientation="portrait"
-                android:launchMode="singleInstance"
-                android:theme="@style/AppTheme">
-        </activity>
+            android:name=".setting.SettingActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
         <activity
-                android:name=".setting.setting_detail.SettingDetailActivity"
-                android:screenOrientation="portrait"
-                android:launchMode="singleTop"
-                android:theme="@style/AppTheme">
-        </activity>
+            android:name=".setting.setting_detail.SettingDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
-                android:name=".acknowledement.AcknowledgementActivity"
-                android:screenOrientation="portrait"
-                android:theme="@style/AppTheme">
-        </activity>
+            android:name=".acknowledement.AcknowledgementActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
         <activity
-                android:name=".disclaimer.DisclaimerActivity"
-                android:screenOrientation="portrait"
-                android:theme="@style/AppTheme">
-        </activity>
+            android:name=".disclaimer.DisclaimerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
         <activity
-                android:name=".legal.LegalActivity"
-                android:screenOrientation="portrait"
-                android:theme="@style/AppTheme">
-        </activity>
+            android:name=".legal.LegalActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
         <activity
-                android:name=".contact.ContactActivity"
-                android:screenOrientation="portrait"
-                android:theme="@style/AppTheme"
-                android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:name=".contact.ContactActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
-                android:name=".login.LoginActivity"
-                android:label="@string/title_activity_login"
-                android:launchMode="singleTop"
-                android:screenOrientation="portrait"
-                android:theme="@style/AppTheme">
+            android:name=".login.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
-                        android:host="oauth-callback"
-                        android:scheme="disabled-routing"/>
+                    android:host="oauth-callback"
+                    android:scheme="disabled-routing" />
             </intent-filter>
         </activity>
-        <activity android:name=".instructions.InstructionsActivity"
-                  android:screenOrientation="portrait"
-                  android:label="@string/instructions_for_route"
-                  android:theme="@style/AppTheme">
-        </activity>
-        <service android:name=".service.OsmDataService"/>
+        <activity
+            android:name=".instructions.InstructionsActivity"
+            android:label="@string/instructions_for_route"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
+
+        <service android:name=".service.OsmDataService" />
 
     </application>
 

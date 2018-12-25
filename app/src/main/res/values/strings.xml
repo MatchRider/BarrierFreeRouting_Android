@@ -126,8 +126,8 @@
 
     <!--FILTER VALUE MINIMUM WIDTH  VALUE TYPE-->
     <string name="value_nine_greater_filter">0.90</string>
-    <string name="value_nine_greater">0.90</string>
-    <string name="value_nine_less">1.00</string>
+    <string name="value_nine_greater">2.0</string>
+    <string name="value_nine_less">0.5</string>
 
     <!--CLOSED FILTER SCREEN VALUES............................................-->
 
@@ -233,6 +233,7 @@
     <string name="send_mail">Send mail…</string>
     <string name="error_contact">There is no email client installed.</string>
     <string name="query_subject">Query barrier-free routing app</string>
+    <string name="other_value">Other Value</string>
 
 
 </resources>
