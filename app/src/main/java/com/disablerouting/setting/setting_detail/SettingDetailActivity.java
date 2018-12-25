@@ -7,7 +7,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,8 +27,11 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
     @BindView(R.id.txv_title_community)
     TextView mTxvTitle;
 
-    @BindView(R.id.ll_width)
-    LinearLayout mLinearLayoutWidth;
+    @BindView(R.id.rel_width)
+    RelativeLayout mRelativeLayoutWidth;
+
+    @BindView(R.id.edt_width_value)
+    EditText mEdtWidth;
 
     private int mPositionOfTitle;
     private boolean mIsForWAY = false;
@@ -74,7 +78,7 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
                     settingDetailAdapter = new SettingDetailAdapter(Utility.prepareListDataSideWalk(this), this, false);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                     mRecyclerView.setAdapter(settingDetailAdapter);
-                    mLinearLayoutWidth.setVisibility(View.VISIBLE);
+                    mRelativeLayoutWidth.setVisibility(View.VISIBLE);
                     break;
 
             }
@@ -94,35 +98,42 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
         finish();
     }
 
-    private void setDataWhenFilterApplied(String valueSelected, int position) {
+    private void setDataWhenFilterApplied(String valueSelected) {
         Intent returnIntent = new Intent();
         returnIntent.putExtra(AppConstant.SETTING_ITEM_SELECTED_RECIEVE, valueSelected);
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
 
+    @OnClick(R.id.img_submit)
+    public void onWidthSubmitClick(){
+        if(!mEdtWidth.getText().toString().isEmpty()){
+            setDataWhenFilterApplied(mEdtWidth.getText().toString());
+        }
+
+    }
     @Override
     public void onDetailItemClick(View v, int position) {
         if (mIsForWAY) {
             switch (mPositionOfTitle) {
                 case 0:
-                    setDataWhenFilterApplied(Utility.prepareListDataSurfaceKey(this).get(position), position);
+                    setDataWhenFilterApplied(Utility.prepareListDataSurfaceKey(this).get(position));
                     break;
                 case 1:
-                    setDataWhenFilterApplied(Utility.prepareListDataMaxSlopeKey(this).get(position), position);
+                    setDataWhenFilterApplied(Utility.prepareListDataMaxSlopeKey(this).get(position));
                     break;
                 case 2:
-                    setDataWhenFilterApplied(Utility.prepareListDataMaxInclineKey(this).get(position), position);
+                    setDataWhenFilterApplied(Utility.prepareListDataMaxInclineKey(this).get(position));
                     break;
                 case 3:
-                    setDataWhenFilterApplied(Utility.prepareListDataSideWalkKey(this).get(position), position);
+                    setDataWhenFilterApplied(Utility.prepareListDataSideWalkKey(this).get(position));
                     break;
 
             }
         } else {
             switch (mPositionOfTitle) {
                 case 0:
-                    setDataWhenFilterApplied(Utility.prepareListDataMaxSlopeKey(this).get(position), position);
+                    setDataWhenFilterApplied(Utility.prepareListDataMaxSlopeKey(this).get(position));
                     break;
             }
         }

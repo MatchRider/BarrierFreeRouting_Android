@@ -233,7 +233,8 @@
     <string name="send_mail">Send mail…</string>
     <string name="error_contact">There is no email client installed.</string>
     <string name="query_subject">Query barrier-free routing app</string>
-    <string name="other_value">Other Value</string>
+    <string name="other_value">Other Value(m)</string>
+    <string name="add_some_width">Add some width</string>
 
 
 </resources>

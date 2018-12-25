@@ -227,7 +227,8 @@
     <string name="send_mail">E-Mail senden…</string>
     <string name="error_contact">Es ist kein E-Mail-Client installiert.</string>
     <string name="query_subject">Anfrage App Hürdenlose Navigation</string>
-    <string name="other_value">Anderer Wert</string>
+    <string name="other_value">Anderer Wert(m)</string>
+    <string name="add_some_width">Add some width</string>
 
 
 </resources>
