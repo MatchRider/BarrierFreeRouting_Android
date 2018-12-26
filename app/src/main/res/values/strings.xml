@@ -263,6 +263,7 @@
     <string name="query_subject">Query barrier-free routing app</string>
     <string name="other_value">Other Value</string>
     <string name="add_some_width">Add some width</string>
+    <string name="message_to_proceed">All values have to be filled in before you can save.</string>
 
 
 </resources>

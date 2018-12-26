@@ -257,6 +257,7 @@
     <string name="query_subject">Anfrage App Hürdenlose Navigation</string>
     <string name="other_value">Anderer Wert</string>
     <string name="add_some_width">Add some width</string>
+    <string name="message_to_proceed">Bitte fülle alle Werte, damit du deine Eingabe speichern kannst.</string>
 
 
 </resources>

@@ -108,7 +108,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 mListDataSEND = mListWayData;
                 if (mListWayData != null) {
                     mWayID = mListWayData.getOSMWayId();
-                    List<NodeReference> mNodeList = mListWayData.getNodeReference();
                     mIsValidScreen = Boolean.parseBoolean(mListWayData.getIsValid());
                     if (mListWayData.getIsForData() != null) {
                         mISFromOSM = !mListWayData.getIsForData().isEmpty() && mListWayData.getIsForData().equalsIgnoreCase(AppConstant.OSM_DATA);
@@ -118,26 +117,26 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         for (int i = 0; i < mListWayData.getAttributesList().size(); i++) {
                             switch (mListWayData.getAttributesList().get(i).getKey()) {
                                 case AppConstant.KEY_SIDEWALK:
-                                        switch (mListWayData.getAttributesList().get(i).getValue()) {
-                                            case "left":
-                                                mStringChoosedSideWalk = "left";
-                                                mTxvSideWalk.setText(getResources().getString(R.string.left));
-                                                break;
-                                            case "right":
-                                                mStringChoosedSideWalk = "right";
-                                                mTxvSideWalk.setText(getResources().getString(R.string.right));
-                                                break;
-                                            case "both":
-                                                mStringChoosedSideWalk = "both";
-                                                mTxvSideWalk.setText(getResources().getString(R.string.both));
-                                                break;
-                                        }
+                                    switch (mListWayData.getAttributesList().get(i).getValue()) {
+                                        case "left":
+                                            mStringChoosedSideWalk = "left";
+                                            mTxvSideWalk.setText(getResources().getString(R.string.left));
+                                            break;
+                                        case "right":
+                                            mStringChoosedSideWalk = "right";
+                                            mTxvSideWalk.setText(getResources().getString(R.string.right));
+                                            break;
+                                        case "both":
+                                            mStringChoosedSideWalk = "both";
+                                            mTxvSideWalk.setText(getResources().getString(R.string.both));
+                                            break;
+                                    }
                             }
                         }
-                        if(!mStringChoosedSideWalk.isEmpty()){
+                        if (!mStringChoosedSideWalk.isEmpty()) {
                             mTxvSideWalk.setVisibility(View.VISIBLE);
 
-                        }else {
+                        } else {
                             mTxvSideWalk.setVisibility(View.GONE);
                         }
                     } else {
@@ -345,7 +344,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                             }
                         }
                     } else {
-                        if(!mStringChoosedSideWalk.isEmpty()) {
+                        if (!mStringChoosedSideWalk.isEmpty()) {
                             if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
                                 hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_SURFACE,
                                         attributes.getValue());
@@ -359,7 +358,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                                 hashMapTags.put(AppConstant.KEY_SIDEWALK + ":" + mStringChoosedSideWalk + ":" + AppConstant.KEY_WIDTH,
                                         attributes.getValue());
                             }
-                        }else {
+                        } else {
                             if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE) && !attributes.getValue().isEmpty()) {
                                 hashMapTags.put(AppConstant.KEY_SURFACE,
                                         Utility.covertValueRequiredWhenSend(this, attributes.getKey(), attributes.getValue()));
@@ -492,12 +491,29 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         showLoader();
                         if (mChangeSetID != null) {
                             mRelativeLayoutProgress.setVisibility(View.VISIBLE);
-                            if (!mListWayData.getOSMWayId().isEmpty()) {
-                                callToGetVersions();
-                            } else {
-                                mWayIdAvailable = false;
-                                checkNodes();
+                            if(!mISFromOSM){
+                                if(CheckAllValues()){
+                                    if (!mListWayData.getOSMWayId().isEmpty()) {
+                                        callToGetVersions();
+                                    } else {
+                                        mWayIdAvailable = false;
+                                        checkNodes();
+                                    }
+
+                                }else {
+                                    hideLoader();
+                                    Toast.makeText(this,R.string.message_to_proceed,Toast.LENGTH_LONG).show();
+                                }
+                            }else {
+                                if (!mListWayData.getOSMWayId().isEmpty()) {
+                                    callToGetVersions();
+                                } else {
+                                    mWayIdAvailable = false;
+                                    checkNodes();
+                                }
                             }
+
+
                         }
                     }
                 } else {
@@ -523,6 +539,35 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             }
         }
 
+    }
+
+    public boolean CheckAllValues() {
+        boolean shouldProceed = false;
+        boolean checkSurface= false;
+        boolean checkIncline= false;
+        boolean checkWidth= false;
+        if (mHashMapWay != null && mHashMapWay.size() != 0) {
+            for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
+                Attributes attributes = pair.getValue();
+                assert attributes != null;
+                if (attributes.getKey() != null && !attributes.getKey().isEmpty()) {
+                    if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)) {
+                        checkSurface = attributes.getValue() != null && !attributes.getValue().isEmpty() && attributes.isValid();
+                    }
+                    if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)) {
+                        checkIncline = attributes.getValue() != null && !attributes.getValue().isEmpty() && attributes.isValid();
+                    }
+                    if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
+                        checkWidth = attributes.getValue() != null && !attributes.getValue().isEmpty() && attributes.isValid();
+                    }
+                }
+
+            }
+
+            shouldProceed = checkSurface && checkIncline && checkWidth;
+
+        }
+        return shouldProceed;
     }
 
     /**
