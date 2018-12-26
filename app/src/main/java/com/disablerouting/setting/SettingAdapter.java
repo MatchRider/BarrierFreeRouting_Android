@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
 import com.disablerouting.R;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.model.Attributes;
@@ -101,10 +102,9 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     }
 
                 }
-            }
-            else if (mSelectionMap.get(checkPos) != null && mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:left:width")
-                    ||mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:right:width")
-                    ||mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:both:width")) {
+            } else if (mSelectionMap.get(checkPos) != null && mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:left:width")
+                    || mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:right:width")
+                    || mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:both:width")) {
                 if (mSelectionMap.get(checkPos).getValue() != null) {
                     if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_nine_greater))) {
                         subTitle = mContext.getString(R.string.nine_less);
@@ -115,12 +115,11 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     }
 
                 }
-            }
-            else {
+            } else {
                 if (mSelectionMap.get(checkPos) != null && mSelectionMap.get(checkPos).getValue() != null) {
                     if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:left:surface")
-                            ||mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:right:surface")
-                            ||mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:both:surface")) {
+                            || mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:right:surface")
+                            || mSelectionMap.get(checkPos).getKey().equalsIgnoreCase("sidewalk:both:surface")) {
                         if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("asphalt")) {
                             subTitle = mContext.getString(R.string.asphalt);
                         } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("concrete")) {
@@ -134,8 +133,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                         } else {
                             subTitle = mSelectionMap.get(checkPos).getValue();
                         }
-                    }
-                    else if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)) {
+                    } else if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)) {
                         if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("asphalt")) {
                             subTitle = mContext.getString(R.string.asphalt);
                         } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase("concrete")) {
@@ -149,8 +147,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                         } else {
                             subTitle = mSelectionMap.get(checkPos).getValue();
                         }
-                    }
-                    else if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
+                    } else if (mSelectionMap.get(checkPos).getKey().equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
                         if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.kerb_zero))) {
                             subTitle = mContext.getString(R.string.zero_curb);
                         } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_kerb_three_validation))) {
@@ -172,33 +169,25 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                             subTitle = mContext.getString(R.string.zero_to_one);
                         } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.one_to_two_value))) {
                             subTitle = mContext.getString(R.string.one_to_two);
-                        }else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.two_to_three_value))) {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.two_to_three_value))) {
                             subTitle = mContext.getString(R.string.two_to_three);
-                        }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.three_to_four_value))) {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.three_to_four_value))) {
                             subTitle = mContext.getString(R.string.three_to_four);
-                        }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.four_to_five_value))) {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.four_to_five_value))) {
                             subTitle = mContext.getString(R.string.four_to_five);
-                        }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.five_to_six_value))) {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.five_to_six_value))) {
                             subTitle = mContext.getString(R.string.five_to_six);
-                        }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.six_to_seven_value))) {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.six_to_seven_value))) {
                             subTitle = mContext.getString(R.string.six_to_seven);
-                        }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.seven_to_eight_value))) {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.seven_to_eight_value))) {
                             subTitle = mContext.getString(R.string.seven_to_eight);
-                        }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.eight_to_nine_value))) {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.eight_to_nine_value))) {
                             subTitle = mContext.getString(R.string.eight_to_nine);
-                        }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.nine_to_ten_value))) {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.nine_to_ten_value))) {
                             subTitle = mContext.getString(R.string.nine_to_ten);
-                        }
-                        else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.ten_to_fifteen_value))) {
+                        } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.ten_to_fifteen_value))) {
                             subTitle = mContext.getString(R.string.ten_to_fifteen);
-                        }else {
+                        } else {
                             subTitle = mSelectionMap.get(checkPos).getValue();
                         }
                     } else {
