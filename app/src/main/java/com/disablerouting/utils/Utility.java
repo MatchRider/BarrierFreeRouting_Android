@@ -654,9 +654,9 @@ public class Utility {
     public static ArrayList<String> prepareListDataMaxSlopeKey(Context context) {
         ArrayList<String> stringArrayList = new ArrayList<>();
         stringArrayList.add(context.getString(R.string.kerb_zero));
-        stringArrayList.add(context.getString(R.string.value_kerb_three_validation));
-        stringArrayList.add(context.getString(R.string.value_kerb_six_validation));
-        stringArrayList.add(context.getString(R.string.value_kerb_any_validation));
+        stringArrayList.add(context.getString(R.string.value_kerb_three));
+        stringArrayList.add(context.getString(R.string.value_kerb_six));
+        stringArrayList.add(context.getString(R.string.value_kerb_any));
         return stringArrayList;
     }
 
