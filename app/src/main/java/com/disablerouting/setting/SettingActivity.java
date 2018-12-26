@@ -502,7 +502,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
                                 }else {
                                     hideLoader();
-                                    Toast.makeText(this,R.string.message_to_proceed,Toast.LENGTH_LONG).show();
+                                    Toast.makeText(this,R.string.message_to_proceed,Toast.LENGTH_SHORT).show();
                                 }
                             }else {
                                 if (!mListWayData.getOSMWayId().isEmpty()) {
@@ -734,7 +734,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                 String dataString = data.getStringExtra(AppConstant.SETTING_ITEM_SELECTED_RECIEVE);
                 Attributes attributes = new Attributes();
                 attributes.setKey(mHashMapWay.get(mPositionClicked).getKey());
-                attributes.setValue(dataString);
+                attributes.setValue(Utility.changeCommaToDot(dataString));
                 //attributes.setValid(true);
                 mHashMapWay.put(mPositionClicked, attributes);
                 mSettingAdapter.setSelectionMap(mHashMapWay, true);
