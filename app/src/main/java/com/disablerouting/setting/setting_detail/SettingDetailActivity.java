@@ -109,10 +109,15 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
     @OnClick(R.id.img_submit)
     public void onWidthSubmitClick(){
         if(!mEdtWidth.getText().toString().isEmpty()){
-            setDataWhenFilterApplied(mEdtWidth.getText().toString());
+            if(mPositionOfTitle==2){
+                setDataWhenFilterApplied(mEdtWidth.getText().toString()+"%");
+            }
+            if(mPositionOfTitle==3){
+                setDataWhenFilterApplied(Utility.changeCommaToDot(mEdtWidth.getText().toString()));
+            }
         }
-
     }
+
     @Override
     public void onDetailItemClick(View v, int position) {
         if (mIsForWAY) {
