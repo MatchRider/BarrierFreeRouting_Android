@@ -29,6 +29,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import com.disablerouting.R;
 import com.disablerouting.api.ApiEndPoint;
+import com.disablerouting.application.AppData;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.curd_operations.WayDataPreference;
 import com.disablerouting.curd_operations.model.NodeReference;
@@ -402,7 +403,16 @@ public class Utility {
     public static String changeDotToComma(String stringUnitPassed) {
         String converted = stringUnitPassed;
         if (stringUnitPassed.contains(".")) {
-            converted = stringUnitPassed.replace(".", ",");
+            if(Utility.getAppLanguage().equalsIgnoreCase("Deutsch")) {
+                converted = stringUnitPassed.replace(".", ",");
+            }
+        }
+        return converted;
+    }
+    public static String changeCommaToDot(String stringUnitPassed) {
+        String converted = stringUnitPassed;
+        if (stringUnitPassed.contains(",")) {
+            converted = stringUnitPassed.replace(",", ".");
         }
         return converted;
     }

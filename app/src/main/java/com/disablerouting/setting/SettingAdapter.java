@@ -98,7 +98,11 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_nine_less))) {
                         subTitle = mContext.getString(R.string.nine_greater);
                     } else {
-                        subTitle = mSelectionMap.get(checkPos).getValue();
+                        if(mSelectionMap.get(checkPos).getValue().contains(".")){
+                            subTitle = Utility.changeDotToComma(mSelectionMap.get(checkPos).getValue());
+                        }else {
+                            subTitle = mSelectionMap.get(checkPos).getValue();
+                        }
                     }
 
                 }
@@ -188,7 +192,11 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                         } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.ten_to_fifteen_value))) {
                             subTitle = mContext.getString(R.string.ten_to_fifteen);
                         } else {
-                            subTitle = mSelectionMap.get(checkPos).getValue();
+                            if(mSelectionMap.get(checkPos).getValue().contains(".")){
+                                subTitle = Utility.changeDotToComma(mSelectionMap.get(checkPos).getValue());
+                            }else {
+                                subTitle = mSelectionMap.get(checkPos).getValue();
+                            }
                         }
                     } else {
                         subTitle = mSelectionMap.get(checkPos).getValue();
