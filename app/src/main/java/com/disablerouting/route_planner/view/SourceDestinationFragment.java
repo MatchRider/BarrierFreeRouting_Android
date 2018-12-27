@@ -211,16 +211,15 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
             //mOnSourceDestinationListener.onToggleClickedBanner(false);
             mTextViewTitle.setText(getResources().getString(R.string.not_validated));
         }
-        else {
-            if (mIsFromOSM) {
-                mLinearLayoutSourceDestination.setVisibility(View.GONE);
-                mRelativeLayoutToogle.setVisibility(View.VISIBLE);
-                mToogleWAY.setVisibility(View.INVISIBLE);
-               // mOnSourceDestinationListener.onToggleClickedBanner(false);
-                mTextViewTitle.setText(getResources().getString(R.string.not_validated));
-            }
+        if (mIsFromOSM) {
+            mLinearLayoutSourceDestination.setVisibility(View.GONE);
+            mRelativeLayoutToogle.setVisibility(View.VISIBLE);
+            mToogleWAY.setVisibility(View.INVISIBLE);
+            // mOnSourceDestinationListener.onToggleClickedBanner(false);
+            mTextViewTitle.setText(getResources().getString(R.string.title_osm));
         }
-        if (!mIsFromSuggestion) {
+
+        if (!mIsFromSuggestion && !mIsFromOSM) {
             if (SearchPreferences.getInstance(getContext()) != null && SearchPreferences.getInstance(getContext()).getUserSearch() != null) {
                 mEditTextSource.setText(SearchPreferences.getInstance(getContext()).getUserSearch().getSourceAdd());
                 mEditTextDestination.setText(SearchPreferences.getInstance(getContext()).getUserSearch().getDestAdd());
@@ -334,8 +333,6 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
     @OnClick(R.id.img_back)
     public void onBackClick() {
         Utility.hideSoftKeyboard((AppCompatActivity) getActivity());
-        //  clearSourceComplete();
-        // clearDestinationComplete();
         mOnSourceDestinationListener.onBackPress();
         hideLoader();
     }

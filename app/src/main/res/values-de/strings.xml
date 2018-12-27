@@ -258,6 +258,7 @@
     <string name="other_value">Anderer Wert</string>
     <string name="add_some_width">Mehrwert</string>
     <string name="message_to_proceed">Bitte fülle alle Werte, damit du deine Eingabe speichern kannst.</string>
+    <string name="title_osm">OSM</string>
 
 
 </resources>
