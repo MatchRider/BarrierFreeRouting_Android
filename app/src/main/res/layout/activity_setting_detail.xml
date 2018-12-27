@@ -136,6 +136,7 @@
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:digits="0123456789.,"
+                android:imeOptions="actionDone"
                 android:textColor="@android:color/black" />
         </RelativeLayout>
 

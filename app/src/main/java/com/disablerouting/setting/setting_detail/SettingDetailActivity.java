@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,7 +20,7 @@ import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.utils.Utility;
 
-public class SettingDetailActivity extends BaseActivityImpl implements SettingDetailAdapterListener {
+public class SettingDetailActivity extends BaseActivityImpl implements SettingDetailAdapterListener, TextView.OnEditorActionListener {
 
     @BindView(R.id.rcv_setting)
     RecyclerView mRecyclerView;
@@ -53,6 +55,7 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
             mTxvTitle.setVisibility(View.VISIBLE);
             mTxvTitle.setText(String.format("%s%s", titleToBeSet + "\n", getString(R.string.please_choose)));
             setUpRecyclerView(mPositionOfTitle);
+            mEdtWidth.setOnEditorActionListener(this);
         }
     }
 
@@ -171,5 +174,14 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
                     break;
             }
         }
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            onWidthSubmitClick();
+            return true;
+        }
+        return false;
     }
 }

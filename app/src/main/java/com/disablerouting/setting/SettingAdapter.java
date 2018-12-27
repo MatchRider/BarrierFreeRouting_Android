@@ -70,7 +70,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
         holder.mImageViewEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnClickListener.OnIconEditViewOnClick(view, position);
+                mOnClickListener.OnIconEditViewOnClick(view, checkPos);
             }
         });
 
@@ -83,7 +83,6 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     mOnClickListener.OnIconCheckBoxOnClick(compoundButton, checkPos, b, getSelectionMap().get(checkPos));
                 }
             }
-
 
         });
 
@@ -98,9 +97,9 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_nine_less))) {
                         subTitle = mContext.getString(R.string.nine_greater);
                     } else {
-                        if(mSelectionMap.get(checkPos).getValue().contains(".")){
+                        if (mSelectionMap.get(checkPos).getValue().contains(".")) {
                             subTitle = Utility.changeDotToComma(mSelectionMap.get(checkPos).getValue());
-                        }else {
+                        } else {
                             subTitle = mSelectionMap.get(checkPos).getValue();
                         }
                     }
@@ -115,9 +114,9 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.value_nine_less))) {
                         subTitle = mContext.getString(R.string.nine_greater);
                     } else {
-                        if(mSelectionMap.get(checkPos).getValue().contains(".")){
+                        if (mSelectionMap.get(checkPos).getValue().contains(".")) {
                             subTitle = Utility.changeDotToComma(mSelectionMap.get(checkPos).getValue());
-                        }else {
+                        } else {
                             subTitle = mSelectionMap.get(checkPos).getValue();
                         }
                     }
@@ -196,9 +195,9 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                         } else if (mSelectionMap.get(checkPos).getValue().equalsIgnoreCase(mContext.getString(R.string.ten_to_fifteen_value))) {
                             subTitle = mContext.getString(R.string.ten_to_fifteen);
                         } else {
-                            if(mSelectionMap.get(checkPos).getValue().contains(".")){
+                            if (mSelectionMap.get(checkPos).getValue().contains(".")) {
                                 subTitle = Utility.changeDotToComma(mSelectionMap.get(checkPos).getValue());
-                            }else {
+                            } else {
                                 subTitle = mSelectionMap.get(checkPos).getValue();
                             }
                         }
@@ -246,12 +245,12 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.ViewHold
                     holder.mTextViewSubTitle.setText(subTitle);
                     holder.mTextViewSubTitle.setVisibility(View.VISIBLE);
                     holder.mCheckBoxVerify.setChecked(true);
-                    holder.mCheckBoxVerify.setClickable(false);
+                    holder.mCheckBoxVerify.setClickable(true);
                     holder.mCheckBoxVerify.setText(mContext.getResources().getString(R.string.verified));
                     holder.mCheckBoxVerify.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
-                    holder.mImageViewEdit.setVisibility(View.GONE);
+                    holder.mImageViewEdit.setVisibility(View.VISIBLE);
                     holder.mImageViewEdit.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_edit_black));
-                    holder.mImageViewEdit.setClickable(false);
+                    holder.mImageViewEdit.setClickable(true);
 
                 } else {
                     holder.mTextViewSubTitle.setText(subTitle);
