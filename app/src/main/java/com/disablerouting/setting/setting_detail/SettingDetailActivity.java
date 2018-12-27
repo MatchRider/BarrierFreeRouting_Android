@@ -35,6 +35,7 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
 
     private int mPositionOfTitle;
     private boolean mIsForWAY = false;
+    private String mValueReceived="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,9 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
 
         if (getIntent().hasExtra(AppConstant.SETTING_ITEM_SELECTED_SEND)) {
             mIsForWAY = getIntent().getBooleanExtra(AppConstant.IS_FOR_WAY, false);
+            if(getIntent().hasExtra(AppConstant.VALUE_FOR_EDITOR)){
+                mValueReceived = getIntent().getStringExtra(AppConstant.VALUE_FOR_EDITOR);
+            }
             String titleToBeSet = getIntent().getStringExtra(AppConstant.SETTING_ITEM_SELECTED_SEND);
             mPositionOfTitle = getIntent().getIntExtra(AppConstant.POSITION_SETTING, -1);
             mTxvTitle.setVisibility(View.VISIBLE);
@@ -73,12 +77,31 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
                     settingDetailAdapter = new SettingDetailAdapter(Utility.prepareListDataMaxIncline(this), this, false);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                     mRecyclerView.setAdapter(settingDetailAdapter);
+                    boolean isValueAddSurface =true;
+                    for (int i=0 ; i< Utility.prepareListDataMaxInclineKey(this).size();i++){
+                        if(Utility.prepareListDataMaxInclineKey(this).get(i).contains(mValueReceived)){
+                            isValueAddSurface = false;
+                        }
+                    }
+                    if(isValueAddSurface){
+                        mEdtWidth.setText(mValueReceived);
+                    }
                     mRelativeLayoutWidth.setVisibility(View.VISIBLE);
                     break;
                 case 3:
                     settingDetailAdapter = new SettingDetailAdapter(Utility.prepareListDataSideWalk(this), this, false);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                     mRecyclerView.setAdapter(settingDetailAdapter);
+
+                    boolean isValueAddWidth =true;
+                    for (int i=0 ; i< Utility.prepareListDataMaxInclineKey(this).size();i++){
+                        if(Utility.prepareListDataMaxInclineKey(this).get(i).contains(mValueReceived)){
+                            isValueAddWidth = false;
+                        }
+                    }
+                    if(isValueAddWidth){
+                        mEdtWidth.setText(mValueReceived);
+                    }
                     mRelativeLayoutWidth.setVisibility(View.VISIBLE);
                     break;
 
@@ -110,7 +133,12 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
     public void onWidthSubmitClick(){
         if(!mEdtWidth.getText().toString().isEmpty()){
             if(mPositionOfTitle==2){
-                setDataWhenFilterApplied(mEdtWidth.getText().toString()+"%");
+                if(!mEdtWidth.getText().toString().contains("%")) {
+                    setDataWhenFilterApplied(mEdtWidth.getText().toString() + "%");
+                }else {
+                    setDataWhenFilterApplied(mEdtWidth.getText().toString());
+
+                }
             }
             if(mPositionOfTitle==3){
                 setDataWhenFilterApplied(Utility.changeCommaToDot(mEdtWidth.getText().toString()));

@@ -48,6 +48,7 @@ public interface AppConstant {
 
     String KEY_KERB_HEIGHT = "kerb:height";
     String IS_FOR_WAY = "is_for_way";
+    String VALUE_FOR_EDITOR = "value_editor";
 
 
     String WAY_UPDATE = "Way";

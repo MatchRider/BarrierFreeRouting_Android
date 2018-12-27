@@ -1487,6 +1487,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     mPositionClicked = prepareListDataWay().get(position).getKeyPosition();
                     intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataWay().get(position).getKeyString());
                     intent.putExtra(AppConstant.IS_FOR_WAY, true);
+                    if(mHashMapWay!=null && mHashMapWay.get(2)!=null && mHashMapWay.get(2).getValue()!=null) {
+                        intent.putExtra(AppConstant.VALUE_FOR_EDITOR, mHashMapWay.get(2).getValue());
+                    }
                     startActivityForResult(intent, OPEN_SETTING_TYPE);
                     break;
                 case 2:
@@ -1494,6 +1497,9 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     mPositionClicked = prepareListDataWay().get(position).getKeyPosition();
                     intent.putExtra(AppConstant.SETTING_ITEM_SELECTED_SEND, prepareListDataWay().get(position).getKeyString());
                     intent.putExtra(AppConstant.IS_FOR_WAY, true);
+                    if(mHashMapWay!=null && mHashMapWay.get(3)!=null && mHashMapWay.get(3).getValue()!=null) {
+                        intent.putExtra(AppConstant.VALUE_FOR_EDITOR, mHashMapWay.get(3).getValue());
+                    }
                     startActivityForResult(intent, OPEN_SETTING_TYPE);
                     break;
                /* case 3:
