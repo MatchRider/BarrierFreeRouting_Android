@@ -526,12 +526,28 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     showLoader();
                     if (mChangeSetID != null) {
                         mRelativeLayoutProgress.setVisibility(View.VISIBLE);
-                        if (!mNodeReference.getOSMNodeId().isEmpty()) {
-                            callToGetVersions();
-                        } else {
-                            mWayIdAvailable = false;
-                            callToCreateNode(mNodeReference);
+                        if(!mISFromOSM){
+                            if(CheckAllValues()){
+                                if (!mNodeReference.getOSMNodeId().isEmpty()) {
+                                    callToGetVersions();
+                                } else {
+                                    mWayIdAvailable = false;
+                                    callToCreateNode(mNodeReference);
+                                }
+
+                            }else {
+                                hideLoader();
+                                Toast.makeText(this,R.string.message_to_proceed,Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            if (!mNodeReference.getOSMNodeId().isEmpty()) {
+                                callToGetVersions();
+                            } else {
+                                mWayIdAvailable = false;
+                                callToCreateNode(mNodeReference);
+                            }
                         }
+
                     }
                 }
             } else {
@@ -543,28 +559,47 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     public boolean CheckAllValues() {
         boolean shouldProceed = false;
-        boolean checkSurface= false;
-        boolean checkIncline= false;
-        boolean checkWidth= false;
-        if (mHashMapWay != null && mHashMapWay.size() != 0) {
-            for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
-                Attributes attributes = pair.getValue();
-                assert attributes != null;
-                if (attributes.getKey() != null && !attributes.getKey().isEmpty()) {
-                    if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)) {
-                        checkSurface = attributes.getValue() != null && !attributes.getValue().isEmpty() && attributes.isValid();
+        if(mIsForWAY) {
+            boolean checkSurface = false;
+            boolean checkIncline = false;
+            boolean checkWidth = false;
+            if (mHashMapWay != null && mHashMapWay.size() != 0) {
+                for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
+                    Attributes attributes = pair.getValue();
+                    assert attributes != null;
+                    if (attributes.getKey() != null && !attributes.getKey().isEmpty()) {
+                        if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_SURFACE)) {
+                            checkSurface = attributes.getValue() != null && !attributes.getValue().isEmpty() && attributes.isValid();
+                        }
+                        if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)) {
+                            checkIncline = attributes.getValue() != null && !attributes.getValue().isEmpty() && attributes.isValid();
+                        }
+                        if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
+                            checkWidth = attributes.getValue() != null && !attributes.getValue().isEmpty() && attributes.isValid();
+                        }
                     }
-                    if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_INCLINE)) {
-                        checkIncline = attributes.getValue() != null && !attributes.getValue().isEmpty() && attributes.isValid();
-                    }
-                    if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_WIDTH)) {
-                        checkWidth = attributes.getValue() != null && !attributes.getValue().isEmpty() && attributes.isValid();
-                    }
+
                 }
 
+                shouldProceed = checkSurface && checkIncline && checkWidth;
             }
+        }
+        else {
+            boolean checkKerbHeight = false;
+            if (mHashMapWay != null && mHashMapWay.size() != 0) {
+                for (Map.Entry<Integer, Attributes> pair : mHashMapWay.entrySet()) {
+                    Attributes attributes = pair.getValue();
+                    assert attributes != null;
+                    if (attributes.getKey() != null && !attributes.getKey().isEmpty()) {
+                        if (attributes.getKey().equalsIgnoreCase(AppConstant.KEY_KERB_HEIGHT)) {
+                            checkKerbHeight = attributes.getValue() != null && !attributes.getValue().isEmpty() && attributes.isValid();
+                        }
 
-            shouldProceed = checkSurface && checkIncline && checkWidth;
+                    }
+
+                }
+                shouldProceed = checkKerbHeight;
+            }
 
         }
         return shouldProceed;
