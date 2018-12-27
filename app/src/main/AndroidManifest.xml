@@ -34,55 +34,77 @@
         <activity
             android:name=".tutorial.TutorialActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustNothing"></activity>
+            android:windowSoftInputMode="stateHidden|adjustNothing">
+
+        </activity>
         <activity
             android:name=".home.HomeActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustNothing"></activity>
+            android:windowSoftInputMode="stateHidden|adjustNothing">
+
+        </activity>
 
         <receiver
             android:name=".network.NetworkChangeReceiver"
-            android:label="NetworkChangeReceiver"></receiver>
+            android:label="NetworkChangeReceiver">
+
+        </receiver>
 
         <activity
             android:name=".route_planner.view.RoutePlannerActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustNothing"></activity>
+            android:windowSoftInputMode="adjustNothing">
+
+        </activity>
         <activity
             android:name=".filter.view.FilterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden">
+
+        </activity>
         <activity
             android:name=".setting.SettingActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme">
+
+        </activity>
         <activity
             android:name=".setting.setting_detail.SettingDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan">
+
+        </activity>
         <activity
             android:name=".acknowledement.AcknowledgementActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme">
+
+        </activity>
         <activity
             android:name=".disclaimer.DisclaimerActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme">
+
+        </activity>
         <activity
             android:name=".legal.LegalActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme">
+
+        </activity>
         <activity
             android:name=".contact.ContactActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden">
+
+        </activity>
         <activity
             android:name=".login.LoginActivity"
             android:label="@string/title_activity_login"
@@ -104,10 +126,15 @@
             android:name=".instructions.InstructionsActivity"
             android:label="@string/instructions_for_route"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme">
+
+        </activity>
 
         <service android:name=".service.OsmDataService" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="cdc0aa08c24b287b16e1a4d750ca48a9b67c0bf6" />
     </application>
 
 </manifest>

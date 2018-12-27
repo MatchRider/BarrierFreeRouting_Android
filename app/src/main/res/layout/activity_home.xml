@@ -95,7 +95,7 @@
                 android:paddingTop="@dimen/padding_normal"
                 android:paddingEnd="@dimen/padding_xxx_large"
                 android:paddingBottom="@dimen/padding_normal"
-                android:text="OSM"
+                android:text="@string/title_osm"
                 android:clickable="true"
                 android:focusable="true"
                 android:textAllCaps="false"

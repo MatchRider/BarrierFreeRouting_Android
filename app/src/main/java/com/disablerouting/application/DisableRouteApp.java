@@ -3,6 +3,8 @@ package com.disablerouting.application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 public class DisableRouteApp extends MultiDexApplication {
 
@@ -18,6 +20,7 @@ public class DisableRouteApp extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         mContext = getApplicationContext();
 
     }
