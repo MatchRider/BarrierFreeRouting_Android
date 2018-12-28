@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.TextView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
@@ -26,13 +28,10 @@ public class AcknowledgementActivity extends BaseActivityImpl {
     TextView mTextViewData2;
     @BindView(R.id.txv_data_side_menu3)
     TextView mTextViewData3;
-   /* @BindView(R.id.txv_data_side_menu4)
-    TextView mTextViewData4;
-*/
     @BindView(R.id.txv_data_side_title)
     TextView mTextViewTitle;
 
-    String mTitle;
+    private String mTitle;
 
 
     @Override
@@ -53,11 +52,9 @@ public class AcknowledgementActivity extends BaseActivityImpl {
         mTextViewData1.setText(getString(R.string.acknowledgement_data1));
         mTextViewData2.setText(getString(R.string.acknowledgement_data2));
         mTextViewData3.setText(getString(R.string.acknowledgement_data3));
-       // mTextViewData4.setText(getString(R.string.acknowledgement_data4));
         mTextViewData1.setLinkTextColor(getResources().getColor(R.color.colorWhite));
         mTextViewData2.setLinkTextColor(getResources().getColor(R.color.colorWhite));
         mTextViewData3.setLinkTextColor(getResources().getColor(R.color.colorWhite));
-       // mTextViewData4.setLinkTextColor(getResources().getColor(R.color.colorWhite));
         Utility.makeLinks(mTextViewData1, new String[]{"https://www.heidelberg.de"}, new ClickableSpan[]{
                 normalLinkClickSpan1
         });
@@ -67,9 +64,6 @@ public class AcknowledgementActivity extends BaseActivityImpl {
         Utility.makeLinks(mTextViewData3, new String[]{"https://www.matchrider.de"}, new ClickableSpan[]{
                 normalLinkClickSpan3
         });
-        /*Utility.makeLinks(mTextViewData4, new String[]{"https://www.wolfert-gmbh.de"}, new ClickableSpan[]{
-                normalLinkClickSpan4
-        });*/
 
     }
 
@@ -103,22 +97,11 @@ public class AcknowledgementActivity extends BaseActivityImpl {
         }
 
     };
-    ClickableSpan normalLinkClickSpan4 = new ClickableSpan() {
-        @Override
-        public void onClick(View view) {
-            Uri uri = Uri.parse("https://www.wolfert-gmbh.de");
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
-
-        }
-
-    };
 
     @OnClick(R.id.img_back)
     public void onBackClick() {
         finish();
     }
-
 
 
 }
