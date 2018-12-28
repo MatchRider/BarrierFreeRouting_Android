@@ -67,21 +67,37 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
         stringType = intent.getStringExtra(AppConstant.RUN_API);
         switch (stringType){
             case AppConstant.RUN_BOTH:
-                callListAPI();
-                callOSMAPI();
-                isOSMDataSynced = true;
-                isLISTDatSynced = true;
-                isSyncInProgress = true;
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        callListAPI();
+                        callOSMAPI();
+                        isOSMDataSynced = true;
+                        isLISTDatSynced = true;
+                        isSyncInProgress = true;
+
+                    }
+                });
                 break;
             case AppConstant.RUN_LIST:
-                callListAPI();
-                isLISTDatSynced = true;
-                isSyncInProgress = true;
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        callListAPI();
+                        isLISTDatSynced = true;
+                        isSyncInProgress = true;
+                    }
+                });
                 break;
             case AppConstant.RUN_OSM:
-                callOSMAPI();
-                isOSMDataSynced = true;
-                isSyncInProgress = true;
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        callOSMAPI();
+                        isOSMDataSynced = true;
+                        isSyncInProgress = true;
+                    }
+                });
                 break;
         }
 

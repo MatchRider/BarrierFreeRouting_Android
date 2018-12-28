@@ -411,7 +411,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
                 }
 
                 if (data.getFeaturesList().get(0).getProperties().getSummary().get(0).getAscent() != 0) {
-                    String ascent = String.valueOf(Utility.trimTWoDecimalPlaces(data.getFeaturesList().get(0).getProperties().getSummary().get(0).getAscent() / 100));
+                    String ascent = String.valueOf(Utility.trimTWoDecimalPlaces(data.getFeaturesList().get(0).getProperties().getSummary().get(0).getAscent()));
                     mTextViewAccent.setText(new StringBuilder().append(ascent).append(" ").append(getContext().getResources().getString(R.string.meter)).toString());
 
                 } else {
@@ -419,7 +419,7 @@ public class SourceDestinationFragment extends BaseFragmentImpl implements ISour
 
                 }
                 if (data.getFeaturesList().get(0).getProperties().getSummary().get(0).getDescent() != 0) {
-                    String descent = String.valueOf(Utility.trimTWoDecimalPlaces(data.getFeaturesList().get(0).getProperties().getSummary().get(0).getDescent() / 100));
+                    String descent = String.valueOf(Utility.trimTWoDecimalPlaces(data.getFeaturesList().get(0).getProperties().getSummary().get(0).getDescent()));
                     mTextViewDecent.setText(new StringBuilder().append(descent).append(" ").append(getContext().getResources().getString(R.string.meter)).toString());
 
                 } else {

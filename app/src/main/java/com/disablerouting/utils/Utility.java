@@ -738,27 +738,13 @@ public class Utility {
         return mRotateAnimation;
     }
     public static void applyAnimationOnView(Context context,View view) {
+        view.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         Animation connectingAnimation = AnimationUtils.loadAnimation(context, R.anim.anim_rotate);
-       // connectingAnimation.setInterpolator( new LinearInterpolator());
         view.startAnimation(connectingAnimation);
-        /*Animation mScaleAnimation = new ScaleAnimation(0, 1, 0, 1,
-                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        Animation mRotateAnimation = new RotateAnimation(
-                0, 360,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f
-        );
-        mRotateAnimation.setRepeatCount(-1);
 
-        AnimationSet mAnimations = new AnimationSet(true);
-        mAnimations.setDuration(500);
-        mAnimations.setFillAfter(true);
-        mAnimations.setInterpolator(new LinearInterpolator());
-        mAnimations.addAnimation(mScaleAnimation);
-        mAnimations.addAnimation(mRotateAnimation);
-        view.startAnimation(mAnimations);*/
     }
     public static void clearAnimationFromView(View view) {
+        view.setLayerType(View.LAYER_TYPE_NONE, null);
         view.clearAnimation();
     }
 
