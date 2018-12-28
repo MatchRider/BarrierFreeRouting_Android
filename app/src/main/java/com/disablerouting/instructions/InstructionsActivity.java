@@ -41,8 +41,10 @@ public class InstructionsActivity extends BaseActivityImpl implements Instructio
         }
         for (int i = 0; i < mStepsList.size(); i++) {
             if (mStepsList.get(i).getType() == 14) {
-                mStepsList.remove(i + 1);
-                mStepsList.remove(i - 1);
+                    mStepsList.remove(i + 1);
+                if(i>=1) {
+                    mStepsList.remove(i - 1);
+                }
             }
         }
         mInstructionsAdapter = new InstructionsAdapter(this, mStepsList, this, mCoordinateSize);

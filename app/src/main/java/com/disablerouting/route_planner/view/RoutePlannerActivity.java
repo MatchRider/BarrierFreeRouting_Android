@@ -433,6 +433,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     @Override
     public void onSwapData() {
         mStepsList.clear();
+        mStepListHasData = false;
         clearItemsFromMap();
         mButtonGo.setVisibility(View.VISIBLE);
         mButtonGo.setClickable(true);
