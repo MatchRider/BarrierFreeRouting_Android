@@ -831,12 +831,17 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         attributesIncline.setKey(mListWayData.getAttributesList().get(i).getKey());
                         String value;
                         if (mListWayData.getAttributesList().get(i).getValue() != null && mListWayData.getAttributesList().get(i).getValue().contains("&lt;")) {
-                            value = mListWayData.getAttributesList().get(i).getValue().replace("&lt;", ">");
+                            value = mListWayData.getAttributesList().get(i).getValue().replace("&lt;", "<");
                         } else if (mListWayData.getAttributesList().get(i).getValue() != null && mListWayData.getAttributesList().get(i).getValue().contains("&Lt;")) {
                             value = mListWayData.getAttributesList().get(i).getValue().replace("&Lt;", "<");
-                        } else if (mListWayData.getAttributesList().get(i).getValue() != null && mListWayData.getAttributesList().get(i).getValue().contains("Up to")) {
-                            value = mListWayData.getAttributesList().get(i).getValue().replace("Up to", "Bis zu");
-                        } else {
+                        }
+                        else if (mListWayData.getAttributesList().get(i).getValue() != null && mListWayData.getAttributesList().get(i).getValue().contains("&Lt;")) {
+                            value = mListWayData.getAttributesList().get(i).getValue().replace("&gt;", ">");
+                        }
+                        else if (mListWayData.getAttributesList().get(i).getValue() != null && mListWayData.getAttributesList().get(i).getValue().contains("&Lt;")) {
+                            value = mListWayData.getAttributesList().get(i).getValue().replace("&Gt;", ">");
+                        }
+                        else {
                             value = mListWayData.getAttributesList().get(i).getValue();
                         }
                         attributesIncline.setValue(value.trim());
