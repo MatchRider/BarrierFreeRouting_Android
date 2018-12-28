@@ -115,6 +115,8 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
     private PlotWayDataTask mPlotWayDataTask;
     private boolean mIsResumeExecuted = false;
     private Features features;
+    private ListWayData listWayDataUpdate = null;
+    private NodeReference nodeReferenceUpdate = null;
 
 
     @Override
@@ -430,6 +432,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
     @Override
     public void onSwapData() {
+        mStepsList.clear();
         clearItemsFromMap();
         mButtonGo.setVisibility(View.VISIBLE);
         mButtonGo.setClickable(true);
@@ -520,6 +523,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         setUserSearchData();
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == AppConstant.REQUEST_CODE_CAPTURE) {
@@ -539,9 +543,6 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
         }
         if (requestCode == AppConstant.REQUEST_CODE_UPDATE_MAP_DATA) {
             if (resultCode == Activity.RESULT_OK) {
-                ListWayData listWayDataUpdate = null;
-                NodeReference nodeReferenceUpdate = null;
-                int inDexToRemove = -1;
                 if (WayDataPreference.getInstance(this) != null) {
                     if (!mISFromOSM) {
                         if (data != null && data.hasExtra("DATA_WAY")) {
@@ -549,8 +550,33 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                         } else if (data != null && data.hasExtra("DATA_NODE")) {
                             nodeReferenceUpdate = data.getParcelableExtra("DATA_NODE");
                         }
-
                         showLoader();
+                        new SaveData().execute();
+                    } else {
+                        if (data != null && data.hasExtra("DATA_OSM_WAY")) {
+                            listWayDataUpdate = data.getParcelableExtra("DATA_OSM_WAY");
+                        } else if (data != null && data.hasExtra("DATA_OSM_NODE")) {
+                            nodeReferenceUpdate = data.getParcelableExtra("DATA_OSM_NODE");
+                        }
+                        showLoader();
+                        new SaveData().execute();
+                    }
+                }
+            }
+        }
+    }
+
+
+    @SuppressLint("StaticFieldLeak")
+    private class SaveData extends AsyncTask<String, Void, Boolean>{
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            // your background code here. Don't touch any UI components
+            {
+                int inDexToRemove = -1;
+                if (WayDataPreference.getInstance(getApplicationContext()) != null) {
+                    if (!mISFromOSM) {
                         if (listWayDataUpdate != null && listWayDataUpdate.getIsValid() != null) {
                             boolean isValid = Boolean.parseBoolean(listWayDataUpdate.getIsValid());
                             for (int i = 0; i < mWayListNotValidatedData.size(); i++)//Iterate through each item.
@@ -593,24 +619,15 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                             }
 
                         }
-                        if (WayDataPreference.getInstance(this) != null) {
-                            WayDataPreference.getInstance(this).saveValidateWayData(mWayListValidatedData);
-                            WayDataPreference.getInstance(this).saveNotValidatedWayData(mWayListNotValidatedData);
-                            WayDataPreference.getInstance(this).saveValidateDataNode(mNodeListValidatedData);
-                            WayDataPreference.getInstance(this).saveNotValidateDataNode(mNodeListNotValidatedData);
+                        if (WayDataPreference.getInstance(getApplicationContext()) != null) {
+                            WayDataPreference.getInstance(getApplicationContext()).saveValidateWayData(mWayListValidatedData);
+                            WayDataPreference.getInstance(getApplicationContext()).saveNotValidatedWayData(mWayListNotValidatedData);
+                            WayDataPreference.getInstance(getApplicationContext()).saveValidateDataNode(mNodeListValidatedData);
+                            WayDataPreference.getInstance(getApplicationContext()).saveNotValidateDataNode(mNodeListNotValidatedData);
 
                         }
-                        onToggleClickedBanner(false);
-                        hideLoader();
-
+                        return  true;
                     } else {
-                        if (data != null && data.hasExtra("DATA_OSM_WAY")) {
-                            listWayDataUpdate = data.getParcelableExtra("DATA_OSM_WAY");
-                        } else if (data != null && data.hasExtra("DATA_OSM_NODE")) {
-                            nodeReferenceUpdate = data.getParcelableExtra("DATA_OSM_NODE");
-                        }
-                        showLoader();
-
                         if (listWayDataUpdate != null && listWayDataUpdate.getIsValid() != null) {
                             boolean isValid = Boolean.parseBoolean(listWayDataUpdate.getIsValid());
                             for (int i = 0; i < mWayListNotValidatedData.size(); i++)//Iterate through each item.
@@ -654,23 +671,36 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                                 mNodeListNotValidatedData.add(nodeReferenceUpdate);
                             }
                         }
-
-
-                        if (WayDataPreference.getInstance(this) != null) {
-                            WayDataPreference.getInstance(this).saveValidateWayDataOSM(mWayListValidatedData);
-                            WayDataPreference.getInstance(this).saveNotValidatedWayDataOSM(mWayListNotValidatedData);
-                            WayDataPreference.getInstance(this).saveValidateDataNodeOSM(mNodeListValidatedData);
-                            WayDataPreference.getInstance(this).saveNotValidateDataNodeOSM(mNodeListNotValidatedData);
+                        if (WayDataPreference.getInstance(getApplicationContext()) != null) {
+                            WayDataPreference.getInstance(getApplicationContext()).saveValidateWayDataOSM(mWayListValidatedData);
+                            WayDataPreference.getInstance(getApplicationContext()).saveNotValidatedWayDataOSM(mWayListNotValidatedData);
+                            WayDataPreference.getInstance(getApplicationContext()).saveValidateDataNodeOSM(mNodeListValidatedData);
+                            WayDataPreference.getInstance(getApplicationContext()).saveNotValidateDataNodeOSM(mNodeListNotValidatedData);
                         }
-                        onToggleClickedBanner(false);
-                        hideLoader();
+
+                        return  true;
                     }
                 }
             }
+            return null;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            if(result) {
+                if (!mISFromOSM) {
+                    onToggleClickedBanner(false);
+                    hideLoader();
+                } else {
+                    onToggleClickedBanner(false);
+                    hideLoader();
+                }
+            }else {
+                hideLoader();
+            }
+            //This is run on the UI thread so you can do as you wish her
+
         }
     }
-
-
     private void setUserSearchData() {
         //Save Data in user Preferences
         if (SearchPreferences.getInstance(this) != null) {

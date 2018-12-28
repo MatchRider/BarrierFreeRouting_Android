@@ -17,7 +17,7 @@ public interface ApiEndPoint {
     String CONSUMER_SECRET_KEY=  "OWzh43EcXC3Q7wfkZIIg2OQKTPoqr0VcpzR4PRTb";
 
     //LIVE
-    /*String LIVE_BASE_URL_OSM = "https://api.openstreetmap.org/api/0.6/";
+   /* String LIVE_BASE_URL_OSM = "https://api.openstreetmap.org/api/0.6/";
     String BASE_URL_OAUTH = "https://www.openstreetmap.org/oauth/";
     String CONSUMER_KEY = "t46M4A2anQb1O53J6aInLjhWpojjKuprlAg1KSDJ";
     String CONSUMER_SECRET_KEY = "ZKJzfplM9jMtqgOLUfVKQ3O0OYWrJjC4XOFkLkNH";

@@ -483,12 +483,12 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
 
     @OnClick(R.id.btn_finish)
     public void onFinishClick() {
+        showLoader();
         if (mIsForWAY) {
             if (mListWayData != null) {
                 boolean isValid = Boolean.parseBoolean(mListWayData.getIsValid());
                 if (!isValid) {
                     if (Utility.isOnline(this)) {
-                        showLoader();
                         if (mChangeSetID != null) {
                             mRelativeLayoutProgress.setVisibility(View.VISIBLE);
                             if(!mISFromOSM){
@@ -517,13 +517,13 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                         }
                     }
                 } else {
+                    hideLoader();
                     finish();
                 }
             }
         } else {
             if (!isValidFORCall) {
                 if (Utility.isOnline(this)) {
-                    showLoader();
                     if (mChangeSetID != null) {
                         mRelativeLayoutProgress.setVisibility(View.VISIBLE);
                         if(!mISFromOSM){
@@ -551,6 +551,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     }
                 }
             } else {
+                hideLoader();
                 finish();
             }
         }
@@ -738,12 +739,10 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     boolean mCallForWay = false;
                     if (i == mListWayData.getNodeReference().size() - 1) {
                         mCallForWay = true;
-                    } else {
-                        mCallForWay = false;
                     }
                     if (mListWayData.getNodeReference().get(i).getOSMNodeId().isEmpty()) {
                         //Create Node
-                        hideLoader();
+                        showLoader();
                         callToCreateNode(mListWayData.getNodeReference().get(i));
                     }
                     if (mCallForWay) {
@@ -1373,8 +1372,6 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                                 Toast.makeText(SettingActivity.this, getResources().getString(R.string.updated_node_info), Toast.LENGTH_SHORT).show();
 
                             }
-                            //setResult(RESULT_OK);
-                            // finish();
                         } else {
                             onUpdateWay(mUpdateVersionNumber);
                         }
@@ -1383,6 +1380,7 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
             }
             if (API_TYPE.equalsIgnoreCase(AppConstant.API_TYPE_CREATE_NODE)) {
                 Log.e("ResponseNode:", responseBody);
+                showLoader();
                 if (mIsForWAY) {
                     mNodeIdsCreated.put(mNodeRefIndex, responseBody);
                 }
@@ -1452,6 +1450,8 @@ public class SettingActivity extends BaseActivityImpl implements SettingAdapterL
                     e.printStackTrace();
                 }
             }
+        }else {
+            hideLoader();
         }
         this.runOnUiThread(new Runnable() {
             public void run() {
