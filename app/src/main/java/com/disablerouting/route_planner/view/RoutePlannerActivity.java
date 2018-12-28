@@ -568,7 +568,7 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
 
 
     @SuppressLint("StaticFieldLeak")
-    private class SaveData extends AsyncTask<String, Void, Boolean>{
+    private class SaveData extends AsyncTask<String, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(String... params) {
@@ -577,47 +577,51 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                 int inDexToRemove = -1;
                 if (WayDataPreference.getInstance(getApplicationContext()) != null) {
                     if (!mISFromOSM) {
-                        if (listWayDataUpdate != null && listWayDataUpdate.getIsValid() != null) {
-                            boolean isValid = Boolean.parseBoolean(listWayDataUpdate.getIsValid());
-                            for (int i = 0; i < mWayListNotValidatedData.size(); i++)//Iterate through each item.
-                            {
-                                if (mWayListNotValidatedData.get(i).getmIndex() ==
-                                        listWayDataUpdate.getmIndex()) {
-                                    inDexToRemove = i;
-                                    break;
-                                }
 
-                            }
-                            if (isValid) {
-                                mWayListNotValidatedData.remove(inDexToRemove);
-                                mWayListValidatedData.add(listWayDataUpdate);
-                            } else {
-                                mWayListNotValidatedData.remove(inDexToRemove);
-                                mWayListNotValidatedData.add(listWayDataUpdate);
+                        if (listWayDataUpdate != null) {
+                            if (listWayDataUpdate.getIsValid() != null) {
+                                boolean isValid = Boolean.parseBoolean(listWayDataUpdate.getIsValid());
+                                for (int i = 0; i < mWayListNotValidatedData.size(); i++)//Iterate through each item.
+                                {
+                                    if (mWayListNotValidatedData.get(i).getmIndex() ==
+                                            listWayDataUpdate.getmIndex()) {
+                                        inDexToRemove = i;
+                                        break;
+                                    }
+
+                                }
+                                if (isValid) {
+                                    mWayListNotValidatedData.remove(inDexToRemove);
+                                    mWayListValidatedData.add(listWayDataUpdate);
+                                } else {
+                                    mWayListNotValidatedData.remove(inDexToRemove);
+                                    mWayListNotValidatedData.add(listWayDataUpdate);
+                                }
                             }
 
                         }
-                        if (nodeReferenceUpdate != null && nodeReferenceUpdate.getAttributes() != null &&
-                                nodeReferenceUpdate.getAttributes().size() != 0) {
-                            boolean isValid = false;
-                            for (int i = 0; i < nodeReferenceUpdate.getAttributes().size(); i++) {
-                                isValid = nodeReferenceUpdate.getAttributes().get(i).isValid();
-                                for (int j = 0; j < mNodeListNotValidatedData.size(); i++) {
-                                    if (mNodeListNotValidatedData.get(j).getmIndex() ==
-                                            nodeReferenceUpdate.getmIndex()) {
-                                        inDexToRemove = j;
-                                        break;
+                        if (nodeReferenceUpdate != null) {
+                            if (nodeReferenceUpdate.getAttributes() != null &&
+                                    nodeReferenceUpdate.getAttributes().size() != 0) {
+                                boolean isValid = false;
+                                for (int i = 0; i < nodeReferenceUpdate.getAttributes().size(); i++) {
+                                    isValid = nodeReferenceUpdate.getAttributes().get(i).isValid();
+                                    for (int j = 0; j < mNodeListNotValidatedData.size(); i++) {
+                                        if (mNodeListNotValidatedData.get(j).getmIndex() ==
+                                                nodeReferenceUpdate.getmIndex()) {
+                                            inDexToRemove = j;
+                                            break;
+                                        }
                                     }
                                 }
+                                if (isValid) {
+                                    mNodeListNotValidatedData.remove(inDexToRemove);
+                                    mNodeListValidatedData.add(nodeReferenceUpdate);
+                                } else {
+                                    mNodeListNotValidatedData.remove(inDexToRemove);
+                                    mNodeListNotValidatedData.add(nodeReferenceUpdate);
+                                }
                             }
-                            if (isValid) {
-                                mNodeListNotValidatedData.remove(inDexToRemove);
-                                mNodeListValidatedData.add(nodeReferenceUpdate);
-                            } else {
-                                mNodeListNotValidatedData.remove(inDexToRemove);
-                                mNodeListNotValidatedData.add(nodeReferenceUpdate);
-                            }
-
                         }
                         if (WayDataPreference.getInstance(getApplicationContext()) != null) {
                             WayDataPreference.getInstance(getApplicationContext()).saveValidateWayData(mWayListValidatedData);
@@ -626,49 +630,52 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                             WayDataPreference.getInstance(getApplicationContext()).saveNotValidateDataNode(mNodeListNotValidatedData);
 
                         }
-                        return  true;
+                        return true;
                     } else {
-                        if (listWayDataUpdate != null && listWayDataUpdate.getIsValid() != null) {
-                            boolean isValid = Boolean.parseBoolean(listWayDataUpdate.getIsValid());
-                            for (int i = 0; i < mWayListNotValidatedData.size(); i++)//Iterate through each item.
-                            {
-                                if (mWayListNotValidatedData.get(i).getmIndex() ==
-                                        listWayDataUpdate.getmIndex()) {
-                                    inDexToRemove = i;
-                                    break;
-                                }
-
-                            }
-                            if (isValid) {
-                                mWayListNotValidatedData.remove(inDexToRemove);
-                                mWayListValidatedData.add(listWayDataUpdate);
-                            } else {
-                                mWayListNotValidatedData.remove(inDexToRemove);
-                                mWayListNotValidatedData.add(listWayDataUpdate);
-                            }
-
-                        }
-                        if (nodeReferenceUpdate != null && nodeReferenceUpdate.getAttributes() != null &&
-                                nodeReferenceUpdate.getAttributes().size() != 0) {
-                            boolean isValid = false;
-                            for (int i = 0; i < nodeReferenceUpdate.getAttributes().size(); i++) {
-                                if (nodeReferenceUpdate.getAttributes().get(i) != null) {
-                                    isValid = nodeReferenceUpdate.getAttributes().get(i).isValid();
-                                }
-                                for (int j = 0; j < mNodeListNotValidatedData.size(); j++) {
-                                    if (mNodeListNotValidatedData.get(j).getmIndex() ==
-                                            nodeReferenceUpdate.getmIndex()) {
-                                        inDexToRemove = j;
+                        if (listWayDataUpdate != null) {
+                            if (listWayDataUpdate.getIsValid() != null) {
+                                boolean isValid = Boolean.parseBoolean(listWayDataUpdate.getIsValid());
+                                for (int i = 0; i < mWayListNotValidatedData.size(); i++)//Iterate through each item.
+                                {
+                                    if (mWayListNotValidatedData.get(i).getmIndex() ==
+                                            listWayDataUpdate.getmIndex()) {
+                                        inDexToRemove = i;
                                         break;
                                     }
+
+                                }
+                                if (isValid) {
+                                    mWayListNotValidatedData.remove(inDexToRemove);
+                                    mWayListValidatedData.add(listWayDataUpdate);
+                                } else {
+                                    mWayListNotValidatedData.remove(inDexToRemove);
+                                    mWayListNotValidatedData.add(listWayDataUpdate);
                                 }
                             }
-                            if (isValid) {
-                                mNodeListNotValidatedData.remove(inDexToRemove);
-                                mNodeListValidatedData.add(nodeReferenceUpdate);
-                            } else {
-                                mNodeListNotValidatedData.remove(inDexToRemove);
-                                mNodeListNotValidatedData.add(nodeReferenceUpdate);
+                        }
+                        if (nodeReferenceUpdate != null) {
+                            if (nodeReferenceUpdate.getAttributes() != null &&
+                                    nodeReferenceUpdate.getAttributes().size() != 0) {
+                                boolean isValid = false;
+                                for (int i = 0; i < nodeReferenceUpdate.getAttributes().size(); i++) {
+                                    if (nodeReferenceUpdate.getAttributes().get(i) != null) {
+                                        isValid = nodeReferenceUpdate.getAttributes().get(i).isValid();
+                                    }
+                                    for (int j = 0; j < mNodeListNotValidatedData.size(); j++) {
+                                        if (mNodeListNotValidatedData.get(j).getmIndex() ==
+                                                nodeReferenceUpdate.getmIndex()) {
+                                            inDexToRemove = j;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (isValid) {
+                                    mNodeListNotValidatedData.remove(inDexToRemove);
+                                    mNodeListValidatedData.add(nodeReferenceUpdate);
+                                } else {
+                                    mNodeListNotValidatedData.remove(inDexToRemove);
+                                    mNodeListNotValidatedData.add(nodeReferenceUpdate);
+                                }
                             }
                         }
                         if (WayDataPreference.getInstance(getApplicationContext()) != null) {
@@ -678,15 +685,15 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                             WayDataPreference.getInstance(getApplicationContext()).saveNotValidateDataNodeOSM(mNodeListNotValidatedData);
                         }
 
-                        return  true;
+                        return true;
                     }
                 }
             }
-            return null;
+            return false;
         }
 
         protected void onPostExecute(Boolean result) {
-            if(result) {
+            if (result) {
                 if (!mISFromOSM) {
                     onToggleClickedBanner(false);
                     hideLoader();
@@ -694,13 +701,14 @@ public class RoutePlannerActivity extends MapBaseActivity implements OnSourceDes
                     onToggleClickedBanner(false);
                     hideLoader();
                 }
-            }else {
+            } else {
                 hideLoader();
             }
             //This is run on the UI thread so you can do as you wish her
 
         }
     }
+
     private void setUserSearchData() {
         //Save Data in user Preferences
         if (SearchPreferences.getInstance(this) != null) {
