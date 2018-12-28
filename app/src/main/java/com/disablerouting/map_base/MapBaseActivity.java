@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -64,8 +65,9 @@ public abstract class MapBaseActivity extends BaseActivityImpl implements OnFeed
     private MapView mMapView = null;
     private MyLocationNewOverlay mLocationOverlay;
 
-    final String[] locationPermissions = new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_NETWORK_STATE};
+    final String[] locationPermissions = new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.ACCESS_NETWORK_STATE};
 
     private double mLatitude = 0;
     private double mLongitude = 0;

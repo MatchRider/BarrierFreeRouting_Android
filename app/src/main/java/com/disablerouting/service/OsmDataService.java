@@ -24,6 +24,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -296,6 +297,7 @@ public class OsmDataService extends IntentService implements IOSMResponseReceive
                 EventBus.getDefault().post(new MessageEvent("OSM_DATA"));
                 break;
         }
+        Log.e("EndService", String.valueOf(new Date(System.currentTimeMillis())));
 
     }
 
