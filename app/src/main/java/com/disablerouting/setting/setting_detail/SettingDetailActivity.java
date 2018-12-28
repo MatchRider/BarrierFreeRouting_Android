@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -19,6 +21,10 @@ import com.disablerouting.R;
 import com.disablerouting.base.BaseActivityImpl;
 import com.disablerouting.common.AppConstant;
 import com.disablerouting.utils.Utility;
+import com.disablerouting.widget.DecimalDigitsInputFilter;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SettingDetailActivity extends BaseActivityImpl implements SettingDetailAdapterListener, TextView.OnEditorActionListener {
 
@@ -56,6 +62,7 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
             mTxvTitle.setText(String.format("%s%s", titleToBeSet + "\n", getString(R.string.please_choose)));
             setUpRecyclerView(mPositionOfTitle);
             mEdtWidth.setOnEditorActionListener(this);
+            mEdtWidth.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(2)});
         }
     }
 
@@ -184,4 +191,5 @@ public class SettingDetailActivity extends BaseActivityImpl implements SettingDe
         }
         return false;
     }
+
 }
