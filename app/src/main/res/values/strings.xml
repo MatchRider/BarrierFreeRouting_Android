@@ -1,3 +1,271 @@
-<resources>
-    <string name="app_name">Disable Routing</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Hürdenlose Navigation</string>
+
+    <!-- Font file name for Blue theme -->
+    <string name="frutiger_bold_font">FrutigerLTBold.ttf</string>
+    <string name="frutiger_light_font">FrutigerLight.ttf</string>
+
+    <!-- Custom dialog -->
+    <string name="setting">Setting</string>
+    <string name="txt_dialog_title_enable_location">Enable Location</string>
+    <string name="txt_dialog_message_enable_location">Please enable location for access all feature of this application.</string>
+    <string name="settings">Settings</string>
+
+    <!-- MENU ITEMS -->
+    <string name="ACKNOWLEDGEMENTS">Imprint/Acknowledgement</string>
+    <string name="FEEDBACK">Feedback</string>
+    <string name="CONTACT">Contact Us</string>
+    <string name="DISCLAIMER">Disclaimer</string>
+    <string name="LEGAL">Legal</string>
+    <string name="LOGOUT">Logout</string>
+
+    <!--BUTTONS-->
+    <string name="route_planner">Route Planner</string>
+    <string name="suggestions">Suggestions</string>
+    <string name="log_in_with_osm">Log in with OSM</string>
+
+    <!--Expected Error Codes-->
+    <string name="no_internet">You are not connected to the internet. Please check your connection.</string>
+
+
+    <string name="text_skip">skip</string>
+    <string name="close_drawer" translatable="false">Close</string>
+    <string name="error_load_maps">Can not load maps without all the permissions granted</string>
+    <string name="gps_setting">GPS settings</string>
+    <string name="message_gps">GPS is not enabled. Do you want to go to location setting?</string>
+    <string name="ok">OK</string>
+    <string name="a">A</string>
+    <string name="enter_source">Enter Source</string>
+    <string name="b">B</string>
+    <string name="enter_destination">Enter Destination</string>
+    <string name="go">Go!</string>
+    <string name="coming_soon">Coming soon</string>
+    <string name="please_provide_feedback_for">Please provide feedback for</string>
+    <string name="cancel" tools:ignore="ButtonCase">CANCEL</string>
+    <string name="min">min</string>
+    <string name="hr">hr</string>
+    <string name="km">km</string>
+    <string name="meter">m</string>
+    <string name="what_do_you_want_to_capture">What do you want to capture ?</string>
+    <string name="information_about_a_waypoint_distance">1. Information about a waypoint/distance ?</string>
+    <string name="information_about_a_temporary_obstacles">2. Information about a temporary obstacles?</string>
+    <string name="need_to_improve_routing">Need to improve the routing ?</string>
+    <string name="what_information_do_you_hvae_for_community">What information to a waypoint do you have for the community ?</string>
+    <string name="finish">Finished</string>
+    <string name="posted_sucuess">Feedback posted successfully with ID:</string>
+    <string name="thank_you_for_your_input">Thank you for your input!</string>
+    <string name="error_source_destination_same">Please select different source and destination</string>
+
+    <!--FILTER SCREEN VALUES............................................-->
+
+    <!--FILTER OPTIONS-->
+    <string name="surface_type">Surface Type</string>
+    <string name="maximum_sloped_kerb">Maximum sloped kerb (cm)</string>
+    <string name="maximum_sloped_kerb_m">Maximum sloped kerb (m)</string>
+    <string name="maximum_incline">Maximum Incline (%)</string>
+    <string name="sidewalk_width">Walkway width (cm)</string>
+    <string name="sidewalk_width_m">Walkway width (m)</string>
+    <string name="routing_via" tools:ignore="TypographyEllipsis">Routing Via...</string>
+
+    <!--VALIDATION OPTIONS SURFACE TYPE-->
+    <string name="asphalt">Asphalt</string>
+    <string name="concrete">Concrete</string>
+    <string name="paving_stones">Paving Stones</string>
+    <string name="cobblestone">Cobblestone</string>
+    <string name="compacted">Compacted</string>
+
+    <!--FILTER VALUE SURFACE TYPE-->
+    <string name="asphalt_key">asphalt</string>
+    <string name="concrete_key">concrete</string>
+    <string name="paving_stones_key">paving_stones</string>
+    <string name="cobbleston_key">cobblestone</string>
+    <string name="compacted_key">compacted</string>
+
+    <!--FILTER OPTIONS SURFACE TYPE-->
+    <string name="asphalt_filter">Asphalt or Concrete</string>
+    <string name="paving_stones_filter">Paving stones or better</string>
+    <string name="cobblestone_filter">Cobblestone or better</string>
+    <string name="compacted_filter">Compacted</string>
+    <string name="all_filter">All traversable surfaces</string>
+
+    <!--FILTER OPTIONS MAXIMUM INCLINE TYPE-->
+    <string name="incline_zero">0</string>
+    <string name="up_to_three">Up to 3 %</string>
+    <string name="up_to_six">Up to 6 %</string>
+    <string name="up_to_ten">Up to 10 %</string>
+    <string name="any_incline">Any incline</string>
+    <string name="greater_ten"><![CDATA[above 10 %]]></string>
+
+    <!--FILTER VALUE MAXIMUM INCLINE TYPE-->
+    <string name="zero_incline">No gradient</string>
+    <string name="value_three">3</string>
+    <string name="value_six">6</string>
+    <string name="value_ten">10</string>
+    <string name="value_eleven">11</string>
+
+    <!--DATA EDITOR OPTIONS MAXIMUM INCLINE TYPE-->
+    <string name="incline_zero_percentage">0%</string>
+    <string name="zero_to_one">0% - 1%</string>
+    <string name="one_to_two">1% - 2%</string>
+    <string name="two_to_three">2% - 3%</string>
+    <string name="three_to_four">3% - 4%</string>
+    <string name="four_to_five">4% - 5%</string>
+    <string name="five_to_six">5% - 6%</string>
+    <string name="six_to_seven">6% - 7%</string>
+    <string name="seven_to_eight">7% - 8%</string>
+    <string name="eight_to_nine">8% - 9%</string>
+    <string name="nine_to_ten">9% - 10%</string>
+    <string name="ten_to_fifteen">10% - 15%</string>
+
+
+    <!--DATA EDITOR VALUES MAXIMUM INCLINE TYPE-->
+    <string name="zero_to_one_value">1%</string>
+    <string name="one_to_two_value">2%</string>
+    <string name="two_to_three_value">3%</string>
+    <string name="three_to_four_value">4%</string>
+    <string name="four_to_five_value">5%</string>
+    <string name="five_to_six_value">6%</string>
+    <string name="six_to_seven_value">7%</string>
+    <string name="seven_to_eight_value">8%</string>
+    <string name="eight_to_nine_value">9%</string>
+    <string name="nine_to_ten_value">10%</string>
+    <string name="ten_to_fifteen_value">15%</string>
+
+    <!--FILTER OPTIONS MAXIMUM KERB HEIGHT TYPE-->
+    <string name="zero_curb">No curb</string>
+    <string name="three_kerb">3 cm</string>
+    <string name="six_kerb">6 cm</string>
+    <string name="greater_six_kerb">Above 6 cm</string>
+
+    <!--FILTER VALUE MAXIMUM KERB HEIGHT TYPE-->
+    <string name="kerb_zero">0</string>
+    <string name="value_kerb_three">0.03</string>
+    <string name="value_kerb_six">0.06</string>
+    <string name="value_kerb_any">0.1</string>
+
+    <!--VAlidation VALUE MAXIMUM KERB HEIGHT TYPE-->
+    <string name="value_kerb_three_validation">0.03</string>
+    <string name="value_kerb_six_validation">0.06</string>
+    <string name="value_kerb_any_validation">0.1</string>
+
+    <!--FILTER OPTIONS MINIMUM WIDTH TYPE-->
+    <string name="nine_less"><![CDATA[below 0.9 m]]></string>
+    <string name="nine_greater"><![CDATA[above 0.9 m]]></string>
+
+    <!--FILTER VALUE MINIMUM WIDTH  VALUE TYPE-->
+    <string name="value_nine_greater_filter">0.90</string>
+    <string name="value_nine_greater">0.91</string>
+    <string name="value_nine_less">0.89</string>
+
+    <!--CLOSED FILTER SCREEN VALUES............................................-->
+
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="clear">Clear</string>
+    <string name="apply">Apply</string>
+    <string name="wheelchair_accessible">Wheelchair Accessible :</string>
+    <string name="wheelchair_accessible_yes">Yes</string>
+    <string name="wheelchair_accessible_no">No</string>
+    <string name="wheelchair_accessible_limited">Limited</string>
+    <string name="wheelchair_accessible_unknown">Unknown</string>
+
+
+    <string name="tram_stop_title">Tram Stop</string>
+    <string name="toilets_title">Public toilet</string>
+    <string name="bus_stop_title">Bus Stop</string>
+    <string name="parking_title">Disabled Parking Space</string>
+    <string name="home">Home</string>
+    <string name="no_address_found">No address found.</string>
+    <string name="hint_routing_via">Enter location</string>
+    <string name="you_want_to_enhance_the_routing">You want to enhance the routing ?</string>
+    <string name="tell_us_where_you_are">Tell us where you are!</string>
+    <string name="give_feedback_title">Do you want to give feedback for a certain way?</string>
+    <string name="no_just_information_for_a_waypoint">No: Just information for a waypoint</string>
+    <string name="yes_please_choose">Yes: Please choose:</string>
+    <string name="start">Start</string>
+    <string name="please_help_us_to_envhane_this_trip_leg">Please help us to enhance this trip
+        leg!
+    </string>
+    <string name="sorry_no">Sorry,No!</string>
+    <string name="that_s_a_pity_maybe_next_time">That‘s a pity. Maybe next time?</string>
+    <string name="please_take_a_closer_look_at_the_following_leg">Please take a closer look at the
+        following leg.
+    </string>
+    <string name="please_take_look_at_node">It\'s about the following waypoint.</string>
+    <string name="verified">Verified</string>
+    <string name="not_verify">Verified</string>
+    <string name="is_the_following_correct">Is the following correct ?</string>
+    <string name="what_information_do_you_have_for_community">What information do you have for the
+        community ?
+    </string>
+    <string name="done">Done!</string>
+    <string name="acknowledgement_data">"Imprint\nStadt Heidelberg\nMarktplatz 10\n69117 Heidelberg\n
+        Acknowledgements
+        This project was funded within the programme\n „Städte und Gemeinde 4.0 – Future\n
+        Communities“ by the Ministerium für Inneres,\n Digitales und Migration
+        Baden-Württemberg.
+    </string>
+    <string name="acknowledgement_data1">
+        Project management\n
+        Stadt Heidelberg\n (https://www.heidelberg.de)\n
+    </string>
+    <string name="acknowledgement_data2">
+        Universität Heidelberg – GIScience\n
+        (https://openrouteservice.org)\n
+    </string>
+    <string name="acknowledgement_data3">
+        App development\n
+        Match Rider UG, Heidelberg\n (https://www.matchrider.de)\n
+    </string>
+    <string name="acknowledgement_data4">
+        Sensoric data capture
+        Streetguard GmbH\n (https://www.wolfert-gmbh.de)"
+    </string>
+    <string name="legal_data">\nThe program code is subject to the entire application and function
+        the European Union Public License (EUPL). \n\n
+        The program code is via \n
+        https://www.github.com/MatchRider/Routing \n available.
+    </string>
+    <string name="please_choose">Please Choose</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="text">Text</string>
+    <string name="send">Send</string>
+
+
+    <string name="title_activity_login" translatable="false">LoginActivity</string>
+    <string name="validated">Validated</string>
+    <string name="not_validated">Non Validated</string>
+    <string name="updated_info">Updated Way Info</string>
+    <string name="updated_node_info">Updated Node Info</string>
+    <string name="instructions_for_route">Instructions for route</string>
+    <string name="unable_to_get_data">Unable to get data</string>
+    <string name="message_give_feedback">Do you want to enhance this way info ?</string>
+    <string name="options">Options</string>
+    <string name="please_wait">Please Wait…</string>
+    <string name="logout">Logout</string>
+    <string name="confirm_logout_message">Are you sure you want to logout?</string>
+    <string name="ways">Ways</string>
+    <string name="nodes">Nodes</string>
+    <string name="error_when_entry_not_saved">Your entry could not be saved.</string>
+    <string name="mid_way">Mid Way</string>
+
+    <string name="left">Sidewalk : Left</string>
+    <string name="right">Sidewalk : Right</string>
+    <string name="both">Sidewalk : Both</string>
+
+    <string name="validate_name_msg">Please enter your name to proceed.</string>
+    <string name="validate_email_message">Please enter your email to proceed.</string>
+    <string name="validate_message_enter">Please enter a message to proceed.</string>
+    <string name="send_mail">Send mail…</string>
+    <string name="error_contact">There is no email client installed.</string>
+    <string name="query_subject">Query barrier-free routing app</string>
+    <string name="other_value">Other Value</string>
+    <string name="add_some_width">Add value</string>
+    <string name="message_to_proceed">All values have to be filled in and validated before you can save.</string>
+    <string name="title_osm">OSM</string>
+
+
+
 </resources>

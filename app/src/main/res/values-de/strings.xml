@@ -1,0 +1,264 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Hürdenlose Navigation</string>
+
+    <!-- Font file name for Blue theme -->
+    <string name="frutiger_bold_font">FrutigerLTBold.ttf</string>
+    <string name="frutiger_light_font">FrutigerLight.ttf</string>
+
+    <!-- Custom dialog -->
+    <string name="setting">Rahmen</string>
+    <string name="txt_dialog_title_enable_location">Aktiviere Standort</string>
+    <string name="txt_dialog_message_enable_location">Bitte aktivieren Sie den Standort für den Zugriff auf alle Funktionen dieser Anwendung</string>
+    <string name="settings">die Einstellungen</string>
+
+    <!-- MENU ITEMS -->
+    <string name="ACKNOWLEDGEMENTS">Impressum/Danksagung</string>
+    <string name="FEEDBACK">Feedback</string>
+    <string name="CONTACT">Kontakt</string>
+    <string name="DISCLAIMER">Haftungsausschluss</string>
+    <string name="LEGAL">Rechtliches</string>
+    <string name="LOGOUT">Ausloggen</string>
+
+    <!--BUTTONS-->
+    <string name="route_planner">Routenplaner</string>
+    <string name="suggestions">Dateneingabe</string>
+    <string name="log_in_with_osm">Bei OpenStreetMap einloggen</string>
+
+    <!--Expected Error Codes-->
+    <string name="no_internet">Du bist nicht mit dem Internet verbunden. Bitte prüfe deine Verbindung!</string>
+
+    <string name="text_skip">überspringen</string>
+    <string name="close_drawer">Close</string>
+    <string name="error_load_maps">Karten können nicht ohne die gewährten Berechtigungen geladen werden</string>
+    <string name="gps_setting">GPS-Einstellungen</string>
+    <string name="message_gps">GPS ist nicht aktiviert. Möchten Sie zur Standorteinstellung wechseln?</string>
+    <string name="ok">OK</string>
+    <string name="a">A</string>
+    <string name="enter_source">von</string>
+    <string name="b">B</string>
+    <string name="enter_destination">nach</string>
+    <string name="go">los!</string>
+    <string name="coming_soon">Demnächst</string>
+    <string name="please_provide_feedback_for">Bitte geben Sie Feedback für</string>
+    <string name="cancel">STORNIEREN</string>
+    <string name="min">Min.</string>
+    <string name="hr">Std.</string>
+    <string name="km">km</string>
+    <string name="meter">m</string>
+    <string name="what_do_you_want_to_capture">Was möchten Sie erfassen?</string>
+    <string name="information_about_a_waypoint_distance">1. Informationen über einen Wegpunkt / Entfernung?</string>
+    <string name="information_about_a_temporary_obstacles">2. Informationen über temporäre Hindernisse?</string>
+    <string name="need_to_improve_routing">Möchtest du das Routing verbessern?</string>
+    <string name="what_information_do_you_hvae_for_community">Welche Informationen zu einem Wegpunkt hast du für die Community?</string>
+    <string name="finish">Fertig</string>
+    <string name="posted_sucuess">Feedback erfolgreich mit ID gepostet:</string>
+    <string name="thank_you_for_your_input">Danke für deinen Beitrag!</string>
+    <string name="error_source_destination_same">Bitte wählen Sie eine andere Quelle und ein anderes Ziel</string>
+
+    <!--FILTER SCREEN VALUES............................................-->
+
+    <!--FILTER OPTIONS-->
+    <string name="surface_type">Oberflächentyp</string>
+    <string name="maximum_sloped_kerb"> Maximale Bordsteinkantenhöhe (cm)</string>
+    <string name="maximum_sloped_kerb_m"> Maximale Bordsteinkantenhöhe (m)</string>
+    <string name="maximum_incline">Maximale Steigung (%)</string>
+    <string name="sidewalk_width">Gehwegbreite (cm)</string>
+    <string name="sidewalk_width_m">Gehwegbreite (m)</string>
+    <string name="routing_via" tools:ignore="TypographyEllipsis">Routing über...</string>
+
+    <!--VALIDATION OPTIONS SURFACE TYPE-->
+    <string name="asphalt">Asphaltiert</string>
+    <string name="concrete">Beton</string>
+    <string name="paving_stones">Pflastersteine</string>
+    <string name="cobblestone">Kopfsteinpflaster</string>
+    <string name="compacted">Schotter</string>
+
+    <!--FILTER VALUE SURFACE TYPE-->
+    <string name="asphalt_key">asphalt</string>
+    <string name="concrete_key">concrete</string>
+    <string name="paving_stones_key">paving_stones</string>
+    <string name="cobbleston_key">cobblestone</string>
+    <string name="compacted_key">compacted</string>
+
+    <!--FILTER OPTIONS SURFACE TYPE-->
+    <string name="asphalt_filter">Asphaltiert oder Beton</string>
+    <string name="paving_stones_filter">Pflastersteine oder besser</string>
+    <string name="cobblestone_filter">Kopfsteinpflaster oder besser</string>
+    <string name="compacted_filter">Schotter oder besser</string>
+    <string name="all_filter">Alle Oberflächen</string>
+
+    <!--FILTER OPTIONS MAXIMUM INCLINE TYPE-->
+    <string name="incline_zero">0</string>
+    <string name="up_to_three">bis 3 %</string>
+    <string name="up_to_six">bis 6 %</string>
+    <string name="up_to_ten">bis 10 %</string>
+    <string name="any_incline">Jede Steigung</string>
+    <string name="greater_ten"><![CDATA[über 10 %]]></string>
+
+    <!--FILTER VALUE MAXIMUM INCLINE TYPE-->
+    <string name="zero_incline">keine Steigung</string>
+    <string name="value_three">3</string>
+    <string name="value_six">6</string>
+    <string name="value_ten">10</string>
+    <string name="value_eleven">11</string>
+
+    <!--DATA EDITOR OPTIONS MAXIMUM INCLINE TYPE-->
+    <string name="incline_zero_percentage">0%</string>
+    <string name="zero_to_one">0% - 1%</string>
+    <string name="one_to_two">1% - 2%</string>
+    <string name="two_to_three">2% - 3%</string>
+    <string name="three_to_four">3% - 4%</string>
+    <string name="four_to_five">4% - 5%</string>
+    <string name="five_to_six">5% - 6%</string>
+    <string name="six_to_seven">6% - 7%</string>
+    <string name="seven_to_eight">7% - 8%</string>
+    <string name="eight_to_nine">8% - 9%</string>
+    <string name="nine_to_ten">9% - 10%</string>
+    <string name="ten_to_fifteen">10% - 15%</string>
+
+    <!--DATA EDITOR VALUES MAXIMUM INCLINE TYPE-->
+    <string name="zero_to_one_value">1%</string>
+    <string name="one_to_two_value">2%</string>
+    <string name="two_to_three_value">3%</string>
+    <string name="three_to_four_value">4%</string>
+    <string name="four_to_five_value">5%</string>
+    <string name="five_to_six_value">6%</string>
+    <string name="six_to_seven_value">7%</string>
+    <string name="seven_to_eight_value">8%</string>
+    <string name="eight_to_nine_value">9%</string>
+    <string name="nine_to_ten_value">10%</string>
+    <string name="ten_to_fifteen_value">15%</string>
+
+
+    <!--FILTER OPTIONS MAXIMUM KERB HEIGHT TYPE-->
+    <string name="zero_curb">kein Bordstein</string>
+    <string name="three_kerb">3 cm</string>
+    <string name="six_kerb">6 cm</string>
+    <string name="greater_six_kerb">über 6 cm</string>
+
+    <!--FILTER VALUE MAXIMUM KERB HEIGHT TYPE-->
+    <string name="kerb_zero">0</string>
+    <string name="value_kerb_three">0.03</string>
+    <string name="value_kerb_six">0.06</string>
+    <string name="value_kerb_any">0.1</string>
+
+
+    <!--VAlidation VALUE MAXIMUM KERB HEIGHT TYPE-->
+    <string name="value_kerb_three_validation">0,03</string>
+    <string name="value_kerb_six_validation">0,06</string>
+    <string name="value_kerb_any_validation">0,1</string>
+
+    <!--FILTER OPTIONS MINIMUM WIDTH TYPE-->
+    <string name="nine_less"><![CDATA[unter 0,9 m]]></string>
+    <string name="nine_greater"><![CDATA[über 0,9 m]]></string>
+
+
+    <!--FILTER VALUE MINIMUM WIDTH  VALUE TYPE-->
+    <string name="value_nine_greater_filter">0.90</string>
+    <string name="value_nine_greater">0.91</string>
+    <string name="value_nine_less">0.89</string>
+
+
+    <!--CLOSED FILTER SCREEN VALUES............................................-->
+
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="clear">Eingabe löschen</string>
+    <string name="apply">Übernehmen</string>
+
+    <string name="wheelchair_accessible">-</string>
+    <string name="wheelchair_accessible_yes">barrierefrei</string>
+    <string name="wheelchair_accessible_no">nicht barrierefrei</string>
+    <string name="wheelchair_accessible_limited">teilweise barrierefrei</string>
+    <string name="wheelchair_accessible_unknown">unbekannte</string>
+
+
+    <string name="tram_stop_title">Straßenbahnhaltestelle</string>
+    <string name="toilets_title">Öffentliches WC</string>
+    <string name="bus_stop_title">Bushaltestelle</string>
+    <string name="parking_title">Behindertenparkplatz</string>
+
+    <string name="home">Zurück zum Routing</string>
+    <string name="no_address_found">Keine Adresse gefunden.</string>
+    <string name="hint_routing_via">Bitte Ort eingeben</string>
+    <string name="you_want_to_enhance_the_routing">Du möchtest das Routing verbessern?!</string>
+    <string name="tell_us_where_you_are">Sag uns wo du bist!</string>
+    <string name="give_feedback_title">Möchtest du Informationen zu einer Strecke eingeben?</string>
+    <string name="no_just_information_for_a_waypoint">Nein: Nur Information zu einem Ort</string>
+    <string name="yes_please_choose">Ja: Bitte Ziel eingeben:</string>
+    <string name="start">Anfang</string>
+    <string name="please_help_us_to_envhane_this_trip_leg">Hilf uns bitte, Daten für diesen Abschnitt zu ver!</string>
+    <string name="sorry_no">leider nein!</string>
+    <string name="that_s_a_pity_maybe_next_time">Schade, vielleicht beim nächsten Mal!?</string>
+    <string name="please_take_a_closer_look_at_the_following_leg">Es geht um folgenden Abschnitt.</string>
+    <string name="please_take_look_at_node">Es geht um folgenden Wegpunkt.</string>
+    <string name="verified">Validiert</string>
+    <string name="not_verify">Validiert</string>
+    <string name="is_the_following_correct">Stimmen folgende Informationen?</string>
+    <string name="what_information_do_you_have_for_community">Welche Informationen möchtest du für die Community eingeben?</string>
+    <string name="done">Fertig!</string>
+    <string name="acknowledgement_data">"Impressum\nStadt Heidelberg\nMarktplatz 10\n69117 Heidelberg\n\nDanksagung
+        Projekt wurde realisiert im Rahmen\n „Städte und Gemeinde 4.0 –
+        Future Communities“\ndurch eine Förderung des Ministerium für\nInneres,\n Digitales und Migration
+        Baden-Württemberg.
+    </string>
+    <string name="acknowledgement_data1">
+        Projektinitiatoren\n
+        Stadt Heidelberg\n (https://www.heidelberg.de)\n
+    </string>
+    <string name="acknowledgement_data2">
+        Universität Heidelberg – GIScience\n
+        (https://openrouteservice.org)\n
+    </string>
+    <string name="acknowledgement_data3">
+        App-Entwicklung\n
+        Match Rider UG, Heidelberg\n (https://www.matchrider.de)\n
+    </string>
+    <string name="acknowledgement_data4">
+        Sensorische Datenerfassung
+        Streetguard GmbH\n (https://www.wolfert-gmbh.de)"
+    </string>
+    <string name="legal_data">\n\nDer Programm-Code der gesamten\n Anwendung und Funktion unterliegt
+        der\n European Union Public Licence (EUPL).\n\n
+        Der Programm-Code ist via\n
+        https://www.github.com/MatchRider/Routing \n abrufbar.
+    </string>
+    <string name="please_choose">bitte auswählen</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="text">Dein Text</string>
+    <string name="send">Absenden</string>
+
+    <string name="validated">Überprüfte</string>
+    <string name="not_validated">Nicht überprüfte</string>
+    <string name="updated_info">Daten aktualisiert</string>
+    <string name="updated_node_info">Aktualisierte Knoteninformationen</string>
+    <string name="instructions_for_route">Wegführung</string>
+    <string name="unable_to_get_data">Daten können nicht abgerufen werden</string>
+    <string name="message_give_feedback">Do you want to enhance this way info ?</string>
+    <string name="options">Dateneingabe</string>
+    <string name="please_wait">Bitte warten…</string>
+    <string name="logout">Ausloggen</string>
+    <string name="confirm_logout_message">Möchten Sie sich wirklich abmelden?</string>
+    <string name="ways">Wege</string>
+    <string name="nodes">Wegpunkte</string>
+    <string name="error_when_entry_not_saved">Deine Eingabe konnte nicht gespeichert werden.</string>
+    <string name="mid_way">Mittlerer Weg</string>
+
+    <string name="left">Gehwegseite: links</string>
+    <string name="right">Gehwegseite: rechts</string>
+    <string name="both">Gehwegseite: beide Seiten</string>
+
+    <string name="validate_name_msg">Bitte geben Sie Ihren Namen ein, um fortzufahren.</string>
+    <string name="validate_email_message">Bitte geben Sie Ihre E-Mail-Adresse ein, um fortzufahren.</string>
+    <string name="validate_message_enter">Bitte geben Sie eine Nachricht ein, um fortzufahren.</string>
+    <string name="send_mail">E-Mail senden…</string>
+    <string name="error_contact">Es ist kein E-Mail-Client installiert.</string>
+    <string name="query_subject">Anfrage App Hürdenlose Navigation</string>
+    <string name="other_value">Anderer Wert</string>
+    <string name="add_some_width">Mehrwert</string>
+    <string name="message_to_proceed">Bitte fülle alle Werte, damit du deine Eingabe speichern kannst.</string>
+    <string name="title_osm">OSM</string>
+
+
+</resources>

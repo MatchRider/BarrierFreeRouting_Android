@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:layout_margin="@dimen/margin_xxxx_large"
+              android:background="@color/colorWhiteLight">
+
+    <TextView
+            android:id="@+id/txv_list_item"
+            android:paddingTop="@dimen/padding_normal"
+            android:paddingBottom="@dimen/padding_normal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="?android:attr/expandableListPreferredChildPaddingLeft"
+            android:paddingEnd="?android:attr/expandableListPreferredChildPaddingLeft"
+            android:textSize="@dimen/text_normal"
+            android:fontFamily="@font/frutiger_light"
+            android:textColor="@android:color/black"/>
+
+    <View android:layout_width="match_parent"
+          android:background="@color/colorWhite"
+          android:layout_height="1dp"/>
+
+</LinearLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:padding="@dimen/padding_large"
+                android:gravity="center"
+                android:background="@android:color/transparent"
+                android:layout_height="match_parent">
+    <Button
+            android:id="@+id/btn_title"
+            android:layout_width="match_parent"
+            android:textColor="@color/colorWhite"
+            android:layout_marginTop="150dp"
+            android:textSize="@dimen/text_xlarge"
+            android:gravity="center_horizontal"
+            android:background="@drawable/rectangle_transparent"
+            android:padding="@dimen/padding_xlarge"
+            android:textAllCaps="false"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_alignParentTop="true"
+            android:fontFamily="@font/frutiger_light"
+            android:text="@string/please_take_a_closer_look_at_the_following_leg"
+            android:layout_height="wrap_content"/>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:orientation="horizontal"
+                  android:gravity="center"
+                  android:layout_marginBottom="@dimen/margin_small"
+                  android:padding="@dimen/padding_normal"
+                  android:layout_alignParentBottom="true"
+                  android:layout_height="wrap_content">
+
+        <Button
+                android:id="@+id/btn_ok"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_normal"
+                android:gravity="center"
+                android:background="@drawable/circle_transparent"
+                android:padding="@dimen/padding_large"
+                android:textAllCaps="false"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:fontFamily="@font/frutiger_light"
+                android:text="@string/ok"
+        />
+    </LinearLayout>
+</RelativeLayout>

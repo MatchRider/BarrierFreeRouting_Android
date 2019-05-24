@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.disablerouting.route_planner.view.RoutePlannerActivity">
+
+    <FrameLayout
+            android:id="@+id/contentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <org.osmdroid.views.MapView
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/contentContainer"
+            android:layout_height="match_parent"/>
+
+    <ImageView
+            android:layout_below="@id/contentContainer"
+            android:id="@+id/image_info"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:visibility="gone"
+            android:layout_margin="@dimen/margin_normal"
+            android:src="@drawable/ic_dialog_info"
+            android:layout_alignParentStart="true"
+            android:contentDescription="@string/app_name"/>
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_below="@id/contentContainer"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginEnd="@dimen/margin_normal"
+                    android:layout_height="wrap_content">
+        <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioGroup"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_toStartOf="@id/toggle_way"
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true">
+
+            <RadioButton
+                    android:text="@string/ways"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radioButtonWays"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:checked="true"
+                    android:padding="@dimen/padding_large"
+                    android:textSize="@dimen/text_xlarge"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/custom_btn_radio"
+                    tools:text="Ways"/>
+
+            <RadioButton
+                    android:text="@string/nodes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radioButtonNodes"
+                    android:button="@null"
+                    tools:text="Nodes"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_large"
+                    android:textSize="@dimen/text_xlarge"
+                    android:textColor="@color/colorPrimary"
+                    android:background="@drawable/custom_btn_radio"
+                    android:layout_weight="1"/>
+
+        </RadioGroup>
+        <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/toggle_way"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/padding_small"
+                android:paddingEnd="@dimen/padding_xminor"
+                android:visibility="visible"
+                android:track="@drawable/switch_selector_track"
+                android:thumb="@drawable/switch_selector_thumb"
+                tools:ignore="RtlSymmetry"/>
+
+    </RelativeLayout>
+
+    <ImageView
+            android:id="@+id/img_current_pin"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_pin_drag"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:padding="@dimen/padding_normal"
+            android:visibility="gone"
+            android:contentDescription="@string/app_name"/>
+
+    <ImageView
+            android:id="@+id/img_re_center"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_re_center"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:padding="@dimen/padding_xlarge"
+            android:visibility="visible"
+            android:layout_alignParentStart="true"
+            android:contentDescription="@string/app_name"/>
+
+    <ImageView
+        android:id="@+id/img_re_fresh"
+        android:layout_width="60dp"
+        android:src="@drawable/ic_refresh"
+        android:layout_height="60dp"
+        android:layout_margin="@dimen/padding_large"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/padding_medium"
+        android:visibility="gone"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/app_name"/>
+    <Button
+            android:id="@+id/btn_go"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:text="@string/go"
+            android:layout_margin="@dimen/margin_xxlarge"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_xxlarge"
+            android:textAllCaps="false"
+            android:fontFamily="@font/frutiger_lt_bold"
+            android:background="@drawable/circle_shape"/>
+    <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="60dp"
+            android:visibility="gone"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:indeterminateDrawable="@drawable/circle_progress">
+    </ProgressBar>
+
+</RelativeLayout>

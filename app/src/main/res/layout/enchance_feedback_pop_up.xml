@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:padding="@dimen/padding_large"
+        android:layout_gravity="bottom"
+        android:layout_height="wrap_content">
+    <Button
+            android:id="@+id/btn_title"
+            android:layout_width="match_parent"
+            android:textColor="@color/colorWhite"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:textSize="@dimen/text_xlarge"
+            android:gravity="center_horizontal"
+            android:background="@drawable/rectangle_transparent"
+            android:padding="@dimen/padding_xlarge"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:fontFamily="@font/frutiger_light"
+            android:text="@string/please_take_a_closer_look_at_the_following_leg"
+            android:layout_height="wrap_content"/>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:orientation="horizontal"
+                  android:gravity="center_vertical|center_horizontal"
+                  android:layout_marginBottom="@dimen/margin_small"
+                  android:padding="@dimen/padding_normal"
+                  android:layout_below="@+id/btn_title"
+                  android:layout_height="wrap_content">
+        <Button
+                android:id="@+id/btn_no"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_normal"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:background="@drawable/circle_transparent"
+                android:padding="@dimen/padding_large"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:fontFamily="@font/frutiger_light"
+                android:text="@string/no"
+                tools:ignore="ButtonStyle"/>
+
+        <Button
+                android:id="@+id/btn_yes"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_normal"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:background="@drawable/circle_transparent"
+                android:padding="@dimen/padding_large"
+                android:textAllCaps="false"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:fontFamily="@font/frutiger_light"
+                android:text="@string/yes"
+        />
+    </LinearLayout>
+</RelativeLayout>

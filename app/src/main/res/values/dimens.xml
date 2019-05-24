@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Text Size -->
+    <dimen name="text_smallest">8sp</dimen>
+    <dimen name="text_small">9sp</dimen>
+    <dimen name="text_small_X">10sp</dimen>
+    <dimen name="text_medium">12sp</dimen>
+    <dimen name="text_large">14sp</dimen>
+    <dimen name="text_normal">16sp</dimen>
+    <dimen name="text_xlarge">18sp</dimen>
+    <dimen name="text_xxlarge">20sp</dimen>
+    <dimen name="text_xx_xlarge">22sp</dimen>
+    <dimen name="text_xxxlarge">24sp</dimen>
+    <dimen name="text_xxxxlarge">30sp</dimen>
+    <dimen name="text_xxxxxlarge">34sp</dimen>
+    <dimen name="text_xxxxxxlarge">42sp</dimen>
+
+    <!-- Padding-->
+    <dimen name="padding_minor">3dp</dimen>
+    <dimen name="padding_xminor">5dp</dimen>
+    <dimen name="padding_small">6dp</dimen>
+    <dimen name="padding_normal">8dp</dimen>
+    <dimen name="padding_medium">10dp</dimen>
+    <dimen name="padding_large">12dp</dimen>
+    <dimen name="padding_xlarge">14dp</dimen>
+    <dimen name="padding_xxlarge">16dp</dimen>
+    <dimen name="padding_18dp">18dp</dimen>
+    <dimen name="padding_20dp">20dp</dimen>
+    <dimen name="padding_mid">9dp</dimen>
+    <dimen name="padding_22dp">22dp</dimen>
+    <dimen name="padding_xxx_large">25dp</dimen>
+    <dimen name="padding_35dp">35dp</dimen>
+
+
+    <!-- Margin-->
+    <dimen name="margin_smallest">3dp</dimen>
+    <dimen name="margin_smaller">5dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_normal">10dp</dimen>
+    <dimen name="margin_xnormal">12dp</dimen>
+    <dimen name="margin_large">14dp</dimen>
+    <dimen name="margin_xlarge">16dp</dimen>
+    <dimen name="margin_xxlarge">18dp</dimen>
+    <dimen name="margin_x_large">20dp</dimen>
+    <dimen name="margin_xx_large">22dp</dimen>
+    <dimen name="margin_xxx_large">25dp</dimen>
+    <dimen name="margin_xxxx_large">28dp</dimen>
+    <dimen name="margin_35dp">35dp</dimen>
+    <dimen name="margin_45dp">65dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="switch_track_width">40dp</dimen>
+    <dimen name="switch_track_height">30dp</dimen>
+    <dimen name="switch_radius">50dp</dimen>
+    <dimen name="switch_selector_padding">2dp</dimen>
+    <dimen name="switch_stroke_height">0dp</dimen>
+    <dimen name="switch_thumb_radius">15dp</dimen>
+
+
+</resources>

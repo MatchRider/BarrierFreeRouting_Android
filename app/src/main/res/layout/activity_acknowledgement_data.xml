@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:background="@color/colorPrimary"
+              android:orientation="vertical"
+              android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent"
+                  android:orientation="horizontal"
+                  android:id="@+id/ll"
+                  android:layout_height="wrap_content"
+                  tools:ignore="UseCompoundDrawables,UselessParent">
+        <ImageView
+                android:id="@+id/img_back"
+                android:paddingEnd="@dimen/padding_xlarge"
+                android:paddingBottom="@dimen/padding_large"
+                android:paddingTop="@dimen/padding_large"
+                android:layout_width="wrap_content"
+                android:src="@drawable/ic_navigate_back"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/app_name"/>
+
+        <TextView android:layout_width="match_parent"
+                  android:id="@+id/txv_data_side_title"
+                  android:textColor="@android:color/white"
+                  android:layout_marginTop="@dimen/margin_small"
+                  android:layout_marginBottom="@dimen/margin_normal"
+                  android:maxLines="1"
+                  android:textSize="@dimen/text_xxlarge"
+                  android:gravity="center"
+                  android:layout_gravity="center"
+                  tools:text="@string/ACKNOWLEDGEMENTS"
+                  android:layout_marginEnd="@dimen/margin_xxx_large"
+                  android:background="@color/colorPrimary"
+                  android:layout_height="wrap_content"
+                  android:fontFamily="@font/frutiger_lt_bold"
+        />
+
+    </LinearLayout>
+    <ScrollView android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+        <LinearLayout android:layout_width="match_parent"
+                      android:orientation="vertical"
+                      android:paddingBottom="@dimen/padding_20dp"
+                      android:layout_height="wrap_content">
+            <TextView android:layout_width="match_parent"
+                      android:id="@+id/txv_data_side_menu"
+                      android:textColor="@android:color/white"
+                      android:layout_marginTop="@dimen/margin_small"
+                      android:textSize="@dimen/text_normal"
+                      android:gravity="center"
+                      android:layout_gravity="center"
+                      android:background="@color/colorPrimary"
+                      android:layout_height="wrap_content"
+                      android:fontFamily="@font/frutiger_lt_bold"/>
+
+            <ImageView android:layout_width="match_parent"
+                       android:layout_gravity="center"
+                       android:src="@drawable/image_company"
+                       android:layout_height="50dp"
+                       android:contentDescription="@string/app_name"/>
+
+            <TextView android:layout_width="match_parent"
+                      android:id="@+id/txv_data_side_menu1"
+                      android:textColor="@android:color/white"
+                      android:layout_marginTop="@dimen/margin_small"
+                      android:textSize="@dimen/text_normal"
+                      android:gravity="center"
+                      android:layout_gravity="center"
+                      android:background="@color/colorPrimary"
+                      android:layout_height="wrap_content"
+                      android:fontFamily="@font/frutiger_lt_bold"
+            />
+            <ImageView android:layout_width="150dp"
+                       android:layout_gravity="center"
+                       android:background="@color/colorWhite"
+                       android:src="@drawable/logo_heidelberg"
+                       android:layout_height="80dp"
+                       android:paddingStart="@dimen/padding_small"
+                       android:paddingEnd="@dimen/padding_small"
+                       android:contentDescription="@string/app_name"/>
+
+
+            <TextView android:layout_width="match_parent"
+                      android:id="@+id/txv_data_side_menu2"
+                      android:textColor="@android:color/white"
+                      android:layout_marginTop="@dimen/margin_small"
+                      android:textSize="@dimen/text_normal"
+                      android:gravity="center"
+                      android:layout_gravity="center"
+                      android:background="@color/colorPrimary"
+                      android:layout_height="wrap_content"
+                      android:fontFamily="@font/frutiger_lt_bold"
+            />
+            <ImageView android:layout_width="150dp"
+                       android:layout_gravity="center"
+                       android:background="@color/colorWhite"
+                       android:src="@drawable/logo_gi_science"
+                       android:layout_height="80dp"/>
+
+            <TextView android:layout_width="match_parent"
+                      android:id="@+id/txv_data_side_menu3"
+                      android:textColor="@android:color/white"
+                      android:layout_marginTop="@dimen/margin_small"
+                      android:textSize="@dimen/text_normal"
+                      android:gravity="center"
+                      android:layout_gravity="center"
+                      android:background="@color/colorPrimary"
+                      android:layout_height="wrap_content"
+                      android:fontFamily="@font/frutiger_lt_bold"
+            />
+            <ImageView android:layout_width="150dp"
+                       android:layout_gravity="center"
+                       android:background="@color/colorGreenLight"
+                       android:src="@drawable/logo_match_rider"
+                       android:layout_height="80dp"/>
+
+            <!--<TextView android:layout_width="match_parent"
+                      android:id="@+id/txv_data_side_menu4"
+                      android:textColor="@android:color/white"
+                      android:layout_marginTop="@dimen/margin_small"
+                      android:textSize="@dimen/text_normal"
+                      android:gravity="center"
+                      android:layout_gravity="center"
+                      android:background="@color/colorPrimary"
+                      android:layout_height="wrap_content"
+                      android:fontFamily="@font/frutiger_lt_bold"
+            />
+            <ImageView android:layout_width="150dp"
+                       android:layout_gravity="center"
+                       android:background="@drawable/placeholder"
+                       android:layout_height="80dp"/>-->
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:dither="true"
+       android:shape="rectangle"
+       android:useLevel="false"
+       android:visible="true">
+    <gradient
+            android:angle="270"
+            android:endColor="@color/colorGreen"
+            android:startColor="@color/colorGreen"/>
+    <corners android:radius="@dimen/switch_radius" />
+    <stroke
+            android:width="@dimen/switch_stroke_height"
+            android:color="@android:color/transparent">
+    </stroke>
+    <size
+            android:width="@dimen/switch_track_width"
+            android:height="@dimen/switch_track_height" />
+</shape>

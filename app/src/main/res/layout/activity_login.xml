@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.disablerouting.login.LoginActivity">
+
+
+    <Button
+            android:id="@+id/btn_log_in"
+            android:background="@drawable/btn_ripple"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_xlarge"
+            android:layout_margin="@dimen/margin_normal"
+            android:paddingTop="@dimen/padding_normal"
+            android:paddingBottom="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_xxx_large"
+            android:paddingEnd="@dimen/padding_xxx_large"
+            android:visibility="visible"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:text="@string/log_in_with_osm"
+            android:textAllCaps="false"
+            android:fontFamily="@font/frutiger_lt_bold"/>
+
+
+</RelativeLayout>

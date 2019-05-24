@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_normal"
+                android:background="@android:color/transparent">
+
+    <TextView
+            android:id="@+id/txv_tittle"
+            android:layout_width="match_parent"
+            android:text="@string/please_provide_feedback_for"
+            android:gravity="center"
+            android:padding="@dimen/padding_normal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_xxlarge"
+            android:fontFamily="@font/frutiger_lt_bold"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:layout_below="@id/txv_tittle"
+            android:id="@+id/txv_description"
+            android:layout_width="match_parent"
+            tools:text="@string/app_name"
+            android:gravity="center"
+            android:padding="@dimen/padding_normal"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_xxlarge"
+            android:fontFamily="@font/frutiger_light"
+            android:layout_height="wrap_content"/>
+
+    <LinearLayout
+            android:layout_below="@id/txv_description"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+        <Button
+                android:id="@+id/btn_no"
+                android:background="@drawable/btn_ripple"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="@dimen/text_normal"
+                android:text="@string/cancel"
+                android:textColor="@color/colorWhite"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/frutiger_lt_bold"
+                android:layout_marginEnd="@dimen/padding_minor"
+                tools:ignore="ButtonStyle"/>
+        <Button
+                android:id="@+id/btn_feedback"
+                android:background="@drawable/btn_ripple"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="@dimen/text_normal"
+                android:text="@string/FEEDBACK"
+                android:textColor="@color/colorWhite"
+                android:fontFamily="@font/frutiger_lt_bold"
+                android:layout_marginStart="@dimen/padding_minor"
+                android:layout_height="wrap_content"
+                tools:ignore="ButtonStyle"/>
+    </LinearLayout>
+</RelativeLayout>
